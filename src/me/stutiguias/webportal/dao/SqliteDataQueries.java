@@ -125,6 +125,12 @@ public class SqliteDataQueries implements DataQueries {
 			WebAuction.log.info(plugin.logPrefix + "Creating table WA_SaleAlerts");
 			executeRawSQL("CREATE TABLE WA_SaleAlerts (id INTEGER PRIMARY KEY, seller VARCHAR(255), quantity INTEGER, price DOUBLE, buyer VARCHAR(255), item VARCHAR(255), alerted BOOLEAN Default '0');");
 		}
+                if (!tableExists("WA_DbVersion")) {
+                        WebAuction.log.info(plugin.logPrefix + "Creating table WA_DbVersion");
+                        executeRawSQL("CREATE TABLE WA_DbVersion (id INTEGER PRIMARY KEY, dbversion INTEGER);");
+                        executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
+                        executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type` ;");
+                }
     }
 
     @Override
@@ -758,28 +764,30 @@ public class SqliteDataQueries implements DataQueries {
     }
 
     @Override
-    public void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on) {
-            WALConnection conn = getConnection();
-            PreparedStatement st = null;
-            ResultSet rs = null;
+    public void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname) {
+		WALConnection conn = getConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
 
-            try {
-                    st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                    st.setInt(1, itemID);
-                    st.setInt(2, itemDamage);
-                    st.setString(3, player);
-                    st.setInt(4, quantity);
-                    st.setDouble(5, price);
-                    st.setString(6, ench);
-                    st.setInt(7, on);
-                    st.executeUpdate();
-            } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
-                    WebAuction.log.warning(e.getMessage());
-            } finally {
-                    closeResources(conn, st, rs);
-            }
-    }
+		try {
+			st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, itemname) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			st.setInt(1, itemID);
+			st.setInt(2, itemDamage);
+			st.setString(3, player);
+			st.setInt(4, quantity);
+                        st.setDouble(5, price);
+                        st.setString(6, ench);
+                        st.setInt(7, on);
+                        st.setString(8, type);
+                        st.setString(9, Itemname);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
+			WebAuction.log.warning(e.getMessage());
+		} finally {
+			closeResources(conn, st, rs);
+		}
+	}
 
     @Override
     public void setAlert(String seller,Integer quantity,Double price,String buyer,String item) {

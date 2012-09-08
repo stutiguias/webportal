@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.webserver.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -114,20 +115,18 @@ public class WASign {
     
     public void ItemtoStore(ItemStack stack,Player player){
         int itemDamage = 0;
-        if (stack.getDurability() >= 0) {
-                itemDamage = stack.getDurability();
-        }
+        if (stack.getDurability() >= 0) itemDamage = stack.getDurability();
+        
+        // Get Enchant
         Map<Enchantment, Integer> itemEnchantments = stack.getEnchantments();
         String ench_player = "";
         for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
-
             int enchId = entry.getKey().getId();
             int level = entry.getValue();
-
             ench_player += enchId + "," + level + ":";
-
         }
         
+        // check if item not already there
         int quantityInt = stack.getAmount();
         List<AuctionItem> auctionItems = plugin.dataQueries.getItems(player.getName(), stack.getTypeId(), itemDamage, false,1);
         Boolean foundMatch = false;
@@ -141,20 +140,19 @@ public class WASign {
                         foundMatch = true;
                 }
         }
+        
+        // if not already there create the item
         if (foundMatch == false) {
                 String ench = "";
                 for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
-                      
                         Enchantment key = entry.getKey();
                         int enchId = key.getId();
                         int level = entry.getValue();
-
                         ench += enchId + "," + level + ":";
-
                 }
-                
-                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1);
-
+                String type = stack.getType().toString();
+                String ItemName = Material.getItemName(stack.getTypeId(),stack.getDurability());
+                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1,type,ItemName);
         }
     }
     

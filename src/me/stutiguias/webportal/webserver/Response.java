@@ -6,6 +6,9 @@ package me.stutiguias.webportal.webserver;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebAuction;
 
 /**
@@ -94,5 +97,21 @@ public class Response {
         {
             WebAuction.log.info((new StringBuilder()).append("ERROR in readFileAsBinary(): ").append(e.getMessage()).toString());
         }
+    }
+    
+    public String getParam(String param, String URL)
+    {
+            Pattern regex = Pattern.compile("[\\?&]"+param+"=([^&#]*)");
+            Matcher result = regex.matcher(URL);
+            if(result.find()){
+                    try{
+                            String resdec = URLDecoder.decode(result.group(1),"UTF-8");
+                            return resdec;
+                    }catch (UnsupportedEncodingException e){
+                            WebAuction.log.info(plugin.logPrefix+"ERROR in getParam(): " + e.getMessage());
+                            return "";
+                    }
+            }else
+                    return "";
     }
 }

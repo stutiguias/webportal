@@ -41,7 +41,7 @@ public interface DataQueries {
         void updateforCreateAuction(int id,Double price);
 	void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
-	void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on);
+	void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname);
 	void setAlert(String seller,Integer quantity,Double price,String buyer,String item);
         List<AuctionItem> getPlayerItems(String player);
 	List<AuctionMail> getMail(String player);
