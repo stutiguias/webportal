@@ -152,7 +152,8 @@ public class WASign {
                 }
                 String type = stack.getType().toString();
                 String ItemName = Material.getItemName(stack.getTypeId(),stack.getDurability());
-                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1,type,ItemName);
+                String searchtype = plugin.getSearchType(ItemName);
+                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1,type,ItemName,searchtype);
         }
     }
     

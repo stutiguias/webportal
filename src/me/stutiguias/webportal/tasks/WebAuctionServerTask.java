@@ -10,22 +10,19 @@ import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.*;
-import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.enchantments.Enchantment;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import me.stutiguias.request.FillAuction;
 import me.stutiguias.request.FillMyAuctions;
 import me.stutiguias.request.FillMyItems;
+import me.stutiguias.request.Login;
+import me.stutiguias.request.Userinfo;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -38,8 +35,7 @@ public class WebAuctionServerTask extends Thread {
     Socket WebServerSocket;
     String Lang;
     int Port;
-    public AuthSystem AS;
-    
+
     // will be delete soon
     Response Response;
     
@@ -47,6 +43,8 @@ public class WebAuctionServerTask extends Thread {
     FillAuction _FillAuction;
     FillMyItems _FillMyItems;
     FillMyAuctions _FillMyAuctions;
+    Login _Login;
+    Userinfo _UserInfo;
     
     String levelname;
     String PluginDir;
@@ -55,13 +53,15 @@ public class WebAuctionServerTask extends Thread {
 
     public WebAuctionServerTask(WebAuction plugin, Socket s)
     {
-        AS = new AuthSystem(plugin);
+
         PluginDir = "plugins/WebPortal/";
         this.plugin = plugin;
         Response = new Response(plugin,s);
         _FillAuction = new FillAuction(plugin, s);
         _FillMyItems = new FillMyItems(plugin, s);
         _FillMyAuctions = new FillMyAuctions(plugin, s);
+        _Login = new Login(plugin, s);
+        _UserInfo = new Userinfo(plugin, s);
         WebServerSocket = s;
     }
 
@@ -177,7 +177,7 @@ public class WebAuctionServerTask extends Thread {
             BufferedReader in = new BufferedReader(new InputStreamReader(WebServerSocket.getInputStream()));
             try
             {
-                String l,json, url = "", param = "", htmlDir = "./plugins/WebPortal/html";
+                String l, url = "", param = "", htmlDir = "./plugins/WebPortal/html";
                 boolean flag = true;
                 while((l = in.readLine()) != null && flag)
                 {
@@ -201,22 +201,8 @@ public class WebAuctionServerTask extends Thread {
 
                         if(url.startsWith("/web/login"))
                         {
-                            String username = getParam("Username", param);
-                            String pass = getParam("Password", param);
-                            if(AS.Auth(username, pass))
-                            {
-                                AuthPlayer AuthPlayer = new AuthPlayer();
-                                AuthPlayer.AuctionPlayer = plugin.dataQueries.getPlayer(username);
-                                AuthPlayer.AuctionPlayer.setIp(HostAddress);
-                                WebAuction.AuthPlayer.put(HostAddress,AuthPlayer);
-                                json = "ok";
-                            }else{
-                                json = "no";
-                            }
-                            Response.print(json,"text/plain");
-                        }else 
-
-                        if(!WebAuction.AuthPlayer.containsKey(HostAddress))
+                          _Login.TryToLogin(param);
+                        }else if(!WebAuction.AuthPlayer.containsKey(HostAddress))
                         {
                             if(url.startsWith("/css"))
                             {
@@ -244,13 +230,7 @@ public class WebAuctionServerTask extends Thread {
                                 Response.readFileAsBinary(htmlDir+url,"text/javascript");
                             }else if(url.startsWith("/server/username/info"))
                             {
-                                AuthPlayer authPlayer = WebAuction.AuthPlayer.get(HostAddress);
-                                String Name = authPlayer.AuctionPlayer.getName();
-                                String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", Admin":",";
-                                json = Name + Admin + ",";
-                                json += "$ " + plugin.economy.getBalance(Name) + ",";
-                                json += plugin.dataQueries.getMail(Name).size();
-                                Response.print(json,"text/plain");
+                                _UserInfo.GetInfo();
                             }else if(url.startsWith("/logout")) {
                                 WebAuction.AuthPlayer.remove(HostAddress);
                                 Response.readFileAsBinary(htmlDir + "/login.html","text/html");
@@ -368,7 +348,8 @@ public class WebAuctionServerTask extends Thread {
               ItemStack stack = new ItemStack(au.getName(),au.getQuantity(),dmg);  
               String type =  stack.getType().toString();
               String ItemName = Material.getItemName(au.getName(),dmg);
-              plugin.dataQueries.createItem(au.getName(),au.getDamage(),au.getPlayerName(),qtd,price,au.getEnchantments(),plugin.Auction,type,ItemName);
+              String searchtype = plugin.getSearchType(ItemName);
+              plugin.dataQueries.createItem(au.getName(),au.getDamage(),au.getPlayerName(),qtd,price,au.getEnchantments(),plugin.Auction,type,ItemName,searchtype);
               Response.print("You have successfully created an Auction","text/plain");
             }else{
               Response.print("You not permit to sell more then you have","text/plain");
@@ -433,7 +414,8 @@ public class WebAuctionServerTask extends Thread {
                }else{
                    String Type = au.getItemStack().getType().toString();
                    String ItemName = Material.getItemName(au.getItemStack().getTypeId(), au.getItemStack().getDurability());
-                   plugin.dataQueries.createItem(au.getItemStack().getTypeId(), au.getItemStack().getDurability() , ap.getName(), qtd, 0.0, au.getEnch(), plugin.Myitems,Type,ItemName);
+                   String searchtype = plugin.getSearchType(ItemName);
+                   plugin.dataQueries.createItem(au.getItemStack().getTypeId(), au.getItemStack().getDurability() , ap.getName(), qtd, 0.0, au.getEnch(), plugin.Myitems,Type,ItemName,searchtype);
                }
                
                if(au.getItemStack().getAmount() > 0) {

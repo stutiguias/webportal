@@ -129,7 +129,7 @@ public class MySQLDataQueries implements DataQueries {
                         WebAuction.log.info(plugin.logPrefix + "Creating table WA_DbVersion");
                         executeRawSQL("CREATE TABLE WA_DbVersion (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), dbversion INT);");
                         executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
-                        executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type` ;");
+                        executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type`, ADD COLUMN `searchtype` VARCHAR(45) NULL  AFTER `itemname` ;");
                 }
                 
 	}
@@ -315,7 +315,7 @@ public class MySQLDataQueries implements DataQueries {
         
         
         @Override
-        public List<Auction> getSearchAuctions(int to,int from,String search) {
+        public List<Auction> getSearchAuctions(int to,int from,String search,String searchtype) {
 		Auction auction;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -323,10 +323,10 @@ public class MySQLDataQueries implements DataQueries {
                 List<Auction> la = new ArrayList<Auction>();
                 
 		try {
-			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench FROM WA_Auctions where tableid = ? and ( name = ? or player like ? ) LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type,itemname FROM WA_Auctions where tableid = ? and ( itemname like ? and searchtype = ? ) LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, search);
-                        st.setString(3, "%" + search + "%");
+                        st.setString(2, "%" + search + "%");
+                        st.setString(3, searchtype);
                         st.setInt(4, to);
                         st.setInt(5, from);
 			rs = st.executeQuery();
@@ -335,6 +335,8 @@ public class MySQLDataQueries implements DataQueries {
 				auction.setId(rs.getInt("id"));
                                 ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                                 stack = Chant(rs.getString("ench"), stack);
+                                auction.setItemName(rs.getString("itemname"));
+                                auction.setType(rs.getString("type"));
 				auction.setItemStack(stack);
 				auction.setPlayerName(rs.getString("player"));
 				auction.setPrice(rs.getDouble("price"));
@@ -760,13 +762,13 @@ public class MySQLDataQueries implements DataQueries {
 	}
         
         @Override
-	public void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname) {
+	public void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname,String searchtype) {
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
-			st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, itemname) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, itemname, searchtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			st.setInt(1, itemID);
 			st.setInt(2, itemDamage);
 			st.setString(3, player);
@@ -776,6 +778,7 @@ public class MySQLDataQueries implements DataQueries {
                         st.setInt(7, on);
                         st.setString(8, type);
                         st.setString(9, Itemname);
+                        st.setString(10, searchtype);
 			st.executeUpdate();
 		} catch (SQLException e) {
 			WebAuction.log.warning(plugin.logPrefix + "Unable to create item");

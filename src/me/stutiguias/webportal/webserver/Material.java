@@ -243,7 +243,7 @@ public class Material {
             case 122: return "Dragon Egg";
             case 123: return "Redstone Lamp (off)";
             case 124: return "Redstone Lamp (on)";
-
+            case 129: return "Emerald Block";    
 
         //ITEMS:
             case 256: return "Iron Shovel";

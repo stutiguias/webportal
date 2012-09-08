@@ -311,7 +311,7 @@ public class SqliteDataQueries implements DataQueries {
     }
 
     @Override
-    public List<Auction> getSearchAuctions(int to, int from, String search) {
+    public List<Auction> getSearchAuctions(int to, int from, String search, String searchtype) {
                 Auction auction;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -319,10 +319,10 @@ public class SqliteDataQueries implements DataQueries {
                 List<Auction> la = new ArrayList<Auction>();
                 
 		try {
-			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench FROM WA_Auctions where tableid = ? and ( name = ? or player like ? ) LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,itemname FROM WA_Auctions where tableid = ? and ( itemname like ? and searchtype = ? ) LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, search);
-                        st.setString(3, "%" + search + "%");
+                        st.setString(2, "%" + search + "%");
+                        st.setString(3, searchtype);
                         st.setInt(4, to);
                         st.setInt(5, from);
 			rs = st.executeQuery();
@@ -331,18 +331,19 @@ public class SqliteDataQueries implements DataQueries {
 				auction.setId(rs.getInt("id"));
                                 ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                                 stack = Chant(rs.getString("ench"), stack);
+                                auction.setItemName(rs.getString("itemname"));
+                                auction.setType(rs.getString("type"));
 				auction.setItemStack(stack);
 				auction.setPlayerName(rs.getString("player"));
 				auction.setPrice(rs.getDouble("price"));
 				auction.setCreated(rs.getInt("created"));
                                 la.add(auction);
 			}
-  			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? and ( name = ? or player like ? ) LIMIT ? , ?");
+  			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? and ( itemname like ? ) LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, search);
-                        st.setString(3, "%" + search + "%");
-                        st.setInt(4, to);
-                        st.setInt(5, from);
+                        st.setString(2, "%" + search + "%");
+                        st.setInt(3, to);
+                        st.setInt(4, from);
 			rs = st.executeQuery();
 			while (rs.next()) {
 		              found = rs.getInt(1);
@@ -764,30 +765,31 @@ public class SqliteDataQueries implements DataQueries {
     }
 
     @Override
-    public void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname) {
-		WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
+    public void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname,String searchtype) {
+            WALConnection conn = getConnection();
+            PreparedStatement st = null;
+            ResultSet rs = null;
 
-		try {
-			st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, itemname) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			st.setInt(1, itemID);
-			st.setInt(2, itemDamage);
-			st.setString(3, player);
-			st.setInt(4, quantity);
-                        st.setDouble(5, price);
-                        st.setString(6, ench);
-                        st.setInt(7, on);
-                        st.setString(8, type);
-                        st.setString(9, Itemname);
-			st.executeUpdate();
-		} catch (SQLException e) {
-			WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
-			WebAuction.log.warning(e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-	}
+            try {
+                    st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, itemname, searchtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    st.setInt(1, itemID);
+                    st.setInt(2, itemDamage);
+                    st.setString(3, player);
+                    st.setInt(4, quantity);
+                    st.setDouble(5, price);
+                    st.setString(6, ench);
+                    st.setInt(7, on);
+                    st.setString(8, type);
+                    st.setString(9, Itemname);
+                    st.setString(10, searchtype);
+                    st.executeUpdate();
+            } catch (SQLException e) {
+                    WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
+                    WebAuction.log.warning(e.getMessage());
+            } finally {
+                    closeResources(conn, st, rs);
+            }
+    }
 
     @Override
     public void setAlert(String seller,Integer quantity,Double price,String buyer,String item) {

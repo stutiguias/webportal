@@ -41,7 +41,7 @@ public class FillAuction extends Response {
         int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
         int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
         String search = getParam("sSearch", param);
-        List<Auction> la = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search);
+        List<Auction> la = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,"nothing");
         int sEcho = Integer.parseInt(getParam("sEcho", param));
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = plugin.dataQueries.getFound();
@@ -82,7 +82,7 @@ public class FillAuction extends Response {
         String search = getParam("sSearch", param);
         int sEcho = Integer.parseInt(getParam("sEcho", param));
         
-        List<Auction> la = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search);
+        List<Auction> la = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,"block");
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = plugin.dataQueries.getFound();
         

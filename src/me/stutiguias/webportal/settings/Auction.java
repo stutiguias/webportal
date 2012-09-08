@@ -5,6 +5,8 @@ import org.bukkit.inventory.ItemStack;
 public class Auction {
 
 	private int id;
+        private String itemName;
+        private String type;
 	private ItemStack itemStack;
 	private String playerName;
 	private double price;
@@ -13,6 +15,22 @@ public class Auction {
 	private Double currentBid;
 	private String currentWinner;
         private String ench;
+        
+        public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+        
+        public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
         
 	public int getId() {
 		return id;

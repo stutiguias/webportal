@@ -59,6 +59,7 @@
         <directory>${basedir}/resources/</directory>
         <includes>
           <include>plugin.yml</include>
+          <include>materials.yml</include>
         </includes>
       </resource>
       

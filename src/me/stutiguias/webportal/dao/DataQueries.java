@@ -23,7 +23,7 @@ public interface DataQueries {
         int getTotalAuctionCount();
         Auction getAuctionForOffset(int offset);
         List<Auction> getAuctions(int togetAuctions,int from);
-        List<Auction> getSearchAuctions(int to,int from,String search);
+        List<Auction> getSearchAuctions(int to,int from,String search,String type);
 	void updatePlayerPassword(String player, String newPass); 
 	void UpdateItemAuctionQuantity(Integer numberleft, Integer id);
         void DeleteAuction(Integer id);
@@ -41,7 +41,7 @@ public interface DataQueries {
         void updateforCreateAuction(int id,Double price);
 	void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
-	void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname);
+	void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname,String searchtype);
 	void setAlert(String seller,Integer quantity,Double price,String buyer,String item);
         List<AuctionItem> getPlayerItems(String player);
 	List<AuctionMail> getMail(String player);

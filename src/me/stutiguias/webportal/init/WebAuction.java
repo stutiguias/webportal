@@ -1,7 +1,11 @@
 package me.stutiguias.webportal.init;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +22,9 @@ import me.stutiguias.webportal.tasks.WebAuctionServerListenTask;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,9 +45,10 @@ public class WebAuction extends JavaPlugin {
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
         public WebAuctionServerListenTask server;
 	public int signDelay = 0;
+        private ConfigAccessor materials;
         
         public HashMap<String,String> Messages;
-
+        
         // Mcmmo Settings
         public HashMap<String,Object> mcmmoconfig;
         public McMMO mcmmo;
@@ -209,6 +217,15 @@ public class WebAuction extends JavaPlugin {
                 server = new WebAuctionServerListenTask(this,NUM_CONN_MAX);
                 server.start();
                 
+                // so load the materials.yml
+                materials = new ConfigAccessor(this, "materials.yml");
+                try {
+                    materials.setupConfig();
+                }catch(IOException ex) {
+                    log.warning("unable to setup materials.yml");
+                }
+                
+                
                 String dbtype = getConfig().getString("DataBase.Type");
                 // Set up DataQueries
                 if(!dbPass.equals("password123") && !dbtype.equalsIgnoreCase("SQLite") )
@@ -250,6 +267,21 @@ public class WebAuction extends JavaPlugin {
             
         }
         
+        public String getSearchType(String Itemname) {
+            // it a block ?
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("block").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "block";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type block");
+                ex.getMessage();
+            }
+            
+            return "nothing";
+        }
+        
         public String parseColor(String message) {
             try {
                 for (ChatColor color : ChatColor.values()) {
@@ -260,5 +292,5 @@ public class WebAuction extends JavaPlugin {
                 return message;
             }
         }
- 
+
 }
