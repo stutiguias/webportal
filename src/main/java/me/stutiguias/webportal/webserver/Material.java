@@ -450,7 +450,9 @@ public class Material {
                 case 8268: return "Potion of Harming (reverted)";   
 
                 case 16384: return "Splash Mundane Potion";
-
+                  
+                case 16371: return "Fire Resistance (8:00)";
+                    
                 case 16385: return "Splash Potion of Regeneration (0:33)";
                 case 16386: return "Splash Potion of Swiftness (2:15)";
                 case 16387: return "Splash Potion of Fire Resistance (2:15)";
@@ -460,7 +462,7 @@ public class Material {
                 case 16393: return "Splash Potion of Strength (2:15)";
                 case 16394: return "Splash Potion of Slowness (1:07)"; 
                 case 16396: return "Splash Potion of Harming";
-
+                        
                 case 16417: return "Splash Potion of Regeneration II (0:16)";
                 case 16418: return "Splash Potion of Swiftness II (1:07)";
                 case 16419: return "Splash Potion of Fire Resistance (2:15) (reverted)";
@@ -480,7 +482,10 @@ public class Material {
                 case 16457: return "Splash Potion of Strength (6:00)";
                 case 16458: return "Splash Potion of Slowness (3:00)";
                 case 16460: return "Splash Potion of Harming (reverted)";
-
+                    
+                case 32658: return "Speed (2:15)";
+                case 32660: return "Poison(0:33)";
+                    
                 default: return "Potion";
             }   
             case 374: return "Glass Bottle";

@@ -45,6 +45,7 @@ public class FillAuction extends Response {
         if(url.contains("bytransportation")) getAuctionBy(ip, url, param,"Transportation");
         if(url.contains("bymicellaneous")) getAuctionBy(ip, url, param,"Micellaneous");
         if(url.contains("bymaterials")) getAuctionBy(ip, url, param,"Materials");
+        if(url.contains("byothers")) getAuctionBy(ip, url, param,"nothing");
     }
     
     public void getAuctionBy(String ip,String url,String param,String searchtype) {
@@ -112,9 +113,14 @@ public class FillAuction extends Response {
         if(!item.getItemStack().getType().isBlock()) {
             Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
         }
-        String Item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-        item_name = getConfigName(Item_name,type);
-                
+        item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+      
+        if(!(item.getItemStack().getType() == org.bukkit.Material.POTION)) {
+            item_name = getConfigName(item_name,type);
+        }else{
+            Durability = "";
+        }
+        
         // Enchant if need
         String enchant = "";
         for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
@@ -133,8 +139,7 @@ public class FillAuction extends Response {
                     if(key.equalsIgnoreCase(Itemname)) return plugin.materials.getConfig().getString(type + "." + key);
                 }
             }catch(NullPointerException ex){
-                WebAuction.log.warning("Unable to search by item type "+ type);
-                ex.getMessage();
+                
             }
             return Itemname;
     }
