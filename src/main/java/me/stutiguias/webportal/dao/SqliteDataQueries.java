@@ -129,7 +129,7 @@ public class SqliteDataQueries implements DataQueries {
                         WebAuction.log.info(plugin.logPrefix + "Creating table WA_DbVersion");
                         executeRawSQL("CREATE TABLE WA_DbVersion (id INTEGER PRIMARY KEY, dbversion INTEGER);");
                         executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
-                        executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type` ;");
+                        executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type`, ADD COLUMN `searchtype` VARCHAR(45) NULL  AFTER `itemname`  ;");
                 }
     }
 
