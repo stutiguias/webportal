@@ -106,6 +106,7 @@ public class FillAuction extends Response {
     
     public String ConvertItemToResult(Auction item,String type) {
         String item_name;
+        String img_name;
         Short dmg = item.getItemStack().getDurability();
         String Durability = "";
         
@@ -113,11 +114,12 @@ public class FillAuction extends Response {
         if(!item.getItemStack().getType().isBlock()) {
             Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
         }
-        item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+        img_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
       
         if(!(item.getItemStack().getType() == org.bukkit.Material.POTION)) {
-            item_name = getConfigName(item_name,type);
+            item_name = getConfigName(img_name,type);
         }else{
+            item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
             Durability = "";
         }
         
@@ -129,7 +131,7 @@ public class FillAuction extends Response {
             enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
         }
         
-        return "<img src='images/"+ item_name.replace(" ","_").toLowerCase() +".png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+        return "<img src='images/"+ img_name.replace(" ","_").toLowerCase() +".png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
     }
     
     public String getConfigName(String Itemname,String type) {
