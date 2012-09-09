@@ -1,9 +1,7 @@
 package me.stutiguias.webportal.init;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,6 +12,7 @@ import me.stutiguias.webportal.dao.MySQLDataQueries;
 import me.stutiguias.webportal.dao.SqliteDataQueries;
 import me.stutiguias.webportal.listeners.WebAuctionBlockListener;
 import me.stutiguias.webportal.listeners.WebAuctionPlayerListener;
+import me.stutiguias.webportal.metrics.Metrics;
 import me.stutiguias.webportal.plugins.Essentials;
 import me.stutiguias.webportal.plugins.McMMO;
 import me.stutiguias.webportal.settings.AuthPlayer;
@@ -22,9 +21,6 @@ import me.stutiguias.webportal.tasks.WebAuctionServerListenTask;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -109,6 +105,15 @@ public class WebAuction extends JavaPlugin {
                    log.log(Level.INFO,logPrefix + "Vault NOT ENABLE.");    
                 }
 		
+
+                //Metrics 
+                try {
+                    log.info(logPrefix + "Sending Metrics for help the dev... http://metrics.griefcraft.com :-)");
+                    Metrics metrics = new Metrics(this);
+                    metrics.start();
+                } catch (IOException e) {
+                    log.info(logPrefix + "Failed to submit the stats :-(");
+                }
 	}
 
         public void onReload() {
