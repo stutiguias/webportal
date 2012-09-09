@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.request;
+package me.stutiguias.webportal.request;
 
 import java.net.Socket;
 import java.util.List;

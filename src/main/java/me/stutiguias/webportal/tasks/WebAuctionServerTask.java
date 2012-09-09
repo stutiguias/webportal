@@ -18,11 +18,11 @@ import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.OfflinePlayer;
-import me.stutiguias.request.FillAuction;
-import me.stutiguias.request.FillMyAuctions;
-import me.stutiguias.request.FillMyItems;
-import me.stutiguias.request.Login;
-import me.stutiguias.request.Userinfo;
+import me.stutiguias.webportal.request.FillAuction;
+import me.stutiguias.webportal.request.FillMyAuctions;
+import me.stutiguias.webportal.request.FillMyItems;
+import me.stutiguias.webportal.request.Login;
+import me.stutiguias.webportal.request.Userinfo;
 import org.bukkit.inventory.ItemStack;
 
 /**
