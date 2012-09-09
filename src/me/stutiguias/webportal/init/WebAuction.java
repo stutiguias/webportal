@@ -45,7 +45,7 @@ public class WebAuction extends JavaPlugin {
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
         public WebAuctionServerListenTask server;
 	public int signDelay = 0;
-        private ConfigAccessor materials;
+        public ConfigAccessor materials;
         
         public HashMap<String,String> Messages;
         
@@ -221,6 +221,7 @@ public class WebAuction extends JavaPlugin {
                 materials = new ConfigAccessor(this, "materials.yml");
                 try {
                     materials.setupConfig();
+                    materials.getConfig();
                 }catch(IOException ex) {
                     log.warning("unable to setup materials.yml");
                 }
@@ -268,16 +269,97 @@ public class WebAuction extends JavaPlugin {
         }
         
         public String getSearchType(String Itemname) {
-            // it a block ?
+            // it a block 
             try {
-                for (Iterator<String> it = materials.getConfig().getConfigurationSection("block").getKeys(false).iterator(); it.hasNext();) {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Block").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "block";
+                    if(key.equalsIgnoreCase(Itemname)) return "Block";
                 }
             }catch(NullPointerException ex){
-                log.warning("Unable to search by item type block");
+                log.warning("Unable to search by item type Block");
                 ex.getMessage();
             }
+            
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Materials").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Materials";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Materials");
+                ex.getMessage();
+            }
+            
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Micellaneous").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Micellaneous";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Micellaneous");
+                ex.getMessage();
+            }
+                        
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Redstone").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Redstone";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Redstone");
+                ex.getMessage();
+            }
+                                    
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Transportation").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Transportation";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Transportation");
+                ex.getMessage();
+            }
+            
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Decoration").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Decoration";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Decoration");
+                ex.getMessage();
+            }
+            
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Tools").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Tools";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Tools");
+                ex.getMessage();
+            }
+                        
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Combat").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Combat";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Combat");
+                ex.getMessage();
+            }
+            
+            try {
+                for (Iterator<String> it = materials.getConfig().getConfigurationSection("Food").getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) return "Food";
+                }
+            }catch(NullPointerException ex){
+                log.warning("Unable to search by item type Food");
+                ex.getMessage();
+            }
+            
             
             return "nothing";
         }

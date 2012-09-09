@@ -133,7 +133,7 @@ enchant:
     silk_touch:       Silk Touch
     aqua_affinity:    Aqua Affinity
 
-block:
+Block:
     Bedrock:              Bedrock
     Cobblestone:          Cobblestone
     Diamond Block:        Diamond Block
@@ -142,281 +142,281 @@ block:
     Gold Block:           Gold Block
     Stone:                Stone
     Iron Block:           Iron Block
+    Lapis Lazuli Block:   Lapis Lazuli Block
+    Glass:                Glass
+    Oak Wood Planks:      Oak Wood Planks
+    Spruce Wood Planks:   Spruce Wood Planks
+    Birch Wood Planks:    Birch Wood Planks
+    Jungle Wood Planks:   Jungle Wood Planks
+    Sand:                 Sand
+    Gravel:               Gravel
+    Gold Ore:             Gold Ore
+    Iron Ore:             Iron Ore
+    Coal Ore:             Coal Ore
+    Oak Wood:             Oak Wood
+    Spruce Wood:          Spruce Wood
+    Birch Wood:           Birch Wood
+    Jungle Wood:          Jungle Wood
+    Sponge:               Sponge
+    Glass:                Glass
+    Lapis Lazuli Ore:     Lapis Lazuli Ore
+    Sandstone:            Sandstone
+    Chiseled Sandstone:   Chiseled Sandstone
+    Smooth Sandstone:     Smooth Sandstone
+    Wool:                 Wool
+    Orange Wool:          Orange Wool
+    Magenta Wool:         Magenta Wool
+    Light Blue Wool:      Light Blue Wool
+    Yellow Wool:          Yellow Wool
+    Lime Wool:            Lime Wool
+    Pink Wool:            Pink Wool
+    Gray Wool:            Gray Wool
+    Light Gray Wool:      Light Gray Wool
+    Cyan Wool:            Cyan Wool
+    Purple Wool:          Purple Wool
+    Blue Wool:            Blue Wool
+    Brown Wool:           Brown Wool
+    Green Wool:           Green Wool
+    Red Wool:             Red Wool
+    Black Wool:           Black Wool
+    Stone Slab:           Stone Slab
+    Sandstone Slab:       Sandstone Slab
+    Cobblestone Slab:     Cobblestone Slab
+    Brincks Slab:         Brincks Slab
+    Stone Brincks Slab:   Stone Brincks Slab
+    Brincks:              Brincks
+    Bookshelft:           Bookshelft
+    Moss Stone:           Moss Stone
+    Obsidian:             Obsidian
+    Oak Wood Stairs:      Oak Wood Stairs
+    Diamond Ore:          Diamond Ore
+    Stone Stairs:         Stone Stairs
+    Redstone Ore:         Redstone Ore
+    Ice:                  Ice
+    Snow:                 Snow
+    Clay:                 Clay
+    Pumpkin:              Pumpkin
+    Netherrack:           Netherrack
+    Soul Sand:            Soul Sand
+    Glowstone:            Glowstone
+    Jack 'o' Lantern:     Jack 'o' Lantern
+    Stone Brincks:        Stone Brincks
+    Mossy Stone Bricks:   Mossy Stone Bricks
+    Melon:                Melon
+    Brick Stairs:         Brick Stairs
+    Stone Brick Stairs:   Stone Brick Stairs
+    Mycelium:             Mycelium
+    Nether Brick:         Nether Brick
+    Nether Brick Stairs:  Nether Brick Stairs
+    End Stone:            End Stone
+    Oak Wood Slab:        Oak Wood Slab
+    Spruce Wood Slab:     Spruce Wood Slab
+    Birch Wood Slab:      Birch Wood Slab
+    Jungle Wood Slab:     Jungle Wood Slab
+    Sandstone Stairs:     Sandstone Stairs
+    Emerald Ore:          Emerald Ore
+    Spuce Wood Stairs:    Spuce Wood Stairs
+    Birch Wood Stairs:    Birch Wood Stairs
+    Jungle Wood Stairs:   Jungle Wood Stairs
 
-Items:
-    chainmail_boots:      Chainmail Boots
-    chainmail_chestplate: Chainmail Tunic
-    chainmail_helmet:     Chainmail Coif
-    chainmail_leggings:   Chainmail Leggings
-    diamond_axe:          Diamond Axe
-    diamond_boots:        Diamond Greaves
-    diamond_chestplate:   Diamond Chestpiece
-    diamond_helmet:       Diamond Helm
-    diamond_hoe:          Diamond Hoe
-    diamond_leggings:     Diamond Legs
-    diamond_pickaxe:      Diamond Pickaxe
-    diamond_spade:        Diamond Shovel
-    diamond_sword:        Diamond Sword
-    gold_axe:             Gold Axe
-    gold_boots:           Gold Slippers
-    gold_chestplate:      Gold Breastplate
-    gold_helmet:          Gold Helm
-    gold_hoe:             Gold Hoe
-    gold_leggings:        Gold Skirt
-    gold_pickaxe:         Gold Pickaxe
-    gold_sword:           Gold Sword
-    gold_spade:           Gold Shovel
-    iron_axe:             Iron Axe
-    iron_boots:           Iron Greaves
-    iron_chestplate:      Iron Chestplate
-    iron_helmet:          Iron Helm
-    iron_hoe:             Iron Hoe
-    iron_leggings:        Iron Leggings
-    iron_pickaxe:         Iron Pickaxe
-    iron_spade:           Iron Shovel
-    iron_sword:           Iron Sword
-    leather_boots:        Leather Shoes
-    leather_chestplate:   Leather Vest
-    leather_helmet:       Leather Cap
-    leather_leggings:     Leather Pants
-    stone_axe:            Stone Axe
-    stone_hoe:            Stone Hoe
-    stone_pickaxe:        Stone Pickaxe
-    stone_plate:          Stone Pressure Plate
-    stone_spade:          Stone Shovel
-    stone_sword:          Stone Sword
+Combat:
+    Bow:                  Bow
+    Arrow:                Arrow
+    Iron Sword:           Iron Sword
+    Wooden Sword:         Wooden Sword
+    Stone Sword:          Stone Sword
+    Diamond Sword:        Diamond Sword
+    Gold Sword:           Gold Sword
+    Leather Boots:        Leather Boots
+    Leather Tunic:        Leather Tunic
+    Leather Cap:          Leather Cap
+    Leather Pants:        Leather Pants
+    Chain Boots:          Chain Boots
+    Chain Chestplate:     Chain Chestplate
+    Chain Helmet:         Chain Helmet
+    Chain Leggings:       Chain Leggings
+    Iron Boots:           Iron Boots
+    Iron Chestplate:      Iron Chestplate
+    Iron Helmet:          Iron Helmet
+    Iron Leggings:        Iron Leggings
+    Diamond Boots:        Diamond Boots
+    Diamond Chestplate:   Diamond Chestplate
+    Diamond Helmet:       Diamond Helmet
+    Diamond Leggings:     Diamond Leggings
+    Gold Boots:           Gold Boots
+    Gold Chestplate:      Gold Chestplate
+    Gold Helmet:          Gold Helmet
+    Gold Leggings:        Gold Leggings
+
+Tools:
+    Iron Shovel:          Iron Shovel
+    Iron Pickaxe:         Iron Pickaxe
+    Iron Axe:             Iron Axe
+    Flint and Steel:      Flint and Steel
+    Wooden Shovel:        Wooden Shovel
+    Wooden Pickaxe:       Wooden Pickaxe
+    Wooden Axe:           Wooden Axe
+    Stone Shovel:         Stone Shovel
+    Stone Pickaxe:        Stone Pickaxe
+    Stone Axe:            Stone Axe
+    Diamond Shovel:       Diamond Shovel
+    Diamond Pickaxe:      Diamond Pickaxe
+    Diamond Axe:          Diamond Axe
+    Gold Shovel:          Gold Shovel
+    Gold Pickaxe:         Gold Pickaxe
+    Gold Axe:             Gold Axe
+    Wooden Hoe:           Wooden Hoe
+    Stone Hoe:            Stone Hoe
+    Iron Hoe:             Iron Hoe
+    Diamond Hoe:          Diamond Hoe
+    Gold Hoe:             Gold Hoe
+    Compass:              Compass
+    Fishing Rod:          Fishing Rod
+    Clock:                Clock
+    Shears:               Shears
 
 Food:
     Apple:                Apple
+    Mushroom Stew:        Mushroom Stew    
     Bread:                Bread
+    Raw Porkchop:         Raw Porkchop
+    Cooked Porkchop:      Cooked Porkchop
+    Golden Apple:         Golden Apple
+    Raw Fish:             Raw Fish
+    Cooked Fish:          Cooked Fish
+    Cookie:               Cookie
+    Melon:                Melon
+    Raw Beef:             Raw Beef
+    Steak:                Steak
+    Raw Chicken:          Raw Chicken
+    Cooked Chicken:       Cooked Chicken
+    Rotten Flesh:         Rotten Flesh
+    Spider Eye:           Spider Eye
     Cake:                 Cake
 
-Other:
-    air:                  Air
-    arrow:                Arrow
-    bed:                  Bed
-    bed_block:            Bed
-    birch_wood_stairs:    Birch Wood Stairs
-    blaze_powder:         Blaze Powder
-    blaze_rod:            Blaze Rod
-    boat:                 Boat
-    bone:                 Bone
-    book:                 Book
-    book_and_quill:       Book and Quill
-    bookshelf:            Bookshelf
-    bow:                  Bow
-    bowl:                 Bowl
-    brewing_stand:        Brewing Stand
-    brewing_stand_item:   Brewing Stand
-    brick:                Brick
-    brick_stairs:         Brick Stairs
-    brown_mushroom:       Brown Mushroom
-    bucket:               Iron Bucket
-    burning_furnace:      Furnace
-    cactus:               Cactus
-    cauldron:             Cauldron
-    cauldron_item:        Cauldron
-    chest:                Chest
-    clay:                 Clay
-    clay_ball:            Clay Ball
-    clay_brick:           Clay Brick
-    coal:                 Coal
-    coal_ore:             Coal Ore
-    cobblestone_stairs:   Cobblestone Stairs
-    cocoa:                Cocoa
-    compass:              Compass
-    cooked_beef:          Steak
-    cooked_chicken:       Grilled Chicken
-    cooked_fish:          Fried Fish
-    cookie:               Cookie
-    crops:                Crops
-    dead_bush:            Dead Bush
-    detector_rail:        Detector Rail
-    diamond:              Diamond
-    diamond_ore:          Rough Diamond
-    diode:                Redstone Repeater
-    diode_block_off:      Redstone Repeater
-    diode_block_on:       Redstone Repeater
-    dispenser:            Dispenser
-    double_step:          Double Step
-    dragon_egg:           Dragon Egg
-    egg:                  Egg
-    emerald:              Emerald
-    emerald_ore:          Emerald Ore
-    enchantment_table:    Enchantment Table
-    ender_chest:          Ender Chest
-    ender_pearl:          Ender Pearl
-    ender_portal:         Ender Portal
-    ender_portal_frame:   Ender Portal Frame
-    ender_stone:          Ender Stone
-    exp_bottle:           Experience Bottle
-    eye_of_ender:         Eye of Ender
-    feather:              Feather
-    fence:                Fence
-    fence_gate:           Fence Gate
-    fermented_spider_eye: Fermented Spider Eye
-    fire:                 Fire
-    fireball:             Fireball
-    fishing_rod:          Fishing Pole
-    flint:                Flint
-    flint_and_steel:      Flint and Steel
-    furnace:              Furnace
-    ghast_tear:           Ghast Tear
-    glass:                Glass
-    glass_bottle:         Bottle
-    glowing_redstone_ore: Redstone Ore
-    glowstone:            Glowstone
-    glowstone_dust:       Glowstone Dust
-    gold_ingot:           Gold Ingot
-    gold_nugget:          Gold Nugget
-    gold_ore:             Gold Ore
-    gold_record:          Record c418 - 13
-    golden_apple:         Golden Apple
-    grass:                Dirt
-    gravel:               Gravel
-    green_record:         Record c418 - cat
-    grilled_pork:         Baby Back Ribs
-    huge_mushroom_1:      Giant Mushroom
-    huge_mushroom_2:      Giant Mushroom
-    ice:                  Ice
-    ink_sack:             Squid Ink
-    iron_door:            Iron Door
-    iron_door_block:      Iron Door
-    iron_fence:           Iron Fence
-    iron_ingot:           Iron Ingot
-    iron_ore:             Iron Ore
-    jack_o_lantern:       Jack O' Lantern
-    jukebox:              Jukebox
-    jungle_wood_stairs:   Jungle Wood Stairs
-    ladder:               Ladder
-    lapis_block:          Block of Lapis
-    lapis_ore:            Lapis Ore
-    lava:                 Lava
-    lava_bucket:          Bucket Full of Lava
-    leather:              Strip of Leather
-    leaves:               Leaves
-    lever:                Lever
-    locked_chest:         Locked Chest
-    log:                  Tree Log
-    long_grass:           Weeds
-    magma_cream:          Magma Cream
-    map:                  Map
-    melon:                Watermelon Slice
-    melon_block:          Watermelon
-    melon_seeds:          Watermelon Seeds
-    melon_stem:           Watermelon Plant
-    milk_bucket:          Bucket Full of Milk
-    minecart:             Minecart
-    mob_spawner:          Mob Spawner
-    monster_egg:          Monster Egg
-    monster_eggs:         Silverfish Block
-    mossy_cobblestone:    Mossy Cobblestone
-    mushroom_soup:        Bowl of Mushroom Soup
-    mycel:                Mycel
-    nether_brick:         Nether Brick
-    nether_brick_stairs:  Nether Brick Stairs
-    nether_fence:         Nether Fence
-    nether_stalk:         Nether Warts
-    nether_warts:         Nether Warts
-    netherrack:           Netherrack
-    note_block:           Note Block
-    obsidian:             Obsidian
-    painting:             Painting
-    paper:                Paper
-    piston_base:          Piston
-    piston_extension:     Piston
-    piston_moving_piece:  Piston
-    piston_sticky_base:   Sticky Piston
-    pork:                 Raw Pork
-    portal:               Portal
-    potion:               Potion
-    powered_minecart:     Powered Minecart
-    powered_rail:         Powered Rail
-    pumpkin:              Pumpkin
-    pumpkin_seeds:        Pumpkin Seeds
-    pumpkin_stem:         Pumpkin Plant
-    rails:                Train Tracks
-    raw_beef:             Raw Steak
-    raw_chicken:          Raw Chicken
-    raw_fish:             Raw Fish
-    record_10:            Record c418 - ward
-    record_11:            Record c418 - 11
-    record_3:             Record c418 - blocks
-    record_4:             Record c418 - chirp
-    record_5:             Record c418 - far
-    record_6:             Record c418 - mall
-    record_7:             Record c418 - mellohi
-    record_8:             Record c418 - stal
-    record_9:             Record c418 - strad
-    red_mushroom:         Red Mushroom
-    red_rose:             Red Rose
-    redstone:             Redstone Dust
-    redstone_lamp_off:    Redstone Lamp
-    redstone_lamp_on:     Redstone Lamp
-    redstone_ore:         Redstone Ore
-    redstone_torch_off:   Redstone Torch
-    redstone_torch_on:    Redstone Torch
-    redstone_wire:        Redstone Dust
-    rotten_flesh:         Zombie Flesh
-    saddle:               Saddle
-    sand:                 Sand
-    sandstone:            Sandstone Brick
-    sandstone_stairs:     Sandstone Stairs
-    sapling:              Tree Sapling
-    seeds:                Seeds
-    shears:               Shears
-    sign:                 Wood Sign
-    sign_post:            Wood Sign
-    slime_ball:           Slime Ball
-    smooth_brick:         Smooth Brick
-    smooth_stairs:        Smooth Brick Stairs
-    snow:                 Snow
-    snow_ball:            Snow Ball
-    snow_block:           Snow Block
-    soil:                 Soil
-    soul_sand:            Soul Sand
-    speckled_melon:       Speckled Melon
-    spider_eye:           Spider Eye
-    sponge:               Sponge
-    spruce_wood_stairs:   Spruce Wood Stairs
-    stationary_lava:      Lava
-    stationary_water:     Water
-    step:                 Step
-    stick:                Stick
-    stone_button:         Stone Button
-    storage_minecart:     Storage Minecart
-    string:               String
-    sugar:                Sugar
-    sugar_cane:           Sugar Cane
-    sugar_cane_block:     Sugar Cane
-    sulphur:              Gunpowder
-    thin_glass:           Glass Panes
-    tnt:                  TNT
-    torch:                Torch
-    trap_door:            Trap Door
-    tripwire:             Trip Wire
-    tripwire_hook:        Trip Wire Hook
-    vine:                 Vine
-    wall_sign:            Wood Sign
-    watch:                Watch
-    water:                Water
-    water_bucket:         Bucket Full of Water
-    water_lily:           Water Lily
-    web:                  Web
-    wheat:                Wheat
-    wood:                 Wood
-    wood_axe:             Wood Axe
-    wood_door:            Wooden Door
-    wood_double_step:     Wooden Step
-    wood_hoe:             Wood Hoe
-    wood_pickaxe:         Wood Pickaxe
-    wood_plate:           Wood Pressure Plate
-    wood_spade:           Wood Shovel
-    wood_stairs:          Wooden Stairs
-    wood_step:            Wood Step
-    wood_sword:           Wood Sword
-    wooden_door:          Wooden Door
-    wool:                 Wool
-    workbench:            Workbench
-    written_book:         Written Book
-    yellow_flower:        Yellow Flower
+Decoration:
+    Oak Spaling:         Oak Sapling
+    Spruce Sapling:      Spruce Sapling
+    Birch Sapling:       Birch Sapling 
+    Jungle Sapling:      Jungle Sapling
+    Oak Leaves:          Oak Leaves
+    Spruce Leaves:       Spruce Leaves
+    Birch Leaves:        Birch Leaves
+    Jungle Leaves:       Jungle Leaves
+    CobWeb:              CobWeb
+    Grass:               Grass
+    Fern:                Fern
+    Dead Bush:           Dead Bush
+    Flower:              Flower
+    Rose:                Rose
+    Mushroom:            Mushroom
+    Torch:               Torch
+    Chest:               Chest
+    Crafting Table:      Crafting Table
+    Furnace:             Furnace
+    Ladder:              Ladder
+    Snow:                Snow
+    Cactus:              Cactus
+    Jukebox:             Jukebox
+    Fence:               Fence
+    Stone Monster Egg:   Stone Monster Egg
+    Iron Bars:           Iron Bars
+    Glass Pane:          Glass Pane
+    Vines:               Vines
+    Lily Pad:            Lily Pad
+    Nether Brick Fence:  Nether Brick Fence
+    Enchantment Table:   Enchantment Table
+    End Portal:          End Portal
+    Ender Chest:         Ender Chest
+    Painting:            Painting
+    Sign:                Sign
+    Bed:                 Bed
+
+Redstone:
+    Dispenser:           Dispenser
+    Note Block:          Note Block
+    Sticky Piston:       Sticky Piston
+    Piston:              Piston
+    TNT:                 TNT
+    Lever:               Lever
+    Pressure Plate:      Pressure Plate
+    Pressure Plate:      Pressure Plate
+    Redstone Torch:      Redstone Torch
+    Button:              Button
+    Trapdoor:            Trapdoor
+    Fence Gate:          Fence Gate
+    Redstone Lamp:       Redstone Lamp
+    Tripwire Hook:       Tripwire Hook
+    Wooden Door:         Wooden Door
+    Iron Door:           Iron Door
+    Redstone:            Redstone
+    Redstone Repeater:   Redstone Repeater
+
+Transportation:
+    Powered Rail:        Powered Rail
+    Detector Rail:       Detector Rail
+    Rail:                Rail
+    Minecart:            Minecart
+    Saddle:              Saddle
+    Boat:                Boat
+    Minecart with Chest: Minecart with Chest
+
+Micellaneous:
+    Bucket:              Bucket
+    Water Buckket:       Water Buckket
+    Lava Bucket:         Lava Bucket
+    Snowball:            Snowball
+    Milk:                Milk
+    Paper:               Paper
+    Book:                Book
+    Slimeball:           Slimeball
+    Bone:                Bone
+    Map:                 Map
+    Ender Pearl:         Ender Pearl
+    Eye of Ender:        Eye of Ender
+    Fire Charge:         Fire Charge
+    Book and Quill:      Book and Quill
+
+Materials:
+    Coal:                Coal
+    Charcoal:            Charcoal
+    Diamond:             Diamond
+    Iron Ingot:          Iron Ingot
+    Gold Ingot:          Gold Ingot
+    Stick:               Stick
+    Bowl:                Bowl
+    String:              String
+    Feather:             Feather
+    Gunpowder:           Gunpowder
+    Seeds:               Seeds
+    Wheat:               Wheat
+    Flint:               Flint
+    Leather:             Leather
+    Brick:               Brick
+    Clay:                Clay
+    Sugar Canes:         Sugar Canes
+    Egg:                 Egg
+    Glowstone Dust:      Glowstone Dust
+    Ink Sac:             Ink Sac
+    Rose Red:            Rose Red
+    Cactus Green:        Cactus Green
+    Cocoa Beans:         Cocoa Beans
+    Lapis Lazuli:        Lapis Lazuli
+    Purple Dye:          Purple Dye
+    Cyan Dye:            Cyan Dye
+    Light Gray Dye:      Light Gray Dye
+    Gray Dye:            Gray Dye
+    Pink Dye:            Pink Dye
+    Lime Dye:            Lime Dye
+    Dandelion:           Dandelion
+    Light Blue Dye:      Light Blue Dye
+    Magenta Dye:         Magenta Dye
+    Orange Dye:          Orange Dye
+    Bone Meal:           Bone Meal
+    Sugar:               Sugar
+    Pumpkin Seeds:       Pumpkin Seeds
+    Melon Seeds:         Melon Seeds
+    Blaze Rod:           Blaze Rod
+    Gold Nugget:         Gold Nugget
+    Nether Wart:         Nether Wart
+    Emerald:             Emerald
