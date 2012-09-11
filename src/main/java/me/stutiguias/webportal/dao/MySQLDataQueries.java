@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import me.stutiguias.webportal.dao.querys.MySQLAuction;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
 import me.stutiguias.webportal.settings.*;
@@ -29,7 +30,7 @@ public class MySQLDataQueries implements DataQueries {
                 }
 	}
 
-	private WALConnection getConnection() {
+	public WALConnection getConnection() {
 		try {
 			return pool.getConnection();
 		} catch (Exception e) {
@@ -44,7 +45,7 @@ public class MySQLDataQueries implements DataQueries {
             return found;
         }
         
-	private void closeResources(WALConnection conn, Statement st, ResultSet rs) {
+	public void closeResources(WALConnection conn, Statement st, ResultSet rs) {
 		if (null != rs) {
 			try {
 				rs.close();
@@ -62,7 +63,7 @@ public class MySQLDataQueries implements DataQueries {
 		}
 	}
 
-	private boolean tableExists(String tableName) {
+	public boolean tableExists(String tableName) {
 		boolean exists = false;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -83,7 +84,7 @@ public class MySQLDataQueries implements DataQueries {
 		return exists;
 	}
 
-	private void executeRawSQL(String sql) {
+	public void executeRawSQL(String sql) {
 		WALConnection conn = getConnection();
 		Statement st = null;
 		ResultSet rs = null;
@@ -581,11 +582,20 @@ public class MySQLDataQueries implements DataQueries {
                 String pass = null;
 
 		try {
-			st = conn.prepareStatement("SELECT pass FROM WA_Players WHERE name = ?");
+                        if(plugin.authplugin.equalsIgnoreCase("WebPortal")) {
+                            st = conn.prepareStatement("SELECT pass FROM WA_Players WHERE name = ?");
+                        }else{
+                            st = conn.prepareStatement("SELECT " + plugin.ColumnPassword + " FROM " + plugin.Table + " WHERE " + plugin.Username + " = ?");
+                        }
 			st.setString(1, player);
 			rs = st.executeQuery();
                         while (rs.next()) {
-                            pass = rs.getString("pass");
+                            if(plugin.authplugin.equalsIgnoreCase("WebPortal")) {
+                                pass = rs.getString("pass");
+                            }else{
+                                pass = rs.getString(plugin.ColumnPassword);   
+                            }
+                            
                         }
 		} catch (SQLException e) {
 			WebAuction.log.warning(plugin.logPrefix + "Unable to update player permissions in DB");

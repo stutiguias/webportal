@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.stutiguias</groupId>
   <artifactId>WebPortal</artifactId>
-  <version>0.5</version>
+  <version>0.5.1</version>
   <name>WebPortal</name>
   <description>WebPortal por minecraft</description>
   
@@ -45,7 +45,15 @@
 	  <scope>system</scope>
       <systemPath>${project.basedir}/lib/AuthMe-2.6.7b5.jar</systemPath>
     </dependency>
-	
+    
+    <dependency>
+      <groupId>com.authdb</groupId>
+      <artifactId>AuthDb</artifactId>
+      <version>2.3.6</version>
+	  <scope>system</scope>
+      <systemPath>${project.basedir}/lib/AuthDb.jar</systemPath>
+    </dependency>
+    
   </dependencies>
   
   <build>

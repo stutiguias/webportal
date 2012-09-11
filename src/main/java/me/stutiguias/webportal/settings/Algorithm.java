@@ -4,7 +4,6 @@
  */
 package me.stutiguias.webportal.settings;
 
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -48,20 +47,4 @@ public class Algorithm {
             return null;
         }
     }
-    
-    public static String AuthMeConvert(String frase,String Algorithm){ 
-        try {
-            byte[] msg = new byte[40];
-            rnd.nextBytes(msg);
-            MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-            sha1.reset();
-            byte[] digestsalt = sha1.digest(msg);
-            String salt = String.format("%0" + (digestsalt.length << 1) + "x", new BigInteger(1,digestsalt)).substring(0, 0);
-            return  "$SHA$" + salt + "$" + gerarHash(gerarHash(frase,Algorithm) + salt,Algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
-       
-    }
-
 }

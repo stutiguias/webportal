@@ -55,8 +55,13 @@ public class WebAuction extends JavaPlugin {
         
         public Boolean showSalesOnJoin = false;
         public Boolean allowlogifonline = false;
+        
         public String authplugin;
         public String algorithm;
+        public String Table;
+        public String ColumnPassword;
+        public String Username;
+        
 	public Permission permission = null;
 	public Economy economy = null;
         public int connections;
@@ -163,6 +168,9 @@ public class WebAuction extends JavaPlugin {
                 getConfig().addDefault("PortalBox.Essentials", false);
                 getConfig().addDefault("AuthSystem.System", "WebPortal");
                 getConfig().addDefault("AuthSystem.Algorithm", "MD5");
+                getConfig().addDefault("AuthSystem.TableName", "minecraft");
+                getConfig().addDefault("AuthSystem.ColumnPassword", "password");
+                getConfig().addDefault("AuthSystem.ColumnUsername", "username");
 		getConfig().addDefault("Updates.SaleAlertFrequency", 30L);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -209,6 +217,10 @@ public class WebAuction extends JavaPlugin {
                 
                 authplugin = getConfig().getString("AuthSystem.System");
                 algorithm = getConfig().getString("AuthSystem.Algorithm");
+                Table = getConfig().getString("AuthSystem.TableName");
+                ColumnPassword = getConfig().getString("AuthSystem.ColumnPassword");
+                Username = getConfig().getString("AuthSystem.ColumnUsername");
+                
 		long saleAlertFrequency = getConfig().getLong("Updates.SaleAlertFrequency");
 		boolean getMessages = getConfig().getBoolean("Misc.ReportSales");
 		showSalesOnJoin = getConfig().getBoolean("Misc.ShowSalesOnJoin");
