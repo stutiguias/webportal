@@ -51,7 +51,7 @@
       <artifactId>AuthDb</artifactId>
       <version>2.3.6</version>
 	  <scope>system</scope>
-      <systemPath>${project.basedir}/lib/AuthDb.jar</systemPath>
+      <systemPath>${project.basedir}/lib/AuthDb-2.3.6.jar</systemPath>
     </dependency>
     
   </dependencies>
