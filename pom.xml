@@ -46,14 +46,6 @@
       <systemPath>${project.basedir}/lib/AuthMe-2.6.7b5.jar</systemPath>
     </dependency>
     
-    <dependency>
-      <groupId>com.authdb</groupId>
-      <artifactId>AuthDb</artifactId>
-      <version>2.3.6</version>
-	  <scope>system</scope>
-      <systemPath>${project.basedir}/lib/AuthDb-2.3.6.jar</systemPath>
-    </dependency>
-    
   </dependencies>
   
   <build>

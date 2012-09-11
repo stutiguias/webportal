@@ -4,15 +4,8 @@
  */
 package me.stutiguias.webportal.settings;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import me.stutiguias.webportal.init.WebAuction;
 import org.bukkit.entity.Player;
-import uk.org.whoami.authme.AuthMe;
-import uk.org.whoami.authme.cache.auth.PlayerCache;
 import uk.org.whoami.authme.security.PasswordSecurity;
 /**
  *
