@@ -89,7 +89,12 @@ public class WebAuctionPlayerListener implements Listener {
             	
                 if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
 		if (!event.hasItem() && !event.hasBlock()) return;
-		Block block = event.getPlayer().getTargetBlock(null, 1);
+                Block block;
+                try{
+		  block = event.getPlayer().getTargetBlock(null, 1);
+                }catch(IllegalStateException ex){
+                  return;  
+                }
 		if (null == block || (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN)) 	return;
                 
 		// it's a sign
@@ -97,7 +102,11 @@ public class WebAuctionPlayerListener implements Listener {
 		String[] lines = sign.getLines();
 
 		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]")) {
+                    if(lines[0].equals(ChatColor.GREEN + "[wSell]")) { 
+                        wSell(event,sign,lines);
+                    }else{
 			return;
+                    }
 		}
 		String player = event.getPlayer().getName();
 		event.setCancelled(true);
@@ -185,5 +194,9 @@ public class WebAuctionPlayerListener implements Listener {
                     }
                 }
             }
+        }
+        
+        public void wSell(PlayerInteractEvent event,Sign sign,String[] lines) {
+            
         }
 }

@@ -1,6 +1,8 @@
 package me.stutiguias.webportal.listeners;
 
+import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.settings.AuctionItem;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -44,35 +46,58 @@ public class WebAuctionBlockListener implements Listener {
 		Block sign = event.getBlock();
 		Boolean allowEvent = false;
 		if (player != null) {
-			if (lines[0].equalsIgnoreCase("[WebAuction]")) {
-				if ((lines[1].equalsIgnoreCase("MailBox")) || (lines[1].equalsIgnoreCase("Mail Box"))) {
-					if (lines[2].equalsIgnoreCase("Deposit")) {
-						if (plugin.permission.has(player, "wa.create.sign.mailbox.deposit")) {
-							allowEvent = true;
-                                                        event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
-							player.sendMessage(plugin.logPrefix + "Deposit Mail Box created");
-						}
-					} else {
-						if (plugin.permission.has(player, "wa.create.sign.mailbox.withdraw")) {
-							allowEvent = true;
-                                                        event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
-							player.sendMessage(plugin.logPrefix + "Withdraw Mail Box created");
-						}
-					}
-				} if(lines[1].equalsIgnoreCase("vbox")) {
-                                                if (plugin.permission.has(player, "wa.create.sign.vbox")) {
-                                                        allowEvent = true;
-                                                        event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
-							player.sendMessage(plugin.logPrefix + "Virtual Box created");
-                                                }
-                                }
-				if (allowEvent == false) {
-					event.setCancelled(true);
-					sign.setTypeId(0);
-					player.sendMessage(plugin.logPrefix + "You do not have permission");
-				}
-			}
-		}
-	}
+                    if(lines[0].equalsIgnoreCase("[WebAuction]")) WebAuction(lines, player, allowEvent, sign, event);
+                    if(lines[0].equalsIgnoreCase("[wSell]")) wSell(lines, player, allowEvent, sign, event);
+                }
+                
 
+	}
+        
+        public void wSell(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event) {
+               
+               List<AuctionItem> AuctionItemList = plugin.dataQueries.getItemsByName(player.getName(),lines[1], true, plugin.Auction);
+               if(AuctionItemList.size() > 0) {
+                   event.setLine(0, ChatColor.GREEN + "[wSell]" );
+                   event.setLine(1, AuctionItemList.get(0).getItemName());
+                   if(lines[2].isEmpty()) {
+                      event.setLine(2,"1 - " + AuctionItemList.get(0).getPrice());
+                   }else{
+                      int qtd = Integer.parseInt(lines[2]);
+                      if(qtd <= AuctionItemList.get(0).getQuantity()) {
+                        event.setLine(2, lines[2] + " - E" + AuctionItemList.get(0).getPrice());
+                      }else{
+                        event.setLine(2, "Invalid Qtd");
+                      }
+                   }
+                   event.setLine(3, AuctionItemList.get(0).getPlayerName());
+               }
+        }
+        
+        public void WebAuction(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event)
+        {
+            if ((lines[1].equalsIgnoreCase("MailBox")) || (lines[1].equalsIgnoreCase("Mail Box"))) {
+                    if (lines[2].equalsIgnoreCase("Deposit")) {
+                            if (plugin.permission.has(player, "wa.create.sign.mailbox.deposit")) {
+                                    allowEvent = true;
+                                    event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
+                                    player.sendMessage(plugin.logPrefix + "Deposit Mail Box created");
+                            }
+                    } else if (plugin.permission.has(player, "wa.create.sign.mailbox.withdraw")) {
+                                    allowEvent = true;
+                                    event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
+                                    player.sendMessage(plugin.logPrefix + "Withdraw Mail Box created");
+                    }
+            } else if(lines[1].equalsIgnoreCase("vbox")) {
+                    if (plugin.permission.has(player, "wa.create.sign.vbox")) {
+                            allowEvent = true;
+                            event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
+                            player.sendMessage(plugin.logPrefix + "Virtual Box created");
+                    }
+            }
+            if (allowEvent == false) {
+                    event.setCancelled(true);
+                    sign.setTypeId(0);
+                    player.sendMessage(plugin.logPrefix + "You do not have permission");
+            }
+        }
 }

@@ -37,6 +37,7 @@ public interface DataQueries {
 	void updatePlayerMoney(String player, double money);
         AuctionItem getItemsById(int ID,int tableid);
 	List<AuctionItem> getItems(String player, int itemID, int damage, boolean reverseOrder, int tableid);
+        List<AuctionItem> getItemsByName(String player, String itemName, boolean reverseOrder, int tableid);
 	void CreateAuction(int quantity, int id);
         void updateforCreateAuction(int id,Double price);
 	void updateItemQuantity(int quantity, int id);

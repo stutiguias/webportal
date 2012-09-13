@@ -11,7 +11,25 @@ public class AuctionItem {
     private String playerName;
     private int quantity;
     private String Enchantments;
-
+    private String price;
+    private String ItemName;
+    
+    public String getItemName() {
+        return ItemName;
+    }
+    
+    public void setItemName(String ItemName) {
+        this.ItemName = ItemName;
+    }
+    
+    public String getPrice() {
+        return price;
+    }
+    
+    public void setPrice(String price) {
+        this.price = price;
+    }
+    
     public int getId() {
         return id;
     }

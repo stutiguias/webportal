@@ -649,6 +649,45 @@ public class SqliteDataQueries implements DataQueries {
             }
             return auctionItem;
     }
+    
+    @Override
+    public List<AuctionItem> getItemsByName(String player, String itemName, boolean reverseOrder, int tableid) {
+            List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
+
+            WALConnection conn = getConnection();
+            PreparedStatement st = null;
+            ResultSet rs = null;
+
+            try {
+                    String sql = "SELECT id,name,damage,player,quantity,price,itemname,ench FROM WA_Auctions WHERE player = ? AND itemname = ? AND tableid = ?";
+                    if (reverseOrder) {
+                            sql += " ORDER BY id DESC";
+                    }
+                    st = conn.prepareStatement(sql);
+                    st.setString(1, player);
+                    st.setString(2, itemName);
+                    st.setInt(3, tableid);
+                    rs = st.executeQuery();
+                    while (rs.next()) {
+                            AuctionItem auctionItem = new AuctionItem();
+                            auctionItem.setId(rs.getInt("id"));
+                            auctionItem.setName(rs.getInt("name"));
+                            auctionItem.setDamage(rs.getInt("damage"));
+                            auctionItem.setPlayerName(rs.getString("player"));
+                            auctionItem.setQuantity(rs.getInt("quantity"));
+                            auctionItem.setPrice(rs.getString("price"));
+                            auctionItem.setItemName(rs.getString("itemname"));
+                            auctionItem.setEnchantments(rs.getString("ench"));
+                            auctionItems.add(auctionItem);
+                    }
+            } catch (SQLException e) {
+                    WebAuction.log.warning(plugin.logPrefix + "Unable to get items ");
+                    WebAuction.log.warning(e.getMessage());
+            } finally {
+                    closeResources(conn, st, rs);
+            }
+            return auctionItems;
+    }
 
     @Override
     public List<AuctionItem> getItems(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
