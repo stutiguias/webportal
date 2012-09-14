@@ -1,5 +1,6 @@
 package me.stutiguias.webportal.listeners;
 
+import java.awt.Color;
 import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.AuctionItem;
@@ -64,12 +65,12 @@ public class WebAuctionBlockListener implements Listener {
                    }else{
                       int qtd = Integer.parseInt(lines[2]);
                       if(qtd <= AuctionItemList.get(0).getQuantity()) {
-                        event.setLine(2, lines[2] + " - E" + AuctionItemList.get(0).getPrice());
+                        event.setLine(2, lines[2] + " - " + AuctionItemList.get(0).getPrice());
                       }else{
-                        event.setLine(2, "Invalid Qtd");
+                        event.setLine(2, ChatColor.RED + "Invalid Qtd");
                       }
                    }
-                   event.setLine(3, AuctionItemList.get(0).getPlayerName());
+                   event.setLine(3, "" + AuctionItemList.get(0).getId());
                }
         }
         

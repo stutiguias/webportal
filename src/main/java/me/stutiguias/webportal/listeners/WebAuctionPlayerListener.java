@@ -5,10 +5,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebAuction;
-import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.InventoryHandler;
-import me.stutiguias.webportal.settings.SaleAlert;
-import me.stutiguias.webportal.settings.WASign;
+import me.stutiguias.webportal.settings.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -87,7 +84,7 @@ public class WebAuctionPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
             	
-                if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
+               
 		if (!event.hasItem() && !event.hasBlock()) return;
                 Block block;
                 try{
@@ -108,6 +105,7 @@ public class WebAuctionPlayerListener implements Listener {
 			return;
                     }
 		}
+                if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
 		String player = event.getPlayer().getName();
 		event.setCancelled(true);
 
@@ -197,6 +195,15 @@ public class WebAuctionPlayerListener implements Listener {
         }
         
         public void wSell(PlayerInteractEvent event,Sign sign,String[] lines) {
-            
+            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                String[] price = lines[2].split(" - ");
+                event.getPlayer().sendMessage("You want buy " + price[0] + " " + lines[1] + " for " + price[1] + " each ?");
+            }else{
+                String[] price = lines[2].split(" - ");
+                Auction au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
+                TradeSystem ts = new TradeSystem(plugin);
+                event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]), lines[1]));
+                event.setCancelled(true);
+            }
         }
 }
