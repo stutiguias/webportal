@@ -84,7 +84,6 @@ public class WebAuctionPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
             	
-               
 		if (!event.hasItem() && !event.hasBlock()) return;
                 Block block;
                 try{
