@@ -8,6 +8,7 @@ import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.webserver.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -45,7 +46,9 @@ public class TradeSystem {
         }
         if(ingame) {
             Player _player = plugin.getServer().getPlayer(BuyPlayerName);
-            _player.getInventory().addItem(au.getItemStack());  
+            ItemStack itemstack = au.getItemStack();
+            itemstack.setAmount(qtd);
+            _player.getInventory().addItem(itemstack);  
             _player.updateInventory();
         }else if(found && !ingame) {
             plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
