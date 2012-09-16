@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.*;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -99,6 +100,12 @@ public class WebAuctionPlayerListener implements Listener {
 
 		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]")) {
                     if(lines[0].equals(ChatColor.GREEN + "[wSell]")) { 
+                        if(event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+                            event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
+                            event.setCancelled(true);
+                            sign.update();
+                            return;
+                        }
                         wSell(event,sign,lines);
                     }else{
 			return;
@@ -196,12 +203,23 @@ public class WebAuctionPlayerListener implements Listener {
         public void wSell(PlayerInteractEvent event,Sign sign,String[] lines) {
             if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 String[] price = lines[2].split(" - ");
-                event.getPlayer().sendMessage("You want buy " + price[0] + " " + lines[1] + " for " + price[1] + " each ?");
+                event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[1] + " each ?");
             }else{
                 String[] price = lines[2].split(" - ");
                 Auction au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
-                TradeSystem ts = new TradeSystem(plugin);
-                event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]), lines[1]));
+                if(au == null) {
+                    event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");
+                    sign.setLine(0,ChatColor.RED + "[wSell]");
+                    sign.setLine(2,ChatColor.RED + "**SOLD**");
+                    sign.update();
+                }else{
+                    TradeSystem ts = new TradeSystem(plugin);
+                    if(!event.getPlayer().getName().equals(au.getPlayerName())) {
+                        event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]), lines[1],true));
+                    }else{
+                        event.getPlayer().sendMessage(plugin.logPrefix + "You can't buy from yourself");
+                    }
+                }
                 event.setCancelled(true);
             }
         }

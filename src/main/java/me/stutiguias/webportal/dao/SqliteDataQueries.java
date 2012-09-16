@@ -863,8 +863,9 @@ public class SqliteDataQueries implements DataQueries {
             ResultSet rs = null;
 
             try {
-                    st = conn.prepareStatement("SELECT id,name,damage,player,quantity,ench FROM WA_Auctions WHERE player = ?");
+                    st = conn.prepareStatement("SELECT id,name,damage,player,quantity,ench FROM WA_Auctions WHERE player = ? and tableid = ?");
                     st.setString(1, player);
+                    st.setInt(2,plugin.Myitems);
                     rs = st.executeQuery();
                     while (rs.next()) {
                             ai = new AuctionItem();

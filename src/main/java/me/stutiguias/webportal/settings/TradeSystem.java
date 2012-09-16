@@ -7,6 +7,7 @@ package me.stutiguias.webportal.settings;
 import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.webserver.Material;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -20,7 +21,7 @@ public class TradeSystem {
         this.plugin = plugin;
     }
     
-    public String Buy(String BuyPlayerName,Auction au,int qtd,String item_name) {
+    public String Buy(String BuyPlayerName,Auction au,int qtd,String item_name,Boolean ingame) {
         boolean found = false;
         int StackId = 0;
         int Stackqtd = 0;
@@ -42,9 +43,13 @@ public class TradeSystem {
                 }
             }
         }
-        if(found) {
+        if(ingame) {
+            Player _player = plugin.getServer().getPlayer(BuyPlayerName);
+            _player.getInventory().addItem(au.getItemStack());  
+            _player.updateInventory();
+        }else if(found && !ingame) {
             plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
-        }else{
+        }else if(!ingame) {
             String Type = au.getItemStack().getType().toString();
             String ItemName = Material.getItemName(au.getItemStack().getTypeId(), au.getItemStack().getDurability());
             String searchtype = plugin.getSearchType(ItemName);
