@@ -1,1 +1,1 @@
-WebPortal for minecraft 0.4.9.1
+WebPortal for minecraft 0.6.1
