@@ -1,6 +1,6 @@
 name: WebPortal
 main: me.stutiguias.webportal.init.WebAuction
-version: 0.6
+version: 0.6.1
 author: Stutiguias
 depend: [Vault]
 commands:

@@ -28,7 +28,7 @@ public class TradeSystem {
         int Stackqtd = 0;
         plugin.economy.withdrawPlayer(BuyPlayerName, au.getPrice() * qtd);
         plugin.economy.depositPlayer(au.getPlayerName(), au.getPrice() * qtd);
-        plugin.dataQueries.setAlert(au.getPlayerName(), au.getItemStack().getAmount(), au.getPrice(), BuyPlayerName, item_name);
+        plugin.dataQueries.setAlert(au.getPlayerName(), qtd, au.getPrice(), BuyPlayerName, item_name);
         // wrong player get items
         List<AuctionItem> items = plugin.dataQueries.getPlayerItems(BuyPlayerName);
         for (AuctionItem item:items) {
@@ -46,7 +46,7 @@ public class TradeSystem {
         }
         if(ingame) {
             Player _player = plugin.getServer().getPlayer(BuyPlayerName);
-            ItemStack itemstack = au.getItemStack();
+            ItemStack itemstack = new ItemStack(au.getItemStack());
             itemstack.setAmount(qtd);
             _player.getInventory().addItem(itemstack);  
             _player.updateInventory();

@@ -69,15 +69,16 @@ public class FillAuction extends Response {
         if(iTotalRecords > 0) {
             for(Auction item:la){
                 jsonTwo = new JSONObject();
+                double MakertPercent = MarketPrice(item, item.getPrice());
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
-                jsonTwo.put("DT_RowClass", "gradeA");
+                jsonTwo.put("DT_RowClass", Grade(MakertPercent));
                 jsonTwo.put("0", ConvertItemToResult(item,searchtype));
                 jsonTwo.put("1", "<img width='32' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
                 jsonTwo.put("2", "Never");
                 jsonTwo.put("3", item.getItemStack().getAmount());
                 jsonTwo.put("4", "$ " + item.getPrice());
                 jsonTwo.put("5", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("6", "N/A");
+                jsonTwo.put("6", MakertPercent + "%");
                 jsonTwo.put("7", html.HTMLBuy(ip,item.getId()));
                 jsonData.add(jsonTwo);
             }
@@ -144,5 +145,20 @@ public class FillAuction extends Response {
                 
             }
             return Itemname;
+    }
+    
+    public double MarketPrice(Auction item,Double price) {
+           double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+           if(mprice == 0.0) return 0.0;
+           double percent = (( price * 100 ) / mprice);
+           return percent;
+  
+    }
+    
+    public String Grade(double percent) {
+        if(percent == 100) return "gradeU";
+        if(percent > 100) return "gradeX";
+        if(percent < 100) return "gradeA";
+        return "gradeB";
     }
 }
