@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Daniel
  */
-public class SqliteDataQueries implements DataQueries {
+public class SqliteDataQueries implements IDataQueries {
         
     private WebAuction plugin;
     private Integer found;
@@ -222,53 +222,53 @@ public class SqliteDataQueries implements DataQueries {
 		return auction;
     }
 
-    @Override
-    public int getTotalAuctionCount() {
-                int totalAuctionCount = 0;
-		WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
+//    @Override
+//    public int getTotalAuctionCount() {
+//                int totalAuctionCount = 0;
+//		WALConnection conn = getConnection();
+//		PreparedStatement st = null;
+//		ResultSet rs = null;
+//
+//		try {
+//			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions");
+//			rs = st.executeQuery();
+//			while (rs.next()) {
+//				totalAuctionCount = rs.getInt(1);
+//			}
+//		} catch (SQLException e) {
+//			WebAuction.log.warning(plugin.logPrefix + "Unable to get total auction count error : " + e.getMessage());
+//		} finally {
+//			closeResources(conn, st, rs);
+//		}
+//		return totalAuctionCount;
+//    }
 
-		try {
-			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions");
-			rs = st.executeQuery();
-			while (rs.next()) {
-				totalAuctionCount = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			WebAuction.log.warning(plugin.logPrefix + "Unable to get total auction count error : " + e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-		return totalAuctionCount;
-    }
-
-    @Override
-    public Auction getAuctionForOffset(int offset) {
-                Auction auction = null;
-		WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = conn.prepareStatement("SELECT * FROM WA_Auctions ORDER BY id DESC LIMIT ?, 1");
-			st.setInt(1, offset);
-			rs = st.executeQuery();
-			while (rs.next()) {
-				auction = new Auction();
-				auction.setId(offset);
-				auction.setItemStack(new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage")));
-				auction.setPlayerName(rs.getString("player"));
-				auction.setPrice(rs.getDouble("price"));
-				auction.setCreated(rs.getInt("created"));
-			}
-		} catch (SQLException e) {
-			WebAuction.log.warning(plugin.logPrefix + "Unable to get auction " + offset + " error : " + e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-		return auction;
-    }
+//    @Override
+//    public Auction getAuctionForOffset(int offset) {
+//                Auction auction = null;
+//		WALConnection conn = getConnection();
+//		PreparedStatement st = null;
+//		ResultSet rs = null;
+//
+//		try {
+//			st = conn.prepareStatement("SELECT * FROM WA_Auctions ORDER BY id DESC LIMIT ?, 1");
+//			st.setInt(1, offset);
+//			rs = st.executeQuery();
+//			while (rs.next()) {
+//				auction = new Auction();
+//				auction.setId(offset);
+//				auction.setItemStack(new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage")));
+//				auction.setPlayerName(rs.getString("player"));
+//				auction.setPrice(rs.getDouble("price"));
+//				auction.setCreated(rs.getInt("created"));
+//			}
+//		} catch (SQLException e) {
+//			WebAuction.log.warning(plugin.logPrefix + "Unable to get auction " + offset + " error : " + e.getMessage());
+//		} finally {
+//			closeResources(conn, st, rs);
+//		}
+//		return auction;
+//    }
 
     @Override
     public List<Auction> getAuctions(int to, int from) {
@@ -621,7 +621,7 @@ public class SqliteDataQueries implements DataQueries {
     }
 
     @Override
-    public AuctionItem getItemsById(int ID,int tableid) {
+    public AuctionItem getItemById(int ID,int tableid) {
             AuctionItem auctionItem = null;
 
             WALConnection conn = getConnection();
@@ -653,7 +653,7 @@ public class SqliteDataQueries implements DataQueries {
     }
     
     @Override
-    public List<AuctionItem> getItemsByName(String player, String itemName, boolean reverseOrder, int tableid) {
+    public List<AuctionItem> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
             List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
 
             WALConnection conn = getConnection();
@@ -692,7 +692,7 @@ public class SqliteDataQueries implements DataQueries {
     }
 
     @Override
-    public List<AuctionItem> getItems(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
+    public List<AuctionItem> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
             List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
 
             WALConnection conn = getConnection();
@@ -729,27 +729,27 @@ public class SqliteDataQueries implements DataQueries {
             return auctionItems;
     }
 
-    @Override
-    public void CreateAuction(int quantity, int id) {
-            WALConnection conn = getConnection();
-            PreparedStatement st = null;
-            ResultSet rs = null;
+//    @Override
+//    public void CreateAuction(int quantity, int id) {
+//            WALConnection conn = getConnection();
+//            PreparedStatement st = null;
+//            ResultSet rs = null;
+//
+//            try {
+//                    st = conn.prepareStatement("UPDATE WA_Auctions SET quantity = ? WHERE id = ?");
+//                    st.setInt(1, quantity);
+//                    st.setInt(2, id);
+//                    st.executeUpdate();
+//            } catch (SQLException e) {
+//                    WebAuction.log.warning(plugin.logPrefix + "Unable to update item quantity in DB");
+//                    WebAuction.log.warning(e.getMessage());
+//            } finally {
+//                    closeResources(conn, st, rs);
+//            }
+//    }
 
-            try {
-                    st = conn.prepareStatement("UPDATE WA_Auctions SET quantity = ? WHERE id = ?");
-                    st.setInt(1, quantity);
-                    st.setInt(2, id);
-                    st.executeUpdate();
-            } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to update item quantity in DB");
-                    WebAuction.log.warning(e.getMessage());
-            } finally {
-                    closeResources(conn, st, rs);
-            }
-    }
-
     @Override
-    public void updateforCreateAuction(int id,Double price) {
+    public void setPriceAndTable(int id,Double price) {
             WALConnection conn = getConnection();
             PreparedStatement st = null;
             ResultSet rs = null;
@@ -956,6 +956,16 @@ public class SqliteDataQueries implements DataQueries {
             }
         }
         return stack;
+    }
+
+    @Override
+    public void GetTransactOfPlayer(String player) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int GetMarketPriceofItem(int itemID, int itemDamage) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

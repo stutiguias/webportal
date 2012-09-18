@@ -244,7 +244,10 @@ public class Material {
             case 123: return "Redstone Lamp (off)";
             case 124: return "Redstone Lamp (on)";
             case 129: return "Emerald Block";    
-
+            case 133:
+                switch(meta){
+                    case 0: return "Emerald Block";
+                }
         //ITEMS:
             case 256: return "Iron Shovel";
             case 257: return "Iron Pickaxe";

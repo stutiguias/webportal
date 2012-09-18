@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import me.stutiguias.webportal.dao.DataQueries;
+import me.stutiguias.webportal.dao.IDataQueries;
 import me.stutiguias.webportal.dao.MySQLDataQueries;
 import me.stutiguias.webportal.dao.SqliteDataQueries;
 import me.stutiguias.webportal.listeners.WebAuctionBlockListener;
@@ -34,7 +34,7 @@ public class WebAuction extends JavaPlugin {
 	private final WebAuctionPlayerListener playerListener = new WebAuctionPlayerListener(this);
 	private final WebAuctionBlockListener blockListener = new WebAuctionBlockListener(this);
 
-	public DataQueries dataQueries;
+	public IDataQueries dataQueries;
 
 	public Map<String, Long> lastSignUse = new HashMap<String, Long>();
         public static final HashMap<String, AuthPlayer> AuthPlayer = new HashMap<String, AuthPlayer>();
@@ -245,7 +245,7 @@ public class WebAuction extends JavaPlugin {
                 
                 
                 String dbtype = getConfig().getString("DataBase.Type");
-                // Set up DataQueries
+                // Set up IDataQueries
                 if(!dbPass.equals("password123") && !dbtype.equalsIgnoreCase("SQLite") )
                 {
                     log.log(Level.INFO, logPrefix + "Choose MySQL db type.");

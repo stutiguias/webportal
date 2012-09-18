@@ -56,7 +56,7 @@ public class WebAuctionBlockListener implements Listener {
         
         public void wSell(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event) {
                
-               List<AuctionItem> AuctionItemList = plugin.dataQueries.getItemsByName(player.getName(),lines[1], true, plugin.Auction);
+               List<AuctionItem> AuctionItemList = plugin.dataQueries.getItemByName(player.getName(),lines[1], true, plugin.Auction);
                if(AuctionItemList.size() > 0) {
                    event.setLine(0, ChatColor.GREEN + "[wSell]" );
                    event.setLine(1, AuctionItemList.get(0).getItemName());
