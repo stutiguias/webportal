@@ -187,9 +187,15 @@ public class WebAuctionPlayerListener implements Listener {
                             plugin.dataQueries.updateItemQuantity(total, a.getId());
                         }
                     }else if(event.isRightClick()) {
-                        int total = a.getItemStack().getAmount() - ( event.getCurrentItem().getAmount() / 2 );
+                        int total;
+                        if(event.getCurrentItem().getAmount() <= 1) {
+                            total = a.getItemStack().getAmount() - 1;
+                        }else{
+                            total = a.getItemStack().getAmount() - ( event.getCurrentItem().getAmount() / 2 );
+                        }
                         if(a.getItemStack().getAmount() == event.getCurrentItem().getAmount()) {
-                            plugin.dataQueries.updateItemQuantity(total, a.getId());
+                            if(total != 0) plugin.dataQueries.updateItemQuantity(total, a.getId());
+                            if(total == 0) plugin.dataQueries.DeleteAuction(a.getId());
                         }else if(a.getItemStack().getAmount() > event.getCurrentItem().getAmount()) {
                             plugin.dataQueries.updateItemQuantity(total, a.getId());
                         }                                

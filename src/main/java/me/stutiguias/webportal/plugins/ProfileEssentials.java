@@ -25,6 +25,7 @@ public class ProfileEssentials {
     }
     
     public Boolean LoadProfile(){
+        playerName = playerName.toLowerCase();
         File configplayerfile = new File("plugins/Essentials/userdata/"+ playerName +".yml");
         PlayerYML = new YamlConfiguration();
         try {
