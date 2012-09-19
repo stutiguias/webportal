@@ -205,14 +205,21 @@ public class WebAuctionPlayerListener implements Listener {
                 String[] price = lines[2].split(" - ");
                 event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[1] + " each ?");
             }else{
+                
                 String[] price = lines[2].split(" - ");
                 Auction au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
+
                 if(au == null) {
                     event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");
                     sign.setLine(0,ChatColor.RED + "[wSell]");
                     sign.setLine(2,ChatColor.RED + "**SOLD**");
                     sign.update();
                 }else{
+                    if(!plugin.economy.has(event.getPlayer().getName(),au.getPrice() * Integer.valueOf(price[0]))) {
+                        event.setCancelled(true);
+                        event.getPlayer().sendMessage(plugin.logPrefix + "You don't have enough money");
+                        return;
+                    }
                     TradeSystem ts = new TradeSystem(plugin);
                     if(!event.getPlayer().getName().equals(au.getPlayerName())) {
                         event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]), lines[1],true));
