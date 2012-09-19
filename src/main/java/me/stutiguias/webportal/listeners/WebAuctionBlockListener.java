@@ -78,18 +78,18 @@ public class WebAuctionBlockListener implements Listener {
         {
             if ((lines[1].equalsIgnoreCase("MailBox")) || (lines[1].equalsIgnoreCase("Mail Box"))) {
                     if (lines[2].equalsIgnoreCase("Deposit")) {
-                            if (plugin.permission.has(player, "wa.create.sign.mailbox.deposit")) {
+                            if (plugin.permission.has(player.getWorld(),player.getName(),"wa.create.sign.mailbox.deposit")) {
                                     allowEvent = true;
                                     event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
                                     player.sendMessage(plugin.logPrefix + "Deposit Mail Box created");
                             }
-                    } else if (plugin.permission.has(player, "wa.create.sign.mailbox.withdraw")) {
+                    } else if (plugin.permission.has(player.getWorld(),player.getName(), "wa.create.sign.mailbox.withdraw")) {
                                     allowEvent = true;
                                     event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
                                     player.sendMessage(plugin.logPrefix + "Withdraw Mail Box created");
                     }
             } else if(lines[1].equalsIgnoreCase("vbox")) {
-                    if (plugin.permission.has(player, "wa.create.sign.vbox")) {
+                    if (plugin.permission.has(player.getWorld(),player.getName(), "wa.create.sign.vbox")) {
                             allowEvent = true;
                             event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
                             player.sendMessage(plugin.logPrefix + "Virtual Box created");
