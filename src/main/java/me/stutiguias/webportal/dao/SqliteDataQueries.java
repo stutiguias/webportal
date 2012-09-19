@@ -965,7 +965,26 @@ public class SqliteDataQueries implements IDataQueries {
 
     @Override
     public int GetMarketPriceofItem(int itemID, int itemDamage) {
-        throw new UnsupportedOperationException("Not supported yet.");
+                int MarketPrice = 0;
+		WALConnection conn = getConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT SUM(price)/COUNT(id) as total FROM minecraft.wa_sellprice where name = ? and damage = ?;");
+			st.setInt(1, itemID);
+                        st.setInt(2, itemDamage);
+			rs = st.executeQuery();
+			while (rs.next()) {
+                                MarketPrice = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			WebAuction.log.warning(plugin.logPrefix + "Unable to maket price ");
+			WebAuction.log.warning(e.getMessage());
+		} finally {
+			closeResources(conn, st, rs);
+		}
+		return MarketPrice;
     }
     
 }
