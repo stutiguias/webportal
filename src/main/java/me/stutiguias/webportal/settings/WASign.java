@@ -42,7 +42,7 @@ public class WASign {
     }
     
     private void MailBoxDeposit(Player player){
-        if (plugin.permission.has(player, "wa.use.deposit.items")) {
+        if (plugin.permission.has(player.getWorld(),player.getName(), "wa.use.deposit.items")) {
                 ItemStack stack = player.getItemInHand();
                 if (stack != null) {
                         if (stack.getTypeId() != 0) {
@@ -57,7 +57,7 @@ public class WASign {
     }
     
     private void MailBoxWithdraw(Player player) {
-        if (plugin.permission.has(player, "wa.use.withdraw.items")) {
+        if (plugin.permission.has(player.getWorld(),player.getName(), "wa.use.withdraw.items")) {
                 try {
                         List<AuctionMail> auctionMail = plugin.dataQueries.getMail(player.getName());
                         boolean invFull = true;
