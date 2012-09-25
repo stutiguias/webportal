@@ -1003,7 +1003,7 @@ public class MySQLDataQueries implements IDataQueries {
 		ResultSet rs = null;
 
 		try {
-			st = conn.prepareStatement("SELECT SUM(price)/COUNT(id) as total FROM WA_SELLPRICE where name = ? and damage = ?;");
+			st = conn.prepareStatement("SELECT SUM(price)/COUNT(id) as total FROM WA_SellPrice where name = ? and damage = ?;");
 			st.setInt(1, itemID);
                         st.setInt(2, itemDamage);
 			rs = st.executeQuery();

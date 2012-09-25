@@ -30,7 +30,7 @@ public class FillAuction extends Response {
     public FillAuction(WebAuction plugin,Socket s) {
         super(plugin, s);
         this.plugin = plugin;
-        html = new Html();
+        html = new Html(plugin);
     }
     
     public void fillAuction(String ip,String url,String param)

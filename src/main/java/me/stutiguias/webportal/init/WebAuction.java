@@ -160,6 +160,10 @@ public class WebAuction extends JavaPlugin {
                 getConfig().addDefault("SignMessage.MailRetrieved","Mail retrieved");
                 getConfig().addDefault("SignMessage.NoMailRetrieved", "No mail to retrieve");
                 getConfig().addDefault("SignMessage.NoPermission","You do not have permission to use the mailbox");
+                getConfig().addDefault("WebMessage.Buy","Buy");
+                getConfig().addDefault("WebMessage.Cancel","Cancel");
+                getConfig().addDefault("WebMessage.Mailit","Mail it");
+                getConfig().addDefault("WebMessage.CreateAuction","Create Auction");
                 mcmmoconfig = new HashMap<String, Object>();
                 mcmmoconfig.put("UseMcMMO", false);
                 mcmmoconfig.put("McMMOMYSql", false );
@@ -202,7 +206,10 @@ public class WebAuction extends JavaPlugin {
                 Messages.put("MailRetrieved", getConfig().getString("SignMessage.MailRetrieved"));
                 Messages.put("NoMailRetrieved",getConfig().getString("SignMessage.NoMailRetrieved"));
                 Messages.put("NoPermission",getConfig().getString("Sign.NoPermission"));
-                
+                Messages.put("Buy",getConfig().getString("WebMessage.Buy"));
+                Messages.put("Cancel",getConfig().getString("WebMessage.Cancel"));
+                Messages.put("Mailit",getConfig().getString("WebMessage.Mailit"));
+                Messages.put("CreateAuction",getConfig().getString("WebMessage.CreateAuction"));
                 getMcMMOConfig();
 
                 UseEssentialsBox = getConfig().getBoolean("PortalBox.Essentials");

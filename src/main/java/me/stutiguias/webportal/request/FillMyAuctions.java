@@ -29,7 +29,7 @@ public class FillMyAuctions extends Response {
     public FillMyAuctions(WebAuction plugin,Socket s) {
         super(plugin, s);
         this.plugin = plugin;
-        html = new Html();
+        html = new Html(plugin);
     }
     
     public void getMyAuctions(String ip,String url,String param) {
