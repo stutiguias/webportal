@@ -29,9 +29,12 @@ public class Algorithm {
     }
 
     public static String stringHexa(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder();
+        StringBuilder  hexString = new StringBuilder();
     	for (int i=0;i<bytes.length;i++) {
-    	  hexString.append(Integer.toHexString(0xFF & bytes[i]));
+            int unsigned = bytes[i] & 0xff;
+            if (unsigned < 0x10)
+             hexString.append("0");
+            hexString.append(Integer.toHexString((unsigned)));
     	}
         return hexString.toString();
     }
