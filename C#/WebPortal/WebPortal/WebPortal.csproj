@@ -1,0 +1,642 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1D5435F3-948E-4AEA-ABD2-4A2A42CB8448}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebPortal</RootNamespace>
+    <AssemblyName>WebPortal</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20505.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20505.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20505.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20505.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0-beta2\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.0\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20505.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.0.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.0.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\dark-hive\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="css\dark-hive\images\ui-bg_highlight-hard_20_0972a5_1x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_highlight-soft_33_003147_1x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_highlight-soft_35_222222_1x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_highlight-soft_44_444444_1x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="css\dark-hive\images\ui-bg_loop_25_000000_21x21.png" />
+    <Content Include="css\dark-hive\images\ui-icons_222222_256x240.png" />
+    <Content Include="css\dark-hive\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="css\dark-hive\images\ui-icons_a83300_256x240.png" />
+    <Content Include="css\dark-hive\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="css\dark-hive\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="css\dark-hive\jquery-ui-1.8.18.custom.css" />
+    <Content Include="css\main.css" />
+    <Content Include="css\table_jui.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <None Include="js\jquery-1.6.2-vsdoc.js" />
+    <Content Include="Images\apple.png" />
+    <Content Include="Images\arrow.png" />
+    <Content Include="Images\auction.png" />
+    <Content Include="Images\bed.png" />
+    <Content Include="Images\bedrock.png" />
+    <Content Include="Images\birch_sapling.png" />
+    <Content Include="Images\birch_wood.png" />
+    <Content Include="Images\birch_wood_planks.png" />
+    <Content Include="Images\black_wool.png" />
+    <Content Include="Images\blaze_powder.png" />
+    <Content Include="Images\blaze_rod.png" />
+    <Content Include="Images\blue_wool.png" />
+    <Content Include="Images\boat.png" />
+    <Content Include="Images\bone.png" />
+    <Content Include="Images\bonemeal_%28white_dye%29.png" />
+    <Content Include="Images\book.png" />
+    <Content Include="Images\bookshelf.png" />
+    <Content Include="Images\bow.png" />
+    <Content Include="Images\bowl.png" />
+    <Content Include="Images\bread.png" />
+    <Content Include="Images\brewing_stand_item.png" />
+    <Content Include="Images\brick_block.png" />
+    <Content Include="Images\brick_slab.png" />
+    <Content Include="Images\brick_stairs.png" />
+    <Content Include="Images\brown_mushroom.png" />
+    <Content Include="Images\brown_wool.png" />
+    <Content Include="Images\bucket.png" />
+    <Content Include="Images\burning_furnace.png" />
+    <Content Include="Images\cactus.png" />
+    <Content Include="Images\cactus_green_%28green_dye%29.png" />
+    <Content Include="Images\cake.png" />
+    <Content Include="Images\cake_block.png" />
+    <Content Include="Images\cauldron_item.png" />
+    <Content Include="Images\chain_boots.png" />
+    <Content Include="Images\chain_chestplate.png" />
+    <Content Include="Images\chain_helmet.png" />
+    <Content Include="Images\chain_leggings.png" />
+    <Content Include="Images\chest.png" />
+    <Content Include="Images\circle_stone_brick.png" />
+    <Content Include="Images\clay_ball.png" />
+    <Content Include="Images\clay_block.png" />
+    <Content Include="Images\clay_brick.png" />
+    <Content Include="Images\coal.png" />
+    <Content Include="Images\coal_dur. 1%25.png" />
+    <Content Include="Images\coal_ore.png" />
+    <Content Include="Images\cobblestone.png" />
+    <Content Include="Images\cobblestone_slab.png" />
+    <Content Include="Images\cobblestone_stairs.png" />
+    <Content Include="Images\cobweb.png" />
+    <Content Include="Images\cocoa_beans_%28brown_dye%29.png" />
+    <Content Include="Images\compass.png" />
+    <Content Include="Images\cooked_beef.png" />
+    <Content Include="Images\cooked_chicken.png" />
+    <Content Include="Images\cooked_fish.png" />
+    <Content Include="Images\cookie.png" />
+    <Content Include="Images\cracked_stone_brick.png" />
+    <Content Include="Images\crafting_table.png" />
+    <Content Include="Images\cyan_dye.png" />
+    <Content Include="Images\cyan_wool.png" />
+    <Content Include="Images\dandelion.png" />
+    <Content Include="Images\dandelion_yellow_%28yellow_dye%29.png" />
+    <Content Include="Images\dark_green_wool.png" />
+    <Content Include="Images\dead_bush.png" />
+    <Content Include="Images\dead_shrub.png" />
+    <Content Include="Images\detector_rail.png" />
+    <Content Include="Images\diamond.png" />
+    <Content Include="Images\diamond_axe.png" />
+    <Content Include="Images\diamond_block.png" />
+    <Content Include="Images\diamond_boots.png" />
+    <Content Include="Images\diamond_chestplate.png" />
+    <Content Include="Images\diamond_helmet.png" />
+    <Content Include="Images\diamond_hoe.png" />
+    <Content Include="Images\diamond_leggings.png" />
+    <Content Include="Images\diamond_ore.png" />
+    <Content Include="Images\diamond_pickaxe.png" />
+    <Content Include="Images\diamond_spade.png" />
+    <Content Include="Images\diamond_sword.png" />
+    <Content Include="Images\diode.png" />
+    <Content Include="Images\dirt.png" />
+    <Content Include="Images\dispenser.png" />
+    <Content Include="Images\Dragon_Egg.png" />
+    <Content Include="Images\dye_magenta.png" />
+    <Content Include="Images\dye_orange.png" />
+    <Content Include="Images\egg.png" />
+    <Content Include="Images\emerald_block.png" />
+    <Content Include="Images\empty_jukebox.png" />
+    <Content Include="Images\enchantment_table.png" />
+    <Content Include="Images\ender_pearl.png" />
+    <Content Include="Images\end_portal.png" />
+    <Content Include="Images\end_portal_frame.png" />
+    <Content Include="Images\end_stone.png" />
+    <Content Include="Images\exp_bottle.png" />
+    <Content Include="Images\eye_of_ender.png" />
+    <Content Include="Images\farmland.png" />
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\feather.png" />
+    <Content Include="Images\fence.png" />
+    <Content Include="Images\fence_gate.png" />
+    <Content Include="Images\fermented_spider_eye.png" />
+    <Content Include="Images\fern.png" />
+    <Content Include="Images\fire.png" />
+    <Content Include="Images\fireball.png" />
+    <Content Include="Images\fishing_rod.png" />
+    <Content Include="Images\flint.png" />
+    <Content Include="Images\flint_and_steel.png" />
+    <Content Include="Images\furnace.png" />
+    <Content Include="Images\ghast_tear.png" />
+    <Content Include="Images\glass.png" />
+    <Content Include="Images\glass_bottle.png" />
+    <Content Include="Images\glass_pane.png" />
+    <Content Include="Images\glowstone_block.png" />
+    <Content Include="Images\glowstone_dust.png" />
+    <Content Include="Images\golden_apple.png" />
+    <Content Include="Images\gold_axe.png" />
+    <Content Include="Images\gold_block.png" />
+    <Content Include="Images\gold_boots.png" />
+    <Content Include="Images\gold_chestplate.png" />
+    <Content Include="Images\gold_helmet.png" />
+    <Content Include="Images\gold_hoe.png" />
+    <Content Include="Images\gold_ingot.png" />
+    <Content Include="Images\gold_leggings.png" />
+    <Content Include="Images\gold_nugget.png" />
+    <Content Include="Images\gold_ore.png" />
+    <Content Include="Images\gold_pickaxe.png" />
+    <Content Include="Images\gold_record.png" />
+    <Content Include="Images\gold_spade.png" />
+    <Content Include="Images\gold_sword.png" />
+    <Content Include="Images\grass.png" />
+    <Content Include="Images\gravel.png" />
+    <Content Include="Images\gray_dye.png" />
+    <Content Include="Images\gray_wool.png" />
+    <Content Include="Images\green_record.png" />
+    <Content Include="Images\grilled_pork.png" />
+    <Content Include="Images\header.png" />
+    <Content Include="Images\header_pt1.png" />
+    <Content Include="Images\header_pt2.png" />
+    <Content Include="Images\hidden_silverfish_-_stone_block.png" />
+    <Content Include="Images\hieroglyphic_sandstone.png" />
+    <Content Include="Images\home.png" />
+    <Content Include="Images\ice.png" />
+    <Content Include="Images\ink_sac_%28black_dye%29.png" />
+    <Content Include="Images\iron_axe.png" />
+    <Content Include="Images\iron_bars.png" />
+    <Content Include="Images\iron_block.png" />
+    <Content Include="Images\iron_boots.png" />
+    <Content Include="Images\iron_chestplate.png" />
+    <Content Include="Images\iron_door.png" />
+    <Content Include="Images\iron_helmet.png" />
+    <Content Include="Images\iron_hoe.png" />
+    <Content Include="Images\iron_ingot.png" />
+    <Content Include="Images\iron_leggings.png" />
+    <Content Include="Images\iron_ore.png" />
+    <Content Include="Images\iron_pickaxe.png" />
+    <Content Include="Images\iron_spade.png" />
+    <Content Include="Images\iron_sword.png" />
+    <Content Include="Images\jack-o-lantern.png" />
+    <Content Include="Images\jungle_tree_sapling.png" />
+    <Content Include="Images\jungle_wood.png" />
+    <Content Include="Images\jungle_wood_planks.png" />
+    <Content Include="Images\ladders.png" />
+    <Content Include="Images\lapis_lazuli_%28blue_dye%29.png" />
+    <Content Include="Images\lapis_lazuli_block.png" />
+    <Content Include="Images\lapis_lazuli_ore.png" />
+    <Content Include="Images\lava.png" />
+    <Content Include="Images\lava_bucket.png" />
+    <Content Include="Images\leather.png" />
+    <Content Include="Images\leather_boots.png" />
+    <Content Include="Images\leather_chestplate.png" />
+    <Content Include="Images\leather_helmet.png" />
+    <Content Include="Images\leather_leggings.png" />
+    <Content Include="Images\leaves.png" />
+    <Content Include="Images\leaves_birch.png" />
+    <Content Include="Images\leaves_jungle.png" />
+    <Content Include="Images\leaves_oak.png" />
+    <Content Include="Images\leaves_pine.png" />
+    <Content Include="Images\lever.png" />
+    <Content Include="Images\light_blue_dye.png" />
+    <Content Include="Images\light_blue_wool.png" />
+    <Content Include="Images\light_gray_dye.png" />
+    <Content Include="Images\light_gray_wool.png" />
+    <Content Include="Images\light_green_wool.png" />
+    <Content Include="Images\lily_pad.png" />
+    <Content Include="Images\lime_dye.png" />
+    <Content Include="Images\locked_chest.png" />
+    <Content Include="Images\log.png" />
+    <Content Include="Images\login.png" />
+    <Content Include="Images\logout.png" />
+    <Content Include="Images\magenta_wool.png" />
+    <Content Include="Images\magma_cream.png" />
+    <Content Include="Images\map.png" />
+    <Content Include="Images\melon.png" />
+    <Content Include="Images\melon_seeds.png" />
+    <Content Include="Images\Melon_Slice.png" />
+    <Content Include="Images\milk_bucket.png" />
+    <Content Include="Images\minecart.png" />
+    <Content Include="Images\monster_egg_dur._120%25.png" />
+    <Content Include="Images\monster_egg_dur._50%25.png" />
+    <Content Include="Images\monster_egg_dur._51%25.png" />
+    <Content Include="Images\monster_egg_dur._52%25.png" />
+    <Content Include="Images\monster_egg_dur._54%25.png" />
+    <Content Include="Images\monster_egg_dur._55%25.png" />
+    <Content Include="Images\monster_egg_dur._56%25.png" />
+    <Content Include="Images\monster_egg_dur._57%25.png" />
+    <Content Include="Images\monster_egg_dur._58%25.png" />
+    <Content Include="Images\monster_egg_dur._59%25.png" />
+    <Content Include="Images\monster_egg_dur._60%25.png" />
+    <Content Include="Images\monster_egg_dur._61%25.png" />
+    <Content Include="Images\monster_egg_dur._62%25.png" />
+    <Content Include="Images\monster_egg_dur._90%25.png" />
+    <Content Include="Images\monster_egg_dur._91%25.png" />
+    <Content Include="Images\monster_egg_dur._92%25.png" />
+    <Content Include="Images\monster_egg_dur._93%25.png" />
+    <Content Include="Images\monster_egg_dur._94%25.png" />
+    <Content Include="Images\monster_egg_dur._95%25.png" />
+    <Content Include="Images\monster_egg_dur._96%25.png" />
+    <Content Include="Images\monster_egg_dur._98%25.png" />
+    <Content Include="Images\monster_spawner.png" />
+    <Content Include="Images\mossy_stone_brick.png" />
+    <Content Include="Images\moss_stone.png" />
+    <Content Include="Images\mushroom_soup.png" />
+    <Content Include="Images\myauction.png" />
+    <Content Include="Images\mycelium.png" />
+    <Content Include="Images\myitems.png" />
+    <Content Include="Images\netherrack.png" />
+    <Content Include="Images\nether_brick.png" />
+    <Content Include="Images\nether_brick_fence.png" />
+    <Content Include="Images\nether_brick_stairs.png" />
+    <Content Include="Images\nether_stalk.png" />
+    <Content Include="Images\nether_wart.png" />
+    <Content Include="Images\noteblock.png" />
+    <Content Include="Images\oak_sapling.png" />
+    <Content Include="Images\oak_wood.png" />
+    <Content Include="Images\oak_wood_planks.png" />
+    <Content Include="Images\obsidian.png" />
+    <Content Include="Images\orange_wool.png" />
+    <Content Include="Images\painting.png" />
+    <Content Include="Images\paper.png" />
+    <Content Include="Images\pink_dye.png" />
+    <Content Include="Images\pink_wool.png" />
+    <Content Include="Images\piston.png" />
+    <Content Include="Images\pork.png" />
+    <Content Include="Images\portal.png" />
+    <Content Include="Images\potion.png" />
+    <Content Include="Images\potion_Dur. 16%25.png" />
+    <Content Include="Images\potion_dur. 16384%25.png" />
+    <Content Include="Images\potion_dur. 16385%25.png" />
+    <Content Include="Images\potion_dur. 16386%25.png" />
+    <Content Include="Images\potion_dur. 16387%25.png" />
+    <Content Include="Images\potion_dur. 16388%25.png" />
+    <Content Include="Images\potion_dur. 16389%25.png" />
+    <Content Include="Images\potion_Dur. 16392%25.png" />
+    <Content Include="Images\potion_dur. 16393%25.png" />
+    <Content Include="Images\potion_dur. 16394%25.png" />
+    <Content Include="Images\potion_dur. 16396%25.png" />
+    <Content Include="Images\potion_dur. 16417%25.png" />
+    <Content Include="Images\potion_dur. 16418%25.png" />
+    <Content Include="Images\potion_dur. 16419%25.png" />
+    <Content Include="Images\potion_dur. 16420%25.png" />
+    <Content Include="Images\potion_dur. 16421%25.png" />
+    <Content Include="Images\potion_Dur. 16424%25.png" />
+    <Content Include="Images\potion_dur. 16425%25.png" />
+    <Content Include="Images\potion_dur. 16426%25.png" />
+    <Content Include="Images\potion_dur. 16428%25.png" />
+    <Content Include="Images\potion_dur. 16449%25.png" />
+    <Content Include="Images\potion_dur. 16450%25.png" />
+    <Content Include="Images\potion_dur. 16451%25.png" />
+    <Content Include="Images\potion_dur. 16452%25.png" />
+    <Content Include="Images\potion_dur. 16453%25.png" />
+    <Content Include="Images\potion_Dur. 16456%25.png" />
+    <Content Include="Images\potion_dur. 16457%25.png" />
+    <Content Include="Images\potion_dur. 16458%25.png" />
+    <Content Include="Images\potion_dur. 16460%25.png" />
+    <Content Include="Images\potion_Dur. 32%25.png" />
+    <Content Include="Images\potion_Dur. 64%25.png" />
+    <Content Include="Images\potion_Dur. 8192%25.png" />
+    <Content Include="Images\potion_Dur. 8193%25.png" />
+    <Content Include="Images\potion_Dur. 8194%25.png" />
+    <Content Include="Images\potion_Dur. 8195%25.png" />
+    <Content Include="Images\potion_Dur. 8196%25.png" />
+    <Content Include="Images\potion_Dur. 8197%25.png" />
+    <Content Include="Images\potion_Dur. 8200%25.png" />
+    <Content Include="Images\potion_Dur. 8201%25.png" />
+    <Content Include="Images\potion_Dur. 8202%25.png" />
+    <Content Include="Images\potion_Dur. 8204%25.png" />
+    <Content Include="Images\potion_Dur. 8225%25.png" />
+    <Content Include="Images\potion_Dur. 8226%25.png" />
+    <Content Include="Images\potion_Dur. 8227%25.png" />
+    <Content Include="Images\potion_Dur. 8228%25.png" />
+    <Content Include="Images\potion_Dur. 8229%25.png" />
+    <Content Include="Images\potion_Dur. 8232%25.png" />
+    <Content Include="Images\potion_Dur. 8233%25.png" />
+    <Content Include="Images\potion_Dur. 8234%25.png" />
+    <Content Include="Images\potion_Dur. 8236%25.png" />
+    <Content Include="Images\potion_Dur. 8257%25.png" />
+    <Content Include="Images\potion_Dur. 8258%25.png" />
+    <Content Include="Images\potion_Dur. 8259%25.png" />
+    <Content Include="Images\potion_Dur. 8260%25.png" />
+    <Content Include="Images\potion_Dur. 8261%25.png" />
+    <Content Include="Images\potion_Dur. 8264%25.png" />
+    <Content Include="Images\potion_Dur. 8265%25.png" />
+    <Content Include="Images\potion_Dur. 8266%25.png" />
+    <Content Include="Images\potion_Dur. 8268%25.png" />
+    <Content Include="Images\powered_minecart.png" />
+    <Content Include="Images\powered_rail.png" />
+    <Content Include="Images\pumpkin.png" />
+    <Content Include="Images\pumpkin_seeds.png" />
+    <Content Include="Images\purple_dye.png" />
+    <Content Include="Images\purple_wool.png" />
+    <Content Include="Images\rails.png" />
+    <Content Include="Images\raw_beef.png" />
+    <Content Include="Images\raw_chicken.png" />
+    <Content Include="Images\raw_fish.png" />
+    <Content Include="Images\record_10.png" />
+    <Content Include="Images\record_11.png" />
+    <Content Include="Images\record_3.png" />
+    <Content Include="Images\record_4.png" />
+    <Content Include="Images\record_5.png" />
+    <Content Include="Images\record_6.png" />
+    <Content Include="Images\record_7.png" />
+    <Content Include="Images\record_8.png" />
+    <Content Include="Images\record_9.png" />
+    <Content Include="Images\redstone.png" />
+    <Content Include="Images\redstone_lamp_%28off%29.png" />
+    <Content Include="Images\redstone_lamp_%28on%29.png" />
+    <Content Include="Images\redstone_ore.png" />
+    <Content Include="Images\redstone_torch.png" />
+    <Content Include="Images\redstone_torch_%28off%29.png" />
+    <Content Include="Images\red_mushroom.png" />
+    <Content Include="Images\red_wool.png" />
+    <Content Include="Images\rose.png" />
+    <Content Include="Images\rose_red_%28red_dye%29.png" />
+    <Content Include="Images\rotten_flesh.png" />
+    <Content Include="Images\saddle.png" />
+    <Content Include="Images\sand.png" />
+    <Content Include="Images\sandstone.png" />
+    <Content Include="Images\sandstone_slab.png" />
+    <Content Include="Images\sapling.png" />
+    <Content Include="Images\seeds.png" />
+    <Content Include="Images\seeds_nether_wart.png" />
+    <Content Include="Images\shears.png" />
+    <Content Include="Images\sign.png" />
+    <Content Include="Images\slime_ball.png" />
+    <Content Include="Images\smooth_sandstone.png" />
+    <Content Include="Images\snow_ball.png" />
+    <Content Include="Images\Snow_Block.png" />
+    <Content Include="Images\soul_sand.png" />
+    <Content Include="Images\speckled_melon.png" />
+    <Content Include="Images\spider_eye.png" />
+    <Content Include="Images\sponge.png" />
+    <Content Include="Images\spruce_sapling.png" />
+    <Content Include="Images\spruce_wood.png" />
+    <Content Include="Images\spruce_wood_planks.png" />
+    <Content Include="Images\Stick.png" />
+    <Content Include="Images\sticky_piston.png" />
+    <Content Include="Images\stone.png" />
+    <Content Include="Images\stone_axe.png" />
+    <Content Include="Images\stone_brick.png" />
+    <Content Include="Images\stone_brick_slab.png" />
+    <Content Include="Images\stone_brick_stairs.png" />
+    <Content Include="Images\stone_button.png" />
+    <Content Include="Images\stone_double-slab.png" />
+    <Content Include="Images\stone_hoe.png" />
+    <Content Include="Images\stone_pickaxe.png" />
+    <Content Include="Images\stone_pressure_plate.png" />
+    <Content Include="Images\stone_slab.png" />
+    <Content Include="Images\stone_spade.png" />
+    <Content Include="Images\stone_sword.png" />
+    <Content Include="Images\storage_minecart.png" />
+    <Content Include="Images\string.png" />
+    <Content Include="Images\sugar.png" />
+    <Content Include="Images\sugar_cane.png" />
+    <Content Include="Images\sulphur.png" />
+    <Content Include="Images\tall_grass.png" />
+    <Content Include="Images\tall_grass1.png" />
+    <Content Include="Images\tnt.png" />
+    <Content Include="Images\torch.png" />
+    <Content Include="Images\trapdoor.png" />
+    <Content Include="Images\vines.png" />
+    <Content Include="Images\watch.png" />
+    <Content Include="Images\water.png" />
+    <Content Include="Images\water_bucket.png" />
+    <Content Include="Images\wheat.png" />
+    <Content Include="Images\white_wool.png" />
+    <Content Include="Images\wodden_slab.png" />
+    <Content Include="Images\wooden_plank.png" />
+    <Content Include="Images\wooden_pressure_plate.png" />
+    <Content Include="Images\wooden_stairs.png" />
+    <Content Include="Images\wood_axe.png" />
+    <Content Include="Images\wood_door.png" />
+    <Content Include="Images\wood_hoe.png" />
+    <Content Include="Images\wood_pickaxe.png" />
+    <Content Include="Images\wood_spade.png" />
+    <Content Include="Images\wood_sword.png" />
+    <Content Include="Images\yellow_wool.png" />
+    <Content Include="js\info.js" />
+    <Content Include="js\jquery-1.6.2.js" />
+    <Content Include="js\jquery-1.6.2.min.js">
+      <DependentUpon>jquery-1.6.2.js</DependentUpon>
+    </Content>
+    <None Include="js\jquery.validate-vsdoc.js" />
+    <Content Include="js\jquery-ui-1.8.11.js" />
+    <Content Include="js\jquery-ui-1.8.11.min.js">
+      <DependentUpon>jquery-ui-1.8.11.js</DependentUpon>
+    </Content>
+    <Content Include="js\jquery.unobtrusive-ajax.js" />
+    <Content Include="js\jquery.unobtrusive-ajax.min.js">
+      <DependentUpon>jquery.unobtrusive-ajax.js</DependentUpon>
+    </Content>
+    <Content Include="js\jquery.validate.js" />
+    <Content Include="js\jquery.validate.min.js">
+      <DependentUpon>jquery.validate.js</DependentUpon>
+    </Content>
+    <Content Include="js\jquery.validate.unobtrusive.js" />
+    <Content Include="js\jquery.validate.unobtrusive.min.js">
+      <DependentUpon>jquery.validate.unobtrusive.js</DependentUpon>
+    </Content>
+    <Content Include="js\knockout-2.0.0.debug.js" />
+    <Content Include="js\knockout-2.0.0.js" />
+    <Content Include="js\modernizr-2.0.6-development-only.js" />
+    <Content Include="js\translate.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="js\_references.js" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:5819/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
