@@ -532,7 +532,8 @@ public class Material {
             }
             case 384: return "Bottle o'Enchanting";
             case 385: return "Fire Charge";
-
+            case 388: return "Emerald";
+                
             case 2256: return "13 Music Disc";
             case 2257: return "Cat Music Disc";
             case 2258: return "Blocks Music Disc";
