@@ -1,6 +1,5 @@
 package me.stutiguias.webportal.listeners;
 
-import java.awt.event.MouseAdapter;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
@@ -207,19 +206,24 @@ public class WebAuctionPlayerListener implements Listener {
         }
         
         public void wSell(PlayerInteractEvent event,Sign sign,String[] lines) {
+            String[] price = lines[2].split("-");
+            int qtdnow,qtdsold;
+            try {
+                qtdnow = Integer.parseInt(price[1]);
+                qtdsold = Integer.parseInt(price[0]);
+            }catch(Exception ex) {
+                event.getPlayer().sendMessage(plugin.logPrefix + "Error try get line of sign");
+                event.setCancelled(true);
+                return;
+            }
             if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                String[] price = lines[2].split(" - ");
-                event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[1] + " each ?");
+                event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
             }else{
-                
-                String[] price = lines[2].split(" - ");
                 Auction au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
 
                 if(au == null) {
                     event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");
-                    sign.setLine(0,ChatColor.RED + "[wSell]");
-                    sign.setLine(2,ChatColor.RED + "**SOLD**");
-                    sign.update();
+                    setSignSold(sign);
                 }else{
                     if(!plugin.economy.has(event.getPlayer().getName(),au.getPrice() * Integer.valueOf(price[0]))) {
                         event.setCancelled(true);
@@ -229,11 +233,23 @@ public class WebAuctionPlayerListener implements Listener {
                     TradeSystem ts = new TradeSystem(plugin);
                     if(!event.getPlayer().getName().equals(au.getPlayerName())) {
                         event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]), lines[1],true));
+                        if(( qtdnow - qtdsold ) <= 0) {
+                            setSignSold(sign);
+                        }else{
+                            sign.setLine(2,price[0]+"-"+(qtdnow-qtdsold)+"-"+au.getPrice());
+                            sign.update();
+                        }
                     }else{
                         event.getPlayer().sendMessage(plugin.logPrefix + "You can't buy from yourself");
                     }
                 }
                 event.setCancelled(true);
             }
+        }
+        
+        public void setSignSold(Sign sign) {
+            sign.setLine(0,ChatColor.RED + "[wSell]");
+            sign.setLine(2,ChatColor.RED + "**SOLD**");
+            sign.update();
         }
 }

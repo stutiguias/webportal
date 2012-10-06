@@ -6,7 +6,6 @@ package me.stutiguias.webportal.settings;
 
 import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -31,8 +30,19 @@ public class InventoryHandler implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         List<Auction> items = plugin.dataQueries.getAuctionsLimitbyPlayer(player.getName(), 0, 20,plugin.Myitems);
-        for(Auction i:items) {
-            inventory.addItem(i.getItemStack());
+        for(Auction item:items) {
+            if(item.getItemStack().getMaxStackSize() == 1) {
+                ItemStack is = new ItemStack(item.getItemStack());
+                is.setAmount(1);
+                for(int i=1;i <= item.getItemStack().getAmount();i++)
+                {
+                    if(inventory.firstEmpty() == -1) break;
+                    inventory.addItem(is);    
+                }
+            }else{
+                if(inventory.firstEmpty() ==  -1) break;
+                inventory.addItem(item.getItemStack());
+            }
         }
         WebAuction.LockTransact.put(player.getName(), Boolean.TRUE);
         return inventory;

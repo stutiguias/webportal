@@ -71,7 +71,7 @@ public class FillMyAuctions extends Response {
                 }
 
                 jsonTwo.put("0", "<img src='images/"+item_name.replace(" ","_") +".png'><br /><font size='-1'>"+ item_name.replace("_"," ") + "<br />" + Durability + enchant +"</font>");
-                jsonTwo.put("1", "Never");
+                jsonTwo.put("1", item.getId());
                 jsonTwo.put("2", item.getItemStack().getAmount());
                 jsonTwo.put("3", "$ " + item.getPrice());
                 jsonTwo.put("4", "$ " + item.getPrice() * item.getItemStack().getAmount());

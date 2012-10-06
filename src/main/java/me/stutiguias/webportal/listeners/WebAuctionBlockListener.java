@@ -1,11 +1,8 @@
 package me.stutiguias.webportal.listeners;
 
-import java.awt.Color;
-import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.AuctionItem;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -55,23 +52,30 @@ public class WebAuctionBlockListener implements Listener {
 	}
         
         public void wSell(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event) {
-               
-               List<AuctionItem> AuctionItemList = plugin.dataQueries.getItemByName(player.getName(),lines[1], true, plugin.Auction);
-               if(AuctionItemList.size() > 0) {
-                   event.setLine(0, ChatColor.GREEN + "[wSell]" );
-                   event.setLine(1, AuctionItemList.get(0).getItemName());
-                   if(lines[2].isEmpty()) {
-                      event.setLine(2,"1 - " + AuctionItemList.get(0).getPrice());
-                   }else{
-                      int qtd = Integer.parseInt(lines[2]);
-                      if(qtd <= AuctionItemList.get(0).getQuantity()) {
-                        event.setLine(2, lines[2] + " - " + AuctionItemList.get(0).getPrice());
-                      }else{
+                Integer id;
+                try {
+                    id = Integer.parseInt(lines[1]);
+                }catch(Exception ex) {
+                    player.sendMessage(plugin.logPrefix + " Invalid ID.");
+                    event.setCancelled(true);
+                    return;
+                }
+
+                AuctionItem _AuctionItem = plugin.dataQueries.getItemById(id, plugin.Auction);
+                event.setLine(0, ChatColor.GREEN + "[wSell]" );
+                event.setLine(1, _AuctionItem.getItemName());
+                if(lines[2].isEmpty()) {
+                    event.setLine(2,"1-" + _AuctionItem.getQuantity() + "-" + _AuctionItem.getPrice());
+                }else{
+                    int qtd = Integer.parseInt(lines[2]);
+                    if(qtd <= _AuctionItem.getQuantity()) {
+                        event.setLine(2,lines[2] + "-" + _AuctionItem.getQuantity() + "-" + _AuctionItem.getPrice());
+                    }else{
                         event.setLine(2, ChatColor.RED + "Invalid Qtd");
-                      }
-                   }
-                   event.setLine(3, "" + AuctionItemList.get(0).getId());
-               }
+                    }
+                }
+                event.setLine(3, "" + _AuctionItem.getId());
+               
         }
         
         public void WebAuction(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event)

@@ -629,7 +629,7 @@ public class SqliteDataQueries implements IDataQueries {
             ResultSet rs = null;
 
             try {
-                    String sql = "SELECT id,name,damage,player,quantity,ench FROM WA_Auctions WHERE id = ? AND tableid = ?";
+                    String sql = "SELECT id,name,damage,player,quantity,ench,itemname,price FROM WA_Auctions WHERE id = ? AND tableid = ?";
                     st = conn.prepareStatement(sql);
                     st.setInt(1, ID);
                     st.setInt(2, tableid);
@@ -638,8 +638,10 @@ public class SqliteDataQueries implements IDataQueries {
                             auctionItem = new AuctionItem();
                             auctionItem.setId(rs.getInt("id"));
                             auctionItem.setName(rs.getInt("name"));
+                            auctionItem.setItemName(rs.getString("itemname"));
                             auctionItem.setDamage(rs.getInt("damage"));
                             auctionItem.setPlayerName(rs.getString("player"));
+                            auctionItem.setPrice(rs.getString("price"));
                             auctionItem.setQuantity(rs.getInt("quantity"));
                             auctionItem.setEnchantments(rs.getString("ench"));
                     }

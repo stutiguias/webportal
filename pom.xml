@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.stutiguias</groupId>
   <artifactId>WebPortal</artifactId>
-  <version>0.6.1</version>
+  <version>0.6.2</version>
   <name>WebPortal</name>
   <description>WebPortal por minecraft</description>
   
@@ -94,6 +94,6 @@
   </build>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <bukkit.version>1.3.2-R0.1</bukkit.version>
+    <bukkit.version>1.3.2-R1.0</bukkit.version>
   </properties>
 </project>
