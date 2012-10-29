@@ -128,12 +128,12 @@ public class WASign {
         
         // check if item not already there
         int quantityInt = stack.getAmount();
-        List<AuctionItem> auctionItems = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,1);
+        List<AuctionItem> auctionItems = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
         Boolean foundMatch = false;
         for (AuctionItem auctionItem : auctionItems) {
                 int itemTableIdNumber = auctionItem.getId();
 
-                if (( ench_player.equals(auctionItem.getEnchantments()) ) || ( (ench_player.isEmpty()) && (auctionItem.getEnchantments().isEmpty()) ) ) {
+                if ((( ench_player.equals(auctionItem.getEnchantments()) ) || ( (ench_player.isEmpty()) && (auctionItem.getEnchantments().isEmpty()) )) && !foundMatch ) {
                         int currentQuantity = auctionItem.getQuantity();
                         currentQuantity += quantityInt;
                         plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);

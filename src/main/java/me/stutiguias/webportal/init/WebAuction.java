@@ -150,6 +150,7 @@ public class WebAuction extends JavaPlugin {
 		getConfig().addDefault("Misc.ReportSales", false);
 		getConfig().addDefault("Misc.ShowSalesOnJoin", false);
                 getConfig().addDefault("Misc.AllowLogOnlyIfOnline", false);
+                getConfig().addDefault("Misc.UseInsideServer",true);
                 getConfig().addDefault("Misc.WebServicePort",25900);
 		getConfig().addDefault("Misc.SignDelay", 1000);
                 getConfig().addDefault("Misc.MaxSimultaneousConnection", 200);
@@ -238,9 +239,11 @@ public class WebAuction extends JavaPlugin {
                 int NUM_CONN_MAX = getConfig().getInt("Misc.MaxSimultaneousConnection");
                 log.log(Level.INFO, logPrefix + " Number max Simultaneous Connection is " + NUM_CONN_MAX);
                 connections = 0;
-                server = new WebAuctionServerListenTask(this,NUM_CONN_MAX);
-                server.start();
                 
+                if(getConfig().getBoolean("Misc.UseInsideServer")) {
+                    server = new WebAuctionServerListenTask(this,NUM_CONN_MAX);
+                    server.start();
+                }
                 // so load the materials.yml
                 materials = new ConfigAccessor(this, "materials.yml");
                 try {

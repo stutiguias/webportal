@@ -42,6 +42,8 @@ public interface IDataQueries {
         void updatePlayerMoney(String player, double money);
 	AuctionPlayer getPlayer(String player);	
         List<AuctionItem> getPlayerItems(String player);
+        String getLock(String player);
+        boolean setLock(String player,String lock);
         
         // Player Mail
         boolean hasMail(String player);
@@ -50,7 +52,7 @@ public interface IDataQueries {
         
 	// Admin
         void LogSellPrice(Integer name,Short damage,Integer time,String buyer,String seller,Integer quantity,Double price,String ench);
-        void GetTransactOfPlayer(String player);
+        List<Transact> GetTransactOfPlayer(String player);
 
         //Items
         AuctionItem getItemById(int ID,int tableid);

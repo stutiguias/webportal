@@ -81,6 +81,27 @@ public class SqliteDataQueries implements IDataQueries {
 		}
 		return exists;
     }
+    
+    public int tableVersion() {
+        int version = 0;
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+                st = conn.prepareStatement("SELECT dbversion FROM WA_DbVersion");
+                rs = st.executeQuery();
+                while (rs.next()) {
+                        version = rs.getInt("dbversion");
+                }
+        } catch (SQLException e) {
+                WebAuction.log.warning(plugin.logPrefix + "Unable to check if table version ");
+                WebAuction.log.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return version;
+    }
+
         
     private void executeRawSQL(String sql) {
 		WALConnection conn = getConnection();
@@ -132,6 +153,11 @@ public class SqliteDataQueries implements IDataQueries {
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN type VARCHAR(45) NULL;");
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN itemname VARCHAR(45) NULL;");
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN searchtype VARCHAR(45) NULL;");
+                }
+                if (tableVersion() == 1) {
+                        WebAuction.log.info(plugin.logPrefix + "Update DB version to 2");
+                        executeRawSQL("ALTER TABLE WA_Players ADD COLUMN lock VARCHAR(1) Default 'N';");
+                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 2 where id = 1");
                 }
     }
 
@@ -961,8 +987,35 @@ public class SqliteDataQueries implements IDataQueries {
     }
 
     @Override
-    public void GetTransactOfPlayer(String player) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Transact> GetTransactOfPlayer(String player) {
+                List<Transact> Transacts = null;
+		WALConnection conn = getConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT name,damage,time,quantity,price,seller,buyer,ench FROM WA_SellPrice where seller = ? or buyer = ?");
+			st.setString(1, player);
+                        st.setString(2, player);
+			rs = st.executeQuery();
+			while (rs.next()) {
+                                Transact _Transact = new Transact();
+                                _Transact.setBuyer(rs.getString("buyer"));
+                                _Transact.setSeller(rs.getString("seller"));
+                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                                stack = Chant(rs.getString("ench"),stack);
+                                _Transact.setItemStack(stack);
+                                _Transact.setPrice(rs.getDouble("price"));
+                                _Transact.setQuantity(rs.getInt("quantity"));
+                                Transacts.add(_Transact);
+			}
+		} catch (SQLException e) {
+			WebAuction.log.warning(plugin.logPrefix + "Unable to transact ");
+			WebAuction.log.warning(e.getMessage());
+		} finally {
+			closeResources(conn, st, rs);
+		}
+		return Transacts;
     }
 
     @Override
@@ -987,6 +1040,49 @@ public class SqliteDataQueries implements IDataQueries {
 			closeResources(conn, st, rs);
 		}
 		return MarketPrice;
+    }
+
+    @Override
+    public String getLock(String player) {
+        String Lock = null;
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("SELECT WA_Players.lock FROM WA_Players where name = ?");
+                st.setString(1, player);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                        Lock = rs.getString("lock");
+                }
+        } catch (SQLException e) {
+                WebAuction.log.warning(plugin.logPrefix + "Unable to maket price ");
+                WebAuction.log.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return Lock;
+    }
+
+    @Override
+    public boolean setLock(String player, String lock) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("UPDATE WA_Players SET WA_Players.lock = ? where name = ? ");
+                st.setString(1, lock);
+                st.setString(2, player);
+                st.executeUpdate();
+        } catch (SQLException e) {
+                WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
+                WebAuction.log.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return true;
     }
     
 }

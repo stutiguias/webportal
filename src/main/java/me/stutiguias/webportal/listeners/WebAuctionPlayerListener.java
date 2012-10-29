@@ -158,6 +158,7 @@ public class WebAuctionPlayerListener implements Listener {
         public void onWebAuctionLiteInventoryClose(InventoryCloseEvent event) {
             if(!event.getInventory().getName().equalsIgnoreCase("WebAuctionLite")) return;
             Player pl = (Player)event.getPlayer();
+            plugin.dataQueries.setLock(pl.getName(),"N");
             WebAuction.LockTransact.put(pl.getName(), Boolean.FALSE);
         }
         
@@ -209,7 +210,7 @@ public class WebAuctionPlayerListener implements Listener {
             String[] price = lines[2].split("-");
             int qtdnow,qtdsold;
             try {
-                qtdnow = Integer.parseInt(price[1]);
+                qtdnow = plugin.dataQueries.getItemById(Integer.valueOf(lines[3]), plugin.Auction).getQuantity();
                 qtdsold = Integer.parseInt(price[0]);
             }catch(Exception ex) {
                 event.getPlayer().sendMessage(plugin.logPrefix + "Error try get line of sign");

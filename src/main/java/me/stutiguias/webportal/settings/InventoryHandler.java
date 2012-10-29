@@ -44,6 +44,7 @@ public class InventoryHandler implements InventoryHolder {
                 inventory.addItem(item.getItemStack());
             }
         }
+        plugin.dataQueries.setLock(player.getName(),"S");
         WebAuction.LockTransact.put(player.getName(), Boolean.TRUE);
         return inventory;
     }

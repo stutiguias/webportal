@@ -32,7 +32,7 @@ public class WebAuctionServerTask extends Thread {
     FillMyItems _FillMyItems;
     FillMyAuctions _FillMyAuctions;
     FillBox _FillBox;
-    FillAdminBox _FillAdminBox;
+    FillAdmin _FillAdminBox;
     FillOperations _FillOperations;
     Login _Login;
     Userinfo _UserInfo;
@@ -51,7 +51,7 @@ public class WebAuctionServerTask extends Thread {
         _FillAuction = new FillAuction(plugin, s);
         _FillMyItems = new FillMyItems(plugin, s);
         _FillMyAuctions = new FillMyAuctions(plugin, s);
-        _FillAdminBox = new FillAdminBox(plugin, s);
+        _FillAdminBox = new FillAdmin(plugin, s);
         _FillBox = new FillBox(plugin, s);
         _FillOperations = new FillOperations(plugin, s);
         _Login = new Login(plugin, s);
@@ -143,7 +143,7 @@ public class WebAuctionServerTask extends Thread {
                             }else if(url.startsWith("/box/2")) {
                                 _FillBox.BOX2(HostAddress);
                             }else if(url.startsWith("/admbox/1")) {
-                                _FillAdminBox.ADMBOX1(HostAddress);
+                                _FillAdminBox.ADM(HostAddress,param);
                             }else if(url.equalsIgnoreCase("/")) {
                                 Response.readFileAsBinary(htmlDir + "/login.html","text/html");
                             }else{

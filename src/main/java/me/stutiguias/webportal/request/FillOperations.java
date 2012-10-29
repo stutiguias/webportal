@@ -29,9 +29,17 @@ public class FillOperations extends Response {
     }
 
     public void CreateAuction(String ip,String url,String param) {
-        int qtd = Integer.parseInt(getParam("Quantity", param));
-        Double price = Double.parseDouble(getParam("Price", param));
-        int id = Integer.parseInt(getParam("ID", param));
+        int qtd;
+        Double price;
+        int id;
+        try {
+            qtd = Integer.parseInt(getParam("Quantity", param));
+            price = Double.parseDouble(getParam("Price", param));
+            id = Integer.parseInt(getParam("ID", param));
+        }catch(NumberFormatException ex) {
+            print("Invalid Number","text/plain");
+            return;
+        }
         AuctionItem au = plugin.dataQueries.getItemById(id,plugin.Myitems);
         if(au.getQuantity() == qtd) {
             plugin.dataQueries.setPriceAndTable(id,price);
