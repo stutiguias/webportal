@@ -1,6 +1,7 @@
-package me.stutiguias.webportal.init;
+package me.stutiguias.webportal.commands;
 
 import java.util.logging.Level;
+import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.Algorithm;
 import me.stutiguias.webportal.settings.InventoryHandler;
 import org.bukkit.command.Command;

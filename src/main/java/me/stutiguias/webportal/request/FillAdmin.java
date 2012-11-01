@@ -22,7 +22,7 @@ public class FillAdmin extends Response {
     
     WebAuction plugin;
     AuctionPlayer _AuPlayer;
-    List<AuctionItem> _PlayerItems;
+    List<Auction> _PlayerItems;
     List<AuctionMail> _PlayerMail;
     List<Auction> _PlayerAuction;
     
@@ -44,9 +44,9 @@ public class FillAdmin extends Response {
             String name = getParam("nick", param);
             String info = getParam("information", param);
             if(info.equalsIgnoreCase("playerinfo")) playerinfo(Hostadress,name);
-            if(info.equalsIgnoreCase("playeritems")) _PlayerItems = plugin.dataQueries.getPlayerItems(name);
-            if(info.equalsIgnoreCase("playermail")) _PlayerMail = plugin.dataQueries.getMail(name);
-            if(info.equalsIgnoreCase("playerauctions")) _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
+            if(info.equalsIgnoreCase("playeritems")) playeritems(name);
+            if(info.equalsIgnoreCase("playermail")) playermails(name);
+            if(info.equalsIgnoreCase("playerauctions")) playerauction(name);
             if(info.equalsIgnoreCase("playertransaction")) playertransaction(name);
         }else{
             print("Your r not admin","text/html");
@@ -107,6 +107,78 @@ public class FillAdmin extends Response {
                     response.append("<td>").append(_Transact.getPrice()).append("</td>");
                     response.append("<td>").append(_Transact.getQuantity()).append("</td>");
                     response.append("<td>").append(_Transact.getSeller()).append("</td>");
+                response.append("</tr>");
+            }
+            response.append("</table>");
+        response.append("</div>"); 
+        print(response.toString(),"text/html");
+    }
+    
+    private void playeritems(String name) {
+        _PlayerItems = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
+        StringBuilder response = new StringBuilder();
+        response.append("<div id='playeritems'>");
+            response.append("<table ALIGN='center'>");
+            response.append("<tr>");
+                response.append("<td>Nick</td>");
+                response.append("<td>Item Name</td>");
+                response.append("<td>Quantity</td>");
+            response.append("</tr>");
+            for (int i = 0; i < _PlayerItems.size(); i++) {
+                Auction _Auction = _PlayerItems.get(i);
+                String itemname = Material.getItemName(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability());
+                response.append("<tr>");
+                    response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
+                    response.append("<td>").append(itemname).append("</td>");
+                    response.append("<td>").append(_Auction.getItemStack().getAmount()).append("</td>");
+                response.append("</tr>");
+            }
+            response.append("</table>");
+        response.append("</div>"); 
+        print(response.toString(),"text/html");
+    }
+    
+    private void playermails(String name) {
+        _PlayerMail = plugin.dataQueries.getMail(name);
+        StringBuilder response = new StringBuilder();
+        response.append("<div id='playeritems'>");
+            response.append("<table ALIGN='center'>");
+            response.append("<tr>");
+                response.append("<td>Nick</td>");
+                response.append("<td>Item Name</td>");
+                response.append("<td>Quantity</td>");
+            response.append("</tr>");
+            for (int i = 0; i < _PlayerMail.size(); i++) {
+                AuctionMail _AuctionMail = _PlayerMail.get(i);
+                String itemname = Material.getItemName(_AuctionMail.getItemStack().getTypeId(),_AuctionMail.getItemStack().getDurability());
+                response.append("<tr>");
+                    response.append("<td>").append(_AuctionMail.getPlayerName()).append("</td>");
+                    response.append("<td>").append(itemname).append("</td>");
+                    response.append("<td>").append(_AuctionMail.getItemStack().getAmount()).append("</td>");
+                response.append("</tr>");
+            }
+            response.append("</table>");
+        response.append("</div>"); 
+        print(response.toString(),"text/html");
+    }
+        
+    private void playerauction(String name) {
+        _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Auction);
+        StringBuilder response = new StringBuilder();
+        response.append("<div id='playeritems'>");
+            response.append("<table ALIGN='center'>");
+            response.append("<tr>");
+                response.append("<td>Nick</td>");
+                response.append("<td>Item Name</td>");
+                response.append("<td>Quantity</td>");
+            response.append("</tr>");
+            for (int i = 0; i < _PlayerAuction.size(); i++) {
+                Auction _Auction = _PlayerAuction.get(i);
+                String itemname = Material.getItemName(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability());
+                response.append("<tr>");
+                    response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
+                    response.append("<td>").append(itemname).append("</td>");
+                    response.append("<td>").append(_Auction.getItemStack().getAmount()).append("</td>");
                 response.append("</tr>");
             }
             response.append("</table>");
