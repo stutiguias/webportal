@@ -53,8 +53,12 @@ public class ProfileEssentials {
     
     public List<String> GetHomes() {
         List<String> listhomes = new ArrayList<String>();
-        for(String key:PlayerYML.getConfigurationSection("homes").getKeys(false)) {
-            listhomes.add(key);
+        try {
+            for(String key:PlayerYML.getConfigurationSection("homes").getKeys(false)) {
+                listhomes.add(key);
+            }
+        }catch(NullPointerException ex){
+            listhomes.add("Home Not Found");
         }
         return listhomes;
     }

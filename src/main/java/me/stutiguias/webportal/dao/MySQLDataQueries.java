@@ -1020,7 +1020,7 @@ public class MySQLDataQueries implements IDataQueries {
 
     @Override
     public List<Transact> GetTransactOfPlayer(String player) {
-                List<Transact> Transacts = null;
+                List<Transact> Transacts = new ArrayList<Transact>();
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
 		ResultSet rs = null;
