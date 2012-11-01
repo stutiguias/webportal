@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.*;
+import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.entity.Player;
 
@@ -60,7 +61,7 @@ public class FillAdmin extends Response {
         }else{
             response.append("<div id='playerinfo'>");
                 response.append("<div style=\"text-align:center;\" >Player Info</div><br/>");
-                response.append("<table><tr>");
+                response.append("<table ALIGN='center'><tr>");
                 response.append("<td>ID</td><td>").append(_AuPlayer.getId()).append("</td></tr><tr>");
                 response.append("<td>IP</td><td>").append(_AuPlayer.getIp()).append("</td></tr><tr>");
                 response.append("<td>Name</td><td>").append(_AuPlayer.getName()).append("</td></tr><tr>");
@@ -89,8 +90,7 @@ public class FillAdmin extends Response {
         List<Transact> Transacts = plugin.dataQueries.GetTransactOfPlayer(name);
         StringBuilder response = new StringBuilder();
         response.append("<div id='playertransaction'>");
-            response.append("<div style=\"text-align:center;\" >Player Buy</div><br/>");
-            response.append("<table>");
+            response.append("<table ALIGN='center'>");
             response.append("<tr>");
                 response.append("<td>Buyer</td>");
                 response.append("<td>Item Name</td>");
@@ -100,9 +100,10 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < Transacts.size(); i++) {
                 Transact _Transact = Transacts.get(i);
+                String itemname = Material.getItemName(_Transact.getItemStack().getTypeId(),_Transact.getItemStack().getDurability());
                 response.append("<tr>");
                     response.append("<td>").append(_Transact.getBuyer()).append("</td>");
-                    response.append("<td>").append(_Transact.getItemName()).append("</td>");
+                    response.append("<td>").append(itemname).append("</td>");
                     response.append("<td>").append(_Transact.getPrice()).append("</td>");
                     response.append("<td>").append(_Transact.getQuantity()).append("</td>");
                     response.append("<td>").append(_Transact.getSeller()).append("</td>");
