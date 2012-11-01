@@ -32,7 +32,7 @@ public class FillAdmin extends Response {
     }
     
     public Boolean isAdmin(String Hostadress) {
-        if (plugin.dataQueries.getPlayer(WebAuction.AuthPlayer.get(Hostadress).AuctionPlayer.getName()).getIsAdmin() == 1) {
+        if (WebAuction.AuthPlayer.get(Hostadress).AuctionPlayer.getIsAdmin() == 1) {
           return true;
         }else{
           return false;
