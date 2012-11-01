@@ -142,7 +142,7 @@ public class WebAuctionServerTask extends Thread {
                                 _FillBox.BOX1(HostAddress);
                             }else if(url.startsWith("/box/2")) {
                                 _FillBox.BOX2(HostAddress);
-                            }else if(url.startsWith("/admbox/1")) {
+                            }else if(url.startsWith("/admsearch")) {
                                 _FillAdminBox.ADM(HostAddress,param);
                             }else if(url.equalsIgnoreCase("/")) {
                                 Response.readFileAsBinary(htmlDir + "/login.html","text/html");

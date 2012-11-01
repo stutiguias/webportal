@@ -33,7 +33,7 @@ public class FillAdmin extends Response {
         if(info.equalsIgnoreCase("playeritems")) _PlayerItems = plugin.dataQueries.getPlayerItems(name);
         if(info.equalsIgnoreCase("playermail")) _PlayerMail = plugin.dataQueries.getMail(name);
         if(info.equalsIgnoreCase("playerauctions")) _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
-        if(info.equalsIgnoreCase("playertransaction")) plugin.dataQueries.GetTransactOfPlayer(name);
+        if(info.equalsIgnoreCase("playertransaction")) playertransaction(name);
         print("","text/plain");
     }
     
@@ -70,16 +70,25 @@ public class FillAdmin extends Response {
         List<Transact> Transacts = plugin.dataQueries.GetTransactOfPlayer(name);
         StringBuilder response = new StringBuilder();
         response.append("<div id='playertransaction'>");
-            response.append("<div style=\"text-align:center;\" >Player Info</div><br/>");
-            response.append("<table width=\"100%\"><tr>");
-            response.append("<td>ID</td><td>").append(_AuPlayer.getId()).append("</td></tr><tr>");
-            response.append("<td>IP</td><td>").append(_AuPlayer.getIp()).append("</td></tr><tr>");
-            response.append("<td>Name</td><td>").append(_AuPlayer.getName()).append("</td></tr><tr>");
-            response.append("<td>CanBuy?</td><td>").append(_AuPlayer.getCanBuy()).append("</td></tr><tr>");
-            response.append("<td>CanSell?</td><td>").append(_AuPlayer.getCanSell()).append("</td></tr><tr>");
-            response.append("<td>isAdmin?</td><td>").append(_AuPlayer.getIsAdmin()).append("</td></tr><tr>");
-            response.append("<td>Banned?</td><td>").append("SOON").append("</td></tr><tr>");
-            response.append("<td>BAN</td><td>").append(HTMLBan(Hostadress,_AuPlayer.getId())).append("</td></tr>");
+            response.append("<div style=\"text-align:center;\" >Player Buy</div><br/>");
+            response.append("<table width=\"100%\">");
+            response.append("<tr>");
+                response.append("<td>Buyer</td>");
+                response.append("<td>Item Name</td>");
+                response.append("<td>Price</td>");
+                response.append("<td>Quantity</td>");
+                response.append("<td>Seller</td>");
+            response.append("</tr>");
+            for (int i = 0; i < Transacts.size(); i++) {
+                Transact _Transact = Transacts.get(i);
+                response.append("<tr>");
+                    response.append("<td>").append(_Transact.getBuyer()).append("</td>");
+                    response.append("<td>").append(_Transact.getItemName()).append("</td>");
+                    response.append("<td>").append(_Transact.getPrice()).append("</td>");
+                    response.append("<td>").append(_Transact.getQuantity()).append("</td>");
+                    response.append("<td>").append(_Transact.getSeller()).append("</td>");
+                response.append("</tr>");
+            }
             response.append("</table>");
         response.append("</div>"); 
         print(response.toString(),"text/html");
