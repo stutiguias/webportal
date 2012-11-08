@@ -27,7 +27,7 @@ public class Userinfo extends Response {
     public void GetInfo()  {
         AuthPlayer authPlayer = WebAuction.AuthPlayer.get(_Socket.getInetAddress().getHostAddress());
         String Name = authPlayer.AuctionPlayer.getName();
-        String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", <a href='/admin.html' >Admin Painel</a>":",";
+        String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", <a href='/admin.html' >Admin Panel</a>":",";
         String response = Name + Admin + ",";
         response += "$ " + plugin.economy.getBalance(Name) + ",";
         response += plugin.dataQueries.getMail(Name).size();
