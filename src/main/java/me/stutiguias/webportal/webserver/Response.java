@@ -114,4 +114,9 @@ public class Response {
         }else
         return "";
     }
+            
+    public String format(double x) {  
+        return String.format("%.2f", x);  
+    } 
+    
 }

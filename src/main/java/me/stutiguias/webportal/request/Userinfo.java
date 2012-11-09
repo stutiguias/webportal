@@ -29,8 +29,9 @@ public class Userinfo extends Response {
         String Name = authPlayer.AuctionPlayer.getName();
         String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", <a href='/admin.html' >Admin Panel</a>":",";
         String response = Name + Admin + ",";
-        response += "$ " + plugin.economy.getBalance(Name) + ",";
+        response += "$ " + format(plugin.economy.getBalance(Name)) + ",";
         response += plugin.dataQueries.getMail(Name).size();
         print(response,"text/plain");
     }
+
 }

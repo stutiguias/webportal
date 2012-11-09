@@ -78,7 +78,7 @@ public class FillAuction extends Response {
                 jsonTwo.put("3", item.getItemStack().getAmount());
                 jsonTwo.put("4", "$ " + item.getPrice());
                 jsonTwo.put("5", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("6", MakertPercent + "%");
+                jsonTwo.put("6", format(MakertPercent) + "%");
                 jsonTwo.put("7", html.HTMLBuy(ip,item.getId()));
                 jsonData.add(jsonTwo);
             }
