@@ -488,6 +488,7 @@ public class Material {
                     
                 case 32658: return "Speed (2:15)";
                 case 32660: return "Poison(0:33)";
+                case 32696: return "Weakness(1:07)";
                     
                 default: return "Potion";
             }   

@@ -8,6 +8,7 @@ import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
 import me.stutiguias.webportal.settings.*;
@@ -36,7 +37,7 @@ public class SqliteDataQueries implements IDataQueries {
                     connection = new WALConnection(DriverManager.getConnection("jdbc:sqlite:" + plugin.PluginDir + File.separator + "data.db"));
                     return connection;
             } catch (Exception e) {
-                    WebAuction.log.severe(plugin.logPrefix + "Exception getting SQLite WALConnection");
+                    WebAuction.log.log(Level.SEVERE, "{0} Exception getting SQLite WALConnection", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             }
             return null;
@@ -74,7 +75,7 @@ public class SqliteDataQueries implements IDataQueries {
 				exists = true;
 			}
 		} catch (SQLException e) {
-			WebAuction.log.warning(plugin.logPrefix + "Unable to check if table exists: " + tableName);
+			WebAuction.log.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
 			WebAuction.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
@@ -94,7 +95,7 @@ public class SqliteDataQueries implements IDataQueries {
                         version = rs.getInt("dbversion");
                 }
         } catch (SQLException e) {
-                WebAuction.log.warning(plugin.logPrefix + "Unable to check if table version ");
+                WebAuction.log.log(Level.WARNING, "{0} Unable to check if table version ", plugin.logPrefix);
                 WebAuction.log.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
@@ -112,7 +113,7 @@ public class SqliteDataQueries implements IDataQueries {
 			st = conn.createStatement();
 			st.executeUpdate(sql);
 		} catch (SQLException e) {
-			WebAuction.log.warning(plugin.logPrefix + "Exception executing raw SQL" + sql);
+			WebAuction.log.log(Level.WARNING, "{0} Exception executing raw SQL{1}", new Object[]{plugin.logPrefix, sql});
 			WebAuction.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
@@ -123,31 +124,31 @@ public class SqliteDataQueries implements IDataQueries {
     public void initTables() {
                 File dbFile = new File(plugin.PluginDir + File.separator +  "data.db");
                 if (!tableExists("WA_Players")) {
-			WebAuction.log.info(plugin.logPrefix + "Creating table WA_Players");
+			WebAuction.log.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Players (id INTEGER PRIMARY KEY, name VARCHAR(255), pass VARCHAR(255), money DOUBLE, itemsSold INTEGER, itemsBought INTEGER, earnt DOUBLE, spent DOUBLE, canBuy INTEGER, canSell INTEGER, isAdmin INTEGER);");
 		}
 		if (!tableExists("WA_StorageCheck")) {
-			WebAuction.log.info(plugin.logPrefix + "Creating table WA_StorageCheck");
+			WebAuction.log.log(Level.INFO, "{0} Creating table WA_StorageCheck", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_StorageCheck (id INTEGER PRIMARY KEY, time INTEGER);");
 		}
 		if (!tableExists("WA_Auctions")) {
-			WebAuction.log.info(plugin.logPrefix + "Creating table WA_Auctions");
+			WebAuction.log.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Auctions (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, player VARCHAR(255), quantity INTEGER, price DOUBLE, created INTEGER, allowBids BOOLEAN Default '0', currentBid DOUBLE, currentWinner VARCHAR(255), ench VARCHAR(45), tableid INTEGER(1));");
 		}
 		if (!tableExists("WA_SellPrice")) {
-			WebAuction.log.info(plugin.logPrefix + "Creating table WA_SellPrice");
+			WebAuction.log.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SellPrice (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, time INTEGER, quantity INTEGER, price DOUBLE, seller VARCHAR(255), buyer VARCHAR(255), ench VARCHAR(45));");
 		}
 		if (!tableExists("WA_MarketPrices")) {
-			WebAuction.log.info(plugin.logPrefix + "Creating table WA_MarketPrices");
+			WebAuction.log.log(Level.INFO, "{0} Creating table WA_MarketPrices", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_MarketPrices (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, time INTEGER, marketprice DOUBLE, ref INTEGER);");
 		}
 		if (!tableExists("WA_SaleAlerts")) {
-			WebAuction.log.info(plugin.logPrefix + "Creating table WA_SaleAlerts");
+			WebAuction.log.log(Level.INFO, "{0} Creating table WA_SaleAlerts", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SaleAlerts (id INTEGER PRIMARY KEY, seller VARCHAR(255), quantity INTEGER, price DOUBLE, buyer VARCHAR(255), item VARCHAR(255), alerted BOOLEAN Default '0');");
 		}
                 if (!tableExists("WA_DbVersion")) {
-                        WebAuction.log.info(plugin.logPrefix + "Creating table WA_DbVersion");
+                        WebAuction.log.log(Level.INFO, "{0} Creating table WA_DbVersion", plugin.logPrefix);
                         executeRawSQL("CREATE TABLE WA_DbVersion (id INTEGER PRIMARY KEY, dbversion INTEGER);");
                         executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN type VARCHAR(45) NULL;");
@@ -155,7 +156,7 @@ public class SqliteDataQueries implements IDataQueries {
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN searchtype VARCHAR(45) NULL;");
                 }
                 if (tableVersion() == 1) {
-                        WebAuction.log.info(plugin.logPrefix + "Update DB version to 2");
+                        WebAuction.log.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
                         executeRawSQL("ALTER TABLE WA_Players ADD COLUMN lock VARCHAR(1) Default 'N';");
                         executeRawSQL("UPDATE WA_DbVersion SET dbversion = 2 where id = 1");
                 }
@@ -501,7 +502,7 @@ public class SqliteDataQueries implements IDataQueries {
             List<Auction> la = new ArrayList<Auction>();
 
             try {
-                    st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
+                    st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
                     st.setString(1, player);
                     st.setInt(2, table);
                     st.setInt(3, to);
@@ -514,6 +515,7 @@ public class SqliteDataQueries implements IDataQueries {
                             stack = Chant(rs.getString("ench"), stack);
                             auction.setItemStack(stack);
                             auction.setPlayerName(rs.getString("player"));
+                            auction.setType(rs.getString("type"));
                             auction.setPrice(rs.getDouble("price"));
                             auction.setCreated(rs.getInt("created"));
                             la.add(auction);

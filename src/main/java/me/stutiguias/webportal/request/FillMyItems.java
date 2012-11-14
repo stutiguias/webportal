@@ -6,14 +6,10 @@ package me.stutiguias.webportal.request;
 
 import java.net.Socket;
 import java.util.List;
-import java.util.Map;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.Enchant;
 import me.stutiguias.webportal.webserver.Html;
-import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
-import org.bukkit.enchantments.Enchantment;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -52,26 +48,7 @@ public class FillMyItems extends Response {
                 jsonTwo = new JSONObject();
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
                 jsonTwo.put("DT_RowClass", "gradeA");
-                
-                String item_name = item.getItemStack().getType().toString().toLowerCase();
-                Short dmg = item.getItemStack().getDurability();
-                String Durability = "";
-                if(item.getItemStack().getType().isBlock() || item.getItemStack().getTypeId() == 351 || item.getItemStack().getTypeId() == 383)
-                {
-                    item_name = Material.getItemName(item.getItemStack().getTypeId() , dmg).toLowerCase();
-                }else {
-                    Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
-                }
-                
-                String enchant = "";
-                for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
-                    int enchId = entry.getKey().getId();
-                    int level = entry.getValue();
-                    enchant += new Enchant().getEnchantName(enchId, level);
-                }
-
-                jsonTwo.put("0", "<img src='images/"+item_name.replace(" ","_") +".png'><br /><font size='-1'>"+ item_name.replace("_"," ") + "<br />" + Durability + enchant +"</font>");
-              
+                jsonTwo.put("0", ConvertItemToResult(item,item.getType()));
                 jsonTwo.put("1", item.getItemStack().getAmount());
                 jsonTwo.put("2", "$ " + item.getPrice());
                 jsonTwo.put("3", "$ " + item.getPrice() * item.getItemStack().getAmount());

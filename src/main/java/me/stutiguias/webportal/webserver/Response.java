@@ -7,9 +7,14 @@ package me.stutiguias.webportal.webserver;
 import java.io.*;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Enchant;
+import org.bukkit.enchantments.Enchantment;
 
 /**
  *
@@ -119,4 +124,50 @@ public class Response {
         return String.format("%.2f", x);  
     } 
     
+    public String ConvertItemToResult(Auction item,String type) {
+        String item_name;
+        String img_name;
+        Short dmg = item.getItemStack().getDurability();
+        String Durability = "";
+        
+        // Not is a block ( have durability )
+        if(!item.getItemStack().getType().isBlock()) {
+            Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
+        }
+        img_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+      
+        if(!(item.getItemStack().getType() == org.bukkit.Material.POTION)) {
+            item_name = getConfigName(img_name,type);
+        }else{
+            item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+            Durability = "";
+        }
+        
+        // Enchant if need
+        String enchant = "";
+        for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
+            int enchId = entry.getKey().getId();
+            int level = entry.getValue();
+            enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
+        }
+        if(item.getItemStack().getType() == org.bukkit.Material.POTION) {
+            return "<img src='images/potion.png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+        }else{
+            return "<img src='images/"+ img_name.replace(" ","_").toLowerCase() +".png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+        }
+    }
+    
+    public String getConfigName(String Itemname,String type) {
+            try {
+                for (Iterator<String> it = plugin.materials.getConfig().getConfigurationSection(type).getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return plugin.materials.getConfig().getString(type + "." + key);
+                    }
+                }
+            }catch(NullPointerException ex){
+                
+            }
+            return Itemname;
+    }
 }

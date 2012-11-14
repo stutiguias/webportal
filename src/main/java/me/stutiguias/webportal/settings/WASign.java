@@ -115,8 +115,9 @@ public class WASign {
     
     public void ItemtoStore(ItemStack stack,Player player){
         int itemDamage = 0;
-        if (stack.getDurability() >= 0) itemDamage = stack.getDurability();
-        
+        if (stack.getDurability() >= 0) {
+            itemDamage = stack.getDurability();
+        }
         // Get Enchant
         Map<Enchantment, Integer> itemEnchantments = stack.getEnchantments();
         String ench_player = "";

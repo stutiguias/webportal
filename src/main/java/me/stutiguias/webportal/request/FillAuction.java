@@ -35,17 +35,39 @@ public class FillAuction extends Response {
     
     public void fillAuction(String ip,String url,String param)
     {
-        if(url.contains("byall"))  getAuctionBy(ip, url, param,"nothing");
-        if(url.contains("byblock")) getAuctionBy(ip, url, param,"Block");
-        if(url.contains("byfood")) getAuctionBy(ip, url, param,"Food");
-        if(url.contains("bytools")) getAuctionBy(ip, url, param,"Tools");
-        if(url.contains("bycombat")) getAuctionBy(ip, url, param,"Combat");
-        if(url.contains("byredstone")) getAuctionBy(ip, url, param,"Redstone");
-        if(url.contains("bydecoration")) getAuctionBy(ip, url, param,"Decoration");
-        if(url.contains("bytransportation")) getAuctionBy(ip, url, param,"Transportation");
-        if(url.contains("bymicellaneous")) getAuctionBy(ip, url, param,"Micellaneous");
-        if(url.contains("bymaterials")) getAuctionBy(ip, url, param,"Materials");
-        if(url.contains("byothers")) getAuctionBy(ip, url, param,"nothing");
+        if(url.contains("byall")) {
+            getAuctionBy(ip, url, param,"nothing");
+        }
+        if(url.contains("byblock")) {
+            getAuctionBy(ip, url, param,"Block");
+        }
+        if(url.contains("byfood")) {
+            getAuctionBy(ip, url, param,"Food");
+        }
+        if(url.contains("bytools")) {
+            getAuctionBy(ip, url, param,"Tools");
+        }
+        if(url.contains("bycombat")) {
+            getAuctionBy(ip, url, param,"Combat");
+        }
+        if(url.contains("byredstone")) {
+            getAuctionBy(ip, url, param,"Redstone");
+        }
+        if(url.contains("bydecoration")) {
+            getAuctionBy(ip, url, param,"Decoration");
+        }
+        if(url.contains("bytransportation")) {
+            getAuctionBy(ip, url, param,"Transportation");
+        }
+        if(url.contains("bymicellaneous")) {
+            getAuctionBy(ip, url, param,"Micellaneous");
+        }
+        if(url.contains("bymaterials")) {
+            getAuctionBy(ip, url, param,"Materials");
+        }
+        if(url.contains("byothers")) {
+            getAuctionBy(ip, url, param,"nothing");
+        }
     }
     
     public void getAuctionBy(String ip,String url,String param,String searchtype) {
@@ -105,60 +127,26 @@ public class FillAuction extends Response {
             return jsonTwo;
     }
     
-    public String ConvertItemToResult(Auction item,String type) {
-        String item_name;
-        String img_name;
-        Short dmg = item.getItemStack().getDurability();
-        String Durability = "";
-        
-        // Not is a block ( have durability )
-        if(!item.getItemStack().getType().isBlock()) {
-            Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
-        }
-        img_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-      
-        if(!(item.getItemStack().getType() == org.bukkit.Material.POTION)) {
-            item_name = getConfigName(img_name,type);
-        }else{
-            item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-            Durability = "";
-        }
-        
-        // Enchant if need
-        String enchant = "";
-        for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
-            int enchId = entry.getKey().getId();
-            int level = entry.getValue();
-            enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
-        }
-        
-        return "<img src='images/"+ img_name.replace(" ","_").toLowerCase() +".png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
-    }
-    
-    public String getConfigName(String Itemname,String type) {
-            try {
-                for (Iterator<String> it = plugin.materials.getConfig().getConfigurationSection(type).getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return plugin.materials.getConfig().getString(type + "." + key);
-                }
-            }catch(NullPointerException ex){
-                
-            }
-            return Itemname;
-    }
-    
     public double MarketPrice(Auction item,Double price) {
            double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-           if(mprice == 0.0) return 0.0;
+           if(mprice == 0.0) {
+             return 0.0;
+           }
            double percent = (( price * 100 ) / mprice);
            return percent;
   
     }
     
     public String Grade(double percent) {
-        if(percent == 100) return "gradeU";
-        if(percent > 100) return "gradeX";
-        if(percent < 100) return "gradeA";
+        if(percent == 100) {
+            return "gradeU";
+        }
+        if(percent > 100) {
+            return "gradeX";
+        }
+        if(percent < 100) {
+            return "gradeA";
+        }
         return "gradeB";
     }
 }

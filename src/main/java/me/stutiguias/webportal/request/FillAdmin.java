@@ -5,14 +5,11 @@
 package me.stutiguias.webportal.request;
 
 import java.net.Socket;
-import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
-import org.bukkit.entity.Player;
 
 /**
  *
