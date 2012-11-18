@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebAuction;
@@ -87,8 +88,9 @@ public class Response {
                 out.write((new StringBuilder()).append("Content-Length: ").append(length).append("\r\n").toString().getBytes());
                 out.write("Server: webauctionlite server\r\n".getBytes());
                 out.write("Connection: Close\r\n\r\n".getBytes());
-                while ((leng = file.read(fileData)) > 0)
-                        out.write(fileData, 0, leng);
+                while ((leng = file.read(fileData)) > 0) {
+                    out.write(fileData, 0, leng);
+                }
                 out.flush();
                 out.close();
                 file.close();
@@ -113,7 +115,7 @@ public class Response {
                 String resdec = URLDecoder.decode(result.group(1),"UTF-8");
                 return resdec;
             }catch (UnsupportedEncodingException e){
-                WebAuction.log.info(plugin.logPrefix+"ERROR in getParam(): " + e.getMessage());
+                WebAuction.log.log(Level.INFO, "{0} ERROR in getParam(): {1}", new Object[]{plugin.logPrefix, e.getMessage()});
                 return "";
             }
         }else

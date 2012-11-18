@@ -1,6 +1,5 @@
 package me.stutiguias.webportal.init;
 
-import me.stutiguias.webportal.commands.WebAuctionCommands;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.stutiguias.webportal.commands.WebAuctionCommands;
 import me.stutiguias.webportal.dao.IDataQueries;
 import me.stutiguias.webportal.dao.MySQLDataQueries;
 import me.stutiguias.webportal.dao.SqliteDataQueries;
@@ -84,7 +84,9 @@ public class WebAuction extends JavaPlugin {
 		log.log(Level.INFO,logPrefix + "WebAuction is initializing.");
                 
                 File dir = new File(this.PluginDir);
-                if (!dir.exists()) dir.mkdirs();
+                if (!dir.exists()) {
+                  dir.mkdirs();
+                }
 
                 dir = new File(this.PluginDir + File.separator + "html");
                 if (!dir.exists()) {
@@ -100,7 +102,8 @@ public class WebAuction extends JavaPlugin {
                 onLoadConfig();
                 
 		getCommand("wa").setExecutor(new WebAuctionCommands(this));
-
+                
+                // Setup Vault
 		setupEconomy();
 		setupPermissions();
                 
@@ -126,7 +129,7 @@ public class WebAuction extends JavaPlugin {
             try {
                 server.server.close();
             }catch(Exception ex) {
-                WebAuction.log.warning(logPrefix + " Error try stop server bind");
+                WebAuction.log.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
             }
             server.interrupt();
             this.reloadConfig();
@@ -138,7 +141,7 @@ public class WebAuction extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
-		log.log(Level.INFO, logPrefix + " Disabled. Bye :D");
+		log.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
 	}
 
 	private void initConfig() {
@@ -215,8 +218,9 @@ public class WebAuction extends JavaPlugin {
                 getMcMMOConfig();
 
                 UseEssentialsBox = getConfig().getBoolean("PortalBox.Essentials");
-                if(UseEssentialsBox)
-                   essentials = new Essentials(this);
+                if(UseEssentialsBox) {
+                    essentials = new Essentials(this);
+                }
                 
 		String dbHost = getConfig().getString("MySQL.Host");
 		String dbUser = getConfig().getString("MySQL.Username");
@@ -238,7 +242,7 @@ public class WebAuction extends JavaPlugin {
                 
                 port = getConfig().getInt("Misc.WebServicePort");
                 int NUM_CONN_MAX = getConfig().getInt("Misc.MaxSimultaneousConnection");
-                log.log(Level.INFO, logPrefix + " Number max Simultaneous Connection is " + NUM_CONN_MAX);
+                log.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
                 connections = 0;
                 
                 if(getConfig().getBoolean("Misc.UseInsideServer")) {
@@ -259,14 +263,14 @@ public class WebAuction extends JavaPlugin {
                 // Set up IDataQueries
                 if(!dbPass.equals("password123") && !dbtype.equalsIgnoreCase("SQLite") )
                 {
-                    log.log(Level.INFO, logPrefix + "Choose MySQL db type.");
-                    log.log(Level.INFO, logPrefix + "MySQL Initializing.");
+                    log.log(Level.INFO, "{0} Choose MySQL db type.", logPrefix);
+                    log.log(Level.INFO, "{0} MySQL Initializing.", logPrefix);
 
                     dataQueries = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
                     dataQueries.initTables();
                }else{ 
-                    log.log(Level.INFO, logPrefix + "Choose SQLite db type.");
-                    log.log(Level.INFO, logPrefix + "SQLite Initializing.");
+                    log.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
+                    log.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
                     
                     dataQueries = new SqliteDataQueries(this);
                     dataQueries.initTables();
@@ -289,9 +293,11 @@ public class WebAuction extends JavaPlugin {
                 for (String key : getConfig().getConfigurationSection("PortalBox.McMMO").getKeys(false)){
                 mcmmoconfig.put(key, getConfig().get("PortalBox.McMMO." + key));
                 }
-                if((Boolean)mcmmoconfig.get("UseMcMMO")) mcmmo = new McMMO(this);
+                if((Boolean)mcmmoconfig.get("UseMcMMO")) {
+                    mcmmo = new McMMO(this);
+                }
             }catch(NullPointerException ex){
-                log.info(logPrefix + " McmmoBox Disable");
+                log.log(Level.INFO, "{0} McmmoBox Disable", logPrefix);
             }
             
         }
@@ -301,7 +307,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Block").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Block";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Block";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Block");
@@ -311,7 +319,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Materials").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Materials";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Materials";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Materials");
@@ -321,7 +331,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Micellaneous").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Micellaneous";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Micellaneous";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Micellaneous");
@@ -331,7 +343,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Redstone").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Redstone";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Redstone";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Redstone");
@@ -341,7 +355,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Transportation").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Transportation";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Transportation";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Transportation");
@@ -351,7 +367,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Decoration").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Decoration";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Decoration";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Decoration");
@@ -361,7 +379,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Tools").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Tools";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Tools";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Tools");
@@ -371,7 +391,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Combat").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Combat";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Combat";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Combat");
@@ -381,7 +403,9 @@ public class WebAuction extends JavaPlugin {
             try {
                 for (Iterator<String> it = materials.getConfig().getConfigurationSection("Food").getKeys(false).iterator(); it.hasNext();) {
                     String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) return "Food";
+                    if(key.equalsIgnoreCase(Itemname)) {
+                        return "Food";
+                    }
                 }
             }catch(NullPointerException ex){
                 log.warning("Unable to search by item type Food");

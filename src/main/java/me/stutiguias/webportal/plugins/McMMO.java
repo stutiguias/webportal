@@ -28,7 +28,7 @@ public class McMMO {
         profile = new ProfileMcMMO();
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("mcMMO");
         if(pl != null) {
-            WebAuction.log.log(Level.INFO, plugin.logPrefix + "PortalBox mcMMO set to true and Mcmmo found !!!");
+            WebAuction.log.log(Level.INFO, "{0} PortalBox mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
         }
     }
     

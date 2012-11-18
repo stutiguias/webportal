@@ -75,7 +75,7 @@ public class WebAuctionPlayerListener implements Listener {
                             isAdmin = 1;
                     }
 		
-                    WebAuction.log.log(Level.INFO, plugin.logPrefix + " Player found - "+ player +" with permissions: canbuy = "+ canBuy +" cansell = " + canSell + " isAdmin = "+ isAdmin);
+                    WebAuction.log.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, player, canBuy, canSell, isAdmin});
                     // Update permissions
                     plugin.dataQueries.updatePlayerPermissions(player, canBuy, canSell, isAdmin);
 		}
@@ -145,7 +145,7 @@ public class WebAuctionPlayerListener implements Listener {
             }
             Player pl = (Player)event.getWhoClicked();
             if(event.getRawSlot() <= 44) {
-                if(event.getCurrentItem().getType() != Material.AIR) {
+                if(event.getCurrentItem().getType() != Material.AIR && event.getCursor().getType() == Material.AIR) {
                     Delete(event, pl);
                 }
                 if(event.getCursor().getType() != Material.AIR) {

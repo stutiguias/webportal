@@ -23,8 +23,9 @@ public class ConfigAccessor {
     private FileConfiguration fileConfiguration;
 
     public ConfigAccessor(JavaPlugin plugin, String fileName) {
-        if (!plugin.isInitialized())
+        if (!plugin.isInitialized()) {
             throw new IllegalArgumentException("plugin must be initiaized");
+        }
         this.plugin = plugin;
         this.fileName = fileName;
     }
@@ -56,8 +57,9 @@ public class ConfigAccessor {
     public void reloadConfig() {
         if (configFile == null) {
             File dataFolder = plugin.getDataFolder();
-            if (dataFolder == null)
+            if (dataFolder == null) {
                 throw new IllegalStateException();
+            }
             configFile = new File(dataFolder, fileName);
         }
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
@@ -80,7 +82,6 @@ public class ConfigAccessor {
 
     public void saveConfig() {
         if (fileConfiguration == null || configFile == null) {
-            return;
         } else {
             try {
                 getConfig().save(configFile);

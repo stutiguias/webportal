@@ -50,6 +50,7 @@ public class Html {
     public String HTMLAuctionMail(String ip,int ID) {
         return "<form action='web/mail' method='GET' onsubmit='return mail(this)'>"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
+                "<input type='text' name='Quantity' onKeyPress='return numbersonly(this, event);' class='input' size='5' /><br />"+
                 "<input type='submit' value='" + plugin.Messages.get("Mailit") + "' class='button' /></form><span id='M"+ID+"'></span>";
     }
 }

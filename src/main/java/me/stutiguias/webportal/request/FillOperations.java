@@ -63,7 +63,17 @@ public class FillOperations extends Response {
     
     public void Mail(String ip,String url,String param) {
         int id = Integer.parseInt(getParam("ID", param));
-        plugin.dataQueries.updateTable(id, plugin.Mail);
+        int quantity = Integer.parseInt(getParam("Quantity", param));
+        Auction _Auction = plugin.dataQueries.getAuction(id);
+        if(_Auction.getItemStack().getAmount() == quantity) {
+            plugin.dataQueries.updateTable(id, plugin.Mail);
+        }else if(_Auction.getItemStack().getAmount() < quantity) {
+            print("Not enought items","text/plain");
+            return;
+        }else if(_Auction.getItemStack().getAmount() > quantity) {
+            plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
+            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnch(),plugin.Mail,_Auction.getType(), _Auction.getItemName(), plugin.getSearchType( _Auction.getItemName() ) );
+        }
         print("Mailt send","text/plain");
     }
     
