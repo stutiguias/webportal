@@ -69,6 +69,7 @@ public class FillAuction extends Response {
         int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
         int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
         String search = getParam("sSearch", param);
+        search = getConfigName(search, searchtype);
         int sEcho = Integer.parseInt(getParam("sEcho", param));
         
         List<Auction> la = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,searchtype);
