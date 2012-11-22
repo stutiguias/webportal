@@ -172,4 +172,18 @@ public class Response {
             }
             return Itemname;
     }
+    
+    public String getConfigKey(String Itemname,String type) {
+            try {
+                for (Iterator<String> it = plugin.materials.getConfig().getConfigurationSection(type).getKeys(false).iterator(); it.hasNext();) {
+                    String key = it.next();
+                    if(Itemname.equalsIgnoreCase(plugin.materials.getConfig().getString(type + "." + key))) {
+                        return key;
+                    }
+                }
+            }catch(NullPointerException ex){
+                
+            }
+            return Itemname;
+    }
 }
