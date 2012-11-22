@@ -5,16 +5,11 @@
 package me.stutiguias.webportal.request;
 
 import java.net.Socket;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.Enchant;
 import me.stutiguias.webportal.webserver.Html;
-import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
-import org.bukkit.enchantments.Enchantment;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

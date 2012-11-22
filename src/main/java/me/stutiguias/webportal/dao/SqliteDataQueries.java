@@ -433,7 +433,7 @@ public class SqliteDataQueries implements IDataQueries {
 			st.setInt(1, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.warning(plugin.logPrefix + "Unable to delete Auction: " + id);
+			WebAuction.log.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, id});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -502,7 +502,7 @@ public class SqliteDataQueries implements IDataQueries {
             List<Auction> la = new ArrayList<Auction>();
 
             try {
-                    st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
+                    st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,searchtype FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
                     st.setString(1, player);
                     st.setInt(2, table);
                     st.setInt(3, to);
@@ -515,7 +515,7 @@ public class SqliteDataQueries implements IDataQueries {
                             stack = Chant(rs.getString("ench"), stack);
                             auction.setItemStack(stack);
                             auction.setPlayerName(rs.getString("player"));
-                            auction.setType(rs.getString("type"));
+                            auction.setType(rs.getString("searchtype"));
                             auction.setPrice(rs.getDouble("price"));
                             auction.setCreated(rs.getInt("created"));
                             la.add(auction);
@@ -855,7 +855,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(10, searchtype);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -1074,12 +1074,12 @@ public class SqliteDataQueries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Players SET WA_Players.lock = ? where name = ? ");
+                st = conn.prepareStatement("UPDATE WA_Players SET lock = ? where name = ? ");
                 st.setString(1, lock);
                 st.setString(2, player);
                 st.executeUpdate();
         } catch (SQLException e) {
-                WebAuction.log.warning(plugin.logPrefix + "Unable to create item");
+                WebAuction.log.log(Level.WARNING, "{0} Unable to Set Lock", plugin.logPrefix);
                 WebAuction.log.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);

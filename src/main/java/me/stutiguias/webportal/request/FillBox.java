@@ -7,7 +7,6 @@ package me.stutiguias.webportal.request;
 import java.net.Socket;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.AuthPlayer;
-import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.OfflinePlayer;
 

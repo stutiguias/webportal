@@ -500,7 +500,7 @@ public class MySQLDataQueries implements IDataQueries {
                 List<Auction> la = new ArrayList<Auction>();
                 
 		try {
-			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type,searchtype FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
                         st.setString(1, player);
                         st.setInt(2, table);
                         st.setInt(3, to);
@@ -514,7 +514,7 @@ public class MySQLDataQueries implements IDataQueries {
 				auction.setItemStack(stack);
 				auction.setPlayerName(rs.getString("player"));
 				auction.setPrice(rs.getDouble("price"));
-                                auction.setType(rs.getString("type"));
+                                auction.setType(rs.getString("searchtype"));
 				auction.setCreated(rs.getInt("created"));
                                 la.add(auction);
 			}
