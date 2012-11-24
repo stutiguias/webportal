@@ -167,10 +167,10 @@ public class WebAuctionPlayerListener implements Listener {
                 if(event.isRightClick()) {
                     ItemStack newamount = new ItemStack(item);
                     newamount.setAmount(1);
-                    new Mailbox(plugin).ItemtoStore(newamount, pl);
+                    new TradeSystem(plugin).ItemtoStore(newamount, pl);
                 }
                 if(event.isLeftClick()) {
-                    new Mailbox(plugin).ItemtoStore(item, pl);
+                    new TradeSystem(plugin).ItemtoStore(item, pl);
                 }
         }
         

@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionMail;
-import me.stutiguias.webportal.settings.AuctionMail;
+import me.stutiguias.webportal.settings.TradeSystem;
 import me.stutiguias.webportal.webserver.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -25,16 +24,12 @@ import org.bukkit.inventory.ItemStack;
 public class Mailbox {
     
     private WebPortal plugin;
+    private TradeSystem TradeSystem;
     
     public Mailbox(WebPortal plugin)
     {
        this.plugin = plugin;
-    }
-    
-    public static double round(double unrounded, int precision, int roundingMode) {
-            BigDecimal bd = new BigDecimal(unrounded);
-            BigDecimal rounded = bd.setScale(precision, roundingMode);
-            return rounded.doubleValue();
+       TradeSystem = new TradeSystem(plugin);
     }
  
     public void MailBoxOperationType(Player player,String Operation){
@@ -50,7 +45,7 @@ public class Mailbox {
                 ItemStack stack = player.getItemInHand();
                 if (stack != null) {
                         if (stack.getTypeId() != 0) {
-                                ItemtoStore(stack,player);
+                                TradeSystem.ItemtoStore(stack,player);
                                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("StackStored")));
                         }else{
                                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("HoldHelp")));						
@@ -83,7 +78,7 @@ public class Mailbox {
                                            if(!notfit.isEmpty()) {
                                                for (ItemStack notfitstack : notfit.values()) {
                                                  player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("InventoryFull")));
-                                                 ItemtoStore(notfitstack, player);
+                                                 TradeSystem.ItemtoStore(notfitstack, player);
                                                }
                                            }
                                         }
@@ -116,50 +111,5 @@ public class Mailbox {
                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoPermission")));
         }
     }
-    
-    public void ItemtoStore(ItemStack stack,Player player){
-        int itemDamage = 0;
-        if (stack.getDurability() >= 0) {
-            itemDamage = stack.getDurability();
-        }
-        // Get Enchant
-        Map<Enchantment, Integer> itemEnchantments = stack.getEnchantments();
-        String ench_player = "";
-        for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
-            int enchId = entry.getKey().getId();
-            int level = entry.getValue();
-            ench_player += enchId + "," + level + ":";
-        }
-        
-        // check if item not already there
-        int quantityInt = stack.getAmount();
-        List<Auction> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
-        Boolean foundMatch = false;
-        for (Auction auction : auctions) {
-                int itemTableIdNumber = auction.getId();
-
-                if ((( ench_player.equals(auction.getEnchantments()) ) || ( (ench_player.isEmpty()) && (auction.getEnchantments().isEmpty()) )) && !foundMatch ) {
-                        int currentQuantity = auction.getQuantity();
-                        currentQuantity += quantityInt;
-                        plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);
-                        foundMatch = true;
-                }
-        }
-        
-        // if not already there create the item
-        if (foundMatch == false) {
-                String ench = "";
-                for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
-                        Enchantment key = entry.getKey();
-                        int enchId = key.getId();
-                        int level = entry.getValue();
-                        ench += enchId + "," + level + ":";
-                }
-                String type = stack.getType().toString();
-                String ItemName = Material.getItemName(stack.getTypeId(),stack.getDurability());
-                String searchtype = plugin.getSearchType(ItemName);
-                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1,type,ItemName,searchtype);
-        }
-    }
-
+   
 }

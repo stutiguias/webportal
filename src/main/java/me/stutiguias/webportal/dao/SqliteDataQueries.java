@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.dao;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class SqliteDataQueries implements IDataQueries {
                     Driver driver = (Driver) Class.forName("org.sqlite.JDBC").newInstance();
                     WALDriver jDriver = new WALDriver(driver);
                     DriverManager.registerDriver(jDriver);
-                    connection = new WALConnection(DriverManager.getConnection("jdbc:sqlite:" + plugin.PluginDir + File.separator + "data.db"));
+                    connection = new WALConnection(DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + File.separator + "data.db"));
                     return connection;
             } catch (Exception e) {
                     WebPortal.log.log(Level.SEVERE, "{0} Exception getting SQLite WALConnection", plugin.logPrefix);
@@ -122,7 +123,14 @@ public class SqliteDataQueries implements IDataQueries {
     
     @Override
     public void initTables() {
-                File dbFile = new File(plugin.PluginDir + File.separator +  "data.db");
+                File dbFile = new File(plugin.getDataFolder() + File.separator +  "data.db");
+                if(!dbFile.exists()) {
+                    try {
+                        dbFile.createNewFile();
+                    } catch (IOException ex) {
+                        WebPortal.log.log(Level.WARNING,"{0} Can`t create file db", plugin.logPrefix);
+                    }
+                }
                 if (!tableExists("WA_Players")) {
 			WebPortal.log.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Players (id INTEGER PRIMARY KEY, name VARCHAR(255), pass VARCHAR(255), money DOUBLE, itemsSold INTEGER, itemsBought INTEGER, earnt DOUBLE, spent DOUBLE, canBuy INTEGER, canSell INTEGER, isAdmin INTEGER);");
@@ -188,7 +196,7 @@ public class SqliteDataQueries implements IDataQueries {
 				saleAlerts.add(saleAlert);
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to get sale alerts for player " + player);
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get sale alerts for player {1}", new Object[]{plugin.logPrefix, player});
 			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
@@ -208,7 +216,7 @@ public class SqliteDataQueries implements IDataQueries {
 			st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to mark sale alert seen " + id);
+			WebPortal.log.log(Level.WARNING, "{0} Unable to mark sale alert seen {1}", new Object[]{plugin.logPrefix, id});
 			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);

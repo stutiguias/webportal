@@ -4,9 +4,12 @@
  */
 package me.stutiguias.webportal.settings;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -72,4 +75,56 @@ public class TradeSystem {
         plugin.dataQueries.LogSellPrice(sellerauction.getItemStack().getTypeId(),sellerauction.getItemStack().getDurability(),time, BuyPlayerName, sellerauction.getPlayerName(), qtd, sellerauction.getPrice(), sellerauction.getEnchantments());
         return "You purchased "+ qtd +" " + item_name + " from "+ sellerauction.getPlayerName() +" for " + sellerauction.getPrice();
     }
+    
+    public static double round(double unrounded, int precision, int roundingMode) {
+            BigDecimal bd = new BigDecimal(unrounded);
+            BigDecimal rounded = bd.setScale(precision, roundingMode);
+            return rounded.doubleValue();
+    }
+    
+    public void ItemtoStore(ItemStack stack,Player player){
+        int itemDamage = 0;
+        if (stack.getDurability() >= 0) {
+            itemDamage = stack.getDurability();
+        }
+        // Get Enchant
+        Map<Enchantment, Integer> itemEnchantments = stack.getEnchantments();
+        String ench_player = "";
+        for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
+            int enchId = entry.getKey().getId();
+            int level = entry.getValue();
+            ench_player += enchId + "," + level + ":";
+        }
+        
+        // check if item not already there
+        int quantityInt = stack.getAmount();
+        List<Auction> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
+        Boolean foundMatch = false;
+        for (Auction auction : auctions) {
+                int itemTableIdNumber = auction.getId();
+
+                if ((( ench_player.equals(auction.getEnchantments()) ) || ( (ench_player.isEmpty()) && (auction.getEnchantments().isEmpty()) )) && !foundMatch ) {
+                        int currentQuantity = auction.getQuantity();
+                        currentQuantity += quantityInt;
+                        plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);
+                        foundMatch = true;
+                }
+        }
+        
+        // if not already there create the item
+        if (foundMatch == false) {
+                String ench = "";
+                for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
+                        Enchantment key = entry.getKey();
+                        int enchId = key.getId();
+                        int level = entry.getValue();
+                        ench += enchId + "," + level + ":";
+                }
+                String type = stack.getType().toString();
+                String ItemName = Material.getItemName(stack.getTypeId(),stack.getDurability());
+                String searchtype = plugin.getSearchType(ItemName);
+                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1,type,ItemName,searchtype);
+        }
+    }
+
 }

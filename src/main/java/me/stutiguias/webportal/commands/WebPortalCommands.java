@@ -74,7 +74,7 @@ public class WebPortalCommands implements CommandExecutor {
                         //no need to create a new account
                         sender.sendMessage(plugin.logPrefix + "Account found.");        
                 } else {
-                        WebPortal.log.log(Level.INFO, plugin.logPrefix + "Player not found, creating account");
+                        WebPortal.log.log(Level.INFO, "{0} Player not found, creating account", plugin.logPrefix);
                         plugin.dataQueries.createPlayer(sender.getName(), "Password", 0.0d, canBuy, canSell, isAdmin);
                 }
                 String newPass = Algorithm.stringHexa(Algorithm.gerarHash(pass,plugin.algorithm));
@@ -103,7 +103,7 @@ public class WebPortalCommands implements CommandExecutor {
                      return false;
             }
             sender.sendMessage(plugin.logPrefix + "Saving config..");
-            WebPortal.log.info(plugin.logPrefix + "This feature is incomplete");
+            WebPortal.log.log(Level.INFO, "{0} This feature is incomplete", plugin.logPrefix);
             plugin.saveConfig();
             sender.sendMessage(plugin.logPrefix + "Config Saved");
             return true;
