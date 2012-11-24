@@ -9,7 +9,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Users;
 import java.util.logging.Level;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -20,15 +20,15 @@ import org.bukkit.plugin.Plugin;
  */
 public class McMMO {
     
-    public WebAuction plugin;
+    public WebPortal plugin;
     public ProfileMcMMO profile;
     
-    public McMMO(WebAuction instance) {
+    public McMMO(WebPortal instance) {
         plugin = instance;
         profile = new ProfileMcMMO();
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("mcMMO");
         if(pl != null) {
-            WebAuction.log.log(Level.INFO, "{0} PortalBox mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
+            WebPortal.log.log(Level.INFO, "{0} PortalBox mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
         }
     }
     

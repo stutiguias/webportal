@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.Enchant;
 import org.bukkit.enchantments.Enchantment;
@@ -23,10 +23,10 @@ import org.bukkit.enchantments.Enchantment;
  */
 public class Response {
     
-    WebAuction plugin;
+    WebPortal plugin;
     Socket WebServerSocket;
     
-    public Response(WebAuction plugin,Socket s)
+    public Response(WebPortal plugin,Socket s)
     {
         this.plugin = plugin;
         WebServerSocket = s;
@@ -49,7 +49,7 @@ public class Response {
         }
         catch(Exception e)
         {
-            WebAuction.log.info((new StringBuilder()).append("ERROR in print(): ").append(e.getMessage()).toString());
+            WebPortal.log.info((new StringBuilder()).append("ERROR in print(): ").append(e.getMessage()).toString());
         }
     }
 
@@ -66,7 +66,7 @@ public class Response {
         }
         catch(Exception e)
         {
-            WebAuction.log.info((new StringBuilder()).append("ERROR in httperror(): ").append(e.getMessage()).toString());
+            WebPortal.log.info((new StringBuilder()).append("ERROR in httperror(): ").append(e.getMessage()).toString());
         }
     }
     
@@ -102,7 +102,7 @@ public class Response {
         }
         catch(Exception e)
         {
-            WebAuction.log.info((new StringBuilder()).append("ERROR in readFileAsBinary(): ").append(e.getMessage()).toString());
+            WebPortal.log.info((new StringBuilder()).append("ERROR in readFileAsBinary(): ").append(e.getMessage()).toString());
         }
     }
     
@@ -115,7 +115,7 @@ public class Response {
                 String resdec = URLDecoder.decode(result.group(1),"UTF-8");
                 return resdec;
             }catch (UnsupportedEncodingException e){
-                WebAuction.log.log(Level.INFO, "{0} ERROR in getParam(): {1}", new Object[]{plugin.logPrefix, e.getMessage()});
+                WebPortal.log.log(Level.INFO, "{0} ERROR in getParam(): {1}", new Object[]{plugin.logPrefix, e.getMessage()});
                 return "";
             }
         }else

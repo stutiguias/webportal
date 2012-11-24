@@ -27,7 +27,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class WebAuction extends JavaPlugin {
+public class WebPortal extends JavaPlugin {
 
 	public String logPrefix = ChatColor.GOLD + "[WebPortal] " + ChatColor.WHITE;
         public String PluginDir = "plugins" + File.separator + "WebPortal";
@@ -39,10 +39,11 @@ public class WebAuction extends JavaPlugin {
 	public IDataQueries dataQueries;
 
 	public Map<String, Long> lastSignUse = new HashMap<String, Long>();
-        public static final HashMap<String, AuthPlayer> AuthPlayer = new HashMap<String, AuthPlayer>();
+        public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<String, AuthPlayer>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
         public WebAuctionServerListenTask server;
 	public int signDelay = 0;
+        
         public ConfigAccessor materials;
         
         public HashMap<String,String> Messages;
@@ -129,7 +130,7 @@ public class WebAuction extends JavaPlugin {
             try {
                 server.server.close();
             }catch(Exception ex) {
-                WebAuction.log.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
+                WebPortal.log.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
             }
             server.interrupt();
             this.reloadConfig();

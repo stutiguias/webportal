@@ -1,7 +1,7 @@
 package me.stutiguias.webportal.commands;
 
 import java.util.logging.Level;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Algorithm;
 import me.stutiguias.webportal.settings.InventoryHandler;
 import org.bukkit.command.Command;
@@ -13,9 +13,9 @@ import org.bukkit.event.EventPriority;
 
 public class WebPortalCommands implements CommandExecutor {
 
-	private WebAuction plugin;
+	private WebPortal plugin;
 
-	public WebPortalCommands(WebAuction plugin) {
+	public WebPortalCommands(WebPortal plugin) {
 		this.plugin = plugin;
 	}
         
@@ -74,7 +74,7 @@ public class WebPortalCommands implements CommandExecutor {
                         //no need to create a new account
                         sender.sendMessage(plugin.logPrefix + "Account found.");        
                 } else {
-                        WebAuction.log.log(Level.INFO, plugin.logPrefix + "Player not found, creating account");
+                        WebPortal.log.log(Level.INFO, plugin.logPrefix + "Player not found, creating account");
                         plugin.dataQueries.createPlayer(sender.getName(), "Password", 0.0d, canBuy, canSell, isAdmin);
                 }
                 String newPass = Algorithm.stringHexa(Algorithm.gerarHash(pass,plugin.algorithm));
@@ -103,7 +103,7 @@ public class WebPortalCommands implements CommandExecutor {
                      return false;
             }
             sender.sendMessage(plugin.logPrefix + "Saving config..");
-            WebAuction.log.info(plugin.logPrefix + "This feature is incomplete");
+            WebPortal.log.info(plugin.logPrefix + "This feature is incomplete");
             plugin.saveConfig();
             sender.sendMessage(plugin.logPrefix + "Config Saved");
             return true;

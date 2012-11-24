@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.request;
 
 import java.net.Socket;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuctionPlayer;
 import me.stutiguias.webportal.settings.AuthPlayer;
 import me.stutiguias.webportal.settings.AuthSystem;
@@ -17,11 +17,11 @@ import me.stutiguias.webportal.webserver.Response;
  */
 public class Login extends Response {
     
-    public WebAuction plugin;
+    public WebPortal plugin;
     public AuthSystem AS;
     public Socket _Socket;
     
-    public Login(WebAuction plugin,Socket socket){
+    public Login(WebPortal plugin,Socket socket){
         super(plugin, socket);
         this.plugin = plugin;
         AS = new AuthSystem(plugin);
@@ -42,7 +42,7 @@ public class Login extends Response {
             }
             _AuthPlayer.AuctionPlayer = _AuctionPlayer;
             _AuthPlayer.AuctionPlayer.setIp(_Socket.getInetAddress().getHostAddress());
-            WebAuction.AuthPlayer.put(_Socket.getInetAddress().getHostAddress(),_AuthPlayer);
+            WebPortal.AuthPlayers.put(_Socket.getInetAddress().getHostAddress(),_AuthPlayer);
             json = "ok";
         }else{
             json = "no";

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionMail;
@@ -24,9 +24,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Mailbox {
     
-    private WebAuction plugin;
+    private WebPortal plugin;
     
-    public Mailbox(WebAuction plugin)
+    public Mailbox(WebPortal plugin)
     {
        this.plugin = plugin;
     }
@@ -109,8 +109,8 @@ public class Mailbox {
                                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoMailRetrieved")));
                         }
                 } catch (Exception e) {
-                       WebAuction.log.info("Erro on Withdraw");
-                       WebAuction.log.info(e.getMessage());
+                       WebPortal.log.info("Erro on Withdraw");
+                       WebPortal.log.info(e.getMessage());
                 }
         } else {
                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoPermission")));

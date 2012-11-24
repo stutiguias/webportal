@@ -6,7 +6,7 @@ package me.stutiguias.webportal.request;
 
 import java.net.Socket;
 import java.util.List;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.Response;
@@ -19,10 +19,10 @@ import org.json.simple.JSONObject;
  */
 public class FillMyItems extends Response {
     
-    private WebAuction plugin;
+    private WebPortal plugin;
     private Html html;
     
-    public FillMyItems(WebAuction plugin,Socket s) {
+    public FillMyItems(WebPortal plugin,Socket s) {
         super(plugin, s);
         this.plugin = plugin;
         html = new Html(plugin);
@@ -31,7 +31,7 @@ public class FillMyItems extends Response {
     public void getMyItems(String ip,String url,String param) {
         int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
         int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
-        List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebAuction.AuthPlayer.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
+        List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
         int sEcho = Integer.parseInt(getParam("sEcho", param));
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = iTotalRecords;

@@ -4,7 +4,7 @@
  */
 package me.stutiguias.webportal.settings;
 
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;
 import uk.org.whoami.authme.security.PasswordSecurity;
 /**
@@ -13,9 +13,9 @@ import uk.org.whoami.authme.security.PasswordSecurity;
  */
 public final class AuthSystem {
     
-    private WebAuction plugin;
+    private WebPortal plugin;
     
-    public AuthSystem(WebAuction plugin) {
+    public AuthSystem(WebPortal plugin) {
         this.plugin = plugin;
     }
         

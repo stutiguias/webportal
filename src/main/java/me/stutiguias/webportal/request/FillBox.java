@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.request;
 
 import java.net.Socket;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuthPlayer;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.OfflinePlayer;
@@ -16,16 +16,16 @@ import org.bukkit.OfflinePlayer;
  */
 public class FillBox extends Response {
     
-    private WebAuction plugin;
+    private WebPortal plugin;
     
-    public FillBox(WebAuction plugin,Socket s) {
+    public FillBox(WebPortal plugin,Socket s) {
         super(plugin, s);
         this.plugin = plugin;
     }
     
     public void BOX1(String HostAddress) {
         StringBuilder sb = new StringBuilder();
-        AuthPlayer authPlayer = WebAuction.AuthPlayer.get(HostAddress);
+        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
         String Name = authPlayer.AuctionPlayer.getName();
         if((Boolean)plugin.mcmmoconfig.get("UseMcMMO") && !(Boolean)plugin.mcmmoconfig.get("McMMOMYSql")) {
             OfflinePlayer player = plugin.getServer().getOfflinePlayer(Name);
@@ -40,7 +40,7 @@ public class FillBox extends Response {
     
     public void BOX2(String HostAddress) {
         StringBuilder sb = new StringBuilder();
-        AuthPlayer authPlayer = WebAuction.AuthPlayer.get(HostAddress);
+        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
         String Name = authPlayer.AuctionPlayer.getName();
         if(plugin.UseEssentialsBox) {
            sb.append(plugin.essentials.getBox(Name));

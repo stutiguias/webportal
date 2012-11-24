@@ -7,7 +7,7 @@ package me.stutiguias.webportal.tasks;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 
 /**
  *
@@ -15,13 +15,13 @@ import me.stutiguias.webportal.init.WebAuction;
  */
 public class WebAuctionServerListenTask extends Thread {
    
-    private WebAuction plugin;
+    private WebPortal plugin;
     int Port;
     WebAuctionServerTask WebAuctionServerTask;
     public int NUM_CONN_MAX;
     public ServerSocket server;
     
-    public WebAuctionServerListenTask(WebAuction plugin,int NUM_CONN_MAX)
+    public WebAuctionServerListenTask(WebPortal plugin,int NUM_CONN_MAX)
     {
         this.NUM_CONN_MAX = NUM_CONN_MAX;
         Port = plugin.port;
@@ -36,7 +36,7 @@ public class WebAuctionServerListenTask extends Thread {
             Socket client;
             try
             {
-                WebAuction.log.info(plugin.logPrefix + "WebServer listening on port "+Port);
+                WebPortal.log.info(plugin.logPrefix + "WebServer listening on port "+Port);
                 while(!server.isClosed()){
                         if(plugin.connections < NUM_CONN_MAX) {
                             client = server.accept();
@@ -44,14 +44,14 @@ public class WebAuctionServerListenTask extends Thread {
                             WebAuctionServerTask.start();
                             plugin.connections++;
                         }else{
-                            WebAuction.log.log(Level.WARNING, plugin.logPrefix + " The max number of Simultaneous as Reach");
+                            WebPortal.log.log(Level.WARNING, plugin.logPrefix + " The max number of Simultaneous as Reach");
                         }
                 }
             }catch(Exception e){ 
-                WebAuction.log.info((new StringBuilder()).append("ERROR : ").append(e.getMessage()).toString());
+                WebPortal.log.info((new StringBuilder()).append("ERROR : ").append(e.getMessage()).toString());
             }
         }catch(Exception ex) {
-            WebAuction.log.info((new StringBuilder()).append("ERROR : ").append(ex.getMessage()).toString());
+            WebPortal.log.info((new StringBuilder()).append("ERROR : ").append(ex.getMessage()).toString());
         }
     }
     

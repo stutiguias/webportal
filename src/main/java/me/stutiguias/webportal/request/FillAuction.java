@@ -6,7 +6,7 @@ package me.stutiguias.webportal.request;
 
 import java.net.Socket;
 import java.util.List;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.Response;
@@ -19,10 +19,10 @@ import org.json.simple.JSONObject;
  */
 public class FillAuction extends Response {
     
-    private WebAuction plugin;
+    private WebPortal plugin;
     private Html html;
     
-    public FillAuction(WebAuction plugin,Socket s) {
+    public FillAuction(WebPortal plugin,Socket s) {
         super(plugin, s);
         this.plugin = plugin;
         html = new Html(plugin);

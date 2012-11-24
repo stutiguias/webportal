@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.request.*;
 import me.stutiguias.webportal.webserver.Response;
 
@@ -19,7 +19,7 @@ import me.stutiguias.webportal.webserver.Response;
  */
 public class WebAuctionServerTask extends Thread {
     
-    private WebAuction plugin;
+    private WebPortal plugin;
     Socket WebServerSocket;
     String Lang;
     int Port;
@@ -43,7 +43,7 @@ public class WebAuctionServerTask extends Thread {
 
     String ExternalUrl;
 
-    public WebAuctionServerTask(WebAuction plugin, Socket s)
+    public WebAuctionServerTask(WebPortal plugin, Socket s)
     {
         PluginDir = "plugins/WebPortal/";
         this.plugin = plugin;
@@ -92,7 +92,7 @@ public class WebAuctionServerTask extends Thread {
                         if(url.startsWith("/web/login"))
                         {
                           _Login.TryToLogin(param);
-                        }else if(!WebAuction.AuthPlayer.containsKey(HostAddress))
+                        }else if(!WebPortal.AuthPlayers.containsKey(HostAddress))
                         {
                             if(url.startsWith("/css"))
                             {
@@ -104,7 +104,7 @@ public class WebAuctionServerTask extends Thread {
                             }else {
                                 Response.readFileAsBinary(htmlDir+"/login.html","text/html");
                             }
-                        }else if(WebAuction.AuthPlayer.containsKey(HostAddress))
+                        }else if(WebPortal.AuthPlayers.containsKey(HostAddress))
                         {
                             if(url.startsWith("/css"))
                             {
@@ -122,7 +122,7 @@ public class WebAuctionServerTask extends Thread {
                             {
                                 _UserInfo.GetInfo();
                             }else if(url.startsWith("/logout")) {
-                                WebAuction.AuthPlayer.remove(HostAddress);
+                                WebPortal.AuthPlayers.remove(HostAddress);
                                 Response.readFileAsBinary(htmlDir + "/login.html","text/html");
                             }else if(url.startsWith("/fill/auction")) {
                                 _FillAuction.fillAuction(HostAddress,url,param);
@@ -155,18 +155,18 @@ public class WebAuctionServerTask extends Thread {
                     }
                 }
             }catch(IOException e) {
-                WebAuction.log.log(Level.WARNING, plugin.logPrefix + "ERROR in IO ");
+                WebPortal.log.log(Level.WARNING, plugin.logPrefix + "ERROR in IO ");
                 e.printStackTrace();
             }
             catch(Exception e)
             {
-                WebAuction.log.log(Level.WARNING, plugin.logPrefix + "ERROR in ServerParser ");
+                WebPortal.log.log(Level.WARNING, plugin.logPrefix + "ERROR in ServerParser ");
                 e.printStackTrace();
             }
         }
         catch(IOException e)
         {
-                WebAuction.log.log(Level.WARNING, plugin.logPrefix + "ERROR in IO ");
+                WebPortal.log.log(Level.WARNING, plugin.logPrefix + "ERROR in IO ");
                 e.printStackTrace();
         }finally {
             plugin.connections--;
@@ -174,8 +174,8 @@ public class WebAuctionServerTask extends Thread {
     }
 
     public Boolean getLockState(String HostAddress) {
-        if(WebAuction.LockTransact.get(WebAuction.AuthPlayer.get(HostAddress).AuctionPlayer.getName()) != null) {
-            return WebAuction.LockTransact.get(WebAuction.AuthPlayer.get(HostAddress).AuctionPlayer.getName());
+        if(WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(HostAddress).AuctionPlayer.getName()) != null) {
+            return WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(HostAddress).AuctionPlayer.getName());
         }else{
             return false;
         }

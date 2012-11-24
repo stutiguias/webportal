@@ -6,7 +6,7 @@ package me.stutiguias.webportal.plugins;
 
 import java.util.List;
 import java.util.logging.Level;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 
@@ -15,14 +15,14 @@ import org.bukkit.plugin.Plugin;
  * @author Daniel
  */
 public class Essentials {
-     public WebAuction plugin;
+     public WebPortal plugin;
     public ProfileEssentials profile;
     
-    public Essentials(WebAuction instance) {
+    public Essentials(WebPortal instance) {
         plugin = instance;
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("Essentials");
         if(pl != null) {
-            WebAuction.log.log(Level.INFO, plugin.logPrefix + "PortalBox Essentials set to true and Essentials found !!!");
+            WebPortal.log.log(Level.INFO, plugin.logPrefix + "PortalBox Essentials set to true and Essentials found !!!");
         }
     }
     

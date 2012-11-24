@@ -1,6 +1,6 @@
 package me.stutiguias.webportal.listeners;
 
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -14,9 +14,9 @@ import org.bukkit.event.block.SignChangeEvent;
 
 public class WebAuctionBlockListener implements Listener {
 
-	private final WebAuction plugin;
+	private final WebPortal plugin;
 
-	public WebAuctionBlockListener(WebAuction plugin) {
+	public WebAuctionBlockListener(WebPortal plugin) {
 		this.plugin = plugin;
 	}
         

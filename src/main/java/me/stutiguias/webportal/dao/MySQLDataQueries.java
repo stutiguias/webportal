@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
 import me.stutiguias.webportal.settings.*;
 import org.bukkit.enchantments.Enchantment;
@@ -15,18 +15,18 @@ import org.bukkit.inventory.ItemStack;
 
 public class MySQLDataQueries implements IDataQueries {
 
-	private WebAuction plugin;
+	private WebPortal plugin;
         private Integer found;
         private WALConnectionPool pool;
         
-	public MySQLDataQueries(WebAuction plugin, String dbHost, String dbPort, String dbUser, String dbPass, String dbName) {
+	public MySQLDataQueries(WebPortal plugin, String dbHost, String dbPort, String dbUser, String dbPass, String dbName) {
 		this.plugin = plugin;
                 try {
-                        WebAuction.log.log(Level.WARNING, "{0} Starting pool....", plugin.logPrefix);
+                        WebPortal.log.log(Level.WARNING, "{0} Starting pool....", plugin.logPrefix);
                         pool = new WALConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://"+ dbHost +":"+ dbPort +"/"+ dbName, dbUser, dbPass);
                 }catch(Exception e) {
-                        WebAuction.log.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+                        WebPortal.log.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
                 }
 	}
 
@@ -34,8 +34,8 @@ public class MySQLDataQueries implements IDataQueries {
 		try {
 			return pool.getConnection();
 		} catch (Exception e) {
-			WebAuction.log.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		}
 		return null;
 	}
@@ -76,8 +76,8 @@ public class MySQLDataQueries implements IDataQueries {
 				exists = true;
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -96,8 +96,8 @@ public class MySQLDataQueries implements IDataQueries {
 				version = rs.getInt("dbversion");
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to check if table version ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to check if table version ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -113,8 +113,8 @@ public class MySQLDataQueries implements IDataQueries {
 			st = conn.createStatement();
 			st.executeUpdate(sql);
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Exception executing raw SQL{1}", new Object[]{plugin.logPrefix, sql});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Exception executing raw SQL{1}", new Object[]{plugin.logPrefix, sql});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -123,37 +123,37 @@ public class MySQLDataQueries implements IDataQueries {
         @Override
 	public void initTables() {
 		if (!tableExists("WA_Players")) {
-			WebAuction.log.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
+			WebPortal.log.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Players (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(255), pass VARCHAR(255), money DOUBLE, itemsSold INT, itemsBought INT, earnt DOUBLE, spent DOUBLE, canBuy INT, canSell INT, isAdmin INT);");
 		}
 		if (!tableExists("WA_StorageCheck")) {
-			WebAuction.log.log(Level.INFO, "{0} Creating table WA_StorageCheck", plugin.logPrefix);
+			WebPortal.log.log(Level.INFO, "{0} Creating table WA_StorageCheck", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_StorageCheck (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), time INT);");
 		}
 		if (!tableExists("WA_Auctions")) {
-			WebAuction.log.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
+			WebPortal.log.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Auctions (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name INT, damage INT, player VARCHAR(255), quantity INT, price DOUBLE, created INT, allowBids BOOLEAN Default '0', currentBid DOUBLE, currentWinner VARCHAR(255), ench VARCHAR(45), tableid INT(1));");
 		}
 		if (!tableExists("WA_SellPrice")) {
-			WebAuction.log.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
+			WebPortal.log.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SellPrice (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name INT, damage INT, time INT, quantity INT, price DOUBLE, seller VARCHAR(255), buyer VARCHAR(255), ench VARCHAR(45));");
 		}
 		if (!tableExists("WA_MarketPrices")) {
-			WebAuction.log.log(Level.INFO, "{0} Creating table WA_MarketPrices", plugin.logPrefix);
+			WebPortal.log.log(Level.INFO, "{0} Creating table WA_MarketPrices", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_MarketPrices (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name INT, damage INT, time INT, marketprice DOUBLE, ref INT);");
 		}
 		if (!tableExists("WA_SaleAlerts")) {
-			WebAuction.log.log(Level.INFO, "{0} Creating table WA_SaleAlerts", plugin.logPrefix);
+			WebPortal.log.log(Level.INFO, "{0} Creating table WA_SaleAlerts", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SaleAlerts (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), seller VARCHAR(255), quantity INT, price DOUBLE, buyer VARCHAR(255), item VARCHAR(255), alerted BOOLEAN Default '0');");
 		}
                 if (!tableExists("WA_DbVersion")) {
-                        WebAuction.log.log(Level.INFO, "{0} Creating table WA_DbVersion", plugin.logPrefix);
+                        WebPortal.log.log(Level.INFO, "{0} Creating table WA_DbVersion", plugin.logPrefix);
                         executeRawSQL("CREATE TABLE WA_DbVersion (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), dbversion INT);");
                         executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type`, ADD COLUMN `searchtype` VARCHAR(45) NULL  AFTER `itemname` ;");
                 }
                 if (tableVersion() == 1) {
-                        WebAuction.log.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
+                        WebPortal.log.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
                         executeRawSQL("ALTER TABLE WA_Players ADD COLUMN `lock` VARCHAR(1) Default 'N' AFTER `isAdmin` ");
                         executeRawSQL("UPDATE WA_DbVersion SET dbversion = 2 where id = 1");
                 }
@@ -184,8 +184,8 @@ public class MySQLDataQueries implements IDataQueries {
 				saleAlerts.add(saleAlert);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get sale alerts for player {1}", new Object[]{plugin.logPrefix, player});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get sale alerts for player {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -206,8 +206,8 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to mark sale alert seen {1}", new Object[]{plugin.logPrefix, id});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to mark sale alert seen {1}", new Object[]{plugin.logPrefix, id});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -240,8 +240,8 @@ public class MySQLDataQueries implements IDataQueries {
                                 auction.setEnchantments(rs.getString("ench"));
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get auction {1}", new Object[]{plugin.logPrefix, id});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get auction {1}", new Object[]{plugin.logPrefix, id});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -331,8 +331,8 @@ public class MySQLDataQueries implements IDataQueries {
 		              found = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -375,8 +375,8 @@ public class MySQLDataQueries implements IDataQueries {
 		              found = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -396,7 +396,7 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setString(2, player);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update password for player: {1} error : {2}", new Object[]{plugin.logPrefix, player, e.getMessage()});
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update password for player: {1} error : {2}", new Object[]{plugin.logPrefix, player, e.getMessage()});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -414,7 +414,7 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update Auction: {1} error :{2}", new Object[]{plugin.logPrefix, id, e.getMessage()});
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update Auction: {1} error :{2}", new Object[]{plugin.logPrefix, id, e.getMessage()});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -431,7 +431,7 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setInt(1, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, id});
+			WebPortal.log.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, id});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -453,7 +453,7 @@ public class MySQLDataQueries implements IDataQueries {
 				exists = true;
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to check new mail for: {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.log.log(Level.WARNING, "{0} Unable to check new mail for: {1}", new Object[]{plugin.logPrefix, player});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -483,8 +483,8 @@ public class MySQLDataQueries implements IDataQueries {
 				waPlayer.setIsAdmin(rs.getInt("isAdmin"));
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0}Unable to get player {1}", new Object[]{plugin.logPrefix, player});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0}Unable to get player {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -524,8 +524,8 @@ public class MySQLDataQueries implements IDataQueries {
 		              found = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -546,7 +546,7 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setString(4, player);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update player permissions in DB error : {1}", new Object[]{plugin.logPrefix, e.getMessage()});
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update player permissions in DB error : {1}", new Object[]{plugin.logPrefix, e.getMessage()});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -568,8 +568,8 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setInt(6, isAdmin);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update player permissions in DB", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update player permissions in DB", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -593,8 +593,8 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setString(8, ench);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update Sell Price", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update Sell Price", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -623,8 +623,8 @@ public class MySQLDataQueries implements IDataQueries {
                             }         
                         }
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update player permissions in DB", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update player permissions in DB", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -643,8 +643,8 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setString(2, player);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update player money in DB", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update player money in DB", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -679,8 +679,8 @@ public class MySQLDataQueries implements IDataQueries {
                                 auction.setEnchantments(rs.getString("ench"));
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -721,8 +721,8 @@ public class MySQLDataQueries implements IDataQueries {
 				auctions.add(auction);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -762,8 +762,8 @@ public class MySQLDataQueries implements IDataQueries {
 				auctions.add(auction);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -782,8 +782,8 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -801,8 +801,8 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -820,8 +820,8 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -847,8 +847,8 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setString(10, searchtype);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -869,8 +869,8 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setString(5, item);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to alert item", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to alert item", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -902,8 +902,8 @@ public class MySQLDataQueries implements IDataQueries {
                                 auctions.add(auction);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -934,8 +934,8 @@ public class MySQLDataQueries implements IDataQueries {
 				auctionMails.add(auctionMail);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -953,8 +953,8 @@ public class MySQLDataQueries implements IDataQueries {
 			st.setInt(1, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to remove mail {1}", new Object[]{plugin.logPrefix, id});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to remove mail {1}", new Object[]{plugin.logPrefix, id});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -987,8 +987,8 @@ public class MySQLDataQueries implements IDataQueries {
                                 pf.setFISHING(rs.getInt("fishing"));
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to get profile {1}", new Object[]{plugin.logPrefix, player});
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to get profile {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -1035,8 +1035,8 @@ public class MySQLDataQueries implements IDataQueries {
                                 Transacts.add(_Transact);
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to transact ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to transact ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -1059,8 +1059,8 @@ public class MySQLDataQueries implements IDataQueries {
                                 MarketPrice = rs.getInt("total");
 			}
 		} catch (SQLException e) {
-			WebAuction.log.log(Level.WARNING, "{0} Unable to maket price ", plugin.logPrefix);
-			WebAuction.log.warning(e.getMessage());
+			WebPortal.log.log(Level.WARNING, "{0} Unable to maket price ", plugin.logPrefix);
+			WebPortal.log.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -1082,8 +1082,8 @@ public class MySQLDataQueries implements IDataQueries {
                         Lock = rs.getString("lock");
                 }
         } catch (SQLException e) {
-                WebAuction.log.log(Level.WARNING, "{0} Unable to maket price ", plugin.logPrefix);
-                WebAuction.log.warning(e.getMessage());
+                WebPortal.log.log(Level.WARNING, "{0} Unable to maket price ", plugin.logPrefix);
+                WebPortal.log.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
         }
@@ -1102,8 +1102,8 @@ public class MySQLDataQueries implements IDataQueries {
                 st.setString(2, player);
                 st.executeUpdate();
         } catch (SQLException e) {
-                WebAuction.log.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
-                WebAuction.log.warning(e.getMessage());
+                WebPortal.log.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
+                WebPortal.log.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
         }

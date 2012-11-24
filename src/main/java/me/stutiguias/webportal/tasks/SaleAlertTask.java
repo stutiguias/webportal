@@ -1,15 +1,15 @@
 package me.stutiguias.webportal.tasks;
 
 import java.util.List;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.SaleAlert;
 import org.bukkit.entity.Player;
 
 public class SaleAlertTask implements Runnable {
 
-	private final WebAuction plugin;
+	private final WebPortal plugin;
 
-	public SaleAlertTask(WebAuction plugin) {
+	public SaleAlertTask(WebPortal plugin) {
 		this.plugin = plugin;
 	}
 

@@ -6,7 +6,7 @@ package me.stutiguias.webportal.request;
 
 import java.net.Socket;
 import java.util.List;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
@@ -17,19 +17,19 @@ import me.stutiguias.webportal.webserver.Response;
  */
 public class FillAdmin extends Response {
     
-    WebAuction plugin;
+    WebPortal plugin;
     AuctionPlayer _AuPlayer;
     List<Auction> _PlayerItems;
     List<AuctionMail> _PlayerMail;
     List<Auction> _PlayerAuction;
     
-    public FillAdmin(WebAuction plugin,Socket s) {
+    public FillAdmin(WebPortal plugin,Socket s) {
         super(plugin,s);
         this.plugin = plugin;
     }
     
     public Boolean isAdmin(String Hostadress) {
-        if (WebAuction.AuthPlayer.get(Hostadress).AuctionPlayer.getIsAdmin() == 1) {
+        if (WebPortal.AuthPlayers.get(Hostadress).AuctionPlayer.getIsAdmin() == 1) {
           return true;
         }else{
           return false;
@@ -74,7 +74,7 @@ public class FillAdmin extends Response {
     }
     
     private String HTMLBan(String ip,int id) {
-      if(WebAuction.AuthPlayer.get(ip).AuctionPlayer.getIsAdmin() == 1) {
+      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getIsAdmin() == 1) {
         return "<form action='ban/player' method='GET' onsubmit='return ban(this)'>"+
                 "<input type='hidden' name='ID' value='"+id+"' />"+
                 "<input type='submit' value='Ban' class='button' /></form><span id='"+id+"'></span>";

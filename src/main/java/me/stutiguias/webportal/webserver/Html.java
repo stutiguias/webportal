@@ -4,7 +4,7 @@
  */
 package me.stutiguias.webportal.webserver;
 
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 
 /**
  *
@@ -12,14 +12,14 @@ import me.stutiguias.webportal.init.WebAuction;
  */
 public class Html {
     
-    WebAuction plugin;
+    WebPortal plugin;
     
-    public Html(WebAuction plugin) {
+    public Html(WebPortal plugin) {
         this.plugin = plugin;
     }
     
     public String HTMLBuy(String ip,int ID){
-      if(WebAuction.AuthPlayer.get(ip).AuctionPlayer.getCanBuy() == 1) {
+      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getCanBuy() == 1) {
         return "<form action='buy/item' method='GET' onsubmit='return buy(this)'>"+
                 "<input type='text' name='Quantity' onKeyPress='return numbersonly(this, event);' class='input' />"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
@@ -36,7 +36,7 @@ public class Html {
     }
     
     public String HTMLAuctionCreate(String ip,int ID) {
-      if(WebAuction.AuthPlayer.get(ip).AuctionPlayer.getCanSell() == 1) {
+      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getCanSell() == 1) {
         return "<form action='web/postauction' method='GET' onsubmit='return postauction(this)'>"+
                 "Quantity: <input type='text' name='Quantity' onKeyPress='return numbersonly(this, event);' class='input' /><br />"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+

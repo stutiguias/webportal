@@ -3,7 +3,7 @@ package me.stutiguias.webportal.listeners;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.signs.Mailbox;
 import org.bukkit.ChatColor;
@@ -25,10 +25,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class WebAuctionPlayerListener implements Listener {
 
-	private final WebAuction plugin;
+	private final WebPortal plugin;
         private final Mailbox WASign;
         
-	public WebAuctionPlayerListener(WebAuction plugin) {
+	public WebAuctionPlayerListener(WebPortal plugin) {
 		this.plugin = plugin;
                 this.WASign = new Mailbox(plugin);
 	}
@@ -76,7 +76,7 @@ public class WebAuctionPlayerListener implements Listener {
                             isAdmin = 1;
                     }
 		
-                    WebAuction.log.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, player, canBuy, canSell, isAdmin});
+                    WebPortal.log.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, player, canBuy, canSell, isAdmin});
                     // Update permissions
                     plugin.dataQueries.updatePlayerPermissions(player, canBuy, canSell, isAdmin);
 		}
@@ -160,7 +160,7 @@ public class WebAuctionPlayerListener implements Listener {
             if(!event.getInventory().getName().equalsIgnoreCase("WebAuctionLite")) return;
             Player pl = (Player)event.getPlayer();
             plugin.dataQueries.setLock(pl.getName(),"N");
-            WebAuction.LockTransact.put(pl.getName(), Boolean.FALSE);
+            WebPortal.LockTransact.put(pl.getName(), Boolean.FALSE);
         }
         
         public void AddItem(ItemStack item,Player pl,InventoryClickEvent event) {

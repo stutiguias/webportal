@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.settings;
 
 import java.util.List;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -18,10 +18,10 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryHandler implements InventoryHolder {
 
     final Inventory inventory;
-    WebAuction plugin;
+    WebPortal plugin;
     Player player;
     
-    public InventoryHandler(WebAuction plugin,Player player) {
+    public InventoryHandler(WebPortal plugin,Player player) {
         this.plugin = plugin;
         this.player = player;
         inventory = plugin.getServer().createInventory(this,45,"WebAuctionLite");
@@ -45,7 +45,7 @@ public class InventoryHandler implements InventoryHolder {
             }
         }
         plugin.dataQueries.setLock(player.getName(),"S");
-        WebAuction.LockTransact.put(player.getName(), Boolean.TRUE);
+        WebPortal.LockTransact.put(player.getName(), Boolean.TRUE);
         return inventory;
     }
     

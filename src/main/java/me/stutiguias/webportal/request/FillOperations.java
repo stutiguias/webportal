@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.request;
 
 import java.net.Socket;
-import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionPlayer;
 import me.stutiguias.webportal.settings.TradeSystem;
@@ -19,10 +19,10 @@ import org.bukkit.inventory.ItemStack;
  */
 public class FillOperations extends Response {
         
-    private WebAuction plugin;
+    private WebPortal plugin;
     TradeSystem tr;
     
-    public FillOperations(WebAuction plugin,Socket s) {
+    public FillOperations(WebPortal plugin,Socket s) {
         super(plugin, s);
         this.plugin = plugin;
     }
@@ -87,7 +87,7 @@ public class FillOperations extends Response {
            int qtd = Integer.parseInt(getParam("Quantity", param));
            int id = Integer.parseInt(getParam("ID", param));
            
-           AuctionPlayer ap = WebAuction.AuthPlayer.get(ip).AuctionPlayer;
+           AuctionPlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
            Auction au = plugin.dataQueries.getAuction(id);
            String item_name = Material.getItemName(au.getItemStack().getTypeId(),(short)(au.getItemStack().getDurability()));
            if(qtd <= 0)
@@ -106,7 +106,7 @@ public class FillOperations extends Response {
                print(tr.Buy(ap.getName(),au, qtd, item_name, false),"text/plain");
            }
        }catch(Exception ex){
-           WebAuction.log.warning(ex.getMessage());
+           WebPortal.log.warning(ex.getMessage());
        }
         
     }
