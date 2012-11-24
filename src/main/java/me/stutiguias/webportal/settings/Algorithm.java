@@ -14,8 +14,6 @@ import java.security.SecureRandom;
  */
 public class Algorithm {
     
-    private static SecureRandom rnd = new SecureRandom();
-    
     private static Algorithm instance;
 
     private Algorithm() {

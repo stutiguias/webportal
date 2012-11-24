@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import me.stutiguias.webportal.commands.WebAuctionCommands;
+import me.stutiguias.webportal.commands.WebPortalCommands;
 import me.stutiguias.webportal.dao.IDataQueries;
 import me.stutiguias.webportal.dao.MySQLDataQueries;
 import me.stutiguias.webportal.dao.SqliteDataQueries;
@@ -101,7 +101,7 @@ public class WebAuction extends JavaPlugin {
                 
                 onLoadConfig();
                 
-		getCommand("wa").setExecutor(new WebAuctionCommands(this));
+		getCommand("wa").setExecutor(new WebPortalCommands(this));
                 
                 // Setup Vault
 		setupEconomy();

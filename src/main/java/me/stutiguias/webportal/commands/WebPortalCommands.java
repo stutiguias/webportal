@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-public class WebAuctionCommands implements CommandExecutor {
+public class WebPortalCommands implements CommandExecutor {
 
 	private WebAuction plugin;
 
-	public WebAuctionCommands(WebAuction plugin) {
+	public WebPortalCommands(WebAuction plugin) {
 		this.plugin = plugin;
 	}
         

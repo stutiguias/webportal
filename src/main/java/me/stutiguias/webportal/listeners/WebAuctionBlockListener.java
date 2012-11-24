@@ -48,7 +48,6 @@ public class WebAuctionBlockListener implements Listener {
                     if(lines[0].equalsIgnoreCase("[wSell]")) wSell(lines, player, allowEvent, sign, event);
                 }
                 
-
 	}
         
         public void wSell(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event) {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.*;
+import me.stutiguias.webportal.signs.Mailbox;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;

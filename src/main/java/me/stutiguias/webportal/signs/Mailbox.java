@@ -2,13 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.settings;
+package me.stutiguias.webportal.signs;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebAuction;
+import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.AuctionMail;
+import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.webserver.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
