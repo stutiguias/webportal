@@ -30,7 +30,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class WebPortal extends JavaPlugin {
 
 	public String logPrefix = ChatColor.GOLD + "[WebPortal] " + ChatColor.WHITE;
-        public String PluginDir = "plugins" + File.separator + "WebPortal";
 	public static final Logger log = Logger.getLogger("Minecraft");
 
 	private final WebAuctionPlayerListener playerListener = new WebAuctionPlayerListener(this);
@@ -84,18 +83,18 @@ public class WebPortal extends JavaPlugin {
 
 		log.log(Level.INFO, "{0} WebAuction is initializing.", logPrefix);
                 
-                File dir = new File(this.PluginDir);
+                File dir = getDataFolder();
                 if (!dir.exists()) {
                   dir.mkdirs();
                 }
 
-                dir = new File(this.PluginDir + File.separator + "html");
+                dir = new File(getDataFolder() + File.separator + "html");
                 if (!dir.exists()) {
                     log.log(Level.INFO, "{0} Copying default HTML ZIP...", logPrefix);
-                    dir = new File(this.PluginDir + File.separator + "webportal.zip");
+                    dir = new File(getDataFolder() + File.separator + "webportal.zip");
                     FileMgmt.copy(getResource("webportal.zip"), dir);
                     log.log(Level.INFO, "{0} Done! Unzipping...", logPrefix);
-                    FileMgmt.unziptodir(dir, new File(this.PluginDir));
+                    FileMgmt.unziptodir(dir, getDataFolder());
                     log.log(Level.INFO, "{0} Done! Deleting zip.", logPrefix);
                     dir.deleteOnExit();
                 }
