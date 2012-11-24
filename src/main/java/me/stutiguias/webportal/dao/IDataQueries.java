@@ -41,7 +41,7 @@ public interface IDataQueries {
         String getPassword(String player);
         void updatePlayerMoney(String player, double money);
 	AuctionPlayer getPlayer(String player);	
-        List<AuctionItem> getPlayerItems(String player);
+        List<Auction> getPlayerItems(String player);
         String getLock(String player);
         boolean setLock(String player,String lock);
         
@@ -55,9 +55,9 @@ public interface IDataQueries {
         List<Transact> GetTransactOfPlayer(String player);
 
         //Items
-        AuctionItem getItemById(int ID,int tableid);
-        List<AuctionItem> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid);
-        List<AuctionItem> getItemByName(String player, String itemName, boolean reverseOrder, int tableid);
+        Auction getItemById(int ID,int tableid);
+        List<Auction> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid);
+        List<Auction> getItemByName(String player, String itemName, boolean reverseOrder, int tableid);
         void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
 	//void CreateAuction(int quantity, int id);

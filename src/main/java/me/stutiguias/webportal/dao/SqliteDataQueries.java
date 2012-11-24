@@ -238,7 +238,7 @@ public class SqliteDataQueries implements IDataQueries {
 				auction.setAllowBids(rs.getBoolean("allowBids"));
 				auction.setCurrentBid(rs.getDouble("currentBid"));
 				auction.setCurrentWinner(rs.getString("currentWinner"));
-                                auction.setEnch(rs.getString("ench"));
+                                auction.setEnchantments(rs.getString("ench"));
 			}
 		} catch (SQLException e) {
 			WebAuction.log.warning(plugin.logPrefix + "Unable to get auction " + id);
@@ -641,7 +641,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(2, player);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to update player money in DB");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to update player money in DB", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -649,8 +649,8 @@ public class SqliteDataQueries implements IDataQueries {
     }
 
     @Override
-    public AuctionItem getItemById(int ID,int tableid) {
-            AuctionItem auctionItem = null;
+    public Auction getItemById(int ID,int tableid) {
+            Auction auction = null;
 
             WALConnection conn = getConnection();
             PreparedStatement st = null;
@@ -663,28 +663,31 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, tableid);
                     rs = st.executeQuery();
                     while (rs.next()) {
-                            auctionItem = new AuctionItem();
-                            auctionItem.setId(rs.getInt("id"));
-                            auctionItem.setName(rs.getInt("name"));
-                            auctionItem.setItemName(rs.getString("itemname"));
-                            auctionItem.setDamage(rs.getInt("damage"));
-                            auctionItem.setPlayerName(rs.getString("player"));
-                            auctionItem.setPrice(rs.getString("price"));
-                            auctionItem.setQuantity(rs.getInt("quantity"));
-                            auctionItem.setEnchantments(rs.getString("ench"));
+                            auction = new Auction();
+                            auction.setId(rs.getInt("id"));
+                            auction.setName(rs.getInt("name"));
+                            auction.setItemName(rs.getString("itemname"));
+                            auction.setDamage(rs.getInt("damage"));
+                            auction.setPlayerName(rs.getString("player"));
+                            auction.setPrice(rs.getDouble("price"));
+                            auction.setQuantity(rs.getInt("quantity"));
+                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                            stack = Chant(rs.getString("ench"),stack);
+                            auction.setItemStack(stack);
+                            auction.setEnchantments(rs.getString("ench"));
                     }
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to get items ");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
-            return auctionItem;
+            return auction;
     }
     
     @Override
-    public List<AuctionItem> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
-            List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
+    public List<Auction> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
+            List<Auction> auctions = new ArrayList<Auction>();
 
             WALConnection conn = getConnection();
             PreparedStatement st = null;
@@ -701,29 +704,32 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(3, tableid);
                     rs = st.executeQuery();
                     while (rs.next()) {
-                            AuctionItem auctionItem = new AuctionItem();
-                            auctionItem.setId(rs.getInt("id"));
-                            auctionItem.setName(rs.getInt("name"));
-                            auctionItem.setDamage(rs.getInt("damage"));
-                            auctionItem.setPlayerName(rs.getString("player"));
-                            auctionItem.setQuantity(rs.getInt("quantity"));
-                            auctionItem.setPrice(rs.getString("price"));
-                            auctionItem.setItemName(rs.getString("itemname"));
-                            auctionItem.setEnchantments(rs.getString("ench"));
-                            auctionItems.add(auctionItem);
+                            Auction auction = new Auction();
+                            auction.setId(rs.getInt("id"));
+                            auction.setName(rs.getInt("name"));
+                            auction.setDamage(rs.getInt("damage"));
+                            auction.setPlayerName(rs.getString("player"));
+                            auction.setQuantity(rs.getInt("quantity"));
+                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                            stack = Chant(rs.getString("ench"),stack);
+                            auction.setItemStack(stack);
+                            auction.setPrice(rs.getDouble("price"));
+                            auction.setItemName(rs.getString("itemname"));
+                            auction.setEnchantments(rs.getString("ench"));
+                            auctions.add(auction);
                     }
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to get items ");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
-            return auctionItems;
+            return auctions;
     }
 
     @Override
-    public List<AuctionItem> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
-            List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
+    public List<Auction> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
+            List<Auction> auctions = new ArrayList<Auction>();
 
             WALConnection conn = getConnection();
             PreparedStatement st = null;
@@ -741,42 +747,26 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(4, tableid);
                     rs = st.executeQuery();
                     while (rs.next()) {
-                            AuctionItem auctionItem = new AuctionItem();
-                            auctionItem.setId(rs.getInt("id"));
-                            auctionItem.setName(rs.getInt("name"));
-                            auctionItem.setDamage(rs.getInt("damage"));
-                            auctionItem.setPlayerName(rs.getString("player"));
-                            auctionItem.setQuantity(rs.getInt("quantity"));
-                            auctionItem.setEnchantments(rs.getString("ench"));
-                            auctionItems.add(auctionItem);
+                            Auction auction = new Auction();
+                            auction.setId(rs.getInt("id"));
+                            auction.setName(rs.getInt("name"));
+                            auction.setDamage(rs.getInt("damage"));
+                            auction.setPlayerName(rs.getString("player"));
+                            auction.setQuantity(rs.getInt("quantity"));
+                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                            stack = Chant(rs.getString("ench"),stack);
+                            auction.setItemStack(stack);
+                            auction.setEnchantments(rs.getString("ench"));
+                            auctions.add(auction);
                     }
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to get items ");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
-            return auctionItems;
+            return auctions;
     }
-
-//    @Override
-//    public void CreateAuction(int quantity, int id) {
-//            WALConnection conn = getConnection();
-//            PreparedStatement st = null;
-//            ResultSet rs = null;
-//
-//            try {
-//                    st = conn.prepareStatement("UPDATE WA_Auctions SET quantity = ? WHERE id = ?");
-//                    st.setInt(1, quantity);
-//                    st.setInt(2, id);
-//                    st.executeUpdate();
-//            } catch (SQLException e) {
-//                    WebAuction.log.warning(plugin.logPrefix + "Unable to update item quantity in DB");
-//                    WebAuction.log.warning(e.getMessage());
-//            } finally {
-//                    closeResources(conn, st, rs);
-//            }
-//    }
 
     @Override
     public void setPriceAndTable(int id,Double price) {
@@ -790,7 +780,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to update item quantity in DB");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -809,7 +799,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to update item quantity in DB");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -828,7 +818,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to update item quantity in DB");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -877,7 +867,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(5, item);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to alert item");
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to alert item", plugin.logPrefix);
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -885,9 +875,8 @@ public class SqliteDataQueries implements IDataQueries {
     }
 
     @Override
-    public List<AuctionItem> getPlayerItems(String player) {
-            List<AuctionItem> la = new ArrayList<AuctionItem>();
-            AuctionItem ai;
+    public List<Auction> getPlayerItems(String player) {
+            List<Auction> auctions = new ArrayList<Auction>();
             WALConnection conn = getConnection();
             PreparedStatement st = null;
             ResultSet rs = null;
@@ -898,22 +887,25 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2,plugin.Myitems);
                     rs = st.executeQuery();
                     while (rs.next()) {
-                            ai = new AuctionItem();
-                            ai.setId(rs.getInt("id"));
-                            ai.setName(rs.getInt("name"));
-                            ai.setDamage(rs.getInt("damage"));
-                            ai.setQuantity(rs.getInt("quantity"));
-                            ai.setPlayerName(rs.getString("player"));
-                            ai.setEnchantments(rs.getString("ench"));
-                            la.add(ai);
+                            Auction auction = new Auction();
+                            auction.setId(rs.getInt("id"));
+                            auction.setName(rs.getInt("name"));
+                            auction.setDamage(rs.getInt("damage"));
+                            auction.setQuantity(rs.getInt("quantity"));
+                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                            stack = Chant(rs.getString("ench"),stack);
+                            auction.setItemStack(stack);
+                            auction.setPlayerName(rs.getString("player"));
+                            auction.setEnchantments(rs.getString("ench"));
+                            auctions.add(auction);
                     }
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to get mail for player " + player);
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
-            return la;
+            return auctions;
     }
 
     @Override
@@ -940,7 +932,7 @@ public class SqliteDataQueries implements IDataQueries {
                             auctionMails.add(auctionMail);
                     }
             } catch (SQLException e) {
-                    WebAuction.log.warning(plugin.logPrefix + "Unable to get mail for player " + player);
+                    WebAuction.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
                     WebAuction.log.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);

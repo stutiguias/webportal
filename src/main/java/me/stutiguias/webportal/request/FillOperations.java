@@ -7,7 +7,6 @@ package me.stutiguias.webportal.request;
 import java.net.Socket;
 import me.stutiguias.webportal.init.WebAuction;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.AuctionItem;
 import me.stutiguias.webportal.settings.AuctionPlayer;
 import me.stutiguias.webportal.settings.TradeSystem;
 import me.stutiguias.webportal.webserver.Material;
@@ -40,20 +39,20 @@ public class FillOperations extends Response {
             print("Invalid Number","text/plain");
             return;
         }
-        AuctionItem au = plugin.dataQueries.getItemById(id,plugin.Myitems);
-        if(au.getQuantity() == qtd) {
+        Auction auction = plugin.dataQueries.getItemById(id,plugin.Myitems);
+        if(auction.getQuantity() == qtd) {
             plugin.dataQueries.setPriceAndTable(id,price);
             print("You have sucess create Auction","text/plain");
         }else{
-            if(au.getQuantity() > qtd)
+            if(auction.getQuantity() > qtd)
             {
-              plugin.dataQueries.UpdateItemAuctionQuantity(au.getQuantity() - qtd, id);
-              Short dmg = Short.valueOf(String.valueOf(au.getDamage()));
-              ItemStack stack = new ItemStack(au.getName(),au.getQuantity(),dmg);  
+              plugin.dataQueries.UpdateItemAuctionQuantity(auction.getQuantity() - qtd, id);
+              Short dmg = Short.valueOf(String.valueOf(auction.getDamage()));
+              ItemStack stack = new ItemStack(auction.getName(),auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
-              String ItemName = Material.getItemName(au.getName(),dmg);
+              String ItemName = Material.getItemName(auction.getName(),dmg);
               String searchtype = plugin.getSearchType(ItemName);
-              plugin.dataQueries.createItem(au.getName(),au.getDamage(),au.getPlayerName(),qtd,price,au.getEnchantments(),plugin.Auction,type,ItemName,searchtype);
+              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,ItemName,searchtype);
               print("You have successfully created an Auction","text/plain");
             }else{
               print("You not permit to sell more then you have","text/plain");
@@ -72,7 +71,7 @@ public class FillOperations extends Response {
             return;
         }else if(_Auction.getItemStack().getAmount() > quantity) {
             plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
-            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnch(),plugin.Mail,_Auction.getType(), _Auction.getItemName(), plugin.getSearchType( _Auction.getItemName() ) );
+            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType(), _Auction.getItemName(), plugin.getSearchType( _Auction.getItemName() ) );
         }
         print("Mailt send","text/plain");
     }

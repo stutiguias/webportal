@@ -5,6 +5,9 @@ import org.bukkit.inventory.ItemStack;
 public class Auction {
 
 	private int id;
+        private int name;
+        private int damage;
+        private int quantity;
         private String itemName;
         private String type;
 	private ItemStack itemStack;
@@ -14,7 +17,7 @@ public class Auction {
 	private Boolean allowBids;
 	private Double currentBid;
 	private String currentWinner;
-        private String ench;
+        private String Enchantments;
         
         public String getItemName() {
 		return itemName;
@@ -96,11 +99,53 @@ public class Auction {
 		this.currentWinner = player;
 	}
 
-        public String getEnch() {
-            return ench;
+        public String getEnchantments() {
+            return Enchantments;
         }
 
-        public void setEnch(String ench) {
-            this.ench = ench;
+        public void setEnchantments(String Enchantments) {
+            this.Enchantments = Enchantments;
         }
+
+    /**
+     * @return the name
+     */
+    public int getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(int name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the damage
+     */
+    public int getDamage() {
+        return damage;
+    }
+
+    /**
+     * @param damage the damage to set
+     */
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -18,11 +18,11 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Stutiguias
  */
-public class WASign {
+public class Mailbox {
     
     private WebAuction plugin;
     
-    public WASign(WebAuction plugin)
+    public Mailbox(WebAuction plugin)
     {
        this.plugin = plugin;
     }
@@ -33,7 +33,7 @@ public class WASign {
             return rounded.doubleValue();
     }
  
-    public void Mailbox(Player player,String Operation){
+    public void MailBoxOperationType(Player player,String Operation){
         if(Operation.equalsIgnoreCase("withdraw")) {
                 MailBoxWithdraw(player);
         }else {
@@ -129,13 +129,13 @@ public class WASign {
         
         // check if item not already there
         int quantityInt = stack.getAmount();
-        List<AuctionItem> auctionItems = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
+        List<Auction> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
         Boolean foundMatch = false;
-        for (AuctionItem auctionItem : auctionItems) {
-                int itemTableIdNumber = auctionItem.getId();
+        for (Auction auction : auctions) {
+                int itemTableIdNumber = auction.getId();
 
-                if ((( ench_player.equals(auctionItem.getEnchantments()) ) || ( (ench_player.isEmpty()) && (auctionItem.getEnchantments().isEmpty()) )) && !foundMatch ) {
-                        int currentQuantity = auctionItem.getQuantity();
+                if ((( ench_player.equals(auction.getEnchantments()) ) || ( (ench_player.isEmpty()) && (auction.getEnchantments().isEmpty()) )) && !foundMatch ) {
+                        int currentQuantity = auction.getQuantity();
                         currentQuantity += quantityInt;
                         plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);
                         foundMatch = true;
@@ -157,10 +157,5 @@ public class WASign {
                 plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,ench,1,type,ItemName,searchtype);
         }
     }
-    
-    public void ItemtoWithdraw() {
-        
-    }
-   
 
 }

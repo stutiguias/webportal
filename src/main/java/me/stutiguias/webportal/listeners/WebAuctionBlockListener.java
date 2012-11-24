@@ -1,7 +1,7 @@
 package me.stutiguias.webportal.listeners;
 
 import me.stutiguias.webportal.init.WebAuction;
-import me.stutiguias.webportal.settings.AuctionItem;
+import me.stutiguias.webportal.settings.Auction;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -61,20 +61,20 @@ public class WebAuctionBlockListener implements Listener {
                     return;
                 }
 
-                AuctionItem _AuctionItem = plugin.dataQueries.getItemById(id, plugin.Auction);
+                Auction auction = plugin.dataQueries.getItemById(id, plugin.Auction);
                 event.setLine(0, ChatColor.GREEN + "[wSell]" );
-                event.setLine(1, _AuctionItem.getItemName());
+                event.setLine(1, auction.getItemName());
                 if(lines[2].isEmpty()) {
-                    event.setLine(2,"1-" + _AuctionItem.getQuantity() + "-" + _AuctionItem.getPrice());
+                    event.setLine(2,"1-" + auction.getQuantity() + "-" + auction.getPrice());
                 }else{
                     int qtd = Integer.parseInt(lines[2]);
-                    if(qtd <= _AuctionItem.getQuantity()) {
-                        event.setLine(2,lines[2] + "-" + _AuctionItem.getQuantity() + "-" + _AuctionItem.getPrice());
+                    if(qtd <= auction.getQuantity()) {
+                        event.setLine(2,lines[2] + "-" + auction.getQuantity() + "-" + auction.getPrice());
                     }else{
                         event.setLine(2, ChatColor.RED + "Invalid Qtd");
                     }
                 }
-                event.setLine(3, "" + _AuctionItem.getId());
+                event.setLine(3, "" + auction.getId());
                
         }
         

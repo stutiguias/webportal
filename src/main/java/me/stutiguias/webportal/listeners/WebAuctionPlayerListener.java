@@ -25,11 +25,11 @@ import org.bukkit.inventory.ItemStack;
 public class WebAuctionPlayerListener implements Listener {
 
 	private final WebAuction plugin;
-        private final WASign WASign;
+        private final Mailbox WASign;
         
 	public WebAuctionPlayerListener(WebAuction plugin) {
 		this.plugin = plugin;
-                this.WASign = new WASign(plugin);
+                this.WASign = new Mailbox(plugin);
 	}
 
 	public static double round(double unrounded, int precision, int roundingMode) {
@@ -126,7 +126,7 @@ public class WebAuctionPlayerListener implements Listener {
                 
                 if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
                 {
-                    WASign.Mailbox(event.getPlayer(), lines[2]);
+                    WASign.MailBoxOperationType(event.getPlayer(), lines[2]);
                 }else if(lines[1].equalsIgnoreCase("vbox")) {
                     InventoryHandler inventory = new InventoryHandler(plugin,event.getPlayer());
                     event.getPlayer().openInventory(inventory.getInventory());
@@ -166,10 +166,10 @@ public class WebAuctionPlayerListener implements Listener {
                 if(event.isRightClick()) {
                     ItemStack newamount = new ItemStack(item);
                     newamount.setAmount(1);
-                    new WASign(plugin).ItemtoStore(newamount, pl);
+                    new Mailbox(plugin).ItemtoStore(newamount, pl);
                 }
                 if(event.isLeftClick()) {
-                    new WASign(plugin).ItemtoStore(item, pl);
+                    new Mailbox(plugin).ItemtoStore(item, pl);
                 }
         }
         

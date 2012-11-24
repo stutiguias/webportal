@@ -237,7 +237,7 @@ public class MySQLDataQueries implements IDataQueries {
 				auction.setAllowBids(rs.getBoolean("allowBids"));
 				auction.setCurrentBid(rs.getDouble("currentBid"));
 				auction.setCurrentWinner(rs.getString("currentWinner"));
-                                auction.setEnch(rs.getString("ench"));
+                                auction.setEnchantments(rs.getString("ench"));
 			}
 		} catch (SQLException e) {
 			WebAuction.log.log(Level.WARNING, "{0} Unable to get auction {1}", new Object[]{plugin.logPrefix, id});
@@ -651,8 +651,8 @@ public class MySQLDataQueries implements IDataQueries {
 	}
 
         @Override
-        public AuctionItem getItemById(int ID,int tableid) {
-		AuctionItem auctionItem = null;
+        public Auction getItemById(int ID,int tableid) {
+		Auction auction = null;
 
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -665,15 +665,18 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setInt(2, tableid);
 			rs = st.executeQuery();
 			while (rs.next()) {
-                                auctionItem = new AuctionItem();
-				auctionItem.setId(rs.getInt("id"));
-				auctionItem.setName(rs.getInt("name"));
-                                auctionItem.setItemName(rs.getString("itemname"));
-				auctionItem.setDamage(rs.getInt("damage"));
-				auctionItem.setPlayerName(rs.getString("player"));
-                                auctionItem.setPrice(rs.getString("price"));
-				auctionItem.setQuantity(rs.getInt("quantity"));
-                                auctionItem.setEnchantments(rs.getString("ench"));
+                                auction = new Auction();
+				auction.setId(rs.getInt("id"));
+				auction.setName(rs.getInt("name"));
+                                auction.setDamage(rs.getInt("damage"));
+                                auction.setItemName(rs.getString("itemname"));
+				auction.setPlayerName(rs.getString("player"));
+                                auction.setPrice(rs.getDouble("price"));
+                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                                stack = Chant(rs.getString("ench"),stack);
+				auction.setItemStack(stack);
+				auction.setQuantity(rs.getInt("quantity"));
+                                auction.setEnchantments(rs.getString("ench"));
 			}
 		} catch (SQLException e) {
 			WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
@@ -681,12 +684,12 @@ public class MySQLDataQueries implements IDataQueries {
 		} finally {
 			closeResources(conn, st, rs);
 		}
-		return auctionItem;
+		return auction;
 	}
         
         @Override
-	public List<AuctionItem> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
-		List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
+	public List<Auction> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
+		List<Auction> auctions = new ArrayList<Auction>();
 
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -703,16 +706,19 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setInt(3, tableid);
 			rs = st.executeQuery();
 			while (rs.next()) {
-				AuctionItem auctionItem = new AuctionItem();
-				auctionItem.setId(rs.getInt("id"));
-				auctionItem.setName(rs.getInt("name"));
-				auctionItem.setDamage(rs.getInt("damage"));
-				auctionItem.setPlayerName(rs.getString("player"));
-				auctionItem.setQuantity(rs.getInt("quantity"));
-                                auctionItem.setPrice(rs.getString("price"));
-                                auctionItem.setItemName(rs.getString("itemname"));
-                                auctionItem.setEnchantments(rs.getString("ench"));
-				auctionItems.add(auctionItem);
+				Auction auction = new Auction();
+				auction.setId(rs.getInt("id"));
+				auction.setName(rs.getInt("name"));
+				auction.setDamage(rs.getInt("damage"));
+				auction.setPlayerName(rs.getString("player"));
+				auction.setQuantity(rs.getInt("quantity"));
+                                auction.setPrice(rs.getDouble("price"));
+                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                                stack = Chant(rs.getString("ench"),stack);
+				auction.setItemStack(stack);
+                                auction.setItemName(rs.getString("itemname"));
+                                auction.setEnchantments(rs.getString("ench"));
+				auctions.add(auction);
 			}
 		} catch (SQLException e) {
 			WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
@@ -720,12 +726,12 @@ public class MySQLDataQueries implements IDataQueries {
 		} finally {
 			closeResources(conn, st, rs);
 		}
-		return auctionItems;
+		return auctions;
 	}
         
         @Override
-	public List<AuctionItem> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
-		List<AuctionItem> auctionItems = new ArrayList<AuctionItem>();
+	public List<Auction> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
+		List<Auction> auctions = new ArrayList<Auction>();
 
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -743,14 +749,17 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setInt(4, tableid);
 			rs = st.executeQuery();
 			while (rs.next()) {
-				AuctionItem auctionItem = new AuctionItem();
-				auctionItem.setId(rs.getInt("id"));
-				auctionItem.setName(rs.getInt("name"));
-				auctionItem.setDamage(rs.getInt("damage"));
-				auctionItem.setPlayerName(rs.getString("player"));
-				auctionItem.setQuantity(rs.getInt("quantity"));
-                                auctionItem.setEnchantments(rs.getString("ench"));
-				auctionItems.add(auctionItem);
+				Auction auction = new Auction();
+				auction.setId(rs.getInt("id"));
+				auction.setName(rs.getInt("name"));
+				auction.setDamage(rs.getInt("damage"));
+                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                                stack = Chant(rs.getString("ench"),stack);
+				auction.setItemStack(stack);
+				auction.setPlayerName(rs.getString("player"));
+				auction.setQuantity(rs.getInt("quantity"));
+                                auction.setEnchantments(rs.getString("ench"));
+				auctions.add(auction);
 			}
 		} catch (SQLException e) {
 			WebAuction.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
@@ -758,7 +767,7 @@ public class MySQLDataQueries implements IDataQueries {
 		} finally {
 			closeResources(conn, st, rs);
 		}
-		return auctionItems;
+		return auctions;
 	}
         
         @Override
@@ -868,9 +877,8 @@ public class MySQLDataQueries implements IDataQueries {
 	}
         
         @Override
-        public List<AuctionItem> getPlayerItems(String player) {
-                List<AuctionItem> la = new ArrayList<AuctionItem>();
-                AuctionItem ai;
+        public List<Auction> getPlayerItems(String player) {
+                List<Auction> auctions = new ArrayList<Auction>();
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -881,14 +889,17 @@ public class MySQLDataQueries implements IDataQueries {
                         st.setInt(2,plugin.Myitems);
 			rs = st.executeQuery();
 			while (rs.next()) {
-				ai = new AuctionItem();
-				ai.setId(rs.getInt("id"));
-                                ai.setName(rs.getInt("name"));
-                                ai.setDamage(rs.getInt("damage"));
-                                ai.setQuantity(rs.getInt("quantity"));
-                                ai.setPlayerName(rs.getString("player"));
-                                ai.setEnchantments(rs.getString("ench"));
-                                la.add(ai);
+				Auction auction = new Auction();
+				auction.setId(rs.getInt("id"));
+                                auction.setName(rs.getInt("name"));
+                                auction.setDamage(rs.getInt("damage"));
+                                auction.setQuantity(rs.getInt("quantity"));
+                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                                stack = Chant(rs.getString("ench"),stack);
+				auction.setItemStack(stack);
+                                auction.setPlayerName(rs.getString("player"));
+                                auction.setEnchantments(rs.getString("ench"));
+                                auctions.add(auction);
 			}
 		} catch (SQLException e) {
 			WebAuction.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
@@ -896,7 +907,7 @@ public class MySQLDataQueries implements IDataQueries {
 		} finally {
 			closeResources(conn, st, rs);
 		}
-		return la;
+		return auctions;
 	}
         
         @Override

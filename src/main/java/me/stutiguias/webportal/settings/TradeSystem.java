@@ -30,17 +30,17 @@ public class TradeSystem {
         plugin.economy.depositPlayer(au.getPlayerName(), au.getPrice() * qtd);
         plugin.dataQueries.setAlert(au.getPlayerName(), qtd, au.getPrice(), BuyPlayerName, item_name);
         // wrong player get items
-        List<AuctionItem> items = plugin.dataQueries.getPlayerItems(BuyPlayerName);
-        for (AuctionItem item:items) {
+        List<Auction> auctions = plugin.dataQueries.getPlayerItems(BuyPlayerName);
+        for (Auction auction:auctions) {
 
-            String playeritemname =  Material.getItemName(item.getName(),(short)(item.getDamage()));
-            if(item_name.equals(playeritemname) && item.getDamage() == au.getItemStack().getDurability())
+            String playeritemname =  Material.getItemName(auction.getName(),(short)(auction.getDamage()));
+            if(item_name.equals(playeritemname) && auction.getDamage() == au.getItemStack().getDurability())
             {
-                if(au.getEnch().equals(item.getEnchantments()))
+                if(au.getEnchantments().equals(auction.getEnchantments()))
                 {
                     found = true;
-                    StackId = item.getId();
-                    Stackqtd = item.getQuantity();
+                    StackId = auction.getId();
+                    Stackqtd = auction.getQuantity();
                 }
             }
         }
@@ -56,7 +56,7 @@ public class TradeSystem {
             String Type = au.getItemStack().getType().toString();
             String ItemName = Material.getItemName(au.getItemStack().getTypeId(), au.getItemStack().getDurability());
             String searchtype = plugin.getSearchType(ItemName);
-            plugin.dataQueries.createItem(au.getItemStack().getTypeId(), au.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, au.getEnch(), plugin.Myitems,Type,ItemName,searchtype);
+            plugin.dataQueries.createItem(au.getItemStack().getTypeId(), au.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, au.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
         }
 
         if(au.getItemStack().getAmount() > 0) {
@@ -69,7 +69,7 @@ public class TradeSystem {
         }
 
         int time = (int) ((System.currentTimeMillis() / 1000));
-        plugin.dataQueries.LogSellPrice(au.getItemStack().getTypeId(),au.getItemStack().getDurability(),time, BuyPlayerName, au.getPlayerName(), qtd, au.getPrice(), au.getEnch());
+        plugin.dataQueries.LogSellPrice(au.getItemStack().getTypeId(),au.getItemStack().getDurability(),time, BuyPlayerName, au.getPlayerName(), qtd, au.getPrice(), au.getEnchantments());
         return "You purchased "+ qtd +" " + item_name + " from "+ au.getPlayerName() +" for " + au.getPrice();
     }
 }
