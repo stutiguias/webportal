@@ -31,6 +31,14 @@ public class Response {
         this.plugin = plugin;
         WebServerSocket = s;
     }
+        
+    public Boolean isAdmin(String Hostadress) {
+        if (WebPortal.AuthPlayers.get(Hostadress).AuctionPlayer.getIsAdmin() == 1) {
+          return true;
+        }else{
+          return false;
+        }
+    }
     
     public void print(String data, String MimeType)
     {

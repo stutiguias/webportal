@@ -28,14 +28,6 @@ public class FillAdmin extends Response {
         this.plugin = plugin;
     }
     
-    public Boolean isAdmin(String Hostadress) {
-        if (WebPortal.AuthPlayers.get(Hostadress).AuctionPlayer.getIsAdmin() == 1) {
-          return true;
-        }else{
-          return false;
-        }
-    }
-    
     public void ADM(String Hostadress,String param) {
         if(isAdmin(Hostadress)) {
             String name = getParam("nick", param);

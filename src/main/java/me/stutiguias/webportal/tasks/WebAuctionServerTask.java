@@ -33,6 +33,7 @@ public class WebAuctionServerTask extends Thread {
     FillMyAuctions _FillMyAuctions;
     FillBox _FillBox;
     FillAdmin _FillAdminBox;
+    FillAdminShop _FillAdminShop;
     FillOperations _FillOperations;
     Login _Login;
     Userinfo _UserInfo;
@@ -52,6 +53,7 @@ public class WebAuctionServerTask extends Thread {
         _FillMyItems = new FillMyItems(plugin, s);
         _FillMyAuctions = new FillMyAuctions(plugin, s);
         _FillAdminBox = new FillAdmin(plugin, s);
+        _FillAdminShop = new FillAdminShop(plugin, s);
         _FillBox = new FillBox(plugin, s);
         _FillOperations = new FillOperations(plugin, s);
         _Login = new Login(plugin, s);
@@ -144,6 +146,10 @@ public class WebAuctionServerTask extends Thread {
                                 _FillBox.BOX2(HostAddress);
                             }else if(url.startsWith("/admsearch")) {
                                 _FillAdminBox.ADM(HostAddress,param);
+                            }else if(url.startsWith("/web/shop")){ 
+                                _FillAdminShop.AddShop(HostAddress, url, param);
+                            }else if(url.startsWith("/web/adminshoplist")){ 
+                                _FillAdminShop.list(HostAddress, url, param);
                             }else if(url.equalsIgnoreCase("/")) {
                                 Response.readFileAsBinary(htmlDir + "/login.html","text/html");
                             }else{
@@ -155,18 +161,18 @@ public class WebAuctionServerTask extends Thread {
                     }
                 }
             }catch(IOException e) {
-                WebPortal.log.log(Level.WARNING, plugin.logPrefix + "ERROR in IO ");
+                WebPortal.log.log(Level.WARNING, "{0} ERROR in IO ", plugin.logPrefix);
                 e.printStackTrace();
             }
             catch(Exception e)
             {
-                WebPortal.log.log(Level.WARNING, plugin.logPrefix + "ERROR in ServerParser ");
+                WebPortal.log.log(Level.WARNING, "{0} ERROR in ServerParser ", plugin.logPrefix);
                 e.printStackTrace();
             }
         }
         catch(IOException e)
         {
-                WebPortal.log.log(Level.WARNING, plugin.logPrefix + "ERROR in IO ");
+                WebPortal.log.log(Level.WARNING, "{0} ERROR in IO ", plugin.logPrefix);
                 e.printStackTrace();
         }finally {
             plugin.connections--;

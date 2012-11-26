@@ -25,11 +25,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class WebAuctionPlayerListener implements Listener {
 
 	private final WebPortal plugin;
-        private final Mailbox WASign;
         
 	public WebAuctionPlayerListener(WebPortal plugin) {
 		this.plugin = plugin;
-                this.WASign = new Mailbox(plugin);
 	}
 
 	public static double round(double unrounded, int precision, int roundingMode) {
@@ -121,7 +119,7 @@ public class WebAuctionPlayerListener implements Listener {
                 
                 if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
                 {
-                    WASign.MailBoxOperationType(event.getPlayer(), lines[2]);
+                    plugin.mailbox.MailBoxOperationType(event.getPlayer(), lines[2]);
                 }else if(lines[1].equalsIgnoreCase("vbox")) {
                     plugin.vbox.Open(event);
                 }
