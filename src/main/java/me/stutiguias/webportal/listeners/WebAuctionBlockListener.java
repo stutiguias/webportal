@@ -1,7 +1,6 @@
 package me.stutiguias.webportal.listeners;
 
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -15,7 +14,7 @@ import org.bukkit.event.block.SignChangeEvent;
 public class WebAuctionBlockListener implements Listener {
 
 	private final WebPortal plugin;
-
+        
 	public WebAuctionBlockListener(WebPortal plugin) {
 		this.plugin = plugin;
 	}
@@ -45,38 +44,11 @@ public class WebAuctionBlockListener implements Listener {
 		Boolean allowEvent = false;
 		if (player != null) {
                     if(lines[0].equalsIgnoreCase("[WebAuction]")) WebAuction(lines, player, allowEvent, sign, event);
-                    if(lines[0].equalsIgnoreCase("[wSell]")) wSell(lines, player, allowEvent, sign, event);
+                    if(lines[0].equalsIgnoreCase("[wSell]")) plugin.wsell.addwSell(lines, player, allowEvent, sign, event);
                 }
                 
 	}
-        
-        public void wSell(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event) {
-                Integer id;
-                try {
-                    id = Integer.parseInt(lines[1]);
-                }catch(Exception ex) {
-                    player.sendMessage(plugin.logPrefix + " Invalid ID.");
-                    event.setCancelled(true);
-                    return;
-                }
-
-                Auction auction = plugin.dataQueries.getItemById(id, plugin.Auction);
-                event.setLine(0, ChatColor.GREEN + "[wSell]" );
-                event.setLine(1, auction.getItemName());
-                if(lines[2].isEmpty()) {
-                    event.setLine(2,"1-" + auction.getQuantity() + "-" + auction.getPrice());
-                }else{
-                    int qtd = Integer.parseInt(lines[2]);
-                    if(qtd <= auction.getQuantity()) {
-                        event.setLine(2,lines[2] + "-" + auction.getQuantity() + "-" + auction.getPrice());
-                    }else{
-                        event.setLine(2, ChatColor.RED + "Invalid Qtd");
-                    }
-                }
-                event.setLine(3, "" + auction.getId());
-               
-        }
-        
+  
         public void WebAuction(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event)
         {
             if ((lines[1].equalsIgnoreCase("MailBox")) || (lines[1].equalsIgnoreCase("Mail Box"))) {

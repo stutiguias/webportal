@@ -21,7 +21,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class WebAuctionPlayerListener implements Listener {
 
@@ -100,13 +99,8 @@ public class WebAuctionPlayerListener implements Listener {
 
 		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]")) {
                     if(lines[0].equals(ChatColor.GREEN + "[wSell]")) { 
-                        if(event.getPlayer().getGameMode() == GameMode.CREATIVE) {
-                            event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
-                            event.setCancelled(true);
-                            sign.update();
-                            return;
-                        }
-                        wSell(event,sign,lines);
+                        if(isCreative(event, sign)) return;
+                        plugin.wsell.ClickSign(event,sign,lines);
                     }else{
 			return;
                     }
@@ -129,16 +123,14 @@ public class WebAuctionPlayerListener implements Listener {
                 {
                     WASign.MailBoxOperationType(event.getPlayer(), lines[2]);
                 }else if(lines[1].equalsIgnoreCase("vbox")) {
-                    InventoryHandler inventory = new InventoryHandler(plugin,event.getPlayer());
-                    event.getPlayer().openInventory(inventory.getInventory());
-                    event.setCancelled(true);
+                    plugin.vbox.Open(event);
                 }
                 
 	}
                 
         @EventHandler(priority = EventPriority.NORMAL)
         public void onWebAuctionLiteInventoryClick(InventoryClickEvent event) {
-            if(!event.getInventory().getName().equalsIgnoreCase("WebAuctionLite")) return;
+            if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
             if(event.getCurrentItem() == null) return;
             if(event.isShiftClick()) {
                 event.setCancelled(true);
@@ -147,111 +139,30 @@ public class WebAuctionPlayerListener implements Listener {
             Player pl = (Player)event.getWhoClicked();
             if(event.getRawSlot() <= 44) {
                 if(event.getCurrentItem().getType() != Material.AIR && event.getCursor().getType() == Material.AIR) {
-                    Delete(event, pl);
+                   plugin.vbox.Delete(event, pl);
                 }
                 if(event.getCursor().getType() != Material.AIR) {
-                    AddItem(event.getCursor(), pl,event);
+                   plugin.vbox.AddItem(event.getCursor(), pl,event);
                 }
             }
         }
         
         @EventHandler(priority = EventPriority.NORMAL)
         public void onWebAuctionLiteInventoryClose(InventoryCloseEvent event) {
-            if(!event.getInventory().getName().equalsIgnoreCase("WebAuctionLite")) return;
+            if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
             Player pl = (Player)event.getPlayer();
             plugin.dataQueries.setLock(pl.getName(),"N");
             WebPortal.LockTransact.put(pl.getName(), Boolean.FALSE);
         }
-        
-        public void AddItem(ItemStack item,Player pl,InventoryClickEvent event) {
-                if(event.isRightClick()) {
-                    ItemStack newamount = new ItemStack(item);
-                    newamount.setAmount(1);
-                    new TradeSystem(plugin).ItemtoStore(newamount, pl);
-                }
-                if(event.isLeftClick()) {
-                    new TradeSystem(plugin).ItemtoStore(item, pl);
-                }
-        }
-        
-        
-        public void Delete(InventoryClickEvent event,Player pl) {
-            // Delete Item
-            List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(pl.getName(), 0, 44, plugin.Myitems);
-            for(Auction a:la) {
-                if(event.getCurrentItem().getTypeId() == a.getItemStack().getTypeId() && a.getItemStack().getDurability() == event.getCurrentItem().getDurability()) {
-                    if(event.isLeftClick()) {
-                        if(a.getItemStack().getAmount() == event.getCurrentItem().getAmount())
-                            plugin.dataQueries.DeleteAuction(a.getId());
-                        if(a.getItemStack().getAmount() > event.getCurrentItem().getAmount()) {
-                            int total = a.getItemStack().getAmount() -  event.getCurrentItem().getAmount();
-                            plugin.dataQueries.updateItemQuantity(total, a.getId());
-                        }
-                    }else if(event.isRightClick()) {
-                        int total;
-                        if(event.getCurrentItem().getAmount() <= 1) {
-                            total = a.getItemStack().getAmount() - 1;
-                        }else{
-                            total = a.getItemStack().getAmount() - ( event.getCurrentItem().getAmount() / 2 );
-                        }
-                        if(a.getItemStack().getAmount() == event.getCurrentItem().getAmount()) {
-                            if(total != 0) plugin.dataQueries.updateItemQuantity(total, a.getId());
-                            if(total == 0) plugin.dataQueries.DeleteAuction(a.getId());
-                        }else if(a.getItemStack().getAmount() > event.getCurrentItem().getAmount()) {
-                            plugin.dataQueries.updateItemQuantity(total, a.getId());
-                        }                                
-                    }else {
-                        event.setCancelled(true);
-                    }
-                }
-            }
-        }
-        
-        public void wSell(PlayerInteractEvent event,Sign sign,String[] lines) {
-            String[] price = lines[2].split("-");
-            int qtdnow,qtdsold;
-            try {
-                qtdnow = plugin.dataQueries.getItemById(Integer.valueOf(lines[3]), plugin.Auction).getQuantity();
-                qtdsold = Integer.parseInt(price[0]);
-            }catch(Exception ex) {
-                event.getPlayer().sendMessage(plugin.logPrefix + "Error try get line of sign");
-                event.setCancelled(true);
-                return;
-            }
-            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
-            }else{
-                Auction au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
 
-                if(au == null) {
-                    event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");
-                    setSignSold(sign);
-                }else{
-                    if(!plugin.economy.has(event.getPlayer().getName(),au.getPrice() * Integer.valueOf(price[0]))) {
-                        event.setCancelled(true);
-                        event.getPlayer().sendMessage(plugin.logPrefix + "You don't have enough money");
-                        return;
-                    }
-                    TradeSystem ts = new TradeSystem(plugin);
-                    if(!event.getPlayer().getName().equals(au.getPlayerName())) {
-                        event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]), lines[1],true));
-                        if(( qtdnow - qtdsold ) <= 0) {
-                            setSignSold(sign);
-                        }else{
-                            sign.setLine(2,price[0]+"-"+(qtdnow-qtdsold)+"-"+au.getPrice());
-                            sign.update();
-                        }
-                    }else{
-                        event.getPlayer().sendMessage(plugin.logPrefix + "You can't buy from yourself");
-                    }
-                }
+        public Boolean isCreative(PlayerInteractEvent event,Sign sign) {
+            if(event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+                event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
                 event.setCancelled(true);
+                sign.update();
+                return true;
+            }else{
+                return false;
             }
-        }
-        
-        public void setSignSold(Sign sign) {
-            sign.setLine(0,ChatColor.RED + "[wSell]");
-            sign.setLine(2,ChatColor.RED + "**SOLD**");
-            sign.update();
         }
 }

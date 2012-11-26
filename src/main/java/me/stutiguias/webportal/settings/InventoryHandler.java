@@ -24,7 +24,7 @@ public class InventoryHandler implements InventoryHolder {
     public InventoryHandler(WebPortal plugin,Player player) {
         this.plugin = plugin;
         this.player = player;
-        inventory = plugin.getServer().createInventory(this,45,"WebAuctionLite");
+        inventory = plugin.getServer().createInventory(this,45,"WebPortal");
     }
     
     @Override

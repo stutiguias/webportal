@@ -17,6 +17,10 @@ import me.stutiguias.webportal.metrics.Metrics;
 import me.stutiguias.webportal.plugins.Essentials;
 import me.stutiguias.webportal.plugins.McMMO;
 import me.stutiguias.webportal.settings.AuthPlayer;
+import me.stutiguias.webportal.signs.Mailbox;
+import me.stutiguias.webportal.signs.vBox;
+import me.stutiguias.webportal.signs.wSell;
+import me.stutiguias.webportal.signs.wShop;
 import me.stutiguias.webportal.tasks.SaleAlertTask;
 import me.stutiguias.webportal.tasks.WebAuctionServerListenTask;
 import net.milkbowl.vault.economy.Economy;
@@ -74,6 +78,11 @@ public class WebPortal extends JavaPlugin {
         
         public int port;
         
+        public wSell wsell;
+        public Mailbox mailbox;
+        public vBox vbox;
+        public wShop wshop;
+        
 	public long getCurrentMilli() {
 		return System.currentTimeMillis();
 	}
@@ -102,6 +111,11 @@ public class WebPortal extends JavaPlugin {
                 onLoadConfig();
                 
 		getCommand("wa").setExecutor(new WebPortalCommands(this));
+                
+                wsell = new wSell(this);
+                mailbox = new Mailbox(this);
+                vbox = new vBox(this);
+                wshop = new wShop(this);
                 
                 // Setup Vault
 		setupEconomy();
