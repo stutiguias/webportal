@@ -61,7 +61,11 @@ public class TradeSystem {
             String searchtype = plugin.getSearchType(ItemName);
             plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
         }
-
+        
+        if(sellerauction.getPlayerName().equalsIgnoreCase("Server")){
+            return "You purchased "+ qtd +" " + item_name + " from "+ sellerauction.getPlayerName() +" for " + sellerauction.getPrice();
+        }
+        
         if(sellerauction.getItemStack().getAmount() > 0) {
             if((sellerauction.getItemStack().getAmount() - qtd) > 0)
             {

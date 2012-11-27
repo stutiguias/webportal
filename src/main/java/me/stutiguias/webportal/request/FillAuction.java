@@ -72,7 +72,7 @@ public class FillAuction extends Response {
         search = getConfigKey(search, searchtype);
         int sEcho = Integer.parseInt(getParam("sEcho", param));
         
-        List<Auction> la = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,searchtype);
+        List<Auction> auctions = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,searchtype);
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = plugin.dataQueries.getFound();
         
@@ -85,7 +85,11 @@ public class FillAuction extends Response {
         json.put("iTotalDisplayRecords", iTotalDisplayRecords);
         
         if(iTotalRecords > 0) {
-            for(Auction item:la){
+            for(Auction item:auctions){
+                if(item.getPlayerName().equalsIgnoreCase("Server")){
+                    jsonData.add(ServerAuction(item,searchtype,ip));
+                    continue;
+                }
                 jsonTwo = new JSONObject();
                 double MakertPercent = MarketPrice(item, item.getPrice());
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
@@ -144,5 +148,20 @@ public class FillAuction extends Response {
             return "gradeA";
         }
         return "gradeB";
+    }
+    
+    public JSONObject ServerAuction(Auction item,String searchtype,String ip){
+        JSONObject ServerAuction = new JSONObject();
+        ServerAuction.put("DT_RowId","row_" + item.getId() );
+        ServerAuction.put("DT_RowClass", "0");
+        ServerAuction.put("0", ConvertItemToResult(item,searchtype));
+        ServerAuction.put("1", "<img width='32' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
+        ServerAuction.put("2", "Never");
+        ServerAuction.put("3", "Infinit");
+        ServerAuction.put("4", "$ " + item.getPrice());
+        ServerAuction.put("5", "Infinit");
+        ServerAuction.put("6", "0%");
+        ServerAuction.put("7", html.HTMLBuy(ip,item.getId()));
+        return ServerAuction;
     }
 }
