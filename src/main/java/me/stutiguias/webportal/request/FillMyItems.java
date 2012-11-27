@@ -6,6 +6,7 @@ package me.stutiguias.webportal.request;
 
 import java.net.Socket;
 import java.util.List;
+import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
@@ -29,9 +30,18 @@ public class FillMyItems extends Response {
     }
     
     public void getMyItems(String ip,String url,String param) {
+
         int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
         int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
-        List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
+        List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
+        if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName() == null) {
+            WebPortal.log.log(Level.WARNING,"Cant determine player name");
+            return;
+        }
+        if(auctions == null) {
+            WebPortal.log.log(Level.WARNING,"Cant get auctions");
+            return;
+        }
         int sEcho = Integer.parseInt(getParam("sEcho", param));
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = iTotalRecords;
@@ -44,7 +54,7 @@ public class FillMyItems extends Response {
         json.put("iTotalDisplayRecords", iTotalDisplayRecords);
         
         if(iTotalRecords > 0) {
-            for(Auction item:la){
+            for(Auction item:auctions){
                 jsonTwo = new JSONObject();
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
                 jsonTwo.put("DT_RowClass", "gradeA");
