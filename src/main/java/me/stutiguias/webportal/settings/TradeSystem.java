@@ -51,7 +51,15 @@ public class TradeSystem {
             Player _player = plugin.getServer().getPlayer(BuyPlayerName);
             ItemStack itemstack = new ItemStack(sellerauction.getItemStack());
             itemstack.setAmount(qtd);
-            _player.getInventory().addItem(itemstack);  
+            if(itemstack.getMaxStackSize() == 1) {
+                ItemStack NewStack = new ItemStack(itemstack);
+                NewStack.setAmount(1);
+                for (int i = 0; i < itemstack.getAmount(); i++) {
+                   _player.getInventory().addItem(NewStack);
+                }
+            }else{
+                _player.getInventory().addItem(itemstack);  
+            }
             _player.updateInventory();
         }else if(found && !ingame) {
             plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
