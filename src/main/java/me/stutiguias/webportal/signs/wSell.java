@@ -38,7 +38,7 @@ public class wSell {
         }
 
         Auction auction = plugin.dataQueries.getItemById(id, plugin.Auction);
-        if(auction.getItemName() == null) {
+        if(auction == null) {
             player.sendMessage("Invalid ID");
             event.setCancelled(true);
             return;
