@@ -155,7 +155,7 @@ public class FillAuction extends Response {
         ServerAuction.put("DT_RowId","row_" + item.getId() );
         ServerAuction.put("DT_RowClass", "0");
         ServerAuction.put("0", ConvertItemToResult(item,searchtype));
-        ServerAuction.put("1", "<img width='32' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
+        ServerAuction.put("1", item.getPlayerName());
         ServerAuction.put("2", "Never");
         ServerAuction.put("3", "Infinit");
         ServerAuction.put("4", "$ " + item.getPrice());

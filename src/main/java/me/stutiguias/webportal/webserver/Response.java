@@ -49,9 +49,9 @@ public class Response {
             out.writeBytes((new StringBuilder()).append("Content-Type: ").append(MimeType).append("; charset=utf-8\r\n").toString());
             out.writeBytes("Cache-Control: no-cache, must-revalidate\r\n");
             out.writeBytes((new StringBuilder()).append("Content-Length: ").append(data.length()).append("\r\n").toString());
-            out.writeBytes("Server: webauction lite Server\r\n");
+            out.writeBytes("Server: webportal Server\r\n");
             out.writeBytes("Connection: Close\r\n\r\n");
-            out.writeBytes(data);
+            out.write(data.getBytes());
             out.flush();
             out.close();
         }
@@ -67,7 +67,7 @@ public class Response {
         {
             DataOutputStream out = new DataOutputStream(WebServerSocket.getOutputStream());
             out.writeBytes((new StringBuilder()).append("HTTP/1.1 ").append(error).append("\r\n").toString());
-            out.writeBytes("Server: webauction lite Server\r\n");
+            out.writeBytes("Server: webportal Server\r\n");
             out.writeBytes("Connection: Close\r\n\r\n");
             out.flush();
             out.close();
@@ -94,7 +94,7 @@ public class Response {
                 out.write((new StringBuilder()).append("Content-Type: ").append(Mime).append("; charset=utf-8\r\n").toString().getBytes());
                 out.write("Cache-Control: no-cache, must-revalidate\r\n".getBytes());
                 out.write((new StringBuilder()).append("Content-Length: ").append(length).append("\r\n").toString().getBytes());
-                out.write("Server: webauctionlite server\r\n".getBytes());
+                out.write("Server: webportal server\r\n".getBytes());
                 out.write("Connection: Close\r\n\r\n".getBytes());
                 while ((leng = file.read(fileData)) > 0) {
                     out.write(fileData, 0, leng);
