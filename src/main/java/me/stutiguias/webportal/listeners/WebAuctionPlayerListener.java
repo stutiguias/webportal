@@ -145,7 +145,7 @@ public class WebAuctionPlayerListener implements Listener {
             WebPortal.LockTransact.put(pl.getName(), Boolean.FALSE);
         }
 
-        public Boolean isCreative(PlayerInteractEvent event,Sign sign) {
+        private Boolean isCreative(PlayerInteractEvent event,Sign sign) {
             if(event.getPlayer().getGameMode() == GameMode.CREATIVE) {
                 event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
                 event.setCancelled(true);
