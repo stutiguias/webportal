@@ -27,7 +27,7 @@ public class wSell {
         plugin = instance;
     }
     
-    public void addwSell(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event) {
+    public void addwSell(String[] lines,Player player,Block sign,SignChangeEvent event) {
         Integer id;
         try {
             id = Integer.parseInt(lines[1]);

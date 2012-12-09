@@ -41,17 +41,18 @@ public class WebAuctionBlockListener implements Listener {
 		String[] lines = event.getLines();
 		Player player = event.getPlayer();
 		Block sign = event.getBlock();
-		Boolean allowEvent = false;
+
 		if (player != null) {
-                    if(lines[0].equalsIgnoreCase("[WebAuction]")) WebAuction(lines, player, allowEvent, sign, event);
-                    if(lines[0].equalsIgnoreCase("[wSell]")) plugin.wsell.addwSell(lines, player, allowEvent, sign, event);
+                    if(lines[0].equalsIgnoreCase("[WebAuction]")) WebAuction(lines, player, sign, event);
+                    if(lines[0].equalsIgnoreCase("[wSell]")) plugin.wsell.addwSell(lines, player, sign, event);
                 }
                 
 	}
   
-        public void WebAuction(String[] lines,Player player,Boolean allowEvent,Block sign,SignChangeEvent event)
+        public void WebAuction(String[] lines,Player player,Block sign,SignChangeEvent event)
         {
-            if ((lines[1].equalsIgnoreCase("MailBox")) || (lines[1].equalsIgnoreCase("Mail Box"))) {
+            Boolean allowEvent = false;
+            if (isMailboxSign(lines)) {
                     if (lines[2].equalsIgnoreCase("Deposit")) {
                             if (plugin.permission.has(player.getWorld(),player.getName(),"wa.create.sign.mailbox.deposit")) {
                                     allowEvent = true;
@@ -70,10 +71,21 @@ public class WebAuctionBlockListener implements Listener {
                             player.sendMessage(plugin.logPrefix + "Virtual Box created");
                     }
             }
-            if (allowEvent == false) {
-                    event.setCancelled(true);
-                    sign.setTypeId(0);
-                    player.sendMessage(plugin.logPrefix + "You do not have permission");
+            if (allowEvent == false) CancelEvent(event,player,sign);
+        }
+        
+        private boolean isMailboxSign(String[] lines) {
+            if((lines[1].equalsIgnoreCase("MailBox")) || 
+               (lines[1].equalsIgnoreCase("Mail Box"))) {
+                return true;
+            }else{
+                return false;
             }
+        }
+        
+        private void CancelEvent(SignChangeEvent event,Player player,Block thisSign) {
+                event.setCancelled(true);
+                thisSign.setTypeId(0);
+                player.sendMessage(plugin.logPrefix + "You do not have permission");
         }
 }

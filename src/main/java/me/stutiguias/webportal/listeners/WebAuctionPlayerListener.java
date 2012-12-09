@@ -1,11 +1,9 @@
 package me.stutiguias.webportal.listeners;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.*;
-import me.stutiguias.webportal.signs.Mailbox;
+import me.stutiguias.webportal.settings.SaleAlert;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -29,12 +27,6 @@ public class WebAuctionPlayerListener implements Listener {
 	public WebAuctionPlayerListener(WebPortal plugin) {
 		this.plugin = plugin;
 	}
-
-	public static double round(double unrounded, int precision, int roundingMode) {
-		BigDecimal bd = new BigDecimal(unrounded);
-		BigDecimal rounded = bd.setScale(precision, roundingMode);
-		return rounded.doubleValue();
-	}
         
         @EventHandler(priority = EventPriority.NORMAL)
 	public void PlayerQuit(PlayerQuitEvent event){
@@ -50,13 +42,13 @@ public class WebAuctionPlayerListener implements Listener {
                     if (plugin.showSalesOnJoin == true){
                             List<SaleAlert> saleAlerts = plugin.dataQueries.getNewSaleAlertsForSeller(player);
                             for (SaleAlert saleAlert : saleAlerts) {
-                                    event.getPlayer().sendMessage(plugin.logPrefix + "You sold " + saleAlert.getQuantity() + " " + saleAlert.getItem() + " to " + saleAlert.getBuyer() + " for "+ saleAlert.getPriceEach() + " each.");
+                                    event.getPlayer().sendMessage("You sold " + saleAlert.getQuantity() + " " + saleAlert.getItem() + " to " + saleAlert.getBuyer() + " for "+ saleAlert.getPriceEach() + " each.");
                                     plugin.dataQueries.markSaleAlertSeen(saleAlert.getId());
                             }
                     }
 
                     if (plugin.dataQueries.hasMail(player)) {
-                            event.getPlayer().sendMessage(plugin.logPrefix + "You have new mail!");
+                            event.getPlayer().sendMessage("You have new mail!");
                     }
 
                     // Determine permissions

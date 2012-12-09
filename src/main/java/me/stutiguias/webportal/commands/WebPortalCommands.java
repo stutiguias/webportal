@@ -25,10 +25,6 @@ public class WebPortalCommands implements CommandExecutor {
 
 		int params = args.length;
 
-		if (params == 0) {
-                        sender.sendMessage(plugin.logPrefix + "Command not found");
-			return false;
-		} 
                 if(params == 1) {
                     if(args[0].equalsIgnoreCase("reload")){
                         Reload(sender);
@@ -39,22 +35,24 @@ public class WebPortalCommands implements CommandExecutor {
                     }else if(args[0].equalsIgnoreCase("mailbox")) {
                         inv(sender);
                     }else{
-                        sender.sendMessage(plugin.logPrefix + "Command not found");
-                        return false;
+                        CommandNotFound(sender);
                     }
                 }else if(params == 2) {
                     if(args[0].equalsIgnoreCase("password")){
                         Password(sender,args[1]);    
                     }else{
-                        sender.sendMessage(plugin.logPrefix + "Command not found");
-                        return false;
+                        CommandNotFound(sender);
                     }                    
                 }else{
-                    sender.sendMessage(plugin.logPrefix + "Command not found");
-                    return false;
+                    CommandNotFound(sender);
                 }
 		return false;
 	}
+        
+        private boolean CommandNotFound(CommandSender sender) {
+            sender.sendMessage(plugin.logPrefix + "Command not found");
+            return true;
+        }
         
         public boolean Password(CommandSender sender,String pass) {
             if (pass != null) {
