@@ -38,8 +38,8 @@ public class SqliteDataQueries implements IDataQueries {
                     connection = new WALConnection(DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + File.separator + "data.db"));
                     return connection;
             } catch (Exception e) {
-                    WebPortal.log.log(Level.SEVERE, "{0} Exception getting SQLite WALConnection", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.SEVERE, "{0} Exception getting SQLite WALConnection", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             }
             return null;
     }
@@ -76,8 +76,8 @@ public class SqliteDataQueries implements IDataQueries {
 				exists = true;
 			}
 		} catch (SQLException e) {
-			WebPortal.log.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -96,8 +96,8 @@ public class SqliteDataQueries implements IDataQueries {
                         version = rs.getInt("dbversion");
                 }
         } catch (SQLException e) {
-                WebPortal.log.log(Level.WARNING, "{0} Unable to check if table version ", plugin.logPrefix);
-                WebPortal.log.warning(e.getMessage());
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to check if table version ", plugin.logPrefix);
+                WebPortal.logger.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
         }
@@ -114,8 +114,8 @@ public class SqliteDataQueries implements IDataQueries {
 			st = conn.createStatement();
 			st.executeUpdate(sql);
 		} catch (SQLException e) {
-			WebPortal.log.log(Level.WARNING, "{0} Exception executing raw SQL{1}", new Object[]{plugin.logPrefix, sql});
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.log(Level.WARNING, "{0} Exception executing raw SQL{1}", new Object[]{plugin.logPrefix, sql});
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -128,35 +128,35 @@ public class SqliteDataQueries implements IDataQueries {
                     try {
                         dbFile.createNewFile();
                     } catch (IOException ex) {
-                        WebPortal.log.log(Level.WARNING,"{0} Can`t create file db", plugin.logPrefix);
+                        WebPortal.logger.log(Level.WARNING,"{0} Can`t create file db", plugin.logPrefix);
                     }
                 }
                 if (!tableExists("WA_Players")) {
-			WebPortal.log.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Players (id INTEGER PRIMARY KEY, name VARCHAR(255), pass VARCHAR(255), money DOUBLE, itemsSold INTEGER, itemsBought INTEGER, earnt DOUBLE, spent DOUBLE, canBuy INTEGER, canSell INTEGER, isAdmin INTEGER);");
 		}
 		if (!tableExists("WA_StorageCheck")) {
-			WebPortal.log.log(Level.INFO, "{0} Creating table WA_StorageCheck", plugin.logPrefix);
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_StorageCheck", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_StorageCheck (id INTEGER PRIMARY KEY, time INTEGER);");
 		}
 		if (!tableExists("WA_Auctions")) {
-			WebPortal.log.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_Auctions (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, player VARCHAR(255), quantity INTEGER, price DOUBLE, created INTEGER, allowBids BOOLEAN Default '0', currentBid DOUBLE, currentWinner VARCHAR(255), ench VARCHAR(45), tableid INTEGER(1));");
 		}
 		if (!tableExists("WA_SellPrice")) {
-			WebPortal.log.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SellPrice (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, time INTEGER, quantity INTEGER, price DOUBLE, seller VARCHAR(255), buyer VARCHAR(255), ench VARCHAR(45));");
 		}
 		if (!tableExists("WA_MarketPrices")) {
-			WebPortal.log.log(Level.INFO, "{0} Creating table WA_MarketPrices", plugin.logPrefix);
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_MarketPrices", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_MarketPrices (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, time INTEGER, marketprice DOUBLE, ref INTEGER);");
 		}
 		if (!tableExists("WA_SaleAlerts")) {
-			WebPortal.log.log(Level.INFO, "{0} Creating table WA_SaleAlerts", plugin.logPrefix);
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_SaleAlerts", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SaleAlerts (id INTEGER PRIMARY KEY, seller VARCHAR(255), quantity INTEGER, price DOUBLE, buyer VARCHAR(255), item VARCHAR(255), alerted BOOLEAN Default '0');");
 		}
                 if (!tableExists("WA_DbVersion")) {
-                        WebPortal.log.log(Level.INFO, "{0} Creating table WA_DbVersion", plugin.logPrefix);
+                        WebPortal.logger.log(Level.INFO, "{0} Creating table WA_DbVersion", plugin.logPrefix);
                         executeRawSQL("CREATE TABLE WA_DbVersion (id INTEGER PRIMARY KEY, dbversion INTEGER);");
                         executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN type VARCHAR(45) NULL;");
@@ -164,7 +164,7 @@ public class SqliteDataQueries implements IDataQueries {
                         executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN searchtype VARCHAR(45) NULL;");
                 }
                 if (tableVersion() == 1) {
-                        WebPortal.log.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
+                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
                         executeRawSQL("ALTER TABLE WA_Players ADD COLUMN lock VARCHAR(1) Default 'N';");
                         executeRawSQL("UPDATE WA_DbVersion SET dbversion = 2 where id = 1");
                 }
@@ -196,8 +196,8 @@ public class SqliteDataQueries implements IDataQueries {
 				saleAlerts.add(saleAlert);
 			}
 		} catch (SQLException e) {
-			WebPortal.log.log(Level.WARNING, "{0} Unable to get sale alerts for player {1}", new Object[]{plugin.logPrefix, player});
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.log(Level.WARNING, "{0} Unable to get sale alerts for player {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -216,8 +216,8 @@ public class SqliteDataQueries implements IDataQueries {
 			st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebPortal.log.log(Level.WARNING, "{0} Unable to mark sale alert seen {1}", new Object[]{plugin.logPrefix, id});
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.log(Level.WARNING, "{0} Unable to mark sale alert seen {1}", new Object[]{plugin.logPrefix, id});
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -249,8 +249,8 @@ public class SqliteDataQueries implements IDataQueries {
                                 auction.setEnchantments(rs.getString("ench"));
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to get auction " + id);
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to get auction " + id);
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -271,7 +271,7 @@ public class SqliteDataQueries implements IDataQueries {
 //				totalAuctionCount = rs.getInt(1);
 //			}
 //		} catch (SQLException e) {
-//			WebAuction.log.warning(plugin.logPrefix + "Unable to get total auction count error : " + e.getMessage());
+//			WebAuction.logger.warning(plugin.logPrefix + "Unable to get total auction count error : " + e.getMessage());
 //		} finally {
 //			closeResources(conn, st, rs);
 //		}
@@ -298,7 +298,7 @@ public class SqliteDataQueries implements IDataQueries {
 //				auction.setCreated(rs.getInt("created"));
 //			}
 //		} catch (SQLException e) {
-//			WebAuction.log.warning(plugin.logPrefix + "Unable to get auction " + offset + " error : " + e.getMessage());
+//			WebAuction.logger.warning(plugin.logPrefix + "Unable to get auction " + offset + " error : " + e.getMessage());
 //		} finally {
 //			closeResources(conn, st, rs);
 //		}
@@ -339,8 +339,8 @@ public class SqliteDataQueries implements IDataQueries {
 		              found = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to get auction ");
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to get auction ");
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -386,8 +386,8 @@ public class SqliteDataQueries implements IDataQueries {
 		              found = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to get auction ");
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to get auction ");
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -406,7 +406,7 @@ public class SqliteDataQueries implements IDataQueries {
                         st.setString(2, player);
                         st.executeUpdate();
                 } catch (SQLException e) {
-                        WebPortal.log.warning(plugin.logPrefix + "Unable to update password for player: " + player + " error : " + e.getMessage());
+                        WebPortal.logger.warning(plugin.logPrefix + "Unable to update password for player: " + player + " error : " + e.getMessage());
                 } finally {
                         closeResources(conn, st, rs);
                 }
@@ -424,7 +424,7 @@ public class SqliteDataQueries implements IDataQueries {
 			st.setInt(2, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to update Auction: " + id + " error :" + e.getMessage());
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to update Auction: " + id + " error :" + e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -441,7 +441,7 @@ public class SqliteDataQueries implements IDataQueries {
 			st.setInt(1, id);
 			st.executeUpdate();
 		} catch (SQLException e) {
-			WebPortal.log.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, id});
+			WebPortal.logger.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, id});
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -463,7 +463,7 @@ public class SqliteDataQueries implements IDataQueries {
 				exists = true;
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to check new mail for: " + player);
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to check new mail for: " + player);
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -493,8 +493,8 @@ public class SqliteDataQueries implements IDataQueries {
                             waPlayer.setIsAdmin(rs.getInt("isAdmin"));
                     }
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to get player " + player);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to get player " + player);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -538,8 +538,8 @@ public class SqliteDataQueries implements IDataQueries {
                             found = rs.getInt(1);
                     }
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to get auction ");
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to get auction ");
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -560,7 +560,7 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(4, player);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to update player permissions in DB error : " + e.getMessage() );
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to update player permissions in DB error : " + e.getMessage() );
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -582,8 +582,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(6, isAdmin);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to update player permissions in DB");
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to update player permissions in DB");
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -607,8 +607,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(8, ench);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to update Sell Price");
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to update Sell Price");
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -629,8 +629,8 @@ public class SqliteDataQueries implements IDataQueries {
                         pass = rs.getString("pass");
                     }
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to update player permissions in DB");
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to update player permissions in DB");
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -649,8 +649,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(2, player);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to update player money in DB", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to update player money in DB", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -685,8 +685,8 @@ public class SqliteDataQueries implements IDataQueries {
                             auction.setEnchantments(rs.getString("ench"));
                     }
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -727,8 +727,8 @@ public class SqliteDataQueries implements IDataQueries {
                             auctions.add(auction);
                     }
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -768,8 +768,8 @@ public class SqliteDataQueries implements IDataQueries {
                             auctions.add(auction);
                     }
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to get items ", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -788,8 +788,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -807,8 +807,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -826,8 +826,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(2, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -853,8 +853,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(10, searchtype);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -875,8 +875,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setString(5, item);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to alert item", plugin.logPrefix);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to alert item", plugin.logPrefix);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -908,8 +908,8 @@ public class SqliteDataQueries implements IDataQueries {
                             auctions.add(auction);
                     }
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -940,8 +940,8 @@ public class SqliteDataQueries implements IDataQueries {
                             auctionMails.add(auctionMail);
                     }
             } catch (SQLException e) {
-                    WebPortal.log.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -959,8 +959,8 @@ public class SqliteDataQueries implements IDataQueries {
                     st.setInt(1, id);
                     st.executeUpdate();
             } catch (SQLException e) {
-                    WebPortal.log.warning(plugin.logPrefix + "Unable to remove mail " + id);
-                    WebPortal.log.warning(e.getMessage());
+                    WebPortal.logger.warning(plugin.logPrefix + "Unable to remove mail " + id);
+                    WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
             }
@@ -1012,8 +1012,8 @@ public class SqliteDataQueries implements IDataQueries {
                                 Transacts.add(_Transact);
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to transact ");
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to transact ");
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -1036,8 +1036,8 @@ public class SqliteDataQueries implements IDataQueries {
                                 MarketPrice = rs.getInt("total");
 			}
 		} catch (SQLException e) {
-			WebPortal.log.warning(plugin.logPrefix + "Unable to maket price ");
-			WebPortal.log.warning(e.getMessage());
+			WebPortal.logger.warning(plugin.logPrefix + "Unable to maket price ");
+			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);
 		}
@@ -1059,8 +1059,8 @@ public class SqliteDataQueries implements IDataQueries {
                         Lock = rs.getString("lock");
                 }
         } catch (SQLException e) {
-                WebPortal.log.warning(plugin.logPrefix + "Unable to maket price ");
-                WebPortal.log.warning(e.getMessage());
+                WebPortal.logger.warning(plugin.logPrefix + "Unable to maket price ");
+                WebPortal.logger.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
         }
@@ -1079,8 +1079,8 @@ public class SqliteDataQueries implements IDataQueries {
                 st.setString(2, player);
                 st.executeUpdate();
         } catch (SQLException e) {
-                WebPortal.log.log(Level.WARNING, "{0} Unable to Set Lock", plugin.logPrefix);
-                WebPortal.log.warning(e.getMessage());
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to Set Lock", plugin.logPrefix);
+                WebPortal.logger.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
         }

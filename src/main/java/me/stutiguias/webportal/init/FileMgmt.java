@@ -95,9 +95,9 @@ public class FileMgmt
       ZipFile zip = new ZipFile(zipdir);
       unzipFileIntoDirectory(zip, dest);
     } catch (ZipException e) {
-      WebPortal.log.warning("Failed to unzip resource!");
+      WebPortal.logger.warning("Failed to unzip resource!");
     } catch (IOException e) {
-      WebPortal.log.warning("Failed to unzip resource!");
+      WebPortal.logger.warning("Failed to unzip resource!");
     }
   }
 
@@ -135,13 +135,13 @@ public class FileMgmt
               }
           }
           catch (IOException e) {
-               WebPortal.log.log(Level.WARNING, "Failed to unzip resource! {0}", e.getMessage());
+               WebPortal.logger.log(Level.WARNING, "Failed to unzip resource! {0}", e.getMessage());
                
             if (fos == null) continue;
             try {
               fos.close();
             } catch (IOException ex) {
-                WebPortal.log.log(Level.WARNING, "Failed to unzip resource! {0}", e.getMessage());
+                WebPortal.logger.log(Level.WARNING, "Failed to unzip resource! {0}", e.getMessage());
             }
             continue;
           }
@@ -170,7 +170,7 @@ public class FileMgmt
       out.close();
       in.close();
     } catch (Exception e) {
-      WebPortal.log.warning("Failed to copy resource!");
+      WebPortal.logger.warning("Failed to copy resource!");
     }
   }
 }

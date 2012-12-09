@@ -22,7 +22,7 @@ public class Essentials {
         plugin = instance;
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("Essentials");
         if(pl != null) {
-            WebPortal.log.log(Level.INFO, plugin.logPrefix + "PortalBox Essentials set to true and Essentials found !!!");
+            WebPortal.logger.log(Level.INFO, plugin.logPrefix + "PortalBox Essentials set to true and Essentials found !!!");
         }
     }
     

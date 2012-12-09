@@ -33,8 +33,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WebPortal extends JavaPlugin {
 
-	public String logPrefix = ChatColor.GOLD + "[WebPortal] " + ChatColor.WHITE;
-	public static final Logger log = Logger.getLogger("Minecraft");
+	public String logPrefix = "[WebPortal] ";
+	public static final Logger logger = Logger.getLogger("Minecraft");
 
 	private final WebAuctionPlayerListener playerListener = new WebAuctionPlayerListener(this);
 	private final WebAuctionBlockListener blockListener = new WebAuctionBlockListener(this);
@@ -45,7 +45,7 @@ public class WebPortal extends JavaPlugin {
         public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<String, AuthPlayer>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
         public WebAuctionServerListenTask server;
-	public int signDelay = 0;
+	public int signDelay;
         
         public ConfigAccessor materials;
         
@@ -70,6 +70,7 @@ public class WebPortal extends JavaPlugin {
         
 	public Permission permission = null;
 	public Economy economy = null;
+        
         public int connections;
         
         public int Mail = 3;
@@ -90,7 +91,7 @@ public class WebPortal extends JavaPlugin {
 	@Override
 	public void onEnable() {
 
-		log.log(Level.INFO, "{0} WebAuction is initializing.", logPrefix);
+		logger.log(Level.INFO, "{0} WebAuction is initializing.", logPrefix);
                 
                 File dir = getDataFolder();
                 if (!dir.exists()) {
@@ -99,12 +100,12 @@ public class WebPortal extends JavaPlugin {
 
                 dir = new File(getDataFolder() + File.separator + "html");
                 if (!dir.exists()) {
-                    log.log(Level.INFO, "{0} Copying default HTML ZIP...", logPrefix);
+                    logger.log(Level.INFO, "{0} Copying default HTML ZIP...", logPrefix);
                     dir = new File(getDataFolder() + File.separator + "webportal.zip");
                     FileMgmt.copy(getResource("webportal.zip"), dir);
-                    log.log(Level.INFO, "{0} Done! Unzipping...", logPrefix);
+                    logger.log(Level.INFO, "{0} Done! Unzipping...", logPrefix);
                     FileMgmt.unziptodir(dir, getDataFolder());
-                    log.log(Level.INFO, "{0} Done! Deleting zip.", logPrefix);
+                    logger.log(Level.INFO, "{0} Done! Deleting zip.", logPrefix);
                     dir.deleteOnExit();
                 }
                 
@@ -123,19 +124,19 @@ public class WebPortal extends JavaPlugin {
                 
                 if(this.permission.isEnabled() == true)
                 {
-                   log.log(Level.INFO, "{0} Vault perm enable.", logPrefix);    
+                   logger.log(Level.INFO, "{0} Vault perm enable.", logPrefix);    
                 }else{
-                   log.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);    
+                   logger.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);    
                 }
 		
 
                 //Metrics 
                 try {
-                    log.log(Level.INFO, "{0} Sending Metrics", logPrefix);
+                    logger.log(Level.INFO, "{0} Sending Metrics", logPrefix);
                     Metrics metrics = new Metrics(this);
                     metrics.start();
                 } catch (IOException e) {
-                    log.log(Level.INFO, "{0} Failed to submit Metrics", logPrefix);
+                    logger.log(Level.INFO, "{0} Failed to submit Metrics", logPrefix);
                 }
 	}
 
@@ -143,7 +144,7 @@ public class WebPortal extends JavaPlugin {
             try {
                 server.server.close();
             }catch(Exception ex) {
-                WebPortal.log.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
+                WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
             }
             server.interrupt();
             this.reloadConfig();
@@ -155,7 +156,7 @@ public class WebPortal extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
-		log.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
+		logger.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
 	}
 
 	private void initConfig() {
@@ -172,6 +173,7 @@ public class WebPortal extends JavaPlugin {
                 getConfig().addDefault("Misc.WebServicePort",25900);
 		getConfig().addDefault("Misc.SignDelay", 1000);
                 getConfig().addDefault("Misc.MaxSimultaneousConnection", 200);
+                
                 getConfig().addDefault("SignMessage.StackStored", "Item stack stored.");
                 getConfig().addDefault("SignMessage.HoldHelp","Please hold a stack of item in your hand and right click to deposit them.");
                 getConfig().addDefault("SignMessage.InventoryFull", "Inventory full, Store again not fit itens");
@@ -183,17 +185,20 @@ public class WebPortal extends JavaPlugin {
                 getConfig().addDefault("WebMessage.Cancel","Cancel");
                 getConfig().addDefault("WebMessage.Mailit","Mail it");
                 getConfig().addDefault("WebMessage.CreateAuction","Create Auction");
+                
                 mcmmoconfig = new HashMap<String, Object>();
                 mcmmoconfig.put("UseMcMMO", false);
                 mcmmoconfig.put("McMMOMYSql", false );
                 mcmmoconfig.put("McMMOTablePrefix", "mcmmo_"); 
                 getConfig().addDefault("PortalBox.McMMO", mcmmoconfig);
                 getConfig().addDefault("PortalBox.Essentials", false);
+                
                 getConfig().addDefault("AuthSystem.System", "WebPortal");
                 getConfig().addDefault("AuthSystem.Algorithm", "MD5");
                 getConfig().addDefault("AuthSystem.TableName", "minecraft");
                 getConfig().addDefault("AuthSystem.ColumnPassword", "password");
                 getConfig().addDefault("AuthSystem.ColumnUsername", "username");
+                
 		getConfig().addDefault("Updates.SaleAlertFrequency", 30L);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -256,7 +261,7 @@ public class WebPortal extends JavaPlugin {
                 
                 port = getConfig().getInt("Misc.WebServicePort");
                 int NUM_CONN_MAX = getConfig().getInt("Misc.MaxSimultaneousConnection");
-                log.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
+                logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
                 connections = 0;
                 
                 if(getConfig().getBoolean("Misc.UseInsideServer")) {
@@ -265,11 +270,12 @@ public class WebPortal extends JavaPlugin {
                 }
 
                 materials = new ConfigAccessor(this, "materials.yml");
+                
                 try {
                     materials.setupConfig();
                     materials.getConfig();
                 }catch(IOException ex) {
-                    log.warning("unable to setup materials.yml");
+                    logger.warning("unable to setup materials.yml");
                 }
                 
                 
@@ -277,14 +283,14 @@ public class WebPortal extends JavaPlugin {
 
                 if(!dbPass.equals("password123") && !dbtype.equalsIgnoreCase("SQLite") )
                 {
-                    log.log(Level.INFO, "{0} Choose MySQL db type.", logPrefix);
-                    log.log(Level.INFO, "{0} MySQL Initializing.", logPrefix);
+                    logger.log(Level.INFO, "{0} Choose MySQL db type.", logPrefix);
+                    logger.log(Level.INFO, "{0} MySQL Initializing.", logPrefix);
 
                     dataQueries = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
                     dataQueries.initTables();
                }else{ 
-                    log.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
-                    log.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
+                    logger.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
+                    logger.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
                     
                     dataQueries = new SqliteDataQueries(this);
                     dataQueries.initTables();
@@ -311,7 +317,7 @@ public class WebPortal extends JavaPlugin {
                     mcmmo = new McMMO(this);
                 }
             }catch(NullPointerException ex){
-                log.log(Level.INFO, "{0} McmmoBox Disable", logPrefix);
+                logger.log(Level.INFO, "{0} McmmoBox Disable", logPrefix);
             }
             
         }
@@ -394,7 +400,7 @@ public class WebPortal extends JavaPlugin {
                 }
                 
             }catch(NullPointerException ex){
-                log.warning("Unable to search Item");
+                logger.warning("Unable to search Item");
                 ex.getMessage();
             }
 

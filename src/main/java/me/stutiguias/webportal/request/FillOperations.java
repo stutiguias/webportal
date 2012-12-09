@@ -106,7 +106,7 @@ public class FillOperations extends Response {
                print(tr.Buy(ap.getName(),au, qtd, item_name, false),"text/plain");
            }
        }catch(Exception ex){
-           WebPortal.log.warning(ex.getMessage());
+           WebPortal.logger.warning(ex.getMessage());
        }
         
     }

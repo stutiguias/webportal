@@ -57,7 +57,7 @@ public class Response {
         }
         catch(Exception e)
         {
-            WebPortal.log.info((new StringBuilder()).append("ERROR in print(): ").append(e.getMessage()).toString());
+            WebPortal.logger.info((new StringBuilder()).append("ERROR in print(): ").append(e.getMessage()).toString());
         }
     }
 
@@ -74,7 +74,7 @@ public class Response {
         }
         catch(Exception e)
         {
-            WebPortal.log.info((new StringBuilder()).append("ERROR in httperror(): ").append(e.getMessage()).toString());
+            WebPortal.logger.info((new StringBuilder()).append("ERROR in httperror(): ").append(e.getMessage()).toString());
         }
     }
     
@@ -110,7 +110,7 @@ public class Response {
         }
         catch(Exception e)
         {
-            WebPortal.log.info((new StringBuilder()).append("ERROR in readFileAsBinary(): ").append(e.getMessage()).toString());
+            WebPortal.logger.info((new StringBuilder()).append("ERROR in readFileAsBinary(): ").append(e.getMessage()).toString());
         }
     }
     
@@ -123,7 +123,7 @@ public class Response {
                 String resdec = URLDecoder.decode(result.group(1),"UTF-8");
                 return resdec;
             }catch (UnsupportedEncodingException e){
-                WebPortal.log.log(Level.INFO, "{0} ERROR in getParam(): {1}", new Object[]{plugin.logPrefix, e.getMessage()});
+                WebPortal.logger.log(Level.INFO, "{0} ERROR in getParam(): {1}", new Object[]{plugin.logPrefix, e.getMessage()});
                 return "";
             }
         }else

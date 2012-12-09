@@ -73,7 +73,7 @@ public class WebAuctionPlayerListener implements Listener {
                             isAdmin = 1;
                     }
 		
-                    WebPortal.log.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, player, canBuy, canSell, isAdmin});
+                    WebPortal.logger.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, player, canBuy, canSell, isAdmin});
                     // Update permissions
                     plugin.dataQueries.updatePlayerPermissions(player, canBuy, canSell, isAdmin);
 		}

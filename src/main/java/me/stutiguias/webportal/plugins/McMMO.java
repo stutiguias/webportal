@@ -28,13 +28,13 @@ public class McMMO {
         profile = new ProfileMcMMO();
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("mcMMO");
         if(pl != null) {
-            WebPortal.log.log(Level.INFO, "{0} PortalBox mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
+            WebPortal.logger.log(Level.INFO, "{0} PortalBox mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
         }
     }
     
     
     public String getBox(OfflinePlayer player) {
-        StringBuilder sb = new StringBuilder();
+       StringBuilder sb = new StringBuilder();
        try {
         GetInfoOnPlugin(player);
         sb = Box(sb); 
@@ -47,7 +47,7 @@ public class McMMO {
     }
     
     public String getBox(String player) {
-                StringBuilder sb = new StringBuilder();
+       StringBuilder sb = new StringBuilder();
        try {
         GetInfoOnMysql(player);
         sb = Box(sb);

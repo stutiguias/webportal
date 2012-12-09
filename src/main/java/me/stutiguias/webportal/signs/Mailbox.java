@@ -4,16 +4,11 @@
  */
 package me.stutiguias.webportal.signs;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.settings.TradeSystem;
-import me.stutiguias.webportal.webserver.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -104,8 +99,8 @@ public class Mailbox {
                                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoMailRetrieved")));
                         }
                 } catch (Exception e) {
-                       WebPortal.log.info("Erro on Withdraw");
-                       WebPortal.log.info(e.getMessage());
+                       WebPortal.logger.info("Erro on Withdraw");
+                       WebPortal.logger.info(e.getMessage());
                 }
         } else {
                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoPermission")));

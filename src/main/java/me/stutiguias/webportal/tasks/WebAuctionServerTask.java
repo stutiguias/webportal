@@ -161,18 +161,18 @@ public class WebAuctionServerTask extends Thread {
                     }
                 }
             }catch(IOException e) {
-                WebPortal.log.log(Level.WARNING, "{0} ERROR in IO ", plugin.logPrefix);
+                WebPortal.logger.log(Level.WARNING, "{0} ERROR in IO ", plugin.logPrefix);
                 e.printStackTrace();
             }
             catch(Exception e)
             {
-                WebPortal.log.log(Level.WARNING, "{0} ERROR in ServerParser ", plugin.logPrefix);
+                WebPortal.logger.log(Level.WARNING, "{0} ERROR in ServerParser ", plugin.logPrefix);
                 e.printStackTrace();
             }
         }
         catch(IOException e)
         {
-                WebPortal.log.log(Level.WARNING, "{0} ERROR in IO ", plugin.logPrefix);
+                WebPortal.logger.log(Level.WARNING, "{0} ERROR in IO ", plugin.logPrefix);
                 e.printStackTrace();
         }finally {
             plugin.connections--;

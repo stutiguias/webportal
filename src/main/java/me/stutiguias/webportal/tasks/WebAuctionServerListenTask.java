@@ -36,7 +36,7 @@ public class WebAuctionServerListenTask extends Thread {
             Socket client;
             try
             {
-                WebPortal.log.info(plugin.logPrefix + "WebServer listening on port "+Port);
+                WebPortal.logger.info(plugin.logPrefix + "WebServer listening on port "+Port);
                 while(!server.isClosed()){
                         if(plugin.connections < NUM_CONN_MAX) {
                             client = server.accept();
@@ -44,14 +44,14 @@ public class WebAuctionServerListenTask extends Thread {
                             WebAuctionServerTask.start();
                             plugin.connections++;
                         }else{
-                            WebPortal.log.log(Level.WARNING, plugin.logPrefix + " The max number of Simultaneous as Reach");
+                            WebPortal.logger.log(Level.WARNING, plugin.logPrefix + " The max number of Simultaneous as Reach");
                         }
                 }
             }catch(Exception e){ 
-                WebPortal.log.info((new StringBuilder()).append("ERROR : ").append(e.getMessage()).toString());
+                WebPortal.logger.info((new StringBuilder()).append("ERROR : ").append(e.getMessage()).toString());
             }
         }catch(Exception ex) {
-            WebPortal.log.info((new StringBuilder()).append("ERROR : ").append(ex.getMessage()).toString());
+            WebPortal.logger.info((new StringBuilder()).append("ERROR : ").append(ex.getMessage()).toString());
         }
     }
     

@@ -35,11 +35,11 @@ public class FillMyItems extends Response {
         int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
         List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
         if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName() == null) {
-            WebPortal.log.log(Level.WARNING,"Cant determine player name");
+            WebPortal.logger.log(Level.WARNING,"Cant determine player name");
             return;
         }
         if(auctions == null) {
-            WebPortal.log.log(Level.WARNING,"Cant get auctions");
+            WebPortal.logger.log(Level.WARNING,"Cant get auctions");
             return;
         }
         int sEcho = Integer.parseInt(getParam("sEcho", param));
