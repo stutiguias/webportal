@@ -160,6 +160,7 @@ public class Response {
             int level = entry.getValue();
             enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
         }
+        
         if(item.getItemStack().getType() == org.bukkit.Material.POTION) {
             return "<img src='images/potion.png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
         }else{

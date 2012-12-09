@@ -45,7 +45,7 @@
 	  <scope>system</scope>
       <systemPath>${project.basedir}/lib/AuthMe-2.6.7b5.jar</systemPath>
     </dependency>
-    
+
   </dependencies>
   
   <build>
