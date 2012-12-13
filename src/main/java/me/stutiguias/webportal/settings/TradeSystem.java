@@ -70,7 +70,7 @@ public class TradeSystem {
             plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
         }
         
-        if(sellerauction.getPlayerName().equalsIgnoreCase("Server")){
+        if(sellerauction.getPlayerName().equalsIgnoreCase("Server") && sellerauction.getItemStack().getAmount() == 9999 ){
             return "You purchased "+ qtd +" " + item_name + " from "+ sellerauction.getPlayerName() +" for " + sellerauction.getPrice();
         }
         

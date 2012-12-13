@@ -76,40 +76,41 @@ public class FillAuction extends Response {
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = plugin.dataQueries.getFound();
         
-        JSONObject json = new JSONObject();
-        JSONArray jsonData = new JSONArray();
-        JSONObject jsonTwo;
+        JSONObject Response = new JSONObject();
+        JSONArray Data = new JSONArray();
+        JSONObject tmp_Data;
         
-        json.put("sEcho", sEcho);
-        json.put("iTotalRecords", iTotalRecords);
-        json.put("iTotalDisplayRecords", iTotalDisplayRecords);
+        Response.put("sEcho", sEcho);
+        Response.put("iTotalRecords", iTotalRecords);
+        Response.put("iTotalDisplayRecords", iTotalDisplayRecords);
         
         if(iTotalRecords > 0) {
             for(Auction item:auctions){
                 if(item.getPlayerName().equalsIgnoreCase("Server")){
-                    jsonData.add(ServerAuction(item,searchtype,ip));
+                    Data.add(ServerAuction(item,searchtype,ip));
                     continue;
                 }
-                jsonTwo = new JSONObject();
+           
+                tmp_Data = new JSONObject();
                 double MakertPercent = MarketPrice(item, item.getPrice());
-                jsonTwo.put("DT_RowId","row_" + item.getId() );
-                jsonTwo.put("DT_RowClass", Grade(MakertPercent));
-                jsonTwo.put("0", ConvertItemToResult(item,searchtype));
-                jsonTwo.put("1", "<img width='32' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
-                jsonTwo.put("2", "Never");
-                jsonTwo.put("3", item.getItemStack().getAmount());
-                jsonTwo.put("4", "$ " + item.getPrice());
-                jsonTwo.put("5", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("6", format(MakertPercent) + "%");
-                jsonTwo.put("7", html.HTMLBuy(ip,item.getId()));
-                jsonData.add(jsonTwo);
+                tmp_Data.put("DT_RowId","row_" + item.getId() );
+                tmp_Data.put("DT_RowClass", Grade(MakertPercent));
+                tmp_Data.put("0", ConvertItemToResult(item,searchtype));
+                tmp_Data.put("1", "<img width='32' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
+                tmp_Data.put("2", "Never");
+                tmp_Data.put("3", item.getItemStack().getAmount());
+                tmp_Data.put("4", "$ " + item.getPrice());
+                tmp_Data.put("5", "$ " + item.getPrice() * item.getItemStack().getAmount());
+                tmp_Data.put("6", format(MakertPercent) + "%");
+                tmp_Data.put("7", html.HTMLBuy(ip,item.getId()));
+                Data.add(tmp_Data);
             }
         }else{
-           jsonData.add(NoAuction());
+           Data.add(NoAuction());
         }
-        json.put("aaData",jsonData);
+        Response.put("aaData",Data);
         
-        print(json.toJSONString(),"text/plain");
+        print(Response.toJSONString(),"text/plain");
     }
     
     public JSONObject NoAuction() {
@@ -157,7 +158,11 @@ public class FillAuction extends Response {
         ServerAuction.put("0", ConvertItemToResult(item,searchtype));
         ServerAuction.put("1", item.getPlayerName());
         ServerAuction.put("2", "Never");
-        ServerAuction.put("3", "Infinit");
+        if(item.getItemStack().getAmount() == 9999) {
+            ServerAuction.put("3", "Infinit");
+        }else{
+            ServerAuction.put("3", item.getItemStack().getAmount());
+        }
         ServerAuction.put("4", "$ " + item.getPrice());
         ServerAuction.put("5", "Infinit");
         ServerAuction.put("6", "0%");

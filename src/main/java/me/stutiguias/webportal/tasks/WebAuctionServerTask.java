@@ -146,6 +146,8 @@ public class WebAuctionServerTask extends Thread {
                                 _FillBox.BOX2(HostAddress);
                             }else if(url.startsWith("/admsearch")) {
                                 _FillAdminBox.ADM(HostAddress,param);
+                            }else if(url.startsWith("/web/delete")){     
+                                _FillAdminShop.Delete(HostAddress, url, param);
                             }else if(url.startsWith("/web/shop")){ 
                                 _FillAdminShop.AddShop(HostAddress, url, param);
                             }else if(url.startsWith("/web/adminshoplist")){ 
