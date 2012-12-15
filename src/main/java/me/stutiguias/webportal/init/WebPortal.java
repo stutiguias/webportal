@@ -61,6 +61,7 @@ public class WebPortal extends JavaPlugin {
         
         public Boolean showSalesOnJoin = false;
         public Boolean allowlogifonline = false;
+        public Boolean blockcreative = true;
         
         public String authplugin;
         public String algorithm;
@@ -173,6 +174,7 @@ public class WebPortal extends JavaPlugin {
                 getConfig().addDefault("Misc.WebServicePort",25900);
 		getConfig().addDefault("Misc.SignDelay", 1000);
                 getConfig().addDefault("Misc.MaxSimultaneousConnection", 200);
+                getConfig().addDefault("Misc.BlockCreative",true);
                 
                 getConfig().addDefault("SignMessage.StackStored", "Item stack stored.");
                 getConfig().addDefault("SignMessage.HoldHelp","Please hold a stack of item in your hand and right click to deposit them.");
@@ -252,6 +254,7 @@ public class WebPortal extends JavaPlugin {
                 Table = getConfig().getString("AuthSystem.TableName");
                 ColumnPassword = getConfig().getString("AuthSystem.ColumnPassword");
                 Username = getConfig().getString("AuthSystem.ColumnUsername");
+                blockcreative = getConfig().getBoolean("Misc.BlockCreative");
                 
 		long saleAlertFrequency = getConfig().getLong("Updates.SaleAlertFrequency");
 		boolean getMessages = getConfig().getBoolean("Misc.ReportSales");

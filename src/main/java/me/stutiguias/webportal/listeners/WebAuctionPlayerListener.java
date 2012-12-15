@@ -73,7 +73,7 @@ public class WebAuctionPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-            	
+            	if (isCreative(event)) return;
 		if (!event.hasItem() && !event.hasBlock()) return;
                 Block block;
                 try{
@@ -89,7 +89,6 @@ public class WebAuctionPlayerListener implements Listener {
 
 		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]")) {
                     if(lines[0].equals(ChatColor.GREEN + "[wSell]")) { 
-                        if(isCreative(event, sign)) return;
                         plugin.wsell.ClickSign(event,sign,lines);
                     }else{
 			return;
@@ -145,11 +144,9 @@ public class WebAuctionPlayerListener implements Listener {
             WebPortal.LockTransact.put(pl.getName(), Boolean.FALSE);
         }
 
-        private Boolean isCreative(PlayerInteractEvent event,Sign sign) {
-            if(event.getPlayer().getGameMode() == GameMode.CREATIVE) {
+        private Boolean isCreative(PlayerInteractEvent event) {
+            if(event.getPlayer().getGameMode() == GameMode.CREATIVE && plugin.blockcreative) {
                 event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
-                event.setCancelled(true);
-                sign.update();
                 return true;
             }else{
                 return false;
