@@ -68,6 +68,10 @@ public class WebPortalCommands implements CommandExecutor {
                 if (plugin.permission.has(sender.getServer().getWorlds().get(0),sender.getName(), "wa.webadmin")) {
                         isAdmin = 1;
                 }
+                if(canBuy == 0 && canSell == 0 && isAdmin == 0) {
+                    sender.sendMessage(plugin.logPrefix + " you don't have permission.");        
+                    return false;
+                }
                 if (null != plugin.dataQueries.getPlayer(sender.getName())) {
                         //no need to create a new account
                         sender.sendMessage(plugin.logPrefix + "Account found.");        

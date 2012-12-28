@@ -111,7 +111,7 @@ public class WebAuctionPlayerListener implements Listener {
                 if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
                 {
                     plugin.mailbox.MailBoxOperationType(event.getPlayer(), lines[2]);
-                }else if(lines[1].equalsIgnoreCase("vbox")) {
+                }else if(lines[1].equalsIgnoreCase("vbox") && event.getPlayer().hasPermission("wa.vbox")) {
                     plugin.vbox.Open(event);
                 }
                 
