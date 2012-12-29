@@ -134,29 +134,29 @@ enchant:
     aqua_affinity:    Aqua Affinity
 
 Block:
-    Bedrock:              Bedrock
-    Cobblestone:          Cobblestone
-    Diamond Block:        Diamond Block
-    Dirt:                 Dirt
-    Emerald Block:        Emerald Block
-    Gold Block:           Gold Block
-    Stone:                Stone
-    Iron Block:           Iron Block
-    Lapis Lazuli Block:   Lapis Lazuli Block
-    Glass:                Glass
-    Oak Wood Planks:      Oak Wood Planks
-    Spruce Wood Planks:   Spruce Wood Planks
-    Birch Wood Planks:    Birch Wood Planks
-    Jungle Wood Planks:   Jungle Wood Planks
-    Sand:                 Sand
-    Gravel:               Gravel
-    Gold Ore:             Gold Ore
-    Iron Ore:             Iron Ore
-    Coal Ore:             Coal Ore
-    Oak Wood:             Oak Wood
-    Spruce Wood:          Spruce Wood
-    Birch Wood:           Birch Wood
-    Jungle Wood:          Jungle Wood
+    7:          Bedrock
+    4:          Cobblestone
+    57:         Diamond Block
+    3:          Dirt
+    133:        Emerald Block
+    41:         Gold Block
+    1:          Stone
+    42:         Iron Block
+    22:         Lapis Lazuli Block
+    20:         Glass
+    5_0:        Oak Wood Planks
+    5_1:        Spruce Wood Planks
+    5_2:        Birch Wood Planks
+    5_3:        Jungle Wood Planks
+    12:         Sand
+    13:         Gravel
+    14:         Gold Ore
+    15:         Iron Ore
+    16:         Coal Ore
+    17_0:             Oak Wood
+    17_1:          Spruce Wood
+    17_2:           Birch Wood
+    17_3:          Jungle Wood
     Sponge:               Sponge
     Glass:                Glass
     Lapis Lazuli Ore:     Lapis Lazuli Ore
