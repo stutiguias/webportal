@@ -134,51 +134,51 @@ enchant:
     aqua_affinity:    Aqua Affinity
 
 Block:
-    7:          Bedrock
-    4:          Cobblestone
-    57:         Diamond Block
-    3:          Dirt
-    133:        Emerald Block
-    41:         Gold Block
-    1:          Stone
-    42:         Iron Block
-    22:         Lapis Lazuli Block
-    20:         Glass
-    5_0:        Oak Wood Planks
-    5_1:        Spruce Wood Planks
-    5_2:        Birch Wood Planks
-    5_3:        Jungle Wood Planks
-    12:         Sand
-    13:         Gravel
-    14:         Gold Ore
-    15:         Iron Ore
-    16:         Coal Ore
-    17_0:             Oak Wood
-    17_1:          Spruce Wood
-    17_2:           Birch Wood
-    17_3:          Jungle Wood
-    Sponge:               Sponge
-    Glass:                Glass
-    Lapis Lazuli Ore:     Lapis Lazuli Ore
-    Sandstone:            Sandstone
-    Chiseled Sandstone:   Chiseled Sandstone
-    Smooth Sandstone:     Smooth Sandstone
-    Wool:                 Wool
-    Orange Wool:          Orange Wool
-    Magenta Wool:         Magenta Wool
-    Light Blue Wool:      Light Blue Wool
-    Yellow Wool:          Yellow Wool
-    Lime Wool:            Lime Wool
-    Pink Wool:            Pink Wool
-    Gray Wool:            Gray Wool
-    Light Gray Wool:      Light Gray Wool
-    Cyan Wool:            Cyan Wool
-    Purple Wool:          Purple Wool
-    Blue Wool:            Blue Wool
-    Brown Wool:           Brown Wool
-    Green Wool:           Green Wool
-    Red Wool:             Red Wool
-    Black Wool:           Black Wool
+    7:          Bedrock,bedrock.png
+    4:          Cobblestone,cobblestone.png
+    57:         Diamond Block,diamondblock.png
+    3:          Dirt,dirt.png
+    133:        Emerald Block,emeraldblock.png
+    41:         Gold Block,goldblock.png
+    1:          Stone,stone.png
+    42:         Iron Block,ironblock.png
+    22:         Lapis Lazuli Block,lapislazuliblock.png
+    21:         Lapis Lazuli Ore,lapislazuliore.png
+    20:         Glass,glass.png
+    5_0:        Oak Wood Planks,oakwoodplanks.png
+    5_1:        Spruce Wood Planks,sprucewoodplanks.png
+    5_2:        Birch Wood Planks,birchwoodplanks.png
+    5_3:        Jungle Wood Planks,junglewoodplanks.png
+    12:         Sand,sand.png
+    13:         Gravel,gravel.png
+    14:         Gold Ore,goldore.png
+    15:         Iron Ore,ironore.png
+    16:         Coal Ore,coalore.png
+    17_0:       Oak Wood,oakwood.png
+    17_1:       Spruce Wood,sprucewood.png
+    17_2:       Birch Wood,birchwood.png
+    17_3:       Jungle Wood,junglewood.png
+    19:         Sponge,sponge.png
+    24_0:       Sandstone,sandstone.png
+    24_1:       Hieroglyphic Sandstone,hierosandstone.png
+    24_2:       Smooth Sandstone,smoothsandstone.png
+    35:         Wool,wool.png
+    35_0:       White Wool,whitewool.png
+    35_1:       Orange Wool,orangewool.png
+    35_2:       Magenta Wool,magentawool.png
+    35_3:       Light Blue Wool,lightbluewool.png
+    35_4:       Yellow Wool,yellowwool.png
+    35_5:       Light Green Wool,lightgreenwool.png
+    35_6:       Pink Wool,pinkwool.png
+    35_7:       Gray Wool,graywool.png
+    35_8:       Light Gray Wool,lightgraywool.png
+    35_9:       Cyan Wool,cyanwool.png
+    35_10:      Purple Wool,purplewool.png
+    35_11:      Blue Wool,bluewool.png
+    35_12:      Brown Wool,brownwool.png
+    35_13:      Dark Green Wool,darkgreenwool.png
+    35_14:      Red Wool,redwool.png
+    35_15:      Black Wool,blackwool.png
     Stone Slab:           Stone Slab
     Sandstone Slab:       Sandstone Slab
     Cobblestone Slab:     Cobblestone Slab
