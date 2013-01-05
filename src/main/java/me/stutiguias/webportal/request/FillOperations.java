@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.request;
 
 import java.net.Socket;
+import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionPlayer;
@@ -78,7 +79,26 @@ public class FillOperations extends Response {
     
     public void Cancel(String ip,String url,String param) {
         int id = Integer.parseInt(getParam("ID", param));
-        plugin.dataQueries.updateTable(id, plugin.Myitems);
+        
+        Auction auction = plugin.dataQueries.getAuction(id);
+        
+        String player = auction.getPlayerName();
+        Integer cancelItemId = auction.getItemStack().getTypeId();
+        Short cancelItemDamage = auction.getItemStack().getDurability();
+        
+        List<Auction> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
+        
+        if(!auctions.isEmpty()) {
+            
+            Integer newAmount = auction.getItemStack().getAmount() + auctions.get(0).getItemStack().getAmount();
+            Integer itemId = auctions.get(0).getId();
+            plugin.dataQueries.updateItemQuantity(newAmount,itemId);
+            plugin.dataQueries.DeleteAuction(id);
+            
+            
+        }else{
+            plugin.dataQueries.updateTable(id, plugin.Myitems);
+        }
         print("Cancel Done.","text/plain");
     }
     
