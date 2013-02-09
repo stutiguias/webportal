@@ -4,15 +4,17 @@
  */
 package me.stutiguias.webportal.plugins;
 
-import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.SkillType;
-import com.gmail.nossr50.util.Users;
 import java.util.logging.Level;
+
 import me.stutiguias.webportal.init.WebPortal;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import com.gmail.nossr50.api.ExperienceAPI;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.util.Users;
 
 /**
  *
@@ -61,17 +63,17 @@ public class McMMO {
     
     public void GetInfoOnPlugin(OfflinePlayer player) {
         PlayerProfile mcpl = Users.getProfile(player);
-        profile.setEXCAVATION(mcpl.getSkillLevel(SkillType.EXCAVATION));
-        profile.setFISHING(mcpl.getSkillLevel(SkillType.FISHING));
-        profile.setHERBALISM(mcpl.getSkillLevel(SkillType.HERBALISM));
-        profile.setMINING(mcpl.getSkillLevel(SkillType.MINING));
-        profile.setAXES(mcpl.getSkillLevel(SkillType.AXES));
-        profile.setARCHERY(mcpl.getSkillLevel(SkillType.ARCHERY));
-        profile.setSWORDS(mcpl.getSkillLevel(SkillType.SWORDS));
-        profile.setTAMING(mcpl.getSkillLevel(SkillType.TAMING));
-        profile.setUNARMED(mcpl.getSkillLevel(SkillType.UNARMED));
-        profile.setACROBATICS(mcpl.getSkillLevel(SkillType.ACROBATICS));
-        profile.setREPAIR(mcpl.getSkillLevel(SkillType.REPAIR));
+        profile.setEXCAVATION(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.EXCAVATION));
+        profile.setFISHING(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.FISHING));
+        profile.setHERBALISM(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.HERBALISM));
+        profile.setMINING(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.MINING));
+        profile.setAXES(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.AXES));
+        profile.setARCHERY(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.ARCHERY));
+        profile.setSWORDS(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.SWORDS));
+        profile.setTAMING(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.TAMING));
+        profile.setUNARMED(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.UNARMED));
+        profile.setACROBATICS(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.ACROBATICS));
+        profile.setREPAIR(mcpl.getSkillLevel(com.gmail.nossr50.skills.utilities.SkillType.REPAIR));
     }
     
     public void GetInfoOnMysql(String player) {
@@ -82,7 +84,7 @@ public class McMMO {
         return ExperienceAPI.getPowerLevel(player);
     }
     
-    public int getLevel(Player player,SkillType skt) {
+    public int getLevel(Player player,com.gmail.nossr50.skills.utilities.SkillType skt) {
         return ExperienceAPI.getLevel(player, skt);
     }
     

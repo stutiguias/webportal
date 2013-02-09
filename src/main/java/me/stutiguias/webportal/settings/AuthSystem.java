@@ -44,7 +44,7 @@ public final class AuthSystem {
     public boolean AuthMeReloadedisLogged(String player,String password) {
          try {
             String hash = plugin.dataQueries.getPassword(player);
-            return PasswordSecurity.comparePasswordWithHash(password,hash);
+            return PasswordSecurity.comparePasswordWithHash(password,hash, player);
          }catch(Exception e) {
             return false; 
          }
