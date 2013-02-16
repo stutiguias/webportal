@@ -6,6 +6,7 @@ package me.stutiguias.webportal.dao;
 
 import java.sql.*;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,5 +49,11 @@ public class WALDriver implements Driver {
     public boolean jdbcCompliant() {
         return driver.jdbcCompliant();
     }
+
+	@Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
