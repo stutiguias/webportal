@@ -191,31 +191,31 @@ Block:
     56:         Diamond Ore,diamondore.png
     73:         Redstone Ore,redstoneore.png
     79:         Ice,ice.png
-    Snow:                 Snow
-    Clay:                 Clay
-    Pumpkin:              Pumpkin
-    Netherrack:           Netherrack
-    Soul Sand:            Soul Sand
-    Glowstone:            Glowstone
-    Jack 'o' Lantern:     Jack 'o' Lantern
-    Stone Brincks:        Stone Brincks
-    Mossy Stone Bricks:   Mossy Stone Bricks
-    Melon:                Melon
-    Brick Stairs:         Brick Stairs
-    Stone Brick Stairs:   Stone Brick Stairs
-    Mycelium:             Mycelium
-    Nether Brick:         Nether Brick
-    Nether Brick Stairs:  Nether Brick Stairs
-    End Stone:            End Stone
-    Oak Wood Slab:        Oak Wood Slab
-    Spruce Wood Slab:     Spruce Wood Slab
-    Birch Wood Slab:      Birch Wood Slab
-    Jungle Wood Slab:     Jungle Wood Slab
-    Sandstone Stairs:     Sandstone Stairs
-    Emerald Ore:          Emerald Ore
-    Spuce Wood Stairs:    Spuce Wood Stairs
-    Birch Wood Stairs:    Birch Wood Stairs
-    Jungle Wood Stairs:   Jungle Wood Stairs
+    78:         Snow,snow.png
+    337:        Clay,clay.png
+    86:         Pumpkin,pumpkin.png
+    87:         Netherrack,netherrack.png
+    88:         Soul Sand,soulsand.png
+    89:         Glowstone,glowstone.png
+    91:         Jack 'o' Lantern,jacklantern.png
+    98_0:       Stone Bricks,stonebrick.png
+    98_1:       Mossy Stone Bricks,mossystonebrick.png
+    103:        Melon,melon.png
+    108:        Brick Stairs,brickstairs.png
+    109:        Stone Brick Stairs,stonebrickstairs.png
+    110:        Mycelium,mycelium.png
+    112:        Nether Brick,netherbrick.png
+    114:        Nether Brick Stairs,netherbrickstair.png
+    121:        End Stone,endstone.png
+    126_0:      Oak Wood Slab,oakwoodslab.png
+    126_1:      Spruce Wood Slab,sprucewoodslab.png
+    126_2:      Birch Wood Slab,birchwoodslab.png
+    126_3:      Jungle Wood Slab,junglewoodslab.png
+    128:        Sandstone Stairs,sandstonestairs.png
+    129:        Emerald Ore,emeraldore.png
+    134:        Spruce Wood Stairs,sprucewoodstairs.png
+    135:        Birch Wood Stairs,birchwoodstairs.png
+    136:        Jungle Wood Stairs,junglewoodstairs.png
 
 Combat:
     Bow:                  Bow
