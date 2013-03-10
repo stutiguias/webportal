@@ -179,20 +179,18 @@ Block:
     35_13:      Dark Green Wool,darkgreenwool.png
     35_14:      Red Wool,redwool.png
     35_15:      Black Wool,blackwool.png
-    Stone Slab:           Stone Slab
-    Sandstone Slab:       Sandstone Slab
-    Cobblestone Slab:     Cobblestone Slab
-    Brincks Slab:         Brincks Slab
-    Stone Brincks Slab:   Stone Brincks Slab
-    Brincks:              Brincks
-    Bookshelft:           Bookshelft
-    Moss Stone:           Moss Stone
-    Obsidian:             Obsidian
-    Oak Wood Stairs:      Oak Wood Stairs
-    Diamond Ore:          Diamond Ore
-    Stone Stairs:         Stone Stairs
-    Redstone Ore:         Redstone Ore
-    Ice:                  Ice
+    44_0:       Stone Slab,stoneslab.png
+    44_1:       Sandstone Slab,sandstoneslab.png
+    44_3:       Cobblestone Slab,cobblestoneslab.png
+    44_4:       Brincks Slab,brincksslab.png
+    44_5:       Stone Brincks Slab,stonebrincksslab.png
+    45:         Brincks,brincks.png
+    47:         Bookshelf,bookshelf.png
+    48:         Moss Stone,mossstone.png
+    49:         Obsidian,obsidian.png
+    56:         Diamond Ore,diamondore.png
+    73:         Redstone Ore,redstoneore.png
+    79:         Ice,ice.png
     Snow:                 Snow
     Clay:                 Clay
     Pumpkin:              Pumpkin
