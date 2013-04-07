@@ -325,91 +325,49 @@ public class WebPortal extends JavaPlugin {
             
         }
         
-        public String getSearchType(String Itemname) {
-
+        public String getSearchType(String itemName) {
             try {
                 
-                ConfigurationSection  Block = materials.getConfig().getConfigurationSection("Block");
-                ConfigurationSection  Materials = materials.getConfig().getConfigurationSection("Materials");
-                ConfigurationSection  Micellaneous = materials.getConfig().getConfigurationSection("Micellaneous");
-                ConfigurationSection  Redstone = materials.getConfig().getConfigurationSection("Redstone");
-                ConfigurationSection  Transportation = materials.getConfig().getConfigurationSection("Transportation");
-                ConfigurationSection  Decoration = materials.getConfig().getConfigurationSection("Decoration");
-                ConfigurationSection  Tools = materials.getConfig().getConfigurationSection("Tools");
-                ConfigurationSection  Combat = materials.getConfig().getConfigurationSection("Combat");
-                ConfigurationSection  Food = materials.getConfig().getConfigurationSection("Food");        
+                ConfigurationSection[] Configs =  { 
+                            materials.getConfig().getConfigurationSection("Block"),
+                            materials.getConfig().getConfigurationSection("Materials"),
+                            materials.getConfig().getConfigurationSection("Micellaneous"),
+                            materials.getConfig().getConfigurationSection("Redstone"),
+                            materials.getConfig().getConfigurationSection("Transportation"),
+                            materials.getConfig().getConfigurationSection("Decoration"),
+                            materials.getConfig().getConfigurationSection("Tools"),
+                            materials.getConfig().getConfigurationSection("Combat"),
+                            materials.getConfig().getConfigurationSection("Food"),    
+                            materials.getConfig().getConfigurationSection("Potions"),    
+                };
                 
-                for (Iterator<String> it = Block.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Block";
-                    }
-                }
-
-                for (Iterator<String> it = Materials.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Materials";
-                    }
+                String Type = null;
+                
+                for (ConfigurationSection configurationSection : Configs) {
+                    Type = GetType(itemName, configurationSection);
+                    if(Type != null) return Type;
                 }
                 
-                for (Iterator<String> it = Micellaneous.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Micellaneous";
-                    }
-                }
-
-                for (Iterator<String> it = Redstone.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Redstone";
-                    }
-                }
-
-                for (Iterator<String> it = Transportation.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Transportation";
-                    }
-                }
-
-                for (Iterator<String> it = Decoration.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Decoration";
-                    }
-                }
-
-                for (Iterator<String> it = Tools.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Tools";
-                    }
-                }
-
-                for (Iterator<String> it = Combat.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Combat";
-                    }
-                }
-
-                for (Iterator<String> it = Food.getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return "Food";
-                    }
-                }
+                if(Type == null) return "nothing";
                 
             }catch(NullPointerException ex){
                 logger.warning("Unable to search Item");
                 ex.getMessage();
             }
-
             return "nothing";
+            
         }
         
+        public String GetType(String itemName,ConfigurationSection Section) {
+            for (Iterator<String> it = Section.getKeys(false).iterator(); it.hasNext();) {
+                String key = it.next();
+                if(key.equalsIgnoreCase(itemName)) {
+                    return Section.getName();
+                }
+            }
+            return null;
+        }
+                
         public String parseColor(String message) {
             try {
                 for (ChatColor color : ChatColor.values()) {

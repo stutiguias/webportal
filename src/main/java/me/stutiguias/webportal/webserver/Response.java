@@ -16,6 +16,7 @@ import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.Enchant;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -135,25 +136,18 @@ public class Response {
     } 
     
     public String ConvertItemToResult(Auction item,String type) {
-        String item_name;
-        String img_name;
+
         Short dmg = item.getItemStack().getDurability();
-        String Durability = "";
+
+        String[] nameAndImg = getItemNameAndImg(item.getItemStack());
+        String item_name = nameAndImg[0];
+        String img_name = nameAndImg[1];
         
-        // Not is a block ( have durability )
-        if(!item.getItemStack().getType().isBlock()) {
+        String Durability = "";
+        if(!item.getItemStack().getType().isBlock() && !isPotion(item.getItemStack())) {
             Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
         }
-        img_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-      
-        if(!(item.getItemStack().getType() == org.bukkit.Material.POTION)) {
-            item_name = getConfigName(img_name,type);
-        }else{
-            item_name = Material.getItemName(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-            Durability = "";
-        }
         
-        // Enchant if need
         String enchant = "";
         for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
             int enchId = entry.getKey().getId();
@@ -161,11 +155,28 @@ public class Response {
             enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
         }
         
-        if(item.getItemStack().getType() == org.bukkit.Material.POTION) {
+        if(isPotion(item.getItemStack())) {
             return "<img src='images/potion.png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
         }else{
-            return "<img src='images/"+ img_name.replace(" ","_").toLowerCase() +".png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+            return "<img src='images/"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
         }
+    }
+    
+    public Boolean isPotion(ItemStack item) {
+        return item.getType() == org.bukkit.Material.POTION;
+    }
+    
+    public String[] getItemNameAndImg(ItemStack item) {
+        
+        String itemId;
+        Short dmg = item.getDurability();
+        
+        if( ( item.getType().isBlock() && !dmg.equals(Short.valueOf("0")) ) || isPotion(item) ) 
+            itemId = item.getTypeId() + "_" + item.getDurability();
+        else
+            itemId = String.valueOf(item.getTypeId());
+
+        return getConfigName(itemId,plugin.getSearchType(itemId)).split(",");
     }
     
     public String getConfigName(String Itemname,String type) {
@@ -177,9 +188,9 @@ public class Response {
                     }
                 }
             }catch(NullPointerException ex){
-                
+                return "Error,Error";
             }
-            return Itemname;
+            return "Not Found,Not Found";
     }
     
     public String getConfigKey(String Itemname,String type) {

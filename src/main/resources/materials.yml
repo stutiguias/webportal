@@ -1,4 +1,4 @@
-potions:
+Potions:
     water:            Water
     awkward:          Awkward
     thick:            Thick
@@ -62,7 +62,7 @@ potions:
     rev_harm:         Harm
     rev_weak:         Weak
 
-enchant:
+Enchant:
     arrow_dmg_1:      Arrow Damage I
     arrow_dmg_2:      Arrow Damage II
     arrow_dmg_3:      Arrow Damage III
@@ -145,7 +145,7 @@ Block:
     22:         Lapis Lazuli Block,lapislazuliblock.png
     21:         Lapis Lazuli Ore,lapislazuliore.png
     20:         Glass,glass.png
-    5_0:        Oak Wood Planks,oakwoodplanks.png
+    5:        Oak Wood Planks,oakwoodplanks.png
     5_1:        Spruce Wood Planks,sprucewoodplanks.png
     5_2:        Birch Wood Planks,birchwoodplanks.png
     5_3:        Jungle Wood Planks,junglewoodplanks.png
@@ -154,7 +154,7 @@ Block:
     14:         Gold Ore,goldore.png
     15:         Iron Ore,ironore.png
     16:         Coal Ore,coalore.png
-    17_0:       Oak Wood,oakwood.png
+    17:       Oak Wood,oakwood.png
     17_1:       Spruce Wood,sprucewood.png
     17_2:       Birch Wood,birchwood.png
     17_3:       Jungle Wood,junglewood.png
@@ -162,8 +162,7 @@ Block:
     24_0:       Sandstone,sandstone.png
     24_1:       Hieroglyphic Sandstone,hierosandstone.png
     24_2:       Smooth Sandstone,smoothsandstone.png
-    35:         Wool,wool.png
-    35_0:       White Wool,whitewool.png
+    35:         White Wool,whitewool.png
     35_1:       Orange Wool,orangewool.png
     35_2:       Magenta Wool,magentawool.png
     35_3:       Light Blue Wool,lightbluewool.png
@@ -198,7 +197,7 @@ Block:
     88:         Soul Sand,soulsand.png
     89:         Glowstone,glowstone.png
     91:         Jack 'o' Lantern,jacklantern.png
-    98_0:       Stone Bricks,stonebrick.png
+    98:         Stone Bricks,stonebrick.png
     98_1:       Mossy Stone Bricks,mossystonebrick.png
     103:        Melon,melon.png
     108:        Brick Stairs,brickstairs.png
@@ -207,7 +206,7 @@ Block:
     112:        Nether Brick,netherbrick.png
     114:        Nether Brick Stairs,netherbrickstair.png
     121:        End Stone,endstone.png
-    126_0:      Oak Wood Slab,oakwoodslab.png
+    126:        Oak Wood Slab,oakwoodslab.png
     126_1:      Spruce Wood Slab,sprucewoodslab.png
     126_2:      Birch Wood Slab,birchwoodslab.png
     126_3:      Jungle Wood Slab,junglewoodslab.png
@@ -218,9 +217,9 @@ Block:
     136:        Jungle Wood Stairs,junglewoodstairs.png
 
 Combat:
-    Bow:                  Bow
-    Arrow:                Arrow
-    Iron Sword:           Iron Sword
+    261:                  Bow,bow.png
+    262:                  Arrow,arrow.png
+    267:                  Iron Sword,ironsword.png
     Wooden Sword:         Wooden Sword
     Stone Sword:          Stone Sword
     Diamond Sword:        Diamond Sword

@@ -50,8 +50,9 @@ public class vBox {
         for(Auction auction:auctions) {
             if(event.getCurrentItem().getTypeId() == auction.getItemStack().getTypeId() && auction.getItemStack().getDurability() == event.getCurrentItem().getDurability()) {
                 if(event.isLeftClick()) {
-                    if(auction.getItemStack().getAmount() == event.getCurrentItem().getAmount())
+                    if(auction.getItemStack().getAmount() == event.getCurrentItem().getAmount()) {
                         plugin.dataQueries.DeleteAuction(auction.getId());
+                    }
                     if(auction.getItemStack().getAmount() > event.getCurrentItem().getAmount()) {
                         int total = auction.getItemStack().getAmount() -  event.getCurrentItem().getAmount();
                         plugin.dataQueries.updateItemQuantity(total, auction.getId());
@@ -64,8 +65,12 @@ public class vBox {
                         total = auction.getItemStack().getAmount() - ( event.getCurrentItem().getAmount() / 2 );
                     }
                     if(auction.getItemStack().getAmount() == event.getCurrentItem().getAmount()) {
-                        if(total != 0) plugin.dataQueries.updateItemQuantity(total, auction.getId());
-                        if(total == 0) plugin.dataQueries.DeleteAuction(auction.getId());
+                        if(total != 0) {
+                            plugin.dataQueries.updateItemQuantity(total, auction.getId());
+                        }
+                        if(total == 0) {
+                            plugin.dataQueries.DeleteAuction(auction.getId());
+                        }
                     }else if(auction.getItemStack().getAmount() > event.getCurrentItem().getAmount()) {
                         plugin.dataQueries.updateItemQuantity(total, auction.getId());
                     }                                

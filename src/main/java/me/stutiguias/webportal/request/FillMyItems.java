@@ -33,18 +33,15 @@ public class FillMyItems extends Response {
 
         int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
         int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
-        List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
-        if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName() == null) {
-            WebPortal.logger.log(Level.WARNING,"Cant determine player name");
-            return;
-        }
-        if(auctions == null) {
-            WebPortal.logger.log(Level.WARNING,"Cant get auctions");
-            return;
-        }
         int sEcho = Integer.parseInt(getParam("sEcho", param));
+        
+        List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
+        
+        if(CheckError(ip, auctions)) return;
+        
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = iTotalRecords;
+        
         JSONObject json = new JSONObject();
         JSONArray jsonData = new JSONArray();
         JSONObject jsonTwo;
@@ -82,5 +79,17 @@ public class FillMyItems extends Response {
         json.put("aaData",jsonData);
         
         print(json.toJSONString(),"text/plain");
+    }
+    
+    public Boolean CheckError(String ip,List<Auction> auctions) {
+        if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName() == null) {
+            WebPortal.logger.log(Level.WARNING,"Cant determine player name");
+            return true;
+        }
+        if(auctions == null) {
+            WebPortal.logger.log(Level.WARNING,"Cant get auctions");
+            return true;
+        }
+        return false;
     }
 }

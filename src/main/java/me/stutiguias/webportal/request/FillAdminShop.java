@@ -35,7 +35,7 @@ public class FillAdminShop extends Response {
             Integer Quantity = Integer.parseInt(getParam("quantity", param));
             
             String type = Item.getType().toString();
-            String ItemName = Material.getItemName(Item.getTypeId(),Item.getDurability());
+            String ItemName = getItemNameAndImg(Item)[0];
             String searchtype = plugin.getSearchType(ItemName);
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, ItemName, searchtype );
             print("ok","text/html");
