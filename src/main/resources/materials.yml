@@ -1,420 +1,420 @@
 Potions:
-    water:            Water
-    awkward:          Awkward
-    thick:            Thick
-    mundane:          Mundane
-    mundane_ext:      Mundane Extend
-    regen:            Regen
-    regen_ext:        Regen Extend
-    regen_two:        Regen II
-    regen_two_ext:    Regen II Extend
-    regen_spl:        Regen Splash
-    regen_ext_spl:    Regen Extend Splash
-    regen_two_spl:    Regen II Splash
-    swift:            Swift
-    swift_ext:        Swift Extend
-    swift_two:        Swift II
-    swift_two_ext:    Swift II Extend
-    swift_spl:        Swift Splash
-    swift_ext_spl:    Swift Extend Splash
-    swift_two_spl:    Swift II Splash
-    fire_res:         Fire Resist
-    fire_res_ext:     Fire Resist Extend
-    fire_res_spl:     Fire Resist Splash
-    fire_res_ext_spl: Fire Resist Extend Splash
-    poison:           Poison
-    poison_ext:       Poison Extend
-    poison_two:       Poison II
-    poison_two_ext:   Poison II Extend
-    poison_spl:       Poison Splash
-    poison_ext_spl:   Poison Extend Splash
-    poison_two_spl:   Poison II Splash
-    health:           Healing
-    health_two:       Healing II
-    health_spl:       Healing Splash
-    health_two_spl:   Healing II Splash
-    weak:             Weak
-    weak_ext:         Weak Extend
-    weak_two:         Weak II
-    weak_spl:         Weak Splash
-    weak_ext_spl:     Weak Extend Splash
-    weak_two_spl:     Weak II Splash
-    strength:         Strength
-    strength_ext:     Strength Extend
-    strength_two:     Strength II
-    strength_two_ext: Strength II Extend
-    strength_spl:     Strength Splash
-    strength_ext_spl: Strength Extend Splash
-    strength_two_spl: Strength II Splash
-    slow:             Slow
-    slow_ext:         Slow Extend
-    slow_two:         Slow II
-    slow_spl:         Slow Splash
-    slow_ext_spl:     Slow Extend Splash
-    slow_two_spl:     Slow II Splash
-    harm:             Harm
-    harm_two:         Harm II
-    harm_spl:         Harm Splash
-    harm_two_spl:     Harm II Splash
-    rev_fire_res:     Fire Resist
-    rev_slow:         Slow
-    rev_health:       Healing
-    rev_harm:         Harm
-    rev_weak:         Weak
+water:            Water
+awkward:          Awkward
+thick:            Thick
+mundane:          Mundane
+mundane_ext:      Mundane Extend
+regen:            Regen
+regen_ext:        Regen Extend
+regen_two:        Regen II
+regen_two_ext:    Regen II Extend
+regen_spl:        Regen Splash
+regen_ext_spl:    Regen Extend Splash
+regen_two_spl:    Regen II Splash
+swift:            Swift
+swift_ext:        Swift Extend
+swift_two:        Swift II
+swift_two_ext:    Swift II Extend
+swift_spl:        Swift Splash
+swift_ext_spl:    Swift Extend Splash
+swift_two_spl:    Swift II Splash
+fire_res:         Fire Resist
+fire_res_ext:     Fire Resist Extend
+fire_res_spl:     Fire Resist Splash
+fire_res_ext_spl: Fire Resist Extend Splash
+poison:           Poison
+poison_ext:       Poison Extend
+poison_two:       Poison II
+poison_two_ext:   Poison II Extend
+poison_spl:       Poison Splash
+poison_ext_spl:   Poison Extend Splash
+poison_two_spl:   Poison II Splash
+health:           Healing
+health_two:       Healing II
+health_spl:       Healing Splash
+health_two_spl:   Healing II Splash
+weak:             Weak
+weak_ext:         Weak Extend
+weak_two:         Weak II
+weak_spl:         Weak Splash
+weak_ext_spl:     Weak Extend Splash
+weak_two_spl:     Weak II Splash
+strength:         Strength
+strength_ext:     Strength Extend
+strength_two:     Strength II
+strength_two_ext: Strength II Extend
+strength_spl:     Strength Splash
+strength_ext_spl: Strength Extend Splash
+strength_two_spl: Strength II Splash
+slow:             Slow
+slow_ext:         Slow Extend
+slow_two:         Slow II
+slow_spl:         Slow Splash
+slow_ext_spl:     Slow Extend Splash
+slow_two_spl:     Slow II Splash
+harm:             Harm
+harm_two:         Harm II
+harm_spl:         Harm Splash
+harm_two_spl:     Harm II Splash
+rev_fire_res:     Fire Resist
+rev_slow:         Slow
+rev_health:       Healing
+rev_harm:         Harm
+rev_weak:         Weak
 
 Enchant:
-    arrow_dmg_1:      Arrow Damage I
-    arrow_dmg_2:      Arrow Damage II
-    arrow_dmg_3:      Arrow Damage III
-    arrow_dmg_4:      Arrow Damage IV
-    arrow_dmg_5:      Arrow Damage V
-    arrow_fire:       Flame Arrows
-    arrow_inf:        Infinite Arrows
-    arrow_knock_1:    Arrow Knockback I
-    arrow_knock_2:    Arrow Knockback II
-    sharp_1:          Sharpness I
-    sharp_2:          Sharpness II
-    sharp_3:          Sharpness III
-    sharp_4:          Sharpness IV
-    sharp_5:          Sharpness V
-    boa_1:            Bane of Anthropods I
-    boa_2:            Bane of Anthropods II
-    boa_3:            Bane of Anthropods III
-    boa_4:            Bane of Anthropods IV
-    boa_5:            Bane of Anthropods V
-    dmg_undead_1:     Smite I
-    dmg_undead_2:     Smite II
-    dmg_undead_3:     Smite III
-    dmg_undead_4:     Smite IV
-    dmg_undead_5:     Smite V
-    efficiency_1:     Efficiency I
-    efficiency_2:     Efficiency II
-    efficiency_3:     Efficiency III
-    efficiency_4:     Efficiency IV
-    efficiency_5:     Efficiency V
-    unbreaking_1:     Durability I
-    unbreaking_2:     Durability II
-    unbreaking_3:     Durability III
-    unbreaking_4:     Durability IV
-    unbreaking_5:     Durability V
-    fire_aspect_1:    Fire Aspect I
-    fire_aspect_2:    Fire Aspect II
-    knockback_1:      Knockback I
-    knockback_2:      Knockback II
-    fortune_1:        Fortune I
-    fortune_2:        Fortune II
-    fortune_3:        Fortune III
-    looting_1:        Looting I
-    looting_2:        Looting II
-    looting_3:        Looting III
-    respiration_1:    Respiration I
-    respiration_2:    Respiration II
-    respiration_3:    Respiration III
-    protection_1:     Protection I
-    protection_2:     Protection II
-    protection_3:     Protection III
-    protection_4:     Protection IV
-    blast_prot_1:     Blast Protection I
-    blast_prot_2:     Blast Protection II
-    blast_prot_3:     Blast Protection III
-    blast_prot_4:     Blast Protection IV
-    feather_fall_1:   Feather Fall I
-    feather_fall_2:   Feather Fall II
-    feather_fall_3:   Feather Fall III
-    feather_fall_4:   Feather Fall IV
-    fire_prot_1:      Fire Protection I
-    fire_prot_2:      Fire Protection II
-    fire_prot_3:      Fire Protection III
-    fire_prot_4:      Fire Protection IV
-    proj_prot_1:      Projectile Protection I
-    proj_prot_2:      Projectile Protection II
-    proj_prot_3:      Projectile Protection III
-    proj_prot_4:      Projectile Protection IV
-    silk_touch:       Silk Touch
-    aqua_affinity:    Aqua Affinity
+arrow_dmg_1:      Arrow Damage I
+arrow_dmg_2:      Arrow Damage II
+arrow_dmg_3:      Arrow Damage III
+arrow_dmg_4:      Arrow Damage IV
+arrow_dmg_5:      Arrow Damage V
+arrow_fire:       Flame Arrows
+arrow_inf:        Infinite Arrows
+arrow_knock_1:    Arrow Knockback I
+arrow_knock_2:    Arrow Knockback II
+sharp_1:          Sharpness I
+sharp_2:          Sharpness II
+sharp_3:          Sharpness III
+sharp_4:          Sharpness IV
+sharp_5:          Sharpness V
+boa_1:            Bane of Anthropods I
+boa_2:            Bane of Anthropods II
+boa_3:            Bane of Anthropods III
+boa_4:            Bane of Anthropods IV
+boa_5:            Bane of Anthropods V
+dmg_undead_1:     Smite I
+dmg_undead_2:     Smite II
+dmg_undead_3:     Smite III
+dmg_undead_4:     Smite IV
+dmg_undead_5:     Smite V
+efficiency_1:     Efficiency I
+efficiency_2:     Efficiency II
+efficiency_3:     Efficiency III
+efficiency_4:     Efficiency IV
+efficiency_5:     Efficiency V
+unbreaking_1:     Durability I
+unbreaking_2:     Durability II
+unbreaking_3:     Durability III
+unbreaking_4:     Durability IV
+unbreaking_5:     Durability V
+fire_aspect_1:    Fire Aspect I
+fire_aspect_2:    Fire Aspect II
+knockback_1:      Knockback I
+knockback_2:      Knockback II
+fortune_1:        Fortune I
+fortune_2:        Fortune II
+fortune_3:        Fortune III
+looting_1:        Looting I
+looting_2:        Looting II
+looting_3:        Looting III
+respiration_1:    Respiration I
+respiration_2:    Respiration II
+respiration_3:    Respiration III
+protection_1:     Protection I
+protection_2:     Protection II
+protection_3:     Protection III
+protection_4:     Protection IV
+blast_prot_1:     Blast Protection I
+blast_prot_2:     Blast Protection II
+blast_prot_3:     Blast Protection III
+blast_prot_4:     Blast Protection IV
+feather_fall_1:   Feather Fall I
+feather_fall_2:   Feather Fall II
+feather_fall_3:   Feather Fall III
+feather_fall_4:   Feather Fall IV
+fire_prot_1:      Fire Protection I
+fire_prot_2:      Fire Protection II
+fire_prot_3:      Fire Protection III
+fire_prot_4:      Fire Protection IV
+proj_prot_1:      Projectile Protection I
+proj_prot_2:      Projectile Protection II
+proj_prot_3:      Projectile Protection III
+proj_prot_4:      Projectile Protection IV
+silk_touch:       Silk Touch
+aqua_affinity:    Aqua Affinity
 
 Block:
-    7:          Bedrock,bedrock.png
-    4:          Cobblestone,cobblestone.png
-    57:         Diamond Block,diamondblock.png
-    3:          Dirt,dirt.png
-    133:        Emerald Block,emeraldblock.png
-    41:         Gold Block,goldblock.png
-    1:          Stone,stone.png
-    42:         Iron Block,ironblock.png
-    22:         Lapis Lazuli Block,lapislazuliblock.png
-    21:         Lapis Lazuli Ore,lapislazuliore.png
-    20:         Glass,glass.png
-    5:        Oak Wood Planks,oakwoodplanks.png
-    5_1:        Spruce Wood Planks,sprucewoodplanks.png
-    5_2:        Birch Wood Planks,birchwoodplanks.png
-    5_3:        Jungle Wood Planks,junglewoodplanks.png
-    12:         Sand,sand.png
-    13:         Gravel,gravel.png
-    14:         Gold Ore,goldore.png
-    15:         Iron Ore,ironore.png
-    16:         Coal Ore,coalore.png
-    17:       Oak Wood,oakwood.png
-    17_1:       Spruce Wood,sprucewood.png
-    17_2:       Birch Wood,birchwood.png
-    17_3:       Jungle Wood,junglewood.png
-    19:         Sponge,sponge.png
-    24_0:       Sandstone,sandstone.png
-    24_1:       Hieroglyphic Sandstone,hierosandstone.png
-    24_2:       Smooth Sandstone,smoothsandstone.png
-    35:         White Wool,whitewool.png
-    35_1:       Orange Wool,orangewool.png
-    35_2:       Magenta Wool,magentawool.png
-    35_3:       Light Blue Wool,lightbluewool.png
-    35_4:       Yellow Wool,yellowwool.png
-    35_5:       Light Green Wool,lightgreenwool.png
-    35_6:       Pink Wool,pinkwool.png
-    35_7:       Gray Wool,graywool.png
-    35_8:       Light Gray Wool,lightgraywool.png
-    35_9:       Cyan Wool,cyanwool.png
-    35_10:      Purple Wool,purplewool.png
-    35_11:      Blue Wool,bluewool.png
-    35_12:      Brown Wool,brownwool.png
-    35_13:      Dark Green Wool,darkgreenwool.png
-    35_14:      Red Wool,redwool.png
-    35_15:      Black Wool,blackwool.png
-    44_0:       Stone Slab,stoneslab.png
-    44_1:       Sandstone Slab,sandstoneslab.png
-    44_3:       Cobblestone Slab,cobblestoneslab.png
-    44_4:       Brincks Slab,brincksslab.png
-    44_5:       Stone Brincks Slab,stonebrincksslab.png
-    45:         Brincks,brincks.png
-    47:         Bookshelf,bookshelf.png
-    48:         Moss Stone,mossstone.png
-    49:         Obsidian,obsidian.png
-    56:         Diamond Ore,diamondore.png
-    73:         Redstone Ore,redstoneore.png
-    79:         Ice,ice.png
-    78:         Snow,snow.png
-    337:        Clay,clay.png
-    86:         Pumpkin,pumpkin.png
-    87:         Netherrack,netherrack.png
-    88:         Soul Sand,soulsand.png
-    89:         Glowstone,glowstone.png
-    91:         Jack 'o' Lantern,jacklantern.png
-    98:         Stone Bricks,stonebrick.png
-    98_1:       Mossy Stone Bricks,mossystonebrick.png
-    103:        Melon,melon.png
-    108:        Brick Stairs,brickstairs.png
-    109:        Stone Brick Stairs,stonebrickstairs.png
-    110:        Mycelium,mycelium.png
-    112:        Nether Brick,netherbrick.png
-    114:        Nether Brick Stairs,netherbrickstair.png
-    121:        End Stone,endstone.png
-    126:        Oak Wood Slab,oakwoodslab.png
-    126_1:      Spruce Wood Slab,sprucewoodslab.png
-    126_2:      Birch Wood Slab,birchwoodslab.png
-    126_3:      Jungle Wood Slab,junglewoodslab.png
-    128:        Sandstone Stairs,sandstonestairs.png
-    129:        Emerald Ore,emeraldore.png
-    134:        Spruce Wood Stairs,sprucewoodstairs.png
-    135:        Birch Wood Stairs,birchwoodstairs.png
-    136:        Jungle Wood Stairs,junglewoodstairs.png
+  7:          Bedrock,bedrock.png
+  4:          Cobblestone,cobblestone.png
+  57:         Diamond Block,diamondblock.png
+  3:          Dirt,dirt.png
+  133:        Emerald Block,emeraldblock.png
+  41:         Gold Block,goldblock.png
+  1:          Stone,stone.png
+  42:         Iron Block,ironblock.png
+  22:         Lapis Lazuli Block,lapislazuliblock.png
+  21:         Lapis Lazuli Ore,lapislazuliore.png
+  20:         Glass,glass.png
+  5:          Oak Wood Planks,oakwoodplanks.png
+  5_1:        Spruce Wood Planks,sprucewoodplanks.png
+  5_2:        Birch Wood Planks,birchwoodplanks.png
+  5_3:        Jungle Wood Planks,junglewoodplanks.png
+  12:         Sand,sand.png
+  13:         Gravel,gravel.png
+  14:         Gold Ore,goldore.png
+  15:         Iron Ore,ironore.png
+  16:         Coal Ore,coalore.png
+  17:         Oak Wood,oakwood.png
+  17_1:       Spruce Wood,sprucewood.png
+  17_2:       Birch Wood,birchwood.png
+  17_3:       Jungle Wood,junglewood.png
+  19:         Sponge,sponge.png
+  24_0:       Sandstone,sandstone.png
+  24_1:       Hieroglyphic Sandstone,hierosandstone.png
+  24_2:       Smooth Sandstone,smoothsandstone.png
+  35:         White Wool,whitewool.png
+  35_1:       Orange Wool,orangewool.png
+  35_2:       Magenta Wool,magentawool.png
+  35_3:       Light Blue Wool,lightbluewool.png
+  35_4:       Yellow Wool,yellowwool.png
+  35_5:       Light Green Wool,lightgreenwool.png
+  35_6:       Pink Wool,pinkwool.png
+  35_7:       Gray Wool,graywool.png
+  35_8:       Light Gray Wool,lightgraywool.png
+  35_9:       Cyan Wool,cyanwool.png
+  35_10:      Purple Wool,purplewool.png
+  35_11:      Blue Wool,bluewool.png
+  35_12:      Brown Wool,brownwool.png
+  35_13:      Dark Green Wool,darkgreenwool.png
+  35_14:      Red Wool,redwool.png
+  35_15:      Black Wool,blackwool.png
+  44_0:       Stone Slab,stoneslab.png
+  44_1:       Sandstone Slab,sandstoneslab.png
+  44_3:       Cobblestone Slab,cobblestoneslab.png
+  44_4:       Brincks Slab,brincksslab.png
+  44_5:       Stone Brincks Slab,stonebrincksslab.png
+  45:         Brincks,brincks.png
+  47:         Bookshelf,bookshelf.png
+  48:         Moss Stone,mossstone.png
+  49:         Obsidian,obsidian.png
+  56:         Diamond Ore,diamondore.png
+  73:         Redstone Ore,redstoneore.png
+  79:         Ice,ice.png
+  78:         Snow,snow.png
+  337:        Clay,clay.png
+  86:         Pumpkin,pumpkin.png
+  87:         Netherrack,netherrack.png
+  88:         Soul Sand,soulsand.png
+  89:         Glowstone,glowstone.png
+  91:         Jack 'o' Lantern,jacklantern.png
+  98:         Stone Bricks,stonebrick.png
+  98_1:       Mossy Stone Bricks,mossystonebrick.png
+  103:        Melon,melon.png
+  108:        Brick Stairs,brickstairs.png
+  109:        Stone Brick Stairs,stonebrickstairs.png
+  110:        Mycelium,mycelium.png
+  112:        Nether Brick,netherbrick.png
+  114:        Nether Brick Stairs,netherbrickstair.png
+  121:        End Stone,endstone.png
+  126:        Oak Wood Slab,oakwoodslab.png
+  126_1:      Spruce Wood Slab,sprucewoodslab.png
+  126_2:      Birch Wood Slab,birchwoodslab.png
+  126_3:      Jungle Wood Slab,junglewoodslab.png
+  128:        Sandstone Stairs,sandstonestairs.png
+  129:        Emerald Ore,emeraldore.png
+  134:        Spruce Wood Stairs,sprucewoodstairs.png
+  135:        Birch Wood Stairs,birchwoodstairs.png
+  136:        Jungle Wood Stairs,junglewoodstairs.png
 
 Combat:
-    261:                  Bow,bow.png
-    262:                  Arrow,arrow.png
-    267:                  Iron Sword,ironsword.png
-    Wooden Sword:         Wooden Sword
-    Stone Sword:          Stone Sword
-    Diamond Sword:        Diamond Sword
-    Gold Sword:           Gold Sword
-    Leather Boots:        Leather Boots
-    Leather Tunic:        Leather Tunic
-    Leather Cap:          Leather Cap
-    Leather Pants:        Leather Pants
-    Chain Boots:          Chain Boots
-    Chain Chestplate:     Chain Chestplate
-    Chain Helmet:         Chain Helmet
-    Chain Leggings:       Chain Leggings
-    Iron Boots:           Iron Boots
-    Iron Chestplate:      Iron Chestplate
-    Iron Helmet:          Iron Helmet
-    Iron Leggings:        Iron Leggings
-    Diamond Boots:        Diamond Boots
-    Diamond Chestplate:   Diamond Chestplate
-    Diamond Helmet:       Diamond Helmet
-    Diamond Leggings:     Diamond Leggings
-    Gold Boots:           Gold Boots
-    Gold Chestplate:      Gold Chestplate
-    Gold Helmet:          Gold Helmet
-    Gold Leggings:        Gold Leggings
+  261:        Bow,bow.png
+  262:        Arrow,arrow.png
+  267:        Iron Sword,ironsword.png
+  268:        Wooden Sword,woodensword.png
+  272:        Stone Sword,stonesword.png
+  276:        Diamond Sword,diamondsword.png
+  283:        Gold Sword,goldsword.png
+  301:        Leather Boots,leatherboots.png
+  299:        Leather Tunic,leathertunic.png
+  298:        Leather Cap,leathercap.png
+  300:        Leather Pants,leatherpants.png
+  305:        Chain Boots,chainboots.png
+  303:        Chain Chestplate,chainchesplate.png
+  302:        Chain Helmet,chainhelmet.png
+  304:        Chain Leggings,chainleggins.png
+  309:        Iron Boots,ironboots.png
+  307:        Iron Chestplate,ironchestplate.png
+  306:        Iron Helmet,ironhelmet.png
+  308:        Iron Leggings,ironleggins.png
+  313:        Diamond Boots,diamondboots.png
+  311:        Diamond Chestplate,diamondchesplate.png
+  310:        Diamond Helmet,diamondhelmet.png
+  312:        Diamond Leggings,diamondleggings.png
+  317:        Gold Boots,goldboots.png
+  315:        Gold Chestplate,goldchestplate.png
+  314:        Gold Helmet,goldhelmet.png
+  316:        Gold Leggings,goldleggings.png
 
 Tools:
-    Iron Shovel:          Iron Shovel
-    Iron Pickaxe:         Iron Pickaxe
-    Iron Axe:             Iron Axe
-    Flint and Steel:      Flint and Steel
-    Wooden Shovel:        Wooden Shovel
-    Wooden Pickaxe:       Wooden Pickaxe
-    Wooden Axe:           Wooden Axe
-    Stone Shovel:         Stone Shovel
-    Stone Pickaxe:        Stone Pickaxe
-    Stone Axe:            Stone Axe
-    Diamond Shovel:       Diamond Shovel
-    Diamond Pickaxe:      Diamond Pickaxe
-    Diamond Axe:          Diamond Axe
-    Gold Shovel:          Gold Shovel
-    Gold Pickaxe:         Gold Pickaxe
-    Gold Axe:             Gold Axe
-    Wooden Hoe:           Wooden Hoe
-    Stone Hoe:            Stone Hoe
-    Iron Hoe:             Iron Hoe
-    Diamond Hoe:          Diamond Hoe
-    Gold Hoe:             Gold Hoe
-    Compass:              Compass
-    Fishing Rod:          Fishing Rod
-    Clock:                Clock
-    Shears:               Shears
+  256:     Iron Shovel,ironshovel.png
+  257:     Iron Pickaxe,ironpickaxe.png
+  258:     Iron Axe,ironaxo.png
+  259:     Flint and Steel,flintandsteel.png
+  269:     Wooden Shovel,woodenshovel.png
+  270:     Wooden Pickaxe,woodenpickaxe.png
+  271:     Wooden Axe,woodenaxe.png
+  273:     Stone Shovel,stoneshovel.png
+  274:     Stone Pickaxe,stonepickaxe.png
+  275:     Stone Axe,stoneaxe.png
+  277:     Diamond Shovel,diamondshovel.png
+  278:     Diamond Pickaxe,diamondpickaxe.png
+  279:     Diamond Axe,diamondaxe.png
+  284:     Gold Shovel,goldshovel.png
+  285:     Gold Pickaxe,goldpickaxe.png
+  286:     Gold Axe,goldaxe.png
+  290:     Wooden Hoe,woodenhoe.png
+  291:     Stone Hoe,stonehoe.png
+  292:     Iron Hoe,ironhoe.png
+  293:     Diamond Hoe,diamondhoe.png
+  294:     Gold Hoe,goldhoe.png
+  345:     Compass,compass.png
+  346:     Fishing Rod,fishingrod.png
+  347:     Clock,clock.png
+  359:     Shears,shears.png
 
 Food:
-    Apple:                Apple
-    Mushroom Stew:        Mushroom Stew
-    Mushroom Soup:        Mushroom Soup
-    Bread:                Bread
-    Raw Porkchop:         Raw Porkchop
-    Cooked Porkchop:      Cooked Porkchop
-    Golden Apple:         Golden Apple
-    Raw Fish:             Raw Fish
-    Cooked Fish:          Cooked Fish
-    Cookie:               Cookie
-    Melon:                Melon
-    Raw Beef:             Raw Beef
-    Steak:                Steak
-    Raw Chicken:          Raw Chicken
-    Cooked Chicken:       Cooked Chicken
-    Rotten Flesh:         Rotten Flesh
-    Spider Eye:           Spider Eye
-    Cake:                 Cake
+  :  Apple
+  :  Mushroom Stew
+  :  Mushroom Soup
+  :  Bread
+  :  Raw Porkchop
+  :  Cooked Porkchop
+  :  Golden Apple
+  :  Raw Fish
+  :  Cooked Fish
+  :  Cookie
+  :  Melon
+  :  Raw Beef
+  :  Steak
+  :  Raw Chicken
+  :  Cooked Chicken
+  :  Rotten Flesh
+  :  Spider Eye
+  :  Cake
 
 Decoration:
-    Oak Spaling:         Oak Sapling
-    Spruce Sapling:      Spruce Sapling
-    Birch Sapling:       Birch Sapling 
-    Jungle Sapling:      Jungle Sapling
-    Oak Leaves:          Oak Leaves
-    Spruce Leaves:       Spruce Leaves
-    Birch Leaves:        Birch Leaves
-    Jungle Leaves:       Jungle Leaves
-    CobWeb:              CobWeb
-    Grass:               Grass
-    Fern:                Fern
-    Dead Bush:           Dead Bush
-    Flower:              Flower
-    Rose:                Rose
-    Mushroom:            Mushroom
-    Torch:               Torch
-    Chest:               Chest
-    Crafting Table:      Crafting Table
-    Furnace:             Furnace
-    Ladder:              Ladder
-    Snow:                Snow
-    Cactus:              Cactus
-    Jukebox:             Jukebox
-    Fence:               Fence
-    Stone Monster Egg:   Stone Monster Egg
-    Iron Bars:           Iron Bars
-    Glass Pane:          Glass Pane
-    Vines:               Vines
-    Lily Pad:            Lily Pad
-    Nether Brick Fence:  Nether Brick Fence
-    Enchantment Table:   Enchantment Table
-    End Portal:          End Portal
-    Ender Chest:         Ender Chest
-    Painting:            Painting
-    Sign:                Sign
-    Bed:                 Bed
+  :  Oak Sapling
+  :  Spruce Sapling
+  :  Birch Sapling 
+  :  Jungle Sapling
+  :  Oak Leaves
+  :  Spruce Leaves
+  :  Birch Leaves
+  :  Jungle Leaves
+  :  CobWeb
+  :  Grass
+  :  Fern
+  :  Dead Bush
+  :  Flower
+  :  Rose
+  :  Mushroom
+  :  Torch
+  :  Chest
+  :  Crafting Table
+  :  Furnace
+  :  Ladder
+  :  Snow
+  :  Cactus
+  :  Jukebox
+  :  Fence
+  :  Stone Monster Egg
+  :  Iron Bars
+  :  Glass Pane
+  :  Vines
+  :  Lily Pad
+  :  Nether Brick Fence
+  :  Enchantment Table
+  :  End Portal
+  :  Ender Chest
+  :  Painting
+  :  Sign
+  :  Bed
 
 Redstone:
-    Dispenser:           Dispenser
-    Note Block:          Note Block
-    Sticky Piston:       Sticky Piston
-    Piston:              Piston
-    TNT:                 TNT
-    Lever:               Lever
-    Pressure Plate:      Pressure Plate
-    Pressure Plate:      Pressure Plate
-    Redstone Torch:      Redstone Torch
-    Button:              Button
-    Trapdoor:            Trapdoor
-    Fence Gate:          Fence Gate
-    Redstone Lamp:       Redstone Lamp
-    Tripwire Hook:       Tripwire Hook
-    Wooden Door:         Wooden Door
-    Iron Door:           Iron Door
-    Redstone:            Redstone
-    Redstone Repeater:   Redstone Repeater
+  :   Dispenser
+  :   Note Block
+  :   Sticky Piston
+  :   Piston
+  :   TNT
+  :   Lever
+  :   Pressure Plate
+  :   Pressure Plate
+  :   Redstone Torch
+  :   Button
+  :   Trapdoor
+  :   Fence Gate
+  :   Redstone Lamp
+  :   Tripwire Hook
+  :   Wooden Door
+  :   Iron Door
+  :   Redstone
+  :   Redstone Repeater
 
 Transportation:
-    Powered Rail:        Powered Rail
-    Detector Rail:       Detector Rail
-    Rail:                Rail
-    Minecart:            Minecart
-    Saddle:              Saddle
-    Boat:                Boat
-    Minecart with Chest: Minecart with Chest
+  :   Powered Rail
+  :   Detector Rail
+  :   Rail
+  :   Minecart
+  :   Saddle
+  :   Boat
+  :   Minecart with Chest
 
 Micellaneous:
-    Bucket:              Bucket
-    Water Buckket:       Water Buckket
-    Lava Bucket:         Lava Bucket
-    Snowball:            Snowball
-    Milk:                Milk
-    Paper:               Paper
-    Book:                Book
-    Slimeball:           Slimeball
-    Bone:                Bone
-    Map:                 Map
-    Ender Pearl:         Ender Pearl
-    Eye of Ender:        Eye of Ender
-    Fire Charge:         Fire Charge
-    Book and Quill:      Book and Quill
+  :     Bucket
+  :     Water Buckket
+  :     Lava Bucket
+  :     Snowball
+  :     Milk
+  :     Paper
+  :     Book
+  :     Slimeball
+  :     Bone
+  :     Map
+  :     Ender Pearl
+  :     Eye of Ender
+  :     Fire Charge
+  :     Book and Quill
 
 Materials:
-    Coal:                Coal
-    Charcoal:            Charcoal
-    Diamond:             Diamond
-    Iron Ingot:          Iron Ingot
-    Gold Ingot:          Gold Ingot
-    Stick:               Stick
-    Bowl:                Bowl
-    String:              String
-    Feather:             Feather
-    Gunpowder:           Gunpowder
-    Seeds:               Seeds
-    Wheat:               Wheat
-    Flint:               Flint
-    Leather:             Leather
-    Brick:               Brick
-    Clay:                Clay
-    Sugar Canes:         Sugar Canes
-    Egg:                 Egg
-    Glowstone Dust:      Glowstone Dust
-    Ink Sac:             Ink Sac
-    Rose Red:            Rose Red
-    Cactus Green:        Cactus Green
-    Cocoa Beans:         Cocoa Beans
-    Lapis Lazuli:        Lapis Lazuli
-    Purple Dye:          Purple Dye
-    Cyan Dye:            Cyan Dye
-    Light Gray Dye:      Light Gray Dye
-    Gray Dye:            Gray Dye
-    Pink Dye:            Pink Dye
-    Lime Dye:            Lime Dye
-    Dandelion Yellow:    Dandelion Yellow
-    Light Blue Dye:      Light Blue Dye
-    Magenta Dye:         Magenta Dye
-    Orange Dye:          Orange Dye
-    Bone Meal:           Bone Meal
-    Sugar:               Sugar
-    Pumpkin Seeds:       Pumpkin Seeds
-    Melon Seeds:         Melon Seeds
-    Blaze Rod:           Blaze Rod
-    Gold Nugget:         Gold Nugget
-    Nether Wart:         Nether Wart
-    Emerald:             Emerald
+  :  Coal
+  :  Charcoal
+  :  Diamond
+  :  Iron Ingot
+  :  Gold Ingot
+  :  Stick
+  :  Bowl
+  :  String
+  :  Feather
+  :  Gunpowder
+  :  Seeds
+  :  Wheat
+  :  Flint
+  :  Leather
+  :  Brick
+  :  Clay
+  :  Sugar Canes
+  :  Egg
+  :  Glowstone Dust
+  :  Ink Sac
+  :  Rose Red
+  :  Cactus Green
+  :  Cocoa Beans
+  :  Lapis Lazuli
+  :  Purple Dye
+  :  Cyan Dye
+  :  Light Gray Dye
+  :  Gray Dye
+  :  Pink Dye
+  :  Lime Dye
+  :  Dandelion Yellow
+  :  Light Blue Dye
+  :  Magenta Dye
+  :  Orange Dye
+  :  Bone Meal
+  :  Sugar
+  :  Pumpkin Seeds
+  :  Melon Seeds
+  :  Blaze Rod
+  :  Gold Nugget
+  :  Nether Wart
+  :  Emerald
