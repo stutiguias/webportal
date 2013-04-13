@@ -141,6 +141,7 @@ Block:
   133:        Emerald Block,emeraldblock.png
   41:         Gold Block,goldblock.png
   1:          Stone,stone.png
+  2:          Grass,grass.png
   42:         Iron Block,ironblock.png
   22:         Lapis Lazuli Block,lapislazuliblock.png
   21:         Lapis Lazuli Ore,lapislazuliore.png
@@ -273,82 +274,78 @@ Tools:
   359:     Shears,shears.png
 
 Food:
-  260:  Apple
-  282:  Mushroom Stew
-  :  Mushroom Soup
-  :  Bread
-  :  Raw Porkchop
-  :  Cooked Porkchop
-  :  Golden Apple
-  :  Raw Fish
-  :  Cooked Fish
-  :  Cookie
-  :  Melon
-  :  Raw Beef
-  :  Steak
-  :  Raw Chicken
-  :  Cooked Chicken
-  :  Rotten Flesh
-  :  Spider Eye
-  :  Cake
+  260:  Apple,apple.png
+  282:  Mushroom Stew,mushroomstew.png
+  297:  Bread,bread.png
+  319:  Raw Porkchop,rawporkchop.png
+  320:  Cooked Porkchop,cookedporkchop.png
+  322:  Golden Apple,goldenapple.png
+  349:  Raw Fish,rawfish.png
+  350:  Cooked Fish,cookedfish.png
+  357:  Cookie,cookie.png
+  360:  Melon,melon.png
+  363:  Raw Beef,rawbeef.png
+  364:  Steak,steak.png
+  365:  Raw Chicken,rawchicken.png
+  366:  Cooked Chicken,cookedchicken.png
+  367:  Rotten Flesh,rottenflesh.png
+  375:  Spider Eye,spidereye.png
+  92:  Cake,cake.png
 
 Decoration:
-  :  Oak Sapling
-  :  Spruce Sapling
-  :  Birch Sapling 
-  :  Jungle Sapling
-  :  Oak Leaves
-  :  Spruce Leaves
-  :  Birch Leaves
-  :  Jungle Leaves
-  :  CobWeb
-  :  Grass
-  :  Fern
-  :  Dead Bush
-  :  Flower
-  :  Rose
-  :  Mushroom
-  :  Torch
-  :  Chest
-  :  Crafting Table
-  :  Furnace
-  :  Ladder
-  :  Snow
-  :  Cactus
-  :  Jukebox
-  :  Fence
-  :  Stone Monster Egg
-  :  Iron Bars
-  :  Glass Pane
-  :  Vines
-  :  Lily Pad
-  :  Nether Brick Fence
-  :  Enchantment Table
-  :  End Portal
-  :  Ender Chest
-  :  Painting
-  :  Sign
-  :  Bed
+  6:     Oak Sapling,oaksapling.png
+  6_1:   Spruce Sapling,sprucesapling.png
+  6_2:   Birch Sapling,birchsapling.png
+  6_3:   Jungle Sapling,junglesapling.png
+  18:    Oak Leaves,oakleaves.png
+  18_1:  Spruce Leaves,spruceleaves.png
+  18_2:  Birch Leaves,birchleaves.png
+  18_3:  Jungle Leaves,jungleleaves.png
+  31_2:  Fern,fern.png
+  390:   Flower Pot,flowerpot.png
+  389:   Item Frame,Itemframe.png
+  38:    Rose,rose.png
+  39:    Brown Mushroom,brownmushroom.png
+  40:    Red Mushroom,redmushroom.png
+  50:    Torch,torch.png
+  54:    Chest,chest.png
+  58:    Crafting Table,craftingtable.png
+  61:    Furnace,furnace.png
+  65:    Ladder,ladder.png
+  78:    Snow,snow.png
+  81:    Cactus,cactus.png
+  84:    Jukebox,jukebox.png
+  85:    Fence,fence.png
+  101:   Iron Bars,ironbars.png
+  102:   Glass Pane,glasspane.png
+  106:   Vines,vines.png
+  111:   Lily Pad,lilypad.png
+  113:   Nether Brick Fence,netherbrickfence.png
+  116:   Enchantment Table,enchantmenttable.png
+  119:   End Portal,endportal.png
+  130:   Ender Chest,enderchest.png
+  321:   Painting,painting.png
+  323:   Sign,sign.png
+  355:   Bed,bed.png
 
 Redstone:
-  :   Dispenser
-  :   Note Block
-  :   Sticky Piston
-  :   Piston
-  :   TNT
-  :   Lever
-  :   Pressure Plate
-  :   Pressure Plate
-  :   Redstone Torch
-  :   Button
-  :   Trapdoor
-  :   Fence Gate
-  :   Redstone Lamp
-  :   Tripwire Hook
-  :   Wooden Door
-  :   Iron Door
-  :   Redstone
-  :   Redstone Repeater
+  23:   Dispenser,dispenser.png
+  25:   Note Block,noteblock.png
+  29:   Sticky Piston,stickypiston.png
+  33:   Piston,piston.png
+  46:   TNT,tnt.png
+  69:   Lever,lever.png
+  70:   Stone Pressure Plate,stonepressureplate.png
+  76:   Redstone Torch,redstonetorch.png
+  77:   Button,button.png
+  96:   Trapdoor,trapdoor.png
+  107:  Fence Gate,fencegate.png
+  123:  Redstone Lamp,redstonelamp.png
+  131:  Tripwire Hook,tripwirehook.png
+  324:  Wooden Door,woodendoor.png
+  330:  Iron Door,irondoor.png
+  331:  Redstone Dust,redstonedust.png
+  356:  Redstone Repeater,redstonerepeater.png
 
 Transportation:
   :   Powered Rail
