@@ -158,6 +158,9 @@ public class Response {
         if(isPotion(item.getItemStack())) {
             return "<img src='images/potion.png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
         }else{
+            if(img_name.contains("http") || img_name.contains("www") || img_name.contains("/"))
+                return "<img src='"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+            
             return "<img src='images/"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
         }
     }
