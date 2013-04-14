@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.webserver.Material;
+import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,10 +19,12 @@ import org.bukkit.inventory.ItemStack;
  */
 public class TradeSystem {
     
+    private Response response;
     public WebPortal plugin;
     
     public TradeSystem(WebPortal plugin){
         this.plugin = plugin;
+        response = new Response(plugin, null);
     }
     
     public String Buy(String BuyPlayerName,Auction sellerauction,int qtd,String item_name,Boolean ingame) {
@@ -36,7 +38,7 @@ public class TradeSystem {
         List<Auction> auctions = plugin.dataQueries.getPlayerItems(BuyPlayerName);
         for (Auction auction:auctions) {
 
-            String playeritemname =  Material.getItemName(auction.getName(),(short)(auction.getDamage()));
+            String playeritemname =  response.getItemNameAndImg(auction.getItemStack())[0];
             if(item_name.equals(playeritemname) && auction.getDamage() == sellerauction.getItemStack().getDurability())
             {
                 if(sellerauction.getEnchantments().equals(auction.getEnchantments()))
@@ -65,7 +67,7 @@ public class TradeSystem {
             plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
         }else if(!ingame) {
             String Type = sellerauction.getItemStack().getType().toString();
-            String ItemName = Material.getItemName(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability());
+            String ItemName = response.getItemNameAndImg(sellerauction.getItemStack())[0];
             String searchtype = plugin.getSearchType(ItemName);
             plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
         }
@@ -118,7 +120,7 @@ public class TradeSystem {
 
         if (foundMatch == false) {
                 String type = stack.getType().toString();
-                String ItemName = Material.getItemName(stack.getTypeId(),stack.getDurability());
+                String ItemName = response.getItemNameAndImg(stack)[0];
                 String searchtype = plugin.getSearchType(ItemName);
                 plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,ItemName,searchtype);
         }

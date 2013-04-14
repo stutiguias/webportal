@@ -10,7 +10,6 @@ import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionPlayer;
 import me.stutiguias.webportal.settings.TradeSystem;
-import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.inventory.ItemStack;
 
@@ -109,7 +108,7 @@ public class FillOperations extends Response {
            
            AuctionPlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
            Auction au = plugin.dataQueries.getAuction(id);
-           String item_name = Material.getItemName(au.getItemStack().getTypeId(),(short)(au.getItemStack().getDurability()));
+           String item_name = getItemNameAndImg(au.getItemStack())[0];
            if(qtd <= 0)
            {
               print("Quantity greater then 0","text/plain");

@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
-import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
 
 /**
@@ -89,7 +88,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < Transacts.size(); i++) {
                 Transact _Transact = Transacts.get(i);
-                String itemname = Material.getItemName(_Transact.getItemStack().getTypeId(),_Transact.getItemStack().getDurability());
+                String itemname = getItemNameAndImg(_Transact.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_Transact.getBuyer()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -115,7 +114,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < _PlayerItems.size(); i++) {
                 Auction _Auction = _PlayerItems.get(i);
-                String itemname = Material.getItemName(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability());
+                String itemname = getItemNameAndImg(_Auction.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -139,7 +138,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < _PlayerMail.size(); i++) {
                 AuctionMail _AuctionMail = _PlayerMail.get(i);
-                String itemname = Material.getItemName(_AuctionMail.getItemStack().getTypeId(),_AuctionMail.getItemStack().getDurability());
+                String itemname = getItemNameAndImg(_AuctionMail.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_AuctionMail.getPlayerName()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -163,7 +162,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < _PlayerAuction.size(); i++) {
                 Auction _Auction = _PlayerAuction.get(i);
-                String itemname = Material.getItemName(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability());
+                String itemname = getItemNameAndImg(_Auction.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");

@@ -348,70 +348,70 @@ Redstone:
   356:  Redstone Repeater,redstonerepeater.png
 
 Transportation:
-  :   Powered Rail
-  :   Detector Rail
-  :   Rail
-  :   Minecart
-  :   Saddle
-  :   Boat
-  :   Minecart with Chest
+  27:   Powered Rail,poweredrail.png
+  28:   Detector Rail,detectorrail.png
+  66:   Rail,rail.png
+  328:  Minecart,minecart.png
+  329:  Saddle,saddle.png
+  333:  Boat,boat.png
+  342:  Minecart with Chest,minecartchest.png
 
 Micellaneous:
-  :     Bucket
-  :     Water Buckket
-  :     Lava Bucket
-  :     Snowball
-  :     Milk
-  :     Paper
-  :     Book
-  :     Slimeball
-  :     Bone
-  :     Map
-  :     Ender Pearl
-  :     Eye of Ender
-  :     Fire Charge
-  :     Book and Quill
+  325:  Bucket,bucket.png
+  326:  Water Bucket,waterbucket.png
+  327:  Lava Bucket,lavabucket.png
+  332:  Snowball,snowball.png
+  335:  Milk,milk.png
+  339:  Paper,paper.png
+  340:  Book,book.png
+  341:  Slimeball,slimeball.png
+  352:  Bone,bone.png
+  358:  Map,map.png
+  368:  Ender Pearl,enderpearl.png
+  381:  Eye of Ender,eyeofender.png
+  385:  Fire Charge,firecharge.png
+  386:  Book and Quill,bookandquill.png
 
 Materials:
-  :  Coal
-  :  Charcoal
-  :  Diamond
-  :  Iron Ingot
-  :  Gold Ingot
-  :  Stick
-  :  Bowl
-  :  String
-  :  Feather
-  :  Gunpowder
-  :  Seeds
-  :  Wheat
-  :  Flint
-  :  Leather
-  :  Brick
-  :  Clay
-  :  Sugar Canes
-  :  Egg
-  :  Glowstone Dust
-  :  Ink Sac
-  :  Rose Red
-  :  Cactus Green
-  :  Cocoa Beans
-  :  Lapis Lazuli
-  :  Purple Dye
-  :  Cyan Dye
-  :  Light Gray Dye
-  :  Gray Dye
-  :  Pink Dye
-  :  Lime Dye
-  :  Dandelion Yellow
-  :  Light Blue Dye
-  :  Magenta Dye
-  :  Orange Dye
-  :  Bone Meal
-  :  Sugar
-  :  Pumpkin Seeds
-  :  Melon Seeds
-  :  Blaze Rod
-  :  Gold Nugget
-  :  Nether Wart
-  :  Emerald
+  263:  Coal,coal.png
+  263_1: Charcoal,charcoal.png
+  264:  Diamond,diamond.png
+  265:  Iron Ingot,ironingot.png
+  266:  Gold Ingot,goldingot.png
+  280:  Stick,stick.png
+  281:  Bowl,bowl.png
+  287:  String,string.png
+  288:  Feather,feather.png
+  289:  Gunpowder,gunpowder.png
+  295:  Seeds,seeds.png
+  296:  Wheat,wheat.png
+  318:  Flint,flint.png
+  334:  Leather,leather.png
+  45:   Brick,brick.png
+  337:  Clay,clay.png
+  338:  Sugar Canes,sugarcane.png
+  344:  Egg,egg.png
+  348:  Glowstone Dust,glowstonedust.png
+  351:  Ink Sac,inksac.png
+  351_1: Rose Red,rosered.png
+  351_2: Cactus Green,cactusgreen.png
+  351_3: Cocoa Beans,cocoabens.png
+  351_4: Lapis Lazuli,lapislazuli.png
+  351_5: Purple Dye,purpledye.png
+  351_6: Cyan Dye,cyandye.png
+  351_7: Light Gray Dye,lightgraydye.png
+  351_8: Gray Dye,graydye.png
+  351_9: Pink Dye,pinkdye.png
+  351_10: Lime Dye,limedye.png
+  351_11: Dandelion Yellow,dandelionyellow.png
+  351_12: Light Blue Dye,lightbluedye.png
+  351_13: Magenta Dye,magentadye.png
+  351_14: Orange Dye,orangedye.png
+  351_15: Bone Meal,bonemeal.png
+  353:  Sugar,sugar.png
+  361:  Pumpkin Seeds,pumpkinseeds.png
+  362:  Melon Seeds,melonseeds.png
+  369:  Blaze Rod,blazerod.png
+  371:  Gold Nugget,goldnugget.png
+  372:  Nether Wart,netherwart.png
+  388:  Emerald,emerald.png

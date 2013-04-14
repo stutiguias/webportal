@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.webserver.Material;
 import me.stutiguias.webportal.webserver.Response;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
