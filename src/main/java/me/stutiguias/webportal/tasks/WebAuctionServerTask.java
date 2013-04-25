@@ -102,7 +102,7 @@ public class WebAuctionServerTask extends Thread {
                             }else if(url.startsWith("/image")) {
                                 Response.readFileAsBinary(htmlDir+url,"image/jpg");
                             }else if(url.startsWith("/js")) {
-                                Response.readFileAsBinary(htmlDir+url,"text/javascript");
+                                Response.readFileAsBinary(htmlDir+url,"application/javascript");
                             }else {
                                 Response.readFileAsBinary(htmlDir+"/login.html","text/html");
                             }
@@ -119,7 +119,7 @@ public class WebAuctionServerTask extends Thread {
                             }else if(url.startsWith("/image")) {
                                 Response.readFileAsBinary(htmlDir+url,"image/png");
                             }else if(url.startsWith("/js")) {
-                                Response.readFileAsBinary(htmlDir+url,"text/javascript");
+                                Response.readFileAsBinary(htmlDir+url,"application/javascript");
                             }else if(url.startsWith("/server/username/info"))
                             {
                                 _UserInfo.GetInfo();

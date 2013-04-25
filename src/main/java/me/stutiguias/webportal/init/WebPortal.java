@@ -102,8 +102,8 @@ public class WebPortal extends JavaPlugin {
                 dir = new File(getDataFolder() + File.separator + "html");
                 if (!dir.exists()) {
                     logger.log(Level.INFO, "{0} Copying default HTML ZIP...", logPrefix);
-                    dir = new File(getDataFolder() + File.separator + "webportal.zip");
-                    FileMgmt.copy(getResource("webportal.zip"), dir);
+                    dir = new File(getDataFolder() + File.separator + "html.zip");
+                    FileMgmt.copy(getResource("html.zip"), dir);
                     logger.log(Level.INFO, "{0} Done! Unzipping...", logPrefix);
                     FileMgmt.unziptodir(dir, getDataFolder());
                     logger.log(Level.INFO, "{0} Done! Deleting zip.", logPrefix);
