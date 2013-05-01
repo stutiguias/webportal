@@ -103,7 +103,7 @@ public class FillAdminShop extends Response {
     
     public String HTMLDelete(String ip,int ID){
       if(isAdmin(ip)) {
-        return "<form action='web/delete' method='GET' onsubmit='return del(this)'>"+
+        return "<form class='js-adminShopDelete' action='web/delete' method='GET' onsubmit='return del(this)'>"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
                 "<input type='submit' value='Delete' class='button' /></form><span id='"+ID+"'></span>";
       }else{
