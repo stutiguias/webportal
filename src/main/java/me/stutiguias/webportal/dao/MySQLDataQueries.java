@@ -6,12 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
 import me.stutiguias.webportal.settings.*;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 public class MySQLDataQueries implements IDataQueries {
 
@@ -997,14 +1000,25 @@ public class MySQLDataQueries implements IDataQueries {
         
         @Override
         public ItemStack Chant(String ench,ItemStack stack) {
+
             if(!ench.equals(""))
             {
                 String[] enchs = ench.split(":");
-                for (String enchant:enchs) {
-                    if(!enchant.equals("")) 
+                for (String enchantString:enchs) {
+                    
+                    if(!enchantString.equals("")) 
                     {
-                        String[] number_level = enchant.split(",");
-                        stack.addEnchantment(Enchantment.getById(Integer.parseInt(number_level[0])),Integer.parseInt(number_level[1]));
+                        String[] number_level = enchantString.split(",");
+                        Enchantment enchant = Enchantment.getById(Integer.parseInt(number_level[0]));
+                        int level = Integer.parseInt(number_level[1]);
+                    
+                        if(stack.getType() == Material.ENCHANTED_BOOK) {
+                            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)stack.getItemMeta();
+                            bookmeta.addStoredEnchant(enchant, level, true);
+                            stack.setItemMeta(bookmeta);
+                        }else{
+                            stack.addEnchantment(enchant,level);
+                        }
                     }
                 }
             }

@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.Response;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 /**
  *
@@ -68,7 +70,7 @@ public class TradeSystem {
         }else if(!ingame) {
             String Type = sellerauction.getItemStack().getType().toString();
             String ItemName = response.getItemNameAndImg(sellerauction.getItemStack())[0];
-            String searchtype = plugin.getSearchType(ItemName);
+            String searchtype = plugin.getSearchType(String.valueOf(sellerauction.getItemStack().getTypeId()));
             plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
         }
         
@@ -121,7 +123,7 @@ public class TradeSystem {
         if (foundMatch == false) {
                 String type = stack.getType().toString();
                 String ItemName = response.getItemNameAndImg(stack)[0];
-                String searchtype = plugin.getSearchType(ItemName);
+                String searchtype = plugin.getSearchType(String.valueOf(stack.getTypeId()));
                 plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,ItemName,searchtype);
         }
         
@@ -136,8 +138,16 @@ public class TradeSystem {
     }
     
     public String getEnchants(ItemStack itemstack) {
-        Map<Enchantment, Integer> itemEnchantments = itemstack.getEnchantments();
+        Map<Enchantment, Integer> itemEnchantments;
         String enchants = "";
+        
+        if(itemstack.getType() == Material.ENCHANTED_BOOK) {
+            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)itemstack.getItemMeta();
+            itemEnchantments = bookmeta.getStoredEnchants();
+        }else{
+            itemEnchantments = itemstack.getEnchantments();
+        }
+        
         for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
             int enchId = entry.getKey().getId();
             int level = entry.getValue();

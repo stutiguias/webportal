@@ -68,7 +68,7 @@
         <directory>${project.basedir}/src/main/resources/</directory>
         <filtering>false</filtering>
         <includes>
-          <include>webportal.zip</include>
+          <include>html.zip</include>
         </includes>
       </resource>
     </resources>
