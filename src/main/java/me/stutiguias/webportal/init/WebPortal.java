@@ -351,8 +351,9 @@ public class WebPortal extends JavaPlugin {
                 if(Type == null) return "nothing";
                 
             }catch(NullPointerException ex){
-                logger.warning(String.format("Unable to search Item %s",itemName));
-                ex.printStackTrace();
+                logger.warning(String.format("[WebPortal] Unable to search Item id %s ,"
+                        + " please add on materials.yml and post comment about that with this id",itemName));
+                //ex.printStackTrace();
             }
             return "nothing";
             
