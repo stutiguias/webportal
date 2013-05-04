@@ -72,7 +72,10 @@ public class FillOperations extends Response {
             return;
         }else if(_Auction.getItemStack().getAmount() > quantity) {
             plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
-            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType(), _Auction.getItemName(), plugin.getSearchType( _Auction.getItemName() ) );
+            String[] ItemConfig = getItemNameAndImg(_Auction.getItemStack());
+            String itemName = ItemConfig[0];
+            String SearchType = ItemConfig[2];
+            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType(), itemName , SearchType );
         }
         print("Mailt send","text/plain");
     }
