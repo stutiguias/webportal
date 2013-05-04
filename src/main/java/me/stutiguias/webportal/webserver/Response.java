@@ -190,7 +190,7 @@ public class Response {
         return itemConfig.split(",");
     }
     
-    public String getConfigName(String itemId,String type) {
+    private String getConfigName(String itemId,String type) {
             for (Iterator<String> it = plugin.materials.getConfig().getConfigurationSection(type).getKeys(false).iterator(); it.hasNext();) {
                 String key = it.next();
                 if(key.equalsIgnoreCase(itemId)) {

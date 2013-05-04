@@ -50,8 +50,9 @@ public class FillOperations extends Response {
               Short dmg = Short.valueOf(String.valueOf(auction.getDamage()));
               ItemStack stack = new ItemStack(auction.getName(),auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
-              String ItemName = getConfigName(String.valueOf(auction.getName()), type).split(",")[0];
-              String searchtype = plugin.getSearchType(String.valueOf(auction.getName()));
+              String[] itemConfig = getItemNameAndImg(stack);
+              String ItemName = itemConfig[0];
+              String searchtype = itemConfig[2];
               plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,ItemName,searchtype);
               print("You have successfully created an Auction","text/plain");
             }else{
