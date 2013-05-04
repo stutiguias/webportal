@@ -155,14 +155,11 @@ public class Response {
             enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
         }
         
-        if(isPotion(item.getItemStack())) {
-            return "<img src='images/potion.png'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
-        }else{
-            if(img_name.contains("http") || img_name.contains("www") || img_name.contains("/"))
-                return "<img src='"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
-            
-            return "<img src='images/"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
-        }
+        if(img_name.contains("http") || img_name.contains("www"))
+            return "<img src='"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+
+        return "<img src='images/"+ img_name +"' style='max-height:32px;max-width:32px;' ><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
+        
     }
     
     public Boolean isPotion(ItemStack item) {
@@ -174,24 +171,31 @@ public class Response {
         String itemId;
         Short dmg = item.getDurability();
         
-        if( ( item.getType().isBlock() && !dmg.equals(Short.valueOf("0")) ) || isPotion(item) ) 
-            itemId = item.getTypeId() + "_" + item.getDurability();
+        if( ( item.getType().isBlock() || isPotion(item) ) && !dmg.equals(Short.valueOf("0")) ) 
+            itemId = item.getTypeId() + "-" + item.getDurability();
         else
             itemId = String.valueOf(item.getTypeId());
 
-        return getConfigName(itemId,plugin.getSearchType(itemId)).split(",");
+        String itemConfig;
+        
+        String SearchType = plugin.getSearchType(itemId);
+        
+        if(!SearchType.equalsIgnoreCase("Others"))
+            itemConfig = getConfigName(itemId,SearchType);
+        else
+            itemConfig = "Not Found,Not Found";
+        
+        itemConfig += "," + SearchType;
+        
+        return itemConfig.split(",");
     }
     
-    public String getConfigName(String Itemname,String type) {
-            try {
-                for (Iterator<String> it = plugin.materials.getConfig().getConfigurationSection(type).getKeys(false).iterator(); it.hasNext();) {
-                    String key = it.next();
-                    if(key.equalsIgnoreCase(Itemname)) {
-                        return plugin.materials.getConfig().getString(type + "." + key);
-                    }
+    public String getConfigName(String itemId,String type) {
+            for (Iterator<String> it = plugin.materials.getConfig().getConfigurationSection(type).getKeys(false).iterator(); it.hasNext();) {
+                String key = it.next();
+                if(key.equalsIgnoreCase(itemId)) {
+                    return plugin.materials.getConfig().getString(type + "." + key);
                 }
-            }catch(NullPointerException ex){
-                return "Error,Error";
             }
             return "Not Found,Not Found";
     }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.stutiguias.webportal.commands.WebPortalCommands;
@@ -325,48 +326,38 @@ public class WebPortal extends JavaPlugin {
             
         }
         
-        public String getSearchType(String itemName) {
-            try {
-                
-                ConfigurationSection[] Configs =  { 
-                            materials.getConfig().getConfigurationSection("Block"),
-                            materials.getConfig().getConfigurationSection("Materials"),
-                            materials.getConfig().getConfigurationSection("Micellaneous"),
-                            materials.getConfig().getConfigurationSection("Redstone"),
-                            materials.getConfig().getConfigurationSection("Transportation"),
-                            materials.getConfig().getConfigurationSection("Decoration"),
-                            materials.getConfig().getConfigurationSection("Tools"),
-                            materials.getConfig().getConfigurationSection("Combat"),
-                            materials.getConfig().getConfigurationSection("Food"),    
-                            materials.getConfig().getConfigurationSection("Potions"),    
-                };
-                
-                String Type = null;
-                
-                for (ConfigurationSection configurationSection : Configs) {
-                    Type = GetType(itemName, configurationSection);
-                    if(Type != null) return Type;
+        public String getSearchType(String itemId) {
+
+            ConfigurationSection[] Configs =  { 
+                        materials.getConfig().getConfigurationSection("Block"),
+                        materials.getConfig().getConfigurationSection("Materials"),
+                        materials.getConfig().getConfigurationSection("Micellaneous"),
+                        materials.getConfig().getConfigurationSection("Redstone"),
+                        materials.getConfig().getConfigurationSection("Transportation"),
+                        materials.getConfig().getConfigurationSection("Decoration"),
+                        materials.getConfig().getConfigurationSection("Tools"),
+                        materials.getConfig().getConfigurationSection("Combat"),
+                        materials.getConfig().getConfigurationSection("Food"),    
+                        materials.getConfig().getConfigurationSection("Brewing"),    
+            };
+
+            for (ConfigurationSection configurationSection : Configs) {
+
+                Set<String> keys = configurationSection.getKeys(false);
+
+                for (Iterator<String> it = keys.iterator(); it.hasNext();) {
+                    String key = it.next();
+                    
+                    if (key.equals(itemId)) {
+                        return configurationSection.getName();
+                    }
                 }
-                
-                if(Type == null) return "nothing";
-                
-            }catch(NullPointerException ex){
-                logger.warning(String.format("[WebPortal] Unable to search Item id %s ,"
-                        + " please add on materials.yml and post comment about that with this id",itemName));
-                //ex.printStackTrace();
+
             }
-            return "nothing";
             
-        }
-        
-        public String GetType(String itemName,ConfigurationSection Section) {
-            for (Iterator<String> it = Section.getKeys(false).iterator(); it.hasNext();) {
-                String key = it.next();
-                if(key.equalsIgnoreCase(itemName)) {
-                    return Section.getName();
-                }
-            }
-            return null;
+            logger.warning(String.format("[WebPortal] Unable to search Item id %s , please add on materials.yml and post comment about that with this id",itemId));
+            return "Others";
+            
         }
                 
         public String parseColor(String message) {

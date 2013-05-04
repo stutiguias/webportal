@@ -69,8 +69,9 @@ public class TradeSystem {
             plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
         }else if(!ingame) {
             String Type = sellerauction.getItemStack().getType().toString();
-            String ItemName = response.getItemNameAndImg(sellerauction.getItemStack())[0];
-            String searchtype = plugin.getSearchType(String.valueOf(sellerauction.getItemStack().getTypeId()));
+            String[] itemConfig = response.getItemNameAndImg(sellerauction.getItemStack());
+            String ItemName = itemConfig[0];
+            String searchtype = itemConfig[2];
             plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
         }
         
@@ -122,8 +123,9 @@ public class TradeSystem {
 
         if (foundMatch == false) {
                 String type = stack.getType().toString();
-                String ItemName = response.getItemNameAndImg(stack)[0];
-                String searchtype = plugin.getSearchType(String.valueOf(stack.getTypeId()));
+                String[] itemConfig = response.getItemNameAndImg(stack);
+                String ItemName = itemConfig[0];
+                String searchtype = itemConfig[2];
                 plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,ItemName,searchtype);
         }
         

@@ -96,12 +96,12 @@ public class WebAuctionServerTask extends Thread {
                           _Login.TryToLogin(param);
                         }else if(!WebPortal.AuthPlayers.containsKey(HostAddress))
                         {
-                            if(url.startsWith("/css"))
+                            if(url.startsWith("/css") || url.startsWith("/styles"))
                             {
                                 Response.readFileAsBinary(htmlDir+url,"text/css");
                             }else if(url.startsWith("/image")) {
                                 Response.readFileAsBinary(htmlDir+url,"image/jpg");
-                            }else if(url.startsWith("/js")) {
+                            }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
                                 Response.readFileAsBinary(htmlDir+url,"application/javascript");
                             }else {
                                 Response.readFileAsBinary(htmlDir+"/login.html","text/html");
