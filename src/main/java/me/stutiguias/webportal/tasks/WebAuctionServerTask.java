@@ -108,7 +108,7 @@ public class WebAuctionServerTask extends Thread {
                             }
                         }else if(WebPortal.AuthPlayers.containsKey(HostAddress))
                         {
-                            if(url.startsWith("/css"))
+                            if(url.startsWith("/css") || url.startsWith("/styles"))
                             {
                                 if(url.contains("image"))
                                 {
@@ -118,7 +118,7 @@ public class WebAuctionServerTask extends Thread {
                                 }
                             }else if(url.startsWith("/image")) {
                                 Response.readFileAsBinary(htmlDir+url,"image/png");
-                            }else if(url.startsWith("/js")) {
+                            }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
                                 Response.readFileAsBinary(htmlDir+url,"application/javascript");
                             }else if(url.startsWith("/server/username/info"))
                             {
