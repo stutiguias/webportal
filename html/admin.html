@@ -1,0 +1,79 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>WebPortal</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
+    <style type="text/css" title="currentStyle">
+      @import "css/table_jui.css";
+      @import "css/dark-hive/jquery-ui-1.8.18.custom.css";
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/inputfunc.js"></script>
+    <script type="text/javascript" language="javascript" src="js/translate.js"></script>
+    <script type="text/javascript" language="javascript" src="js/info.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            
+            replaceText();
+      
+       });
+
+        function replaceText() {
+            for (var prop in langIndex) {
+                var patt = new RegExp(prop, "g");
+                $('body').html($('body').html().replace(patt, langIndex[prop]));
+            }
+        }
+    </script>
+  </head>
+  <body id="body">
+    <div id="holder">
+       <div id="head_pt1">
+            <div id="profile-box">
+                <table cellspacing="3px">
+                    <tr><td><img id="avatarimg" width="64px" src="http://minotar.net/avatar/" alt="avatar" /></td>
+                        <td><p>lang1Name : <span id="user"></span><br />
+                               lang1Money : <span id="money"></span> <br />
+                               lang1Mail : <span id="mail"></span> <br />
+                        </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        <div id="menu">
+            <ul >
+                <li ><a class="home" href="index.html">lang1Home</a></li >
+                <li ><a class="auction" href="auction.html">lang1Auction</a ></li >
+                <li ><a class="myitems" href="myitems.html">lang1My_itens</a ></li >
+                <li ><a class="myauction" href="myauctions.html">lang1My_auction</a ></li >
+                <li ><a class="logout" href="logout">lang1Logout</a ></li >
+            </ul >
+        </div>
+        <h1 style="position:relative;float:left;color:#3697AC;font-size:30px;padding-top:30px" >lang1SvName</h1>
+     </div>
+     <div id="spacer"></div>
+     <div id="content">
+         <form action="/admsearch" method="get" onsubmit="return adm(this)" >
+             <input type="text" name="nick" value="Insert Nick/Name" />
+             <select name="information">
+                 <option selected="selected" value="playerinfo">Player Info</option>
+                 <option value="playeritems">Player Items</option>
+                 <option value="playermail">Player Items</option>
+                 <option value="playerauctions">Player Auctions</option>
+                 <option value="playertransaction">Player Transaction</option>
+             </select>
+             <input type="submit" name="enviar" value="Consultar" class="button" />
+         </form>
+		 <div id="resultado" style="text-align:center;"></div>
+     </div>
+    <div id="footer">
+        <p>
+        Made by Stutiguias. Design by renanslk( or redbull52 ).<br/>
+        WebPortal for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
+        </p>
+    </div>
+    </div>
+  </body>
+</html>

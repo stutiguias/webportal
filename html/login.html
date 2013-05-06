@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>WebPortal</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand replace" href="#">lang1SvName</a>
+                    <div class="nav-collapse collapse">
+                        <form method="GET" name="login" onsubmit="return loginform(this)" class="navbar-form pull-right">
+                            <input name="Username" class="span2" type="text" placeholder="UserName">
+                            <input name="Password" class="span2" type="password" placeholder="Password">
+                            <button name="Submit" type="submit" class="btn replace">langSubmit</button>
+                        </form>
+                        <div class="brand error"></div>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- Main hero unit for a primary marketing message or call to action -->
+            <div>
+                <p>
+                    <small>Last 10 auctions.</small>
+                </p>
+                <table class="auction replace table table-striped table-bordered">
+                    <thead>
+                        <tr>
+		                    <th>langItem_info</th>
+		                    <th>langSeller</th>
+		                    <th>langExpires</th>
+		                    <th>langQuantity</th>
+		                    <th>langPrice_each</th>
+                            <th>langEnchant</th>
+                            <th>langDurUse</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbodyInput">
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
+            <footer>
+                <p>&copy; Made by Stutiguias.
+                   Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.</p>
+            </footer>
+
+        </div> <!-- /container -->
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/translate.js"></script>
+        <script src="js/urlcall.js"></script>
+        <script src="js/login.js"></script>
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>
