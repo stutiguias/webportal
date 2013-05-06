@@ -52,16 +52,17 @@ public class FillMyItems extends Response {
         
         if(iTotalRecords > 0) {
             for(Auction item:auctions){
+                double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
                 jsonTwo = new JSONObject();
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
                 jsonTwo.put("DT_RowClass", "gradeA");
                 jsonTwo.put("0", ConvertItemToResult(item,item.getType()));
                 jsonTwo.put("1", item.getItemStack().getAmount());
-                jsonTwo.put("2", "$ " + item.getPrice());
-                jsonTwo.put("3", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("4", html.HTMLAuctionCreate(ip,item.getId()));
-                jsonTwo.put("5", html.HTMLAuctionMail(ip,item.getId()));
-
+                jsonTwo.put("2", "$ " + mprice);
+                jsonTwo.put("3", "$ " + mprice * item.getItemStack().getAmount());
+                jsonTwo.put("4", GetEnchant(item));
+                jsonTwo.put("5", GetDurability(item));
+                
                 jsonData.add(jsonTwo);
             }
         }else{
@@ -74,11 +75,27 @@ public class FillMyItems extends Response {
                 jsonTwo.put("3", "No Items");
                 jsonTwo.put("4", "");
                 jsonTwo.put("5", "");
+                    
                 jsonData.add(jsonTwo);
         }
         json.put("aaData",jsonData);
         
         print(json.toJSONString(),"text/plain");
+    }
+    
+    public void getMyItems(String ip) {
+        List<Auction> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName());
+        JSONObject json = new JSONObject();
+        for(Auction item:auctions){
+            String[] itemConfig = getItemNameAndImg(item.getItemStack());
+            
+            JSONObject jsonNameImg = new JSONObject();
+            jsonNameImg.put(itemConfig[0],itemConfig[1]);
+            jsonNameImg.put("enchant",GetEnchant(item));
+            
+            json.put(item.getId(),jsonNameImg);
+        }
+        print(json.toJSONString(), "text/plain");
     }
     
     public Boolean CheckError(String ip,List<Auction> auctions) {

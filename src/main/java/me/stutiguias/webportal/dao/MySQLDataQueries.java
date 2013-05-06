@@ -1004,21 +1004,19 @@ public class MySQLDataQueries implements IDataQueries {
             if(!ench.equals(""))
             {
                 String[] enchs = ench.split(":");
+                
                 for (String enchantString:enchs) {
-                    
-                    if(!enchantString.equals("")) 
-                    {
-                        String[] number_level = enchantString.split(",");
-                        Enchantment enchant = Enchantment.getById(Integer.parseInt(number_level[0]));
-                        int level = Integer.parseInt(number_level[1]);
-                    
-                        if(stack.getType() == Material.ENCHANTED_BOOK) {
-                            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)stack.getItemMeta();
-                            bookmeta.addStoredEnchant(enchant, level, true);
-                            stack.setItemMeta(bookmeta);
-                        }else{
-                            stack.addEnchantment(enchant,level);
-                        }
+                    if(enchantString.equals("")) continue;
+                    String[] number_level = enchantString.split(",");
+                    Enchantment enchant = Enchantment.getById(Integer.parseInt(number_level[0]));
+                    int level = Integer.parseInt(number_level[1]);
+
+                    if(stack.getType() == Material.ENCHANTED_BOOK) {
+                        EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)stack.getItemMeta();
+                        bookmeta.addStoredEnchant(enchant, level, true);
+                        stack.setItemMeta(bookmeta);
+                    }else{
+                        stack.addEnchantment(enchant,level);
                     }
                 }
             }

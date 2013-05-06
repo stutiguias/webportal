@@ -60,8 +60,11 @@ public class FillAuction extends Response {
         if(url.contains("bymaterials")) {
             getAuctionBy(ip, url, param,"Materials");
         }
+        if(url.contains("bybrewing")) {
+            getAuctionBy(ip, url, param,"Brewing");
+        }
         if(url.contains("byothers")) {
-            getAuctionBy(ip, url, param,"nothing");
+            getAuctionBy(ip, url, param,"Others");
         }
     }
     
@@ -71,8 +74,14 @@ public class FillAuction extends Response {
         String search = getParam("sSearch", param);
         search = getConfigKey(search, searchtype);
         int sEcho = Integer.parseInt(getParam("sEcho", param));
+        List<Auction> auctions;
         
-        List<Auction> auctions = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,searchtype);
+        if(searchtype.equals("nothing")) {
+            auctions = plugin.dataQueries.getAuctions(iDisplayStart,iDisplayLength);
+        }else{
+            auctions = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,searchtype);
+        }
+        
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = plugin.dataQueries.getFound();
         
@@ -96,13 +105,14 @@ public class FillAuction extends Response {
                 tmp_Data.put("DT_RowId","row_" + item.getId() );
                 tmp_Data.put("DT_RowClass", Grade(MakertPercent));
                 tmp_Data.put("0", ConvertItemToResult(item,searchtype));
-                tmp_Data.put("1", "<img width='32' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
+                tmp_Data.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
                 tmp_Data.put("2", "Never");
                 tmp_Data.put("3", item.getItemStack().getAmount());
                 tmp_Data.put("4", "$ " + item.getPrice());
-                tmp_Data.put("5", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                tmp_Data.put("6", format(MakertPercent) + "%");
-                tmp_Data.put("7", html.HTMLBuy(ip,item.getId()));
+                tmp_Data.put("5", GetEnchant(item));
+                tmp_Data.put("6", GetDurability(item));
+                tmp_Data.put("7", format(MakertPercent) + "%");
+                tmp_Data.put("8", html.HTMLBuy(ip,item.getId()));
                 Data.add(tmp_Data);
             }
         }else{
@@ -111,6 +121,43 @@ public class FillAuction extends Response {
         Response.put("aaData",Data);
         
         print(Response.toJSONString(),"text/plain");
+    }
+    
+    public void getAuction(String param) {
+        int to = 0;
+        int from = 0;
+        
+        try {
+            to = Integer.parseInt(getParam("to", param));
+            from = Integer.parseInt(getParam("from", param));
+        }catch(Exception ex) {
+            print("Invalid Call", "text/plain");
+        }
+        
+        if(from < to || from - to > 50 ) {
+            print("Invalid Call", "text/plain");
+            return;
+        }
+        
+        List<Auction> auctions = plugin.dataQueries.getAuctions(to,from);
+        JSONObject json = new JSONObject();
+        int count = 0;
+        for(Auction item:auctions){
+            String[] itemConfig = getItemNameAndImg(item.getItemStack());
+            
+            JSONObject jsonNameImg = new JSONObject();
+            jsonNameImg.put("0", ConvertItemToResult(item,itemConfig[2]));
+            jsonNameImg.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
+            jsonNameImg.put("2", "Never");
+            jsonNameImg.put("3", item.getItemStack().getAmount());
+            jsonNameImg.put("4", "$ " + item.getPrice());
+            jsonNameImg.put("5", GetEnchant(item));
+            jsonNameImg.put("6", GetDurability(item));
+            
+            json.put(count,jsonNameImg);
+            count++;
+        }
+        print(json.toJSONString(), "text/plain");
     }
     
     public JSONObject NoAuction() {
@@ -125,18 +172,11 @@ public class FillAuction extends Response {
             jsonTwo.put("5", "");
             jsonTwo.put("6", "");
             jsonTwo.put("7", "");
+            jsonTwo.put("8", "");
             return jsonTwo;
     }
     
-    public double MarketPrice(Auction item,Double price) {
-           double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-           if(mprice == 0.0) {
-             return 0.0;
-           }
-           double percent = (( price * 100 ) / mprice);
-           return percent;
-  
-    }
+
     
     public String Grade(double percent) {
         if(percent == 100) {

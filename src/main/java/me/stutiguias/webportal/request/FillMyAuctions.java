@@ -53,8 +53,10 @@ public class FillMyAuctions extends Response {
                 jsonTwo.put("2", item.getItemStack().getAmount());
                 jsonTwo.put("3", "$ " + item.getPrice());
                 jsonTwo.put("4", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("5", "N/A" );
-                jsonTwo.put("6", html.HTMLCancel(ip,item.getId()));
+                jsonTwo.put("5", format(MarketPrice(item, item.getPrice())) + "%" );
+                jsonTwo.put("6", GetEnchant(item));
+                jsonTwo.put("7", GetDurability(item));
+                jsonTwo.put("8", html.HTMLCancel(ip,item.getId()));
 
                 jsonData.add(jsonTwo);
             }
@@ -69,6 +71,8 @@ public class FillMyAuctions extends Response {
                 jsonTwo.put("4", "");
                 jsonTwo.put("5", "");
                 jsonTwo.put("6", "");
+                jsonTwo.put("7", "");
+                jsonTwo.put("8", "");
                 jsonData.add(jsonTwo);
         }
         json.put("aaData",jsonData);

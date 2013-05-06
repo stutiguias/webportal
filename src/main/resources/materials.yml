@@ -243,7 +243,7 @@ Redstone:
   158:  Dropper,Blocks/Dropper.png
   324:  Wooden Door,Items/Utility/woodendoor.png
   330:  Iron Door,Items/Utility/irondoor.png
-  331:  Redstone Dust,Items/Raw materials/Redstone_(Dust).png
+  331:  Redstone Dust,Items/Rawmaterials/Redstone_(Dust).png
   356:  Redstone Repeater,Items/Utility/Redstone_(Repeater,_Inactive).gif
   404:  Redstone Comparator,Items/Utility/Redstone_Comparator_(Inactive).gif
 
@@ -262,6 +262,7 @@ Transportation:
   408:  Minecart with Hopper,Items/Vehicles/Minecart_with_Hopper.png
 
 Micellaneous:
+  32:      Dead Shrub,Items/Plants/Dead_Bush.png
   138:     Beacon,Blocks/Beacon.png
   325:     Bucket,Items/Tools/Bucket.png
   326:     Water Bucket,Items/Tools/Waterbucket.png
@@ -270,34 +271,34 @@ Micellaneous:
   335:     Milk,Items/Food/Milk.png
   339:     Paper,Item/Manufactured/Paper.png
   340:     Book,Item/Manufactured/Book.png
-  341:     Slimeball,Items/Raw materials/Slimeball.png
-  352:     Bone,Items/Raw materials/Bone.png
-  368:     Ender Pearl,Items/Raw materials/Ender_Pearl.png
+  341:     Slimeball,Items/Rawmaterials/Slimeball.png
+  352:     Bone,Items/Rawmaterials/Bone.png
+  368:     Ender Pearl,Items/Rawmaterials/Ender_Pearl.png
   381:     Eye of Ender,Items/Manufactured/Eye_of_Ender.png
-  383-50:  Creeper Spawn Egg,Items/Creative only/Grid_Spawn_Creeper.png
-  383-51:  Skeleton Spawn Egg,Items/Creative only/Grid_Spawn_Skeleton.png
-  383-52:  Spider Spawn Egg,Items/Creative only/Grid_Spawn_Spider.png
-  383-54:  Zombie Spawn,Items/Creative only/Grid_Spawn_Zombie.png
-  383-55:  Slime Spawn Egg,Items/Creative only/Grid_Spawn_Slime.png
-  383-56:  Ghast Spawn Egg,Items/Creative only/Grid_Spawn_Ghast.png
-  383-57:  Zombie Pigman Spawn Egg,Items/Creative only/Grid_Spawn_Pig_Zombie.png
-  383-58:  Enderman Spawn Egg,Items/Creative only/Grid_Spawn_Enderman.png
-  383-59:  Cave Spider Spawn Egg,Items/Creative only/Grid_Spawn_Cave_Spider.png
-  383-60:  Silverfish Spawn Egg,Items/Creative only/Grid_Spawn_Silverfish.png
-  383-61:  Blaze Spawn Egg,Items/Creative only/Grid_Spawn_Blaze.png
-  383-62:  Magma Cube Spawn Egg,Items/Creative only/Grid_Spawn_Magma_Cube.png
-  383-66:  Witch Spawn Egg,Items/Creative only/Grid_Spawn_Witch.png
-  383-65:  Bat Spawn Egg,Items/Creative only/Grid_Spawn_Bat.png
-  383-90:  Pig Spawn Egg,Items/Creative only/Grid_Spawn_Pig.png
-  383-91:  Sheep Spawn Egg,Items/Creative only/Grid_Spawn_Sheep.png
-  383-92:  Cow Spawn Egg,Items/Creative only/Grid_Spawn_Cow.png
-  383-93:  Chicken Spawn Egg,Items/Creative only/Grid_Spawn_Chicken.png
-  383-94:  Squid Spawn Egg,Items/Creative only/Grid_Spawn_Squid.png
-  383-95:  Wolf Spawn Egg,Items/Creative only/Grid_Spawn_Wolf.png
-  383-96:  Mooshroom Cow Spawn Egg,Items/Creative only/Grid_Spawn_Mooshroom.png
-  383-98:  Ocelot Spawn Egg,Items/Creative only/Grid_Spawn_Ocelot.png
-  383-100: Horse Spawn Egg,Items/Creative only/Grid_Spawn_Horse.png
-  383-120: Villager Spawn Egg,Items/Creative only/Grid_Spawn_Villager.png
+  383-50:  Creeper Spawn Egg,Items/Creativeonly/Grid_Spawn_Creeper.png
+  383-51:  Skeleton Spawn Egg,Items/Creativeonly/Grid_Spawn_Skeleton.png
+  383-52:  Spider Spawn Egg,Items/Creativeonly/Grid_Spawn_Spider.png
+  383-54:  Zombie Spawn,Items/Creativeonly/Grid_Spawn_Zombie.png
+  383-55:  Slime Spawn Egg,Items/Creativeonly/Grid_Spawn_Slime.png
+  383-56:  Ghast Spawn Egg,Items/Creativeonly/Grid_Spawn_Ghast.png
+  383-57:  Zombie Pigman Spawn Egg,Items/Creativeonly/Grid_Spawn_Pig_Zombie.png
+  383-58:  Enderman Spawn Egg,Items/Creativeonly/Grid_Spawn_Enderman.png
+  383-59:  Cave Spider Spawn Egg,Items/Creativeonly/Grid_Spawn_Cave_Spider.png
+  383-60:  Silverfish Spawn Egg,Items/Creativeonly/Grid_Spawn_Silverfish.png
+  383-61:  Blaze Spawn Egg,Items/Creativeonly/Grid_Spawn_Blaze.png
+  383-62:  Magma Cube Spawn Egg,Items/Creativeonly/Grid_Spawn_Magma_Cube.png
+  383-66:  Witch Spawn Egg,Items/Creativeonly/Grid_Spawn_Witch.png
+  383-65:  Bat Spawn Egg,Items/Creativeonly/Grid_Spawn_Bat.png
+  383-90:  Pig Spawn Egg,Items/Creativeonly/Grid_Spawn_Pig.png
+  383-91:  Sheep Spawn Egg,Items/Creativeonly/Grid_Spawn_Sheep.png
+  383-92:  Cow Spawn Egg,Items/Creativeonly/Grid_Spawn_Cow.png
+  383-93:  Chicken Spawn Egg,Items/Creativeonly/Grid_Spawn_Chicken.png
+  383-94:  Squid Spawn Egg,Items/Creativeonly/Grid_Spawn_Squid.png
+  383-95:  Wolf Spawn Egg,Items/Creativeonly/Grid_Spawn_Wolf.png
+  383-96:  Mooshroom Cow Spawn Egg,Items/Creativeonly/Grid_Spawn_Mooshroom.png
+  383-98:  Ocelot Spawn Egg,Items/Creativeonly/Grid_Spawn_Ocelot.png
+  383-100: Horse Spawn Egg,Items/Creativeonly/Grid_Spawn_Horse.png
+  383-120: Villager Spawn Egg,Items/Creativeonly/Grid_Spawn_Villager.png
   384:     Bottle o' Enchanting,Items/Utility/Bottle_o_Enchanting.png
   385:     Fire Charge,Items/Weapons/Fire_Charge.png
   386:     Book and Quill,Items/Informative/Book_and_Quill.png
@@ -399,7 +400,7 @@ Combat:
   316:        Gold Leggings,Items/Armor/Grid_Gold_Leggings.png
 
 Brewing:
-  370:          Ghast Tear,Items/Raw materials/Ghast_Tear.png
+  370:          Ghast Tear,Items/Rawmaterials/Ghast_Tear.png
   373:          Glass Bottle,Items/Manufactured/Glass_Bottle.png
   373-8193:     Potion of Regeneration,Items/Manufactured/Grid_Potion_of_Regeneration.png
   373-8225:     Potion of Regeneration II,Items/Manufactured/Grid_Potion_of_Regeneration.png
@@ -463,23 +464,23 @@ Brewing:
   382:          Glistering Melon,Items/Manufactured/Glistering_Melon.png
 
 Materials:
-  263:  Coal,Items/Raw materials/Coal2.png
-  263-1: Charcoal,Items/Raw materials/Coal2.png
-  264:  Diamond,Items/Raw materials/Diamond_(Gem).png
-  265:  Iron Ingot,Items/Raw materials/Ironitm.png
-  266:  Gold Ingot,Items/Raw materials/Golditm.png
+  263:  Coal,Items/Rawmaterials/Coal2.png
+  263-1: Charcoal,Items/Rawmaterials/Coal2.png
+  264:  Diamond,Items/Rawmaterials/Diamond_(Gem).png
+  265:  Iron Ingot,Items/Rawmaterials/Ironitm.png
+  266:  Gold Ingot,Items/Rawmaterials/Golditm.png
   280:  Stick,Items/Manufactured/Stick.png
   281:  Bowl,Items/Manufactured/Bowl.png
-  287:  String,Items/Raw materials/String.png
-  288:  Feather,Items/Raw materials/Feather.png
-  289:  Gunpowder,Items/Raw materials/Gunpowder_item.png
+  287:  String,Items/Rawmaterials/String.png
+  288:  Feather,Items/Rawmaterials/Feather.png
+  289:  Gunpowder,Items/Rawmaterials/Gunpowder_item.png
   295:  Seeds,Items/Plants/Seeds.png
   296:  Wheat,Items/Plants/Wheat.png
-  318:  Flint,Items/Raw materials/Flint.png
-  334:  Leather,Items/Raw materials/Leather.png
-  336:   Brick,Items/Raw materials/Clay_(Brick).png
-  337:  Clay,Items/Raw materials/Clay_(Item)png
-  338:  Sugar Canes,Items/Raw materials/Sugar_Cane.png
+  318:  Flint,Items/Rawmaterials/Flint.png
+  334:  Leather,Items/Rawmaterials/Leather.png
+  336:   Brick,Items/Rawmaterials/Clay_(Brick).png
+  337:  Clay,Items/Rawmaterials/Clay_(Item)png
+  338:  Sugar Canes,Items/Rawmaterials/Sugar_Cane.png
   344:  Egg,Items/Weapons/Egg2.png
   348:  Glowstone Dust,Lightstonedust.png
   351:  Ink Sac,Items/Dyes/Ink_Sack.png
@@ -499,12 +500,12 @@ Materials:
   351-14: Orange Dye,Items/Dyes/Orangedye_dye.png
   351-15: Bone Meal,Items/Dyes/Bonemeal.png
   353:  Sugar,Items/Manufactured/Sugaricon.png
-  361:  Pumpkin Seeds,Items/Raw materials/MelonseedsPumpkinseeds.png
-  362:  Melon Seeds,Items/Raw materials/MelonseedsMelonseeds.png
-  369:  Blaze Rod,Items/Raw materials/Blazerod.png
-  371:  Gold Nugget,Items/Raw materials/Gold_Nugget.png
-  372:  Nether Wart,Items/Raw materials/Nether_Wart.gif
-  388:  Emerald,Items/Raw materials/Emerald.png
-  399:  Nether Star,Items/Raw materials/Nether_star.png
+  361:  Pumpkin Seeds,Items/Rawmaterials/MelonseedsPumpkinseeds.png
+  362:  Melon Seeds,Items/Rawmaterials/MelonseedsMelonseeds.png
+  369:  Blaze Rod,Items/Rawmaterials/Blazerod.png
+  371:  Gold Nugget,Items/Rawmaterials/Gold_Nugget.png
+  372:  Nether Wart,Items/Rawmaterials/Nether_Wart.gif
+  388:  Emerald,Items/Rawmaterials/Emerald.png
+  399:  Nether Star,Items/Rawmaterials/Nether_star.png
   405:  Nether Brick,Items/Manufactured/Nether_Brick_(Item).png
-  406:  Nether Quartz,Items/Raw materials/Nether_Quartz.png
+  406:  Nether Quartz,Items/Rawmaterials/Nether_Quartz.png

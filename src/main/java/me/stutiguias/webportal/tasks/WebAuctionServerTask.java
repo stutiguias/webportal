@@ -103,9 +103,11 @@ public class WebAuctionServerTask extends Thread {
                                 Response.readFileAsBinary(htmlDir+url,"image/jpg");
                             }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
                                 Response.readFileAsBinary(htmlDir+url,"application/javascript");
+                            }else if(url.startsWith("/get/auction")) {
+                                _FillAuction.getAuction(param);
                             }else {
                                 Response.readFileAsBinary(htmlDir+"/login.html","text/html");
-                            }
+                            } 
                         }else if(WebPortal.AuthPlayers.containsKey(HostAddress))
                         {
                             if(url.startsWith("/css") || url.startsWith("/styles"))
@@ -128,6 +130,8 @@ public class WebAuctionServerTask extends Thread {
                                 Response.readFileAsBinary(htmlDir + "/login.html","text/html");
                             }else if(url.startsWith("/fill/auction")) {
                                 _FillAuction.fillAuction(HostAddress,url,param);
+                            }else if(url.startsWith("/get/myitems")) {
+                                _FillMyItems.getMyItems(HostAddress);
                             }else if(url.startsWith("/buy/item")) {
                                 _FillOperations.Buy(HostAddress,url,param);
                             }else if(url.startsWith("/fill/myitens")) {

@@ -15,8 +15,10 @@ import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.Enchant;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 /**
  *
@@ -136,30 +138,44 @@ public class Response {
     } 
     
     public String ConvertItemToResult(Auction item,String type) {
-
-        Short dmg = item.getItemStack().getDurability();
-
+       
         String[] nameAndImg = getItemNameAndImg(item.getItemStack());
         String item_name = nameAndImg[0];
         String img_name = nameAndImg[1];
         
-        String Durability = "";
-        if(!item.getItemStack().getType().isBlock() && !isPotion(item.getItemStack())) {
-            Durability = (!dmg.equals(Short.valueOf("0"))) ? "Dur.: " + dmg + "%" : "";
-        }
+        if(!img_name.contains("http") || !img_name.contains("www"))
+            img_name = String.format("images/%s",img_name);
         
-        String enchant = "";
+        return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /><br />%s</div>",img_name,item_name);
+        
+    }
+    
+    public String GetEnchant(Auction item) {
+        StringBuilder enchant = new StringBuilder();
         for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
             int enchId = entry.getKey().getId();
             int level = entry.getValue();
-            enchant += "<br />" + new Enchant().getEnchantName(enchId, level);
+            enchant.append(new Enchant().getEnchantName(enchId, level)).append("<br />");
         }
-        
-        if(img_name.contains("http") || img_name.contains("www"))
-            return "<img src='"+ img_name +"'><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
-
-        return "<img src='images/"+ img_name +"' style='max-height:32px;max-width:32px;' ><br /><font size='-1'>"+ item_name + "<br />" + Durability + enchant +"</font>";
-        
+        if(item.getItemStack().getType() == Material.ENCHANTED_BOOK) {
+            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)item.getItemStack().getItemMeta();
+            for (Map.Entry<Enchantment, Integer> entry : bookmeta.getStoredEnchants().entrySet()) {
+                int enchId = entry.getKey().getId();
+                int level = entry.getValue();
+                enchant.append(new Enchant().getEnchantName(enchId, level)).append("<br />");
+            }
+        }
+        return enchant.toString();
+    }
+    
+    public String GetDurability(Auction item) {
+        Short dmg = item.getItemStack().getDurability();
+        Short maxdur = item.getItemStack().getType().getMaxDurability();
+        String Durability = "";
+        if(!item.getItemStack().getType().isBlock() && !isPotion(item.getItemStack())) {
+            Durability = dmg + "/" + maxdur;
+        }
+        return Durability;
     }
     
     public Boolean isPotion(ItemStack item) {
@@ -168,14 +184,7 @@ public class Response {
     
     public String[] getItemNameAndImg(ItemStack item) {
         
-        String itemId;
-        Short dmg = item.getDurability();
-        
-        if( ( item.getType().isBlock() || isPotion(item) ) && !dmg.equals(Short.valueOf("0")) ) 
-            itemId = item.getTypeId() + "-" + item.getDurability();
-        else
-            itemId = String.valueOf(item.getTypeId());
-
+        String itemId = getItemId(item);
         String itemConfig;
         
         String SearchType = plugin.getSearchType(itemId);
@@ -188,6 +197,18 @@ public class Response {
         itemConfig += "," + SearchType;
         
         return itemConfig.split(",");
+    }
+    
+    public String getItemId(ItemStack item) {
+        
+        String itemId;
+        Short dmg = item.getDurability();
+        if( ( item.getType().isBlock() || isPotion(item) ) && !dmg.equals(Short.valueOf("0")) ) 
+            itemId = item.getTypeId() + "-" + item.getDurability();
+        else
+            itemId = String.valueOf(item.getTypeId());
+        return itemId;
+        
     }
     
     private String getConfigName(String itemId,String type) {
@@ -212,5 +233,13 @@ public class Response {
                 
             }
             return Itemname;
+    }
+    
+    public double MarketPrice(Auction item,Double price) {
+           double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+           if(mprice == 0.0) {
+             return 0.0;
+           }
+           return (( price * 100 ) / mprice);
     }
 }

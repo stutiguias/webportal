@@ -158,6 +158,14 @@ public class WebPortal extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
+                try {
+                    server.server.close();
+                }catch(Exception ex) {
+                    WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
+                }
+                server.interrupt();
+                this.reloadConfig();
+                saveConfig();
 		logger.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
 	}
 
