@@ -172,7 +172,7 @@ public class Response {
         Short dmg = item.getItemStack().getDurability();
         Short maxdur = item.getItemStack().getType().getMaxDurability();
         String Durability = "";
-        if(!item.getItemStack().getType().isBlock() && !isPotion(item.getItemStack())) {
+        if(!item.getItemStack().getType().isBlock() && !isPotion(item.getItemStack()) && maxdur != 0) {
             Durability = dmg + "/" + maxdur;
         }
         return Durability;
