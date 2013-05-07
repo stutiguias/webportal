@@ -2,19 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.HttpResponse;
 
 /**
  *
  * @author Daniel
  */
-public class FillAdmin extends Response {
+public class AdminRequest extends HttpResponse {
     
     WebPortal plugin;
     AuctionPlayer _AuPlayer;
@@ -22,22 +21,22 @@ public class FillAdmin extends Response {
     List<AuctionMail> _PlayerMail;
     List<Auction> _PlayerAuction;
     
-    public FillAdmin(WebPortal plugin) {
+    public AdminRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
     }
     
     public void ADM(String Hostadress,String param) {
         if(isAdmin(Hostadress)) {
-            String name = getParam("nick", param);
-            String info = getParam("information", param);
+            String name = GetParam("nick", param);
+            String info = GetParam("information", param);
             if(info.equalsIgnoreCase("playerinfo")) playerinfo(Hostadress,name);
             if(info.equalsIgnoreCase("playeritems")) playeritems(name);
             if(info.equalsIgnoreCase("playermail")) playermails(name);
             if(info.equalsIgnoreCase("playerauctions")) playerauction(name);
             if(info.equalsIgnoreCase("playertransaction")) playertransaction(name);
         }else{
-            print("Your r not admin","text/html");
+            Print("Your r not admin","text/html");
         }
     }
     
@@ -45,7 +44,7 @@ public class FillAdmin extends Response {
         _AuPlayer = plugin.dataQueries.getPlayer(name);
         StringBuilder response = new StringBuilder();
         if(_AuPlayer == null) {
-            print("Player Not Found","text/html");
+            Print("Player Not Found","text/html");
         }else{
             response.append("<div id='playerinfo'>");
                 response.append("<div style=\"text-align:center;\" >Player Info</div><br/>");
@@ -60,7 +59,7 @@ public class FillAdmin extends Response {
                 response.append("<td>BAN</td><td>").append(HTMLBan(Hostadress,_AuPlayer.getId())).append("</td></tr>");
                 response.append("</table>");
             response.append("</div>"); 
-            print(response.toString(),"text/html");
+            Print(response.toString(),"text/html");
         }
     }
     
@@ -88,7 +87,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < Transacts.size(); i++) {
                 Transact _Transact = Transacts.get(i);
-                String itemname = getItemNameAndImg(_Transact.getItemStack())[0];
+                String itemname = GetItemConfig(_Transact.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_Transact.getBuyer()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -99,7 +98,7 @@ public class FillAdmin extends Response {
             }
             response.append("</table>");
         response.append("</div>"); 
-        print(response.toString(),"text/html");
+        Print(response.toString(),"text/html");
     }
     
     private void playeritems(String name) {
@@ -114,7 +113,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < _PlayerItems.size(); i++) {
                 Auction _Auction = _PlayerItems.get(i);
-                String itemname = getItemNameAndImg(_Auction.getItemStack())[0];
+                String itemname = GetItemConfig(_Auction.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -123,7 +122,7 @@ public class FillAdmin extends Response {
             }
             response.append("</table>");
         response.append("</div>"); 
-        print(response.toString(),"text/html");
+        Print(response.toString(),"text/html");
     }
     
     private void playermails(String name) {
@@ -138,7 +137,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < _PlayerMail.size(); i++) {
                 AuctionMail _AuctionMail = _PlayerMail.get(i);
-                String itemname = getItemNameAndImg(_AuctionMail.getItemStack())[0];
+                String itemname = GetItemConfig(_AuctionMail.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_AuctionMail.getPlayerName()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -147,7 +146,7 @@ public class FillAdmin extends Response {
             }
             response.append("</table>");
         response.append("</div>"); 
-        print(response.toString(),"text/html");
+        Print(response.toString(),"text/html");
     }
         
     private void playerauction(String name) {
@@ -162,7 +161,7 @@ public class FillAdmin extends Response {
             response.append("</tr>");
             for (int i = 0; i < _PlayerAuction.size(); i++) {
                 Auction _Auction = _PlayerAuction.get(i);
-                String itemname = getItemNameAndImg(_Auction.getItemStack())[0];
+                String itemname = GetItemConfig(_Auction.getItemStack())[0];
                 response.append("<tr>");
                     response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
                     response.append("<td>").append(itemname).append("</td>");
@@ -171,6 +170,6 @@ public class FillAdmin extends Response {
             }
             response.append("</table>");
         response.append("</div>"); 
-        print(response.toString(),"text/html");
+        Print(response.toString(),"text/html");
     }
 }

@@ -17,7 +17,7 @@ import me.stutiguias.webportal.listeners.WebAuctionPlayerListener;
 import me.stutiguias.webportal.metrics.Metrics;
 import me.stutiguias.webportal.plugins.Essentials;
 import me.stutiguias.webportal.plugins.McMMO;
-import me.stutiguias.webportal.settings.AuthPlayer;
+import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
 import me.stutiguias.webportal.signs.Mailbox;
 import me.stutiguias.webportal.signs.vBox;
 import me.stutiguias.webportal.signs.wSell;

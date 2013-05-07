@@ -107,45 +107,45 @@ public class Auction {
             this.Enchantments = Enchantments;
         }
 
-    /**
-     * @return the name
-     */
-    public int getName() {
-        return name;
-    }
+        /**
+         * @return the name
+         */
+        public int getName() {
+            return name;
+        }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(int name) {
-        this.name = name;
-    }
+        /**
+         * @param name the name to set
+         */
+        public void setName(int name) {
+            this.name = name;
+        }
 
-    /**
-     * @return the damage
-     */
-    public int getDamage() {
-        return damage;
-    }
+        /**
+         * @return the damage
+         */
+        public int getDamage() {
+            return damage;
+        }
 
-    /**
-     * @param damage the damage to set
-     */
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
+        /**
+         * @param damage the damage to set
+         */
+        public void setDamage(int damage) {
+            this.damage = damage;
+        }
 
-    /**
-     * @return the quantity
-     */
-    public int getQuantity() {
-        return quantity;
-    }
+        /**
+         * @return the quantity
+         */
+        public int getQuantity() {
+            return quantity;
+        }
 
-    /**
-     * @param quantity the quantity to set
-     */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+        /**
+         * @param quantity the quantity to set
+         */
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
 }

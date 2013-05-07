@@ -2,14 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -17,12 +16,12 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class FillAuction extends Response {
+public class AuctionRequest extends HttpResponse {
     
     private WebPortal plugin;
     private Html html;
     
-    public FillAuction(WebPortal plugin) {
+    public AuctionRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
@@ -69,11 +68,11 @@ public class FillAuction extends Response {
     }
     
     public void getAuctionBy(String ip,String url,String param,String searchtype) {
-        int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
-        int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
-        String search = getParam("sSearch", param);
-        search = getConfigKey(search, searchtype);
-        int sEcho = Integer.parseInt(getParam("sEcho", param));
+        int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
+        int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
+        String search = GetParam("sSearch", param);
+        search = GetConfigKey(search, searchtype);
+        int sEcho = Integer.parseInt(GetParam("sEcho", param));
         List<Auction> auctions;
         
         if(searchtype.equals("nothing")) {
@@ -111,7 +110,7 @@ public class FillAuction extends Response {
                 tmp_Data.put("4", "$ " + item.getPrice());
                 tmp_Data.put("5", GetEnchant(item));
                 tmp_Data.put("6", GetDurability(item));
-                tmp_Data.put("7", format(MakertPercent) + "%");
+                tmp_Data.put("7", Format(MakertPercent) + "%");
                 tmp_Data.put("8", html.HTMLBuy(ip,item.getId()));
                 Data.add(tmp_Data);
             }
@@ -120,7 +119,7 @@ public class FillAuction extends Response {
         }
         Response.put("aaData",Data);
         
-        print(Response.toJSONString(),"text/plain");
+        Print(Response.toJSONString(),"text/plain");
     }
     
     public void getAuction(String param) {
@@ -128,14 +127,14 @@ public class FillAuction extends Response {
         int from = 0;
         
         try {
-            to = Integer.parseInt(getParam("to", param));
-            from = Integer.parseInt(getParam("from", param));
+            to = Integer.parseInt(GetParam("to", param));
+            from = Integer.parseInt(GetParam("from", param));
         }catch(Exception ex) {
-            print("Invalid Call", "text/plain");
+            Print("Invalid Call", "text/plain");
         }
         
         if(from < to || from - to > 50 ) {
-            print("Invalid Call", "text/plain");
+            Print("Invalid Call", "text/plain");
             return;
         }
         
@@ -143,7 +142,7 @@ public class FillAuction extends Response {
         JSONObject json = new JSONObject();
         int count = 0;
         for(Auction item:auctions){
-            String[] itemConfig = getItemNameAndImg(item.getItemStack());
+            String[] itemConfig = GetItemConfig(item.getItemStack());
             
             JSONObject jsonNameImg = new JSONObject();
             jsonNameImg.put("0", ConvertItemToResult(item,itemConfig[2]));
@@ -157,7 +156,7 @@ public class FillAuction extends Response {
             json.put(count,jsonNameImg);
             count++;
         }
-        print(json.toJSONString(), "text/plain");
+        Print(json.toJSONString(), "text/plain");
     }
     
     public JSONObject NoAuction() {

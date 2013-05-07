@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.tasks;
+package me.stutiguias.webportal.webserver;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -11,9 +11,7 @@ import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.request.Fill;
-import me.stutiguias.webportal.webserver.Response;
-import sun.security.krb5.internal.HostAddress;
+import me.stutiguias.webportal.webserver.request.Request;
 
 /**
  *
@@ -28,23 +26,18 @@ public class WebPortalHttpHandler implements HttpHandler {
     String htmlDir = "./plugins/WebPortal/html";
     String url;
     String param;
-
-    // will be delete soon
-    Response Response;
     
     // Response type
-    Fill Fill;
+    Request Fill;
 
 
     public WebPortalHttpHandler(WebPortal plugin)
     {
-        Response = new Response(plugin);
-        Fill = new Fill(plugin);
+        Fill = new Request(plugin);
     }
 
     @Override
     public void handle(HttpExchange t) throws IOException {
-        Response.httpExchange = t;
         Fill.SetHttpExchange(t);
         
         String request = t.getRequestURI().toString();
@@ -60,7 +53,7 @@ public class WebPortalHttpHandler implements HttpHandler {
 
         if(request.contains("..") || request.contains("./"))
         {
-            Response.readFileAsBinary(htmlDir+"/login.html","text/html");
+            Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
             return;
         }
 
@@ -72,7 +65,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         }else if(WebPortal.AuthPlayers.containsKey(HostAddress)) {
             RequestWithLogin(HostAddress);
         }else{
-            Response.readFileAsBinary(htmlDir+"/login.html","text/html");
+            Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
         }
         
     }
@@ -82,15 +75,15 @@ public class WebPortalHttpHandler implements HttpHandler {
         {
             Fill.TryLogin(HostAddress,param);
         }else if(url.startsWith("/css") || url.startsWith("/styles")) {
-            Response.readFileAsBinary(htmlDir+url,"text/css");
+            Fill.Response().ReadFile(htmlDir+url,"text/css");
         }else if(url.startsWith("/image") || url.startsWith("/img")) {
-            Response.readFileAsBinary(htmlDir+url,"image/jpg");
+            Fill.Response().ReadFile(htmlDir+url,"image/jpg");
         }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
-            Response.readFileAsBinary(htmlDir+url,"application/javascript");
+            Fill.Response().ReadFile(htmlDir+url,"application/javascript");
         }else if(url.startsWith("/get/auction")) {
             Fill.GetAuction(param);
         }else {
-            Response.readFileAsBinary(htmlDir+"/login.html","text/html");
+            Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
         } 
     }
 
@@ -99,20 +92,20 @@ public class WebPortalHttpHandler implements HttpHandler {
             {
                 if(url.contains("image"))
                 {
-                    Response.readFileAsBinary(htmlDir+url,"image/png");
+                    Fill.Response().ReadFile(htmlDir+url,"image/png");
                 }else{
-                    Response.readFileAsBinary(htmlDir+url,"text/css");
+                    Fill.Response().ReadFile(htmlDir+url,"text/css");
                 }
             }else if(url.startsWith("/image") || url.startsWith("/img")) {
-                Response.readFileAsBinary(htmlDir+url,"image/png");
+                Fill.Response().ReadFile(htmlDir+url,"image/png");
             }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
-                Response.readFileAsBinary(htmlDir+url,"application/javascript");
+                Fill.Response().ReadFile(htmlDir+url,"application/javascript");
             }else if(url.startsWith("/server/username/info"))
             {
                 Fill.GetInfo(HostAddress);
             }else if(url.startsWith("/logout")) {
                 WebPortal.AuthPlayers.remove(HostAddress);
-                Response.readFileAsBinary(htmlDir + "/login.html","text/html");
+                Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else if(url.startsWith("/fill/auction")) {
                 Fill.FillAuction(HostAddress,url,param);
             }else if(url.startsWith("/get/myitems")) {
@@ -142,9 +135,9 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else if(url.startsWith("/web/adminshoplist")){ 
                 Fill.List(HostAddress, url, param);
             }else if(url.equalsIgnoreCase("/")) {
-                Response.readFileAsBinary(htmlDir + "/login.html","text/html");
+                Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else{
-                Response.readFileAsBinary(htmlDir + url,"text/html");
+                Fill.Response().ReadFile(htmlDir + url,"text/html");
             }
     }
     

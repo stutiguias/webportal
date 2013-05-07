@@ -2,23 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.AuthPlayer;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.HttpResponse;
 
 /**
  *
  * @author Daniel
  */
-public class Userinfo extends Response {
+public class UserRequest extends HttpResponse {
     
     public WebPortal plugin;
 
     
-    public Userinfo(WebPortal plugin) {
+    public UserRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
     }
@@ -28,9 +27,9 @@ public class Userinfo extends Response {
         String Name = authPlayer.AuctionPlayer.getName();
         String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", <a href='/admin.html' >Admin Panel</a>":",";
         String response = Name + Admin + ",";
-        response += "$ " + format(plugin.economy.getBalance(Name)) + ",";
+        response += "$ " + Format(plugin.economy.getBalance(Name)) + ",";
         response += plugin.dataQueries.getMail(Name).size();
-        print(response,"text/plain");
+        Print(response,"text/plain");
     }
 
 }

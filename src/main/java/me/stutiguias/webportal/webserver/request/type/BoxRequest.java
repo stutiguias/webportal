@@ -2,23 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.AuthPlayer;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.OfflinePlayer;
 
 /**
  *
  * @author Daniel
  */
-public class FillBox extends Response {
+public class BoxRequest extends HttpResponse {
     
     private WebPortal plugin;
     
-    public FillBox(WebPortal plugin) {
+    public BoxRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
     }
@@ -35,7 +34,7 @@ public class FillBox extends Response {
         }else{
             sb.append("");
         }
-        print(sb.toString(), "text/plain");
+        Print(sb.toString(), "text/plain");
     }
     
     public void BOX2(String HostAddress) {
@@ -47,6 +46,6 @@ public class FillBox extends Response {
         }else{
             sb.append("");
         }
-        print(sb.toString(),"text/plain");
+        Print(sb.toString(),"text/plain");
     }  
 }

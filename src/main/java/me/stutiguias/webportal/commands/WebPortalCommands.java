@@ -2,8 +2,8 @@ package me.stutiguias.webportal.commands;
 
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Algorithm;
 import me.stutiguias.webportal.settings.InventoryHandler;
+import me.stutiguias.webportal.webserver.authentication.Algorithm;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

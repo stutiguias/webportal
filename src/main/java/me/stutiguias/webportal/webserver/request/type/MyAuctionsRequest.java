@@ -2,14 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -17,22 +16,22 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class FillMyAuctions extends Response {
+public class MyAuctionsRequest extends HttpResponse {
     
     private WebPortal plugin;
     private Html html;
     
-    public FillMyAuctions(WebPortal plugin) {
+    public MyAuctionsRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
     }
     
     public void getMyAuctions(String ip,String url,String param) {
-        int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
-        int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
+        int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
+        int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
         List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Auction);
-        int sEcho = Integer.parseInt(getParam("sEcho", param));
+        int sEcho = Integer.parseInt(GetParam("sEcho", param));
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = iTotalRecords;
         JSONObject json = new JSONObject();
@@ -53,7 +52,7 @@ public class FillMyAuctions extends Response {
                 jsonTwo.put("2", item.getItemStack().getAmount());
                 jsonTwo.put("3", "$ " + item.getPrice());
                 jsonTwo.put("4", "$ " + item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("5", format(MarketPrice(item, item.getPrice())) + "%" );
+                jsonTwo.put("5", Format(MarketPrice(item, item.getPrice())) + "%" );
                 jsonTwo.put("6", GetEnchant(item));
                 jsonTwo.put("7", GetDurability(item));
                 jsonTwo.put("8", html.HTMLCancel(ip,item.getId()));
@@ -77,6 +76,6 @@ public class FillMyAuctions extends Response {
         }
         json.put("aaData",jsonData);
         
-        print(json.toJSONString(),"text/plain");
+        Print(json.toJSONString(),"text/plain");
     }
 }

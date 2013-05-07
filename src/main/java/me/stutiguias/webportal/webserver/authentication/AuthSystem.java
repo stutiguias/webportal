@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.settings;
+package me.stutiguias.webportal.webserver.authentication;
 
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;

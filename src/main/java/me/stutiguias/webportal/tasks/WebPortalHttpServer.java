@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.webserver.WebPortalHttpHandler;
 
 /**
  *
@@ -19,7 +20,6 @@ public class WebPortalHttpServer extends Thread {
     int Port;
     public int NUM_CONN_MAX;
     public HttpServer server;
-    public static final int threadCount = 10;
     
     public WebPortalHttpServer(WebPortal plugin,int NUM_CONN_MAX)
     {

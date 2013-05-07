@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,40 +16,40 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class FillAdminShop extends Response {
+public class AdminShopRequest extends HttpResponse {
     
     WebPortal plugin;
     
-    public FillAdminShop(WebPortal instance) {
+    public AdminShopRequest(WebPortal instance) {
         super(instance);
         plugin = instance;
     }
     
     public void AddShop(String ip,String url,String param){
         if(isAdmin(ip)){
-            ItemStack Item = ConvertToItemStack(getParam("ItemId", param));
-            if(Item == null) print("Item ID not found","text/html");
-            Double Price = Double.parseDouble(getParam("Price", param));
-            Integer Quantity = Integer.parseInt(getParam("quantity", param));
+            ItemStack Item = ConvertToItemStack(GetParam("ItemId", param));
+            if(Item == null) Print("Item ID not found","text/html");
+            Double Price = Double.parseDouble(GetParam("Price", param));
+            Integer Quantity = Integer.parseInt(GetParam("quantity", param));
             
             String type = Item.getType().toString();
-            String[] itemConfig = getItemNameAndImg(Item);
+            String[] itemConfig = GetItemConfig(Item);
             String ItemName = itemConfig[0];
             String searchtype = itemConfig[2];
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, ItemName, searchtype );
-            print("ok","text/html");
+            Print("ok","text/html");
         }else{
-            print("You r not admin","text/html");
+            Print("You r not admin","text/html");
         }
     }
     
     public void list(String ip,String url,String param){
         if(isAdmin(ip)) {
             
-            int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
-            int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
-            String search = getParam("sSearch", param);
-            int sEcho = Integer.parseInt(getParam("sEcho", param));
+            int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
+            int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
+            String search = GetParam("sSearch", param);
+            int sEcho = Integer.parseInt(GetParam("sEcho", param));
 
             List<Auction> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Auction);
             
@@ -86,19 +85,19 @@ public class FillAdminShop extends Response {
             }
             Response.put("aaData",Data);
 
-            print(Response.toJSONString(),"text/plain");
+            Print(Response.toJSONString(),"text/plain");
         }else{
-            print("You r not admin","text/html");
+            Print("You r not admin","text/html");
         }
     }
     
     public void Delete(String ip,String url,String param) {
          if(isAdmin(ip)) {
-            Integer id = Integer.parseInt(getParam("ID", param));
+            Integer id = Integer.parseInt(GetParam("ID", param));
             plugin.dataQueries.DeleteAuction(id);
-            print("Deleted","text/html");
+            Print("Deleted","text/html");
          }else{
-            print("You r not admin","text/html");
+            Print("You r not admin","text/html");
          }
     }
     

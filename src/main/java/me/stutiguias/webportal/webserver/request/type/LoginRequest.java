@@ -2,33 +2,32 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuctionPlayer;
-import me.stutiguias.webportal.settings.AuthPlayer;
-import me.stutiguias.webportal.settings.AuthSystem;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.authentication.AuthSystem;
+import me.stutiguias.webportal.webserver.HttpResponse;
 
 /**
  *
  * @author Daniel
  */
-public class Login extends Response {
+public class LoginRequest extends HttpResponse {
     
     public WebPortal plugin;
     public AuthSystem AS;
     
-    public Login(WebPortal plugin){
+    public LoginRequest(WebPortal plugin){
         super(plugin);
         this.plugin = plugin;
         AS = new AuthSystem(plugin);
     }
     
     public void TryToLogin(String HostAddress,String param) {
-        String username = getParam("Username", param);
-        String pass = getParam("Password", param);
+        String username = GetParam("Username", param);
+        String pass = GetParam("Password", param);
         String json;
         if(AS.Auth(username, pass))
         {
@@ -45,6 +44,6 @@ public class Login extends Response {
         }else{
             json = "no";
         }
-        print(json,"text/plain");
+        Print(json,"text/plain");
     }
 }

@@ -2,15 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.request;
+package me.stutiguias.webportal.webserver.request.type;
 
-import java.net.Socket;
 import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
-import me.stutiguias.webportal.webserver.Response;
+import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -18,12 +17,12 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class FillMyItems extends Response {
+public class MyItemsRequest extends HttpResponse {
     
     private WebPortal plugin;
     private Html html;
     
-    public FillMyItems(WebPortal plugin) {
+    public MyItemsRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
@@ -31,9 +30,9 @@ public class FillMyItems extends Response {
     
     public void getMyItems(String ip,String url,String param) {
 
-        int iDisplayStart = Integer.parseInt(getParam("iDisplayStart", param));
-        int iDisplayLength = Integer.parseInt(getParam("iDisplayLength", param));
-        int sEcho = Integer.parseInt(getParam("sEcho", param));
+        int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
+        int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
+        int sEcho = Integer.parseInt(GetParam("sEcho", param));
         
         List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
         
@@ -80,14 +79,14 @@ public class FillMyItems extends Response {
         }
         json.put("aaData",jsonData);
         
-        print(json.toJSONString(),"text/plain");
+        Print(json.toJSONString(),"text/plain");
     }
     
     public void getMyItems(String ip) {
         List<Auction> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName());
         JSONObject json = new JSONObject();
         for(Auction item:auctions){
-            String[] itemConfig = getItemNameAndImg(item.getItemStack());
+            String[] itemConfig = GetItemConfig(item.getItemStack());
             
             JSONObject jsonNameImg = new JSONObject();
             jsonNameImg.put(itemConfig[0],itemConfig[1]);
@@ -95,7 +94,7 @@ public class FillMyItems extends Response {
             
             json.put(item.getId(),jsonNameImg);
         }
-        print(json.toJSONString(), "text/plain");
+        Print(json.toJSONString(), "text/plain");
     }
     
     public Boolean CheckError(String ip,List<Auction> auctions) {
