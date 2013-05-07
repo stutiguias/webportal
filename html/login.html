@@ -39,7 +39,12 @@
                     </a>
                     <a class="brand replace" href="#">lang1SvName</a>
                     <div class="nav-collapse collapse">
-                        <form method="GET" name="login" onsubmit="return loginform(this)" class="navbar-form pull-right">
+				        <ul class="nav">
+					        <li class="active"><a href="about.html" class="replace">About</a></li>
+                        </ul>
+                    </div>
+                    <div class="nav-collapse collapse">
+                        <form name="login" onsubmit="return loginform(this)" class="navbar-form pull-right">
                             <input name="Username" class="span2" type="text" placeholder="UserName">
                             <input name="Password" class="span2" type="password" placeholder="Password">
                             <button name="Submit" type="submit" class="btn replace">langSubmit</button>
@@ -52,7 +57,6 @@
 
         <div class="container">
 
-            <!-- Main hero unit for a primary marketing message or call to action -->
             <div>
                 <p>
                     <small>Last 10 auctions.</small>
@@ -88,7 +92,7 @@
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/translate.js"></script>
         <script src="js/urlcall.js"></script>
-        <script src="js/login.js"></script>
+        <script src="js/page/login.js"></script>
         <script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

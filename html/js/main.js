@@ -8,6 +8,9 @@ function replaceText() {
 }
 
 $(document).ready(function () {
+    var template = Handlebars.templates['menu'];
+    $(".menu").html(template);
+
     replaceText();
 
     $.ajax({

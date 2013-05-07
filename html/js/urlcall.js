@@ -11,3 +11,5 @@ var userinfo = "/server/username/info";
 
 var buyUrl = "/buy/item";
 var cancelUrl = "/cancel/auction";
+
+var admsearch = "/admsearch";

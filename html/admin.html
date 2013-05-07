@@ -1,79 +1,85 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>WebPortal</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
-    <style type="text/css" title="currentStyle">
-      @import "css/table_jui.css";
-      @import "css/dark-hive/jquery-ui-1.8.18.custom.css";
-    </style>
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <script type="text/javascript" language="javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/inputfunc.js"></script>
-    <script type="text/javascript" language="javascript" src="js/translate.js"></script>
-    <script type="text/javascript" language="javascript" src="js/info.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            
-            replaceText();
-      
-       });
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-        function replaceText() {
-            for (var prop in langIndex) {
-                var patt = new RegExp(prop, "g");
-                $('body').html($('body').html().replace(patt, langIndex[prop]));
-            }
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
         }
-    </script>
-  </head>
-  <body id="body">
-    <div id="holder">
-       <div id="head_pt1">
-            <div id="profile-box">
-                <table cellspacing="3px">
-                    <tr><td><img id="avatarimg" width="64px" src="http://minotar.net/avatar/" alt="avatar" /></td>
-                        <td><p>lang1Name : <span id="user"></span><br />
-                               lang1Money : <span id="money"></span> <br />
-                               lang1Mail : <span id="mail"></span> <br />
-                        </p>
-                        </td>
-                    </tr>
-                </table>
+    </style>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body>
+    <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="menu"></div>
+
+     <div class="hero-unit container replace">
+         <form onsubmit="return adm(this)" class=".form-inline" >
+             <div class="input-prepend input-append">
+                 <div class="add-on">Name</div>
+                 <input type="text" name="nick" value="" placeholder="Insert Name Here" />
+
+             </div>
+             <div class="input-append">
+                <select name="information">
+                        <option selected="selected" value="playerinfo">Info</option>
+                        <option value="playeritems">Items</option>
+                        <option value="playermail">Mail</option>
+                        <option value="playerauctions">Auctions</option>
+                        <option value="playertransaction">Transaction</option>
+                </select>
+                <input type="submit" name="enviar" value="Submit" class="btn" />
             </div>
-        <div id="menu">
-            <ul >
-                <li ><a class="home" href="index.html">lang1Home</a></li >
-                <li ><a class="auction" href="auction.html">lang1Auction</a ></li >
-                <li ><a class="myitems" href="myitems.html">lang1My_itens</a ></li >
-                <li ><a class="myauction" href="myauctions.html">lang1My_auction</a ></li >
-                <li ><a class="logout" href="logout">lang1Logout</a ></li >
-            </ul >
-        </div>
-        <h1 style="position:relative;float:left;color:#3697AC;font-size:30px;padding-top:30px" >lang1SvName</h1>
-     </div>
-     <div id="spacer"></div>
-     <div id="content">
-         <form action="/admsearch" method="get" onsubmit="return adm(this)" >
-             <input type="text" name="nick" value="Insert Nick/Name" />
-             <select name="information">
-                 <option selected="selected" value="playerinfo">Player Info</option>
-                 <option value="playeritems">Player Items</option>
-                 <option value="playermail">Player Items</option>
-                 <option value="playerauctions">Player Auctions</option>
-                 <option value="playertransaction">Player Transaction</option>
-             </select>
-             <input type="submit" name="enviar" value="Consultar" class="button" />
          </form>
 		 <div id="resultado" style="text-align:center;"></div>
+
+         
+        <footer>
+            <p>
+                &copy; Made by Stutiguias.
+                Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
+            </p>
+        </footer>
      </div>
-    <div id="footer">
-        <p>
-        Made by Stutiguias. Design by renanslk( or redbull52 ).<br/>
-        WebPortal for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
-        </p>
-    </div>
-    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.1/jquery.dataTables.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    
+    <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+    <script src="js/templates.js"></script>
+
+    <script src="js/inputfunc.js"></script>
+    <script src="js/translate.js"></script>
+    <script src="js/urlcall.js"></script>
+    <script src="js/page/admin.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+            var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+            (function (d, t) {
+                var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+                s.parentNode.insertBefore(g, s)
+            }(document, 'script'));
+    </script>
   </body>
 </html>

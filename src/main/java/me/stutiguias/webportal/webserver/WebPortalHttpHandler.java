@@ -58,12 +58,9 @@ public class WebPortalHttpHandler implements HttpHandler {
         if(!WebPortal.AuthPlayers.containsKey(HostAddress))
         {
             RequestWithoutLogin(HostAddress);
-        }else if(WebPortal.AuthPlayers.containsKey(HostAddress)) {
+        }else {
             RequestWithLogin(HostAddress);
-        }else{
-            Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
         }
-        
     }
 
     public void RequestWithoutLogin(String HostAddress) throws IOException {
@@ -136,6 +133,8 @@ public class WebPortalHttpHandler implements HttpHandler {
             return "image/jpg";
         if(url.contains(".css"))
             return "text/css";
+        if(url.contains(".html"))
+            return "text/html";
         return "text/plain";
     }
     
@@ -147,7 +146,8 @@ public class WebPortalHttpHandler implements HttpHandler {
            url.startsWith("/image") || 
            url.startsWith("/img") ||
            url.startsWith("/js") || 
-           url.startsWith("/scripts"))
+           url.startsWith("/scripts") ||
+           url.startsWith("/about"))
             return true;
         
         return false;
