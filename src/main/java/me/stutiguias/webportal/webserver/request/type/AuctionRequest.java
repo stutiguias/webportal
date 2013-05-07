@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.List;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
@@ -27,7 +28,7 @@ public class AuctionRequest extends HttpResponse {
         html = new Html(plugin);
     }
     
-    public void fillAuction(String ip,String url,String param)
+    public void FillAuction(String ip,String url,Map param)
     {
         if(url.contains("byall")) {
             getAuctionBy(ip, url, param,"nothing");
@@ -67,12 +68,14 @@ public class AuctionRequest extends HttpResponse {
         }
     }
     
-    public void getAuctionBy(String ip,String url,String param,String searchtype) {
-        int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
-        int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
-        String search = GetParam("sSearch", param);
+    public void getAuctionBy(String ip,String url,Map param,String searchtype) {
+        
+        int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
+        int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
+        String search = (String)param.get("sSearch");
+        int sEcho =  Integer.parseInt((String)param.get("sEcho"));
+        
         search = GetConfigKey(search, searchtype);
-        int sEcho = Integer.parseInt(GetParam("sEcho", param));
         List<Auction> auctions;
         
         if(searchtype.equals("nothing")) {
@@ -122,15 +125,16 @@ public class AuctionRequest extends HttpResponse {
         Print(Response.toJSONString(),"text/plain");
     }
     
-    public void getAuction(String param) {
-        int to = 0;
-        int from = 0;
+    public void GetAuction(Map param) {
+        int to;
+        int from;
         
         try {
-            to = Integer.parseInt(GetParam("to", param));
-            from = Integer.parseInt(GetParam("from", param));
+            to = Integer.parseInt((String)param.get("to"));
+            from = Integer.parseInt((String)param.get("from"));
         }catch(Exception ex) {
             Print("Invalid Call", "text/plain");
+            return;
         }
         
         if(from < to || from - to > 50 ) {

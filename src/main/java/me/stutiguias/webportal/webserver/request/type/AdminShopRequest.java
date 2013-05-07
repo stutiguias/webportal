@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.List;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.HttpResponse;
@@ -25,12 +26,17 @@ public class AdminShopRequest extends HttpResponse {
         plugin = instance;
     }
     
-    public void AddShop(String ip,String url,String param){
+    public void AddShop(String ip,String url,Map param){
         if(isAdmin(ip)){
-            ItemStack Item = ConvertToItemStack(GetParam("ItemId", param));
+            
+            String itemId = (String)param.get("itemId");
+            String price = (String)param.get("Price");
+            String quantity = (String)param.get("quantity");
+            
+            ItemStack Item = ConvertToItemStack(itemId);
             if(Item == null) Print("Item ID not found","text/html");
-            Double Price = Double.parseDouble(GetParam("Price", param));
-            Integer Quantity = Integer.parseInt(GetParam("quantity", param));
+            Double Price = Double.parseDouble(price);
+            Integer Quantity = Integer.parseInt(quantity);
             
             String type = Item.getType().toString();
             String[] itemConfig = GetItemConfig(Item);
@@ -43,13 +49,13 @@ public class AdminShopRequest extends HttpResponse {
         }
     }
     
-    public void list(String ip,String url,String param){
+    public void List(String ip,String url,Map param){
         if(isAdmin(ip)) {
-            
-            int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
-            int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
-            String search = GetParam("sSearch", param);
-            int sEcho = Integer.parseInt(GetParam("sEcho", param));
+
+            int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
+            int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
+            String search = (String)param.get("sSearch");
+            int sEcho =  Integer.parseInt((String)param.get("sEcho"));
 
             List<Auction> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Auction);
             
@@ -91,9 +97,9 @@ public class AdminShopRequest extends HttpResponse {
         }
     }
     
-    public void Delete(String ip,String url,String param) {
+    public void Delete(String ip,String url,Map param) {
          if(isAdmin(ip)) {
-            Integer id = Integer.parseInt(GetParam("ID", param));
+            Integer id =  Integer.parseInt((String)param.get("ID"));
             plugin.dataQueries.DeleteAuction(id);
             Print("Deleted","text/html");
          }else{

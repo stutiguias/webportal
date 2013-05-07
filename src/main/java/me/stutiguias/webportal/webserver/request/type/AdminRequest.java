@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.List;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.HttpResponse;
@@ -26,10 +27,10 @@ public class AdminRequest extends HttpResponse {
         this.plugin = plugin;
     }
     
-    public void ADM(String Hostadress,String param) {
+    public void ADM(String Hostadress,Map param) {
         if(isAdmin(Hostadress)) {
-            String name = GetParam("nick", param);
-            String info = GetParam("information", param);
+            String name = (String)param.get("nick");
+            String info = (String)param.get("information");
             if(info.equalsIgnoreCase("playerinfo")) playerinfo(Hostadress,name);
             if(info.equalsIgnoreCase("playeritems")) playeritems(name);
             if(info.equalsIgnoreCase("playermail")) playermails(name);

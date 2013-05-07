@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request;
 
 import com.sun.net.httpserver.HttpExchange;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.request.type.AdminRequest;
 import me.stutiguias.webportal.webserver.request.type.AdminShopRequest;
@@ -60,39 +61,39 @@ public class Request {
         Response.setHttpExchange(t);
     }
     
-    public void GetAuction(String param) {
-        Auction.getAuction(param);
+    public void GetAuction(Map param) {
+        Auction.GetAuction(param);
     }
     
-    public void FillAuction(String ip,String url,String param) {
-        Auction.fillAuction(ip, url, param);
+    public void FillAuction(String ip,String url,Map param) {
+        Auction.FillAuction(ip, url, param);
     }
     
     public void GetMyItems(String HostAddress) {
-        MyItems.getMyItems(HostAddress);
+        MyItems.GetMyItems(HostAddress);
     }
     
-    public void GetMyItems(String HostAddress,String url,String param){
-        MyItems.getMyItems(HostAddress, url, param);
+    public void GetMyItems(String HostAddress,String url,Map param){
+        MyItems.GetMyItems(HostAddress, url, param);
     }
     
-    public void Buy(String HostAddress,String url,String param){
+    public void Buy(String HostAddress,String url,Map param){
         Operations.Buy(HostAddress,url,param);
     }
     
-    public void CreateAuction(String HostAddress,String url,String param){
+    public void CreateAuction(String HostAddress,String url,Map param){
         Operations.CreateAuction(HostAddress, url, param);
     }
             
-    public void Mail(String HostAddress,String url,String param){
+    public void Mail(String HostAddress,String url,Map param){
         Operations.Mail(HostAddress,url,param);   
     }
     
-    public void GetMyAuctions(String HostAddress,String url,String param){
-        MyAuctions.getMyAuctions(HostAddress,url,param);
+    public void GetMyAuctions(String HostAddress,String url,Map param){
+        MyAuctions.GetMyAuctions(HostAddress,url,param);
     }
     
-    public void Cancel(String HostAddress,String url,String param){
+    public void Cancel(String HostAddress,String url,Map param){
        Operations.Cancel(HostAddress, url, param);
     }
     
@@ -104,23 +105,23 @@ public class Request {
         Box.BOX2(HostAddress);
     }
       
-    public void ADM(String HostAddress,String param){
+    public void ADM(String HostAddress,Map param){
         Admin.ADM(HostAddress, param);
     }
     
-    public void Delete(String HostAddress,String url,String param){
+    public void Delete(String HostAddress,String url,Map param){
         AdminShop.Delete(HostAddress, url, param);
     }
      
-    public void AddShop(String HostAddress,String url,String param){
+    public void AddShop(String HostAddress,String url,Map param){
         AdminShop.AddShop(HostAddress, url, param);
     }
     
-    public void List(String HostAddress,String url,String param){
-        AdminShop.list(HostAddress, url, param);
+    public void List(String HostAddress,String url,Map param){
+        AdminShop.List(HostAddress, url, param);
     }
     
-    public void TryLogin(String HostAddress,String param) {
+    public void TryLogin(String HostAddress,Map param) {
         Login.TryToLogin(HostAddress, param);
     }
     

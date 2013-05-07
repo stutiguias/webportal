@@ -8,6 +8,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
@@ -25,7 +28,7 @@ public class WebPortalHttpHandler implements HttpHandler {
 
     String htmlDir = "./plugins/WebPortal/html";
     String url;
-    String param;
+    Map params;
     
     // Response type
     Request Fill;
@@ -39,17 +42,10 @@ public class WebPortalHttpHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
         Fill.SetHttpExchange(t);
-        
         String request = t.getRequestURI().toString();
         
-        Pattern regex = Pattern.compile("([^\\?]*)([^#]*)");
-        Matcher result = regex.matcher(request);
-
-        if(result.find())
-        {
-            url = result.group(1);
-            param = result.group(2);
-        }
+        params = (Map)t.getAttribute("parameters");
+        url = t.getRequestURI().toString();
 
         if(request.contains("..") || request.contains("./"))
         {
@@ -71,69 +67,53 @@ public class WebPortalHttpHandler implements HttpHandler {
     }
 
     public void RequestWithoutLogin(String HostAddress) throws IOException {
-        if(url.startsWith("/web/login"))
-        {
-            Fill.TryLogin(HostAddress,param);
-        }else if(url.startsWith("/css") || url.startsWith("/styles")) {
-            Fill.Response().ReadFile(htmlDir+url,"text/css");
-        }else if(url.startsWith("/image") || url.startsWith("/img")) {
-            Fill.Response().ReadFile(htmlDir+url,"image/jpg");
-        }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
-            Fill.Response().ReadFile(htmlDir+url,"application/javascript");
+        if(url.startsWith("/web/login")){
+            Fill.TryLogin(HostAddress,params);
         }else if(url.startsWith("/get/auction")) {
-            Fill.GetAuction(param);
-        }else {
+            Fill.GetAuction(params);
+        }else if(isAllowed(url)) {
+            Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
+        }else{
             Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
         } 
     }
 
     public void RequestWithLogin(String HostAddress) throws IOException {
-           if(url.startsWith("/css") || url.startsWith("/styles"))
-            {
-                if(url.contains("image"))
-                {
-                    Fill.Response().ReadFile(htmlDir+url,"image/png");
-                }else{
-                    Fill.Response().ReadFile(htmlDir+url,"text/css");
-                }
-            }else if(url.startsWith("/image") || url.startsWith("/img")) {
-                Fill.Response().ReadFile(htmlDir+url,"image/png");
-            }else if(url.startsWith("/js") || url.startsWith("/scripts")) {
-                Fill.Response().ReadFile(htmlDir+url,"application/javascript");
-            }else if(url.startsWith("/server/username/info"))
-            {
+           if(isAllowed(url)) {
+                Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
+            }else if(url.startsWith("/server/username/info")) {
                 Fill.GetInfo(HostAddress);
             }else if(url.startsWith("/logout")) {
                 WebPortal.AuthPlayers.remove(HostAddress);
                 Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else if(url.startsWith("/fill/auction")) {
-                Fill.FillAuction(HostAddress,url,param);
+                Fill.FillAuction(HostAddress,url,params);
             }else if(url.startsWith("/get/myitems")) {
                 Fill.GetMyItems(HostAddress);
             }else if(url.startsWith("/buy/item")) {
-                Fill.Buy(HostAddress,url,param);
+                Fill.Buy(HostAddress,url,params);
             }else if(url.startsWith("/fill/myitens")) {
-                Fill.GetMyItems(HostAddress, url, param);
-            }else if(url.startsWith("/web/postauction") && !getLockState(HostAddress)) {
-                Fill.CreateAuction(HostAddress, url, param);
-            }else if(url.startsWith("/web/mail") && !getLockState(HostAddress)) {
-                Fill.Mail(HostAddress, url, param);
+                Fill.GetMyItems(HostAddress, url, params);
+            }else if(url.startsWith("/web/postauction") && !isLocked(HostAddress)) {
+                Fill.CreateAuction(HostAddress, url, params);
+            }else if(url.startsWith("/web/mail") && !isLocked(HostAddress)) {
+                Fill.Mail(HostAddress, url, params);
             }else if(url.startsWith("/fill/myauctions")) {
-                Fill.GetMyAuctions(HostAddress, url, param);
+                Fill.GetMyAuctions(HostAddress, url, params);
             }else if(url.startsWith("/cancel/auction")) {
-                Fill.Cancel(HostAddress, url, param);
+                Fill.Cancel(HostAddress, url, params);
             }else if(url.startsWith("/box/1")) {
                 Fill.Box1(HostAddress);
             }else if(url.startsWith("/box/2")) {
                 Fill.Box2(HostAddress);
             }else if(url.startsWith("/admsearch")) {
-                Fill.ADM(HostAddress,param);
+                Fill.ADM(HostAddress,params);
             }else if(url.startsWith("/web/delete")){     
-                Fill.Delete(HostAddress, url, param);
+                Fill.Delete(HostAddress, url, params);
             }else if(url.startsWith("/web/shop")){ 
-                Fill.AddShop(HostAddress, url, param);
+                Fill.AddShop(HostAddress, url, params);
             }else if(url.startsWith("/web/adminshoplist")){ 
-                Fill.List(HostAddress, url, param);
+                Fill.List(HostAddress, url, params);
             }else if(url.equalsIgnoreCase("/")) {
                 Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else{
@@ -141,12 +121,36 @@ public class WebPortalHttpHandler implements HttpHandler {
             }
     }
     
-    public Boolean getLockState(String HostAddress) {
+    public Boolean isLocked(String HostAddress) {
         if(WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(HostAddress).AuctionPlayer.getName()) != null) {
             return WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(HostAddress).AuctionPlayer.getName());
         }else{
             return false;
         }
+    }
+    
+    public String GetMimeType(String url) {
+        if(url.contains(".js"))
+            return "text/javascript";
+        if(url.contains(".png"))
+            return "image/jpg";
+        if(url.contains(".css"))
+            return "text/css";
+        return "text/plain";
+    }
+    
+    public Boolean isAllowed(String url) {
+        if(url.contains("./") || url.contains("..")) return false;
+        
+        if(url.startsWith("/css") || 
+           url.startsWith("/styles") || 
+           url.startsWith("/image") || 
+           url.startsWith("/img") ||
+           url.startsWith("/js") || 
+           url.startsWith("/scripts"))
+            return true;
+        
+        return false;
     }
 
 }

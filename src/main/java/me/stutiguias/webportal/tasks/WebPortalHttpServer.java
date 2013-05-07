@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.webserver.ParameterFilter;
 import me.stutiguias.webportal.webserver.WebPortalHttpHandler;
 
 /**
@@ -35,7 +36,7 @@ public class WebPortalHttpServer extends Thread {
             WebPortal.logger.log(Level.INFO,"{0} Start HTTP Server",plugin.logPrefix);
             
             server = HttpServer.create(new InetSocketAddress(Port),NUM_CONN_MAX);
-            server.createContext("/", new WebPortalHttpHandler(plugin));
+            server.createContext("/", new WebPortalHttpHandler(plugin)).getFilters().add(new ParameterFilter());
             server.start();
             
             WebPortal.logger.log(Level.INFO,"{0} Server start on port {1} ",new Object[]{ plugin.logPrefix , Port });

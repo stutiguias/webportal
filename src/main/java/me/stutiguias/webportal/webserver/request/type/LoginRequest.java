@@ -4,6 +4,7 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuctionPlayer;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
@@ -25,10 +26,9 @@ public class LoginRequest extends HttpResponse {
         AS = new AuthSystem(plugin);
     }
     
-    public void TryToLogin(String HostAddress,String param) {
-        String username = GetParam("Username", param);
-        String pass = GetParam("Password", param);
-        String json;
+    public void TryToLogin(String HostAddress,Map param) {
+        String username = (String)param.get("Username");
+        String pass = (String)param.get("Password");
         if(AS.Auth(username, pass))
         {
             AuthPlayer _AuthPlayer = new AuthPlayer();
@@ -40,10 +40,9 @@ public class LoginRequest extends HttpResponse {
             _AuthPlayer.AuctionPlayer = _AuctionPlayer;
             _AuthPlayer.AuctionPlayer.setIp(HostAddress);
             WebPortal.AuthPlayers.put(HostAddress,_AuthPlayer);
-            json = "ok";
+            Print("ok","text/plain");
         }else{
-            json = "no";
+            Print("no","text/plain");
         }
-        Print(json,"text/plain");
     }
 }

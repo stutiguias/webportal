@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
@@ -28,11 +29,12 @@ public class MyItemsRequest extends HttpResponse {
         html = new Html(plugin);
     }
     
-    public void getMyItems(String ip,String url,String param) {
+    public void GetMyItems(String ip,String url,Map param) {
 
-        int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
-        int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
-        int sEcho = Integer.parseInt(GetParam("sEcho", param));
+        int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
+        int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
+        String search = (String)param.get("sSearch");
+        int sEcho =  Integer.parseInt((String)param.get("sEcho"));
         
         List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
         
@@ -82,7 +84,7 @@ public class MyItemsRequest extends HttpResponse {
         Print(json.toJSONString(),"text/plain");
     }
     
-    public void getMyItems(String ip) {
+    public void GetMyItems(String ip) {
         List<Auction> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName());
         JSONObject json = new JSONObject();
         for(Auction item:auctions){

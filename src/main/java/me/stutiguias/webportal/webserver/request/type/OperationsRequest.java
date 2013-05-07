@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.List;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionPlayer;
@@ -26,14 +27,14 @@ public class OperationsRequest extends HttpResponse {
         this.plugin = plugin;
     }
 
-    public void CreateAuction(String ip,String url,String param) {
+    public void CreateAuction(String ip,String url,Map param) {
         int qtd;
         Double price;
         int id;
         try {
-            qtd = Integer.parseInt(GetParam("Quantity", param));
-            price = Double.parseDouble(GetParam("Price", param));
-            id = Integer.parseInt(GetParam("ID", param));
+            price = Double.parseDouble((String)param.get("Price"));
+            id = Integer.parseInt((String)param.get("ID"));
+            qtd = Integer.parseInt((String)param.get("Quantity"));
         }catch(NumberFormatException ex) {
             Print("Invalid Number","text/plain");
             return;
@@ -60,9 +61,9 @@ public class OperationsRequest extends HttpResponse {
         }
     }
     
-    public void Mail(String ip,String url,String param) {
-        int id = Integer.parseInt(GetParam("ID", param));
-        int quantity = Integer.parseInt(GetParam("Quantity", param));
+    public void Mail(String ip,String url,Map param) {
+        int id = (Integer)param.get("ID");
+        int quantity = (Integer)param.get("Quantity");
         Auction _Auction = plugin.dataQueries.getAuction(id);
         if(_Auction.getItemStack().getAmount() == quantity) {
             plugin.dataQueries.updateTable(id, plugin.Mail);
@@ -79,8 +80,8 @@ public class OperationsRequest extends HttpResponse {
         Print("Mailt send","text/plain");
     }
     
-    public void Cancel(String ip,String url,String param) {
-        int id = Integer.parseInt(GetParam("ID", param));
+    public void Cancel(String ip,String url,Map param) {
+        int id = Integer.parseInt((String)param.get("ID"));
         
         Auction auction = plugin.dataQueries.getAuction(id);
         
@@ -104,10 +105,10 @@ public class OperationsRequest extends HttpResponse {
         Print("Cancel Done.","text/plain");
     }
     
-    public void Buy(String ip,String url,String param) {
+    public void Buy(String ip,String url,Map param) {
        try { 
-           int qtd = Integer.parseInt(GetParam("Quantity", param));
-           int id = Integer.parseInt(GetParam("ID", param));
+           int qtd =  Integer.parseInt((String)param.get("Quantity"));
+           int id =  Integer.parseInt((String)param.get("ID"));
            
            AuctionPlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
            Auction au = plugin.dataQueries.getAuction(id);

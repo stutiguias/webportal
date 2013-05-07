@@ -5,6 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.List;
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
@@ -27,11 +28,15 @@ public class MyAuctionsRequest extends HttpResponse {
         html = new Html(plugin);
     }
     
-    public void getMyAuctions(String ip,String url,String param) {
-        int iDisplayStart = Integer.parseInt(GetParam("iDisplayStart", param));
-        int iDisplayLength = Integer.parseInt(GetParam("iDisplayLength", param));
+    public void GetMyAuctions(String ip,String url,Map param) {
+        
+        int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
+        int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
+        String search = (String)param.get("sSearch");
+        int sEcho =  Integer.parseInt((String)param.get("sEcho"));
+        
         List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Auction);
-        int sEcho = Integer.parseInt(GetParam("sEcho", param));
+
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = iTotalRecords;
         JSONObject json = new JSONObject();

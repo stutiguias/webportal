@@ -54,10 +54,11 @@ public class HttpResponse extends Info {
     {
         try
         {
-            DataOutputStream out = new DataOutputStream(getHttpExchange().getResponseBody());
-            out.writeBytes((new StringBuilder()).append("HTTP/1.1 ").append(error).append("\r\n").toString());
-            out.writeBytes("Server: webportal Server\r\n");
-            out.writeBytes("Connection: Close\r\n\r\n");
+            OutputStream out = getHttpExchange().getResponseBody();
+            getHttpExchange().getResponseHeaders().set("Server","WebPortal Server");
+            getHttpExchange().getResponseHeaders().set("Connection","Close");
+            getHttpExchange().sendResponseHeaders(200, error.length());
+            out.write(error.getBytes());
             out.close();
         }
         catch(Exception e)
@@ -90,7 +91,7 @@ public class HttpResponse extends Info {
                 
             } else
             {
-                Error("404 Not Found");
+                Error(archivo.getAbsolutePath() + "404 Not Found");
             }
         }
         catch(Exception e)
