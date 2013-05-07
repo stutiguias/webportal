@@ -19,16 +19,14 @@ public class Login extends Response {
     
     public WebPortal plugin;
     public AuthSystem AS;
-    public Socket _Socket;
     
-    public Login(WebPortal plugin,Socket socket){
-        super(plugin, socket);
+    public Login(WebPortal plugin){
+        super(plugin);
         this.plugin = plugin;
         AS = new AuthSystem(plugin);
-        this._Socket = socket;
     }
     
-    public void TryToLogin(String param) {
+    public void TryToLogin(String HostAddress,String param) {
         String username = getParam("Username", param);
         String pass = getParam("Password", param);
         String json;
@@ -41,8 +39,8 @@ public class Login extends Response {
                 _AuctionPlayer = plugin.dataQueries.getPlayer(username);
             }
             _AuthPlayer.AuctionPlayer = _AuctionPlayer;
-            _AuthPlayer.AuctionPlayer.setIp(_Socket.getInetAddress().getHostAddress());
-            WebPortal.AuthPlayers.put(_Socket.getInetAddress().getHostAddress(),_AuthPlayer);
+            _AuthPlayer.AuctionPlayer.setIp(HostAddress);
+            WebPortal.AuthPlayers.put(HostAddress,_AuthPlayer);
             json = "ok";
         }else{
             json = "no";

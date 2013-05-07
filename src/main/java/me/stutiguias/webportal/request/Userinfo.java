@@ -16,16 +16,15 @@ import me.stutiguias.webportal.webserver.Response;
 public class Userinfo extends Response {
     
     public WebPortal plugin;
-    public Socket _Socket;
+
     
-    public Userinfo(WebPortal plugin,Socket socket) {
-        super(plugin, socket);
+    public Userinfo(WebPortal plugin) {
+        super(plugin);
         this.plugin = plugin;
-        _Socket = socket;
     }
     
-    public void GetInfo()  {
-        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(_Socket.getInetAddress().getHostAddress());
+    public void GetInfo(String HostAddress)  {
+        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
         String Name = authPlayer.AuctionPlayer.getName();
         String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", <a href='/admin.html' >Admin Panel</a>":",";
         String response = Name + Admin + ",";

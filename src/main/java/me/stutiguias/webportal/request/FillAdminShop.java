@@ -21,8 +21,8 @@ public class FillAdminShop extends Response {
     
     WebPortal plugin;
     
-    public FillAdminShop(WebPortal instance,Socket s) {
-        super(instance,s);
+    public FillAdminShop(WebPortal instance) {
+        super(instance);
         plugin = instance;
     }
     

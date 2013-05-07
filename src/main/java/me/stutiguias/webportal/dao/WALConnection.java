@@ -3,12 +3,7 @@ package me.stutiguias.webportal.dao;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.Executor;
 
-/**
- *
- * @author Daniel
- */
 public class WALConnection implements Connection {
 
         private final Connection conn;

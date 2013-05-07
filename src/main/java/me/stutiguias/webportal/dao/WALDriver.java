@@ -4,10 +4,6 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Daniel
- */
 public class WALDriver implements Driver {
     
     private Driver driver;

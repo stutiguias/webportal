@@ -23,7 +23,7 @@ import me.stutiguias.webportal.signs.vBox;
 import me.stutiguias.webportal.signs.wSell;
 import me.stutiguias.webportal.signs.wShop;
 import me.stutiguias.webportal.tasks.SaleAlertTask;
-import me.stutiguias.webportal.tasks.WebAuctionServerListenTask;
+import me.stutiguias.webportal.tasks.WebPortalHttpServer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.ChatColor;
@@ -45,7 +45,8 @@ public class WebPortal extends JavaPlugin {
 	public Map<String, Long> lastSignUse = new HashMap<String, Long>();
         public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<String, AuthPlayer>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
-        public WebAuctionServerListenTask server;
+        //public WebAuctionServerListenTask server;
+        public WebPortalHttpServer server;
 	public int signDelay;
         
         public ConfigAccessor materials;
@@ -144,7 +145,8 @@ public class WebPortal extends JavaPlugin {
 
         public void onReload() {
             try {
-                server.server.close();
+                //server.server.close();
+                server.server.stop(0);
             }catch(Exception ex) {
                 WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
             }
@@ -159,7 +161,8 @@ public class WebPortal extends JavaPlugin {
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
                 try {
-                    server.server.close();
+                    //server.server.close();
+                    server.server.stop(0);
                 }catch(Exception ex) {
                     WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
                 }
@@ -277,7 +280,9 @@ public class WebPortal extends JavaPlugin {
                 connections = 0;
                 
                 if(getConfig().getBoolean("Misc.UseInsideServer")) {
-                    server = new WebAuctionServerListenTask(this,NUM_CONN_MAX);
+                    //server = new WebAuctionServerListenTask(this,NUM_CONN_MAX);
+                    //server.start();
+                    server = new WebPortalHttpServer(this, NUM_CONN_MAX);
                     server.start();
                 }
 

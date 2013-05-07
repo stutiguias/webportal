@@ -22,8 +22,8 @@ public class FillOperations extends Response {
     private WebPortal plugin;
     TradeSystem tr;
     
-    public FillOperations(WebPortal plugin,Socket s) {
-        super(plugin, s);
+    public FillOperations(WebPortal plugin) {
+        super(plugin);
         this.plugin = plugin;
     }
 

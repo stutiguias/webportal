@@ -22,8 +22,8 @@ public class FillMyAuctions extends Response {
     private WebPortal plugin;
     private Html html;
     
-    public FillMyAuctions(WebPortal plugin,Socket s) {
-        super(plugin, s);
+    public FillMyAuctions(WebPortal plugin) {
+        super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
     }

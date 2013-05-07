@@ -22,8 +22,8 @@ public class FillAdmin extends Response {
     List<AuctionMail> _PlayerMail;
     List<Auction> _PlayerAuction;
     
-    public FillAdmin(WebPortal plugin,Socket s) {
-        super(plugin,s);
+    public FillAdmin(WebPortal plugin) {
+        super(plugin);
         this.plugin = plugin;
     }
     

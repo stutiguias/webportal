@@ -26,7 +26,7 @@ public class TradeSystem {
     
     public TradeSystem(WebPortal plugin){
         this.plugin = plugin;
-        response = new Response(plugin, null);
+        response = new Response(plugin);
     }
     
     public String Buy(String BuyPlayerName,Auction sellerauction,int qtd,String item_name,Boolean ingame) {

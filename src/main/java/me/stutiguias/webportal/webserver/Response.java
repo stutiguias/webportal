@@ -4,8 +4,8 @@
  */
 package me.stutiguias.webportal.webserver;
 
+import com.sun.net.httpserver.HttpExchange;
 import java.io.*;
-import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,13 +26,12 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
  */
 public class Response {
     
-    WebPortal plugin;
-    Socket WebServerSocket;
+    private WebPortal plugin;
+    public HttpExchange httpExchange;
     
-    public Response(WebPortal plugin,Socket s)
+    public Response(WebPortal plugin)
     {
         this.plugin = plugin;
-        WebServerSocket = s;
     }
         
     public Boolean isAdmin(String Hostadress) {
@@ -47,20 +46,23 @@ public class Response {
     {
         try
         {
-            DataOutputStream out = new DataOutputStream(WebServerSocket.getOutputStream());
-            out.writeBytes("HTTP/1.1 200 OK\r\n");
-            out.writeBytes((new StringBuilder()).append("Content-Type: ").append(MimeType).append("; charset=utf-8\r\n").toString());
-            out.writeBytes("Cache-Control: no-cache, must-revalidate\r\n");
-            out.writeBytes((new StringBuilder()).append("Content-Length: ").append(data.length()).append("\r\n").toString());
-            out.writeBytes("Server: webportal Server\r\n");
-            out.writeBytes("Connection: Close\r\n\r\n");
+            OutputStream out = httpExchange.getResponseBody();
+                            
+            httpExchange.getResponseHeaders().set("Content-Type", MimeType);
+            httpExchange.sendResponseHeaders(200, data.length());
+                
+            //out.writeBytes("Cache-Control: no-cache, must-revalidate\r\n");
+            //out.writeBytes((new StringBuilder()).append("Content-Length: ").append(data.length()).append("\r\n").toString());
+            //out.writeBytes("Server: webportal Server\r\n");
+            //out.writeBytes("Connection: Close\r\n\r\n");
+            
             out.write(data.getBytes());
-            out.flush();
             out.close();
         }
         catch(Exception e)
         {
             WebPortal.logger.info((new StringBuilder()).append("ERROR in print(): ").append(e.getMessage()).toString());
+            e.printStackTrace();
         }
     }
 
@@ -68,7 +70,7 @@ public class Response {
     {
         try
         {
-            DataOutputStream out = new DataOutputStream(WebServerSocket.getOutputStream());
+            DataOutputStream out = new DataOutputStream(httpExchange.getResponseBody());
             out.writeBytes((new StringBuilder()).append("HTTP/1.1 ").append(error).append("\r\n").toString());
             out.writeBytes("Server: webportal Server\r\n");
             out.writeBytes("Connection: Close\r\n\r\n");
@@ -88,21 +90,18 @@ public class Response {
             File archivo = new File(path);
             if(archivo.exists())
             {
-                OutputStream out = WebServerSocket.getOutputStream();
                 FileInputStream file = new FileInputStream(archivo);
-                byte fileData[] = new byte[0x10000];
+                byte[] buffer = new byte[0x10000];
                 long length = archivo.length();
                 int leng;
-                out.write("HTTP/1.1 200 OK\r\n".getBytes());
-                out.write((new StringBuilder()).append("Content-Type: ").append(Mime).append("; charset=utf-8\r\n").toString().getBytes());
-                out.write("Cache-Control: no-cache, must-revalidate\r\n".getBytes());
-                out.write((new StringBuilder()).append("Content-Length: ").append(length).append("\r\n").toString().getBytes());
-                out.write("Server: webportal server\r\n".getBytes());
-                out.write("Connection: Close\r\n\r\n".getBytes());
-                while ((leng = file.read(fileData)) > 0) {
-                    out.write(fileData, 0, leng);
+                
+                httpExchange.getResponseHeaders().set("Content-Type", Mime);
+                httpExchange.sendResponseHeaders(200, length);
+                
+                OutputStream out = httpExchange.getResponseBody();
+                while ((leng = file.read(buffer)) >= 0) {
+                    out.write(buffer, 0, leng);
                 }
-                out.flush();
                 out.close();
                 file.close();
                 

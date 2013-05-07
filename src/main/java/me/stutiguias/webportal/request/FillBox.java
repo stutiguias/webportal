@@ -18,8 +18,8 @@ public class FillBox extends Response {
     
     private WebPortal plugin;
     
-    public FillBox(WebPortal plugin,Socket s) {
-        super(plugin, s);
+    public FillBox(WebPortal plugin) {
+        super(plugin);
         this.plugin = plugin;
     }
     

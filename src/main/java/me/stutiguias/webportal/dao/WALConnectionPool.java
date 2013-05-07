@@ -11,11 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Daniel
- */
-
 public class WALConnectionPool {
     
     private static WALConnectionPool instance;
