@@ -58,107 +58,13 @@
         <div class="container">
             <div class="hero-unit">
                 <h4 class="text-center">Api Documentation for Theme Design</h4>
+                <p class="alert">All information displayed on this default template have a simple call listed here
+                   if you want make the front-end project to your server will need this, for more details about 
+                    return dataTable json format see <a href="http://www.datatables.net/">http://www.datatables.net/</a> !</p>
+
                 <div class="text-center">
-                    <!-- Button to trigger modal -->
-                    <br />No need login<br />
-                    <a href="#modal1" role="button" class="btn btn-primary" data-toggle="modal">Auctons</a>
-                    <a href="#modal3" role="button" class="btn btn-primary" data-toggle="modal">Login Autentication</a>
-                    <br />Need to be logged<br />
-                    <a href="#modal2" role="button" class="btn btn-primary" data-toggle="modal">User Information</a>
-                    <!-- Modal -->
-                    <div id="modal3" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3 id="H2">Login Autentication</h3>
-                        </div>
-                        <div class="modal-body">
-                            <dl class="dl-horizontal">
-                                <dt>METHODS</dt>
-                                <dd>POST OR GET</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt>URL</dt>
-                                <dd>/web/login</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt>LOGIN NEED</dt>
-                                <dd>NO</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt>INPUT</dt>
-                                <dd>Username / Password</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt class="add-on">OUTPUT</dt>
-                                <dd> OK / NO</dd>
-                            </dl>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                        </div>
-                    </div>
 
-                    <!-- Modal -->
-                    <div id="modal1" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3 id="H1">GET AUCTIONS</h3>
-                        </div>
-                        <div class="modal-body">
-                            <dl class="dl-horizontal">
-                                <dt>METHODS</dt>
-                                <dd>POST OR GET</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt>URL</dt>
-                                <dd>/get/auction</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt>LOGIN NEED</dt>
-                                <dd>NO</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt>INPUT</dt>
-                                <dd>to / from</dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt class="add-on">OUTPUT</dt>
-                                <dd> JSON FORMAT AUCTION LIST</dd>
-                            </dl>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                        </div>
-                    </div>
-
-                    <!-- Modal -->
-                    <div id="modal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h3 id="myModalLabel">GET USER INFORMATION</h3>
-                        </div>
-                        <div class="modal-body">
-                                <dl class="dl-horizontal">
-                                    <dt>METHODS</dt>
-                                    <dd>POST OR GET</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>URL</dt>
-                                    <dd>/server/username/info</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>LOGIN NEED</dt>
-                                    <dd style="color: red">YES</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt class="add-on">OUTPUT</dt>
-                                    <dd>NAME ( ADMURL ),MONEY,MAIL <code></code></dd>
-                                </dl>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                        </div>
-                    </div>
+                    <div id="result"></div>
 
                 </div>
 
@@ -175,6 +81,84 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
         <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+        <script id="entry-template" type="text/x-handlebars-template">
+                {{#each api}}
+                <a href="#{{id}}" role="button" class="btn btn-primary" data-toggle="modal">{{title}}</a>
+                <!-- Modal -->
+                <div id="{{id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="H3">{{title}}</h3>
+                    </div>
+                    <div class="modal-body">
+                            <dl class="dl-horizontal">
+                                <dt>METHODS</dt>
+                                <dd>{{methods}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>URL</dt>
+                                <dd>{{url}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>NEED LOGIN</dt>
+                                <dd style="{{style}}">{{needlogin}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>NEED ADMIN</dt>
+                                <dd>{{needadmin}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>INPUT</dt>
+                                <dd>{{input}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt class="add-on">OUTPUT</dt>
+                                <dd>{{output}}</dd>
+                            </dl>
+                            {{#each o}}
+                            <dl class="dl-horizontal">
+                                <dt class="add-on">{{othersTitle}}</dt>
+                                <dd>{{others}}</dd>
+                            </dl>
+                           {{/each}}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    </div>
+                </div>
+                {{/each}}
+        </script>
+        <script>
+            var source = $("#entry-template").html();
+            var context = {
+                api: [
+                    { id: "modal1", title: "Auctions", methods: "Post or Get", url: "/get/auction", style: "", needlogin: "No", needadmin: "No", input: "to / from", output: "auctions in json format" },
+                    { id: "modal2", title: "Login Authentication", methods: "Post or Get", url: "/web/login", style: "", needlogin: "No", needadmin: "No", input: "Username / Password ( Case Sensitive )", output: "ok / no" },
+                    { id: "modal3", title: "User Information", methods: "Post or Get", url: "/server/username/info", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: "NAME , ADMURL, MONEY , MAIL" },
+                    {
+                        id: "modal4", title: "Auctions With Buy Form", methods: "Post or Get", url: "/fill/auction/{category}", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format ",
+                        o: [
+                           { othersTitle: "Category", others: "byall, byblock, byfood, bytools, bycombat, byredstone, bydecoration, bytransportation, bymicellaneous, bymaterials, bybrewing, byothers" },
+                           { othersTitle: "Buy Form", others: "implement onsubmit='return buy(this)' function" },
+                        ]
+                    },
+                    { id: "modal5", title: "My Items", methods: "Post or Get", url: "/fill/myitens/simple", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format" },
+                    { id: "modal6", title: "My Items Simple", methods: "Post or Get", url: "/get/myitems", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: " json format" },
+                    { id: "modal7", title: "Post Auctions", methods: "Post or Get", url: "/web/postauction", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity / Price ", output: " text/plain result " },
+                    { id: "modal8", title: "Send Mail", methods: "Post or Get", url: "/web/mail", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity ", output: " text/plain result " },
+                    { id: "modal9", title: "Buy Auction", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
+                    { id: "modal10", title: "Cancel Auction", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
+                    { id: "modal11", title: "Admin Search", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
+                    { id: "modal12", title: "Send Mail", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
+                    { id: "modal13", title: "Send Mail", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
+                ]
+            };
+            var template = Handlebars.compile(source);
+            var html = template(context);
+            $("#result").html(html);
+        </script>
         <script src="js/translate.js"></script>
         <script src="js/urlcall.js"></script>
         <script src="js/page/login.js"></script>
