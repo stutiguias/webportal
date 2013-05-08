@@ -56,19 +56,53 @@
         </div>
 
         <div class="container">
-            <div class="hero-unit">
-                <h4 class="text-center">Api Documentation for Theme Design</h4>
-                <p class="alert">All information displayed on this default template have a simple call listed here
+       
+                <h4 class="text-center">Api Documentation for Theme Design ( In progress )</h4>
+                <p class="alert">All information displayed on this default template have a simple call ( Post or Get ) listed here
                    if you want make the front-end project to your server will need this, for more details about 
                     return dataTable json format see <a href="http://www.datatables.net/">http://www.datatables.net/</a> !</p>
+                <div class="text-center"><a href="#auctionformat" role="button" class="btn" data-toggle="modal">Auctions in json format</a></div>
+               
+                <span id="result"></span>
 
-                <div class="text-center">
+ 
+<!-- Modal -->
+<div id="auctionformat" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Auctions in json format</h3>
+  </div>
+  <div class="modal-body">
+        <pre>
+{ 
+    '0':
+        {
+        '0':'ITEM_INFO',
+        '1':'SELLER',
+        '2':'EXPIRES',
+        '3':'QUANTITY',
+        '4':'PRICE_EACH',
+        '5':'Enchants',
+        '6':'Durability'
+        },
+    '1':
+        {
+        '0':'ITEM_INFO',
+        '1':'SELLER',
+        '2':'EXPIRES',
+        '3':'QUANTITY',
+        '4':'PRICE_EACH',
+        '5':'Enchants',
+        '6':'Durability'
+        },
+}
+        </pre>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
 
-                    <div id="result"></div>
-
-                </div>
-
-            </div>
             <hr>
 
             <footer>
@@ -84,19 +118,20 @@
 
         <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
         <script id="entry-template" type="text/x-handlebars-template">
-                {{#each api}}
-                <a href="#{{id}}" role="button" class="btn btn-primary" data-toggle="modal">{{title}}</a>
-                <!-- Modal -->
-                <div id="{{id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="H3">{{title}}</h3>
-                    </div>
-                    <div class="modal-body">
-                            <dl class="dl-horizontal">
-                                <dt>METHODS</dt>
-                                <dd>{{methods}}</dd>
-                            </dl>
+            <div class="row">
+                <div class="span3">
+                    <ul class="nav nav-list affix">
+                        {{#each api}}
+                                  <li><a href="#{{id}}">{{title}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="span6">
+                    {{#each api}}
+                    <section id="{{id}}">
+                            <div class="page-header">
+                                <h3>{{title}}</h3>
+                            </div>    
                             <dl class="dl-horizontal">
                                 <dt>URL</dt>
                                 <dd>{{url}}</dd>
@@ -117,47 +152,79 @@
                                 <dt class="add-on">OUTPUT</dt>
                                 <dd>{{output}}</dd>
                             </dl>
+                           
                             {{#each o}}
-                            <dl class="dl-horizontal">
-                                <dt class="add-on">{{othersTitle}}</dt>
-                                <dd>{{others}}</dd>
-                            </dl>
-                           {{/each}}
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                    </div>
+                                <dl class="dl-horizontal">
+                                    <dt class="add-on">{{othersTitle}}</dt>
+                                    <dd>{{others}}</dd>
+                                </dl>
+                            {{/each}}
+                    </section>
+                    {{/each}}
                 </div>
-                {{/each}}
+            </div>
         </script>
         <script>
+
             var source = $("#entry-template").html();
             var context = {
                 api: [
-                    { id: "modal1", title: "Auctions", methods: "Post or Get", url: "/get/auction", style: "", needlogin: "No", needadmin: "No", input: "to / from", output: "auctions in json format" },
-                    { id: "modal2", title: "Login Authentication", methods: "Post or Get", url: "/web/login", style: "", needlogin: "No", needadmin: "No", input: "Username / Password ( Case Sensitive )", output: "ok / no" },
-                    { id: "modal3", title: "User Information", methods: "Post or Get", url: "/server/username/info", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: "NAME , ADMURL, MONEY , MAIL" },
                     {
-                        id: "modal4", title: "Auctions With Buy Form", methods: "Post or Get", url: "/fill/auction/{category}", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format ",
+                        id: "1", title: "Auctions", url: "/get/auction", style: "", needlogin: "No", needadmin: "No", input: "to / from", output: "auctions in json format",
+                    },
+                    {
+                        id: "2", title: "Login Authentication", url: "/web/login", style: "", needlogin: "No", needadmin: "No", input: "Username / Password ( Case Sensitive )", output: "ok / no"
+                    },
+                    {
+                        id: "3", title: "User Information", url: "/server/username/info", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: "NAME , ADMURL, MONEY , MAIL"
+                    },
+                    {
+                        id: "4", title: "Auctions With Buy Form", methods: "Post or Get", url: "/fill/auction/{category}", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format ",
                         o: [
                            { othersTitle: "Category", others: "byall, byblock, byfood, bytools, bycombat, byredstone, bydecoration, bytransportation, bymicellaneous, bymaterials, bybrewing, byothers" },
                            { othersTitle: "Buy Form", others: "implement onsubmit='return buy(this)' function" },
                         ]
                     },
-                    { id: "modal5", title: "My Items", methods: "Post or Get", url: "/fill/myitens/simple", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format" },
-                    { id: "modal6", title: "My Items Simple", methods: "Post or Get", url: "/get/myitems", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: " json format" },
-                    { id: "modal7", title: "Post Auctions", methods: "Post or Get", url: "/web/postauction", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity / Price ", output: " text/plain result " },
-                    { id: "modal8", title: "Send Mail", methods: "Post or Get", url: "/web/mail", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity ", output: " text/plain result " },
-                    { id: "modal9", title: "Buy Auction", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
-                    { id: "modal10", title: "Cancel Auction", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
-                    { id: "modal11", title: "Admin Search", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
-                    { id: "modal12", title: "Send Mail", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
-                    { id: "modal13", title: "Send Mail", methods: "", url: "", style: "", needlogin: "", needadmin: "", input: "", output: "" },
+                    {
+                        id: "5", title: "My Items", url: "/fill/myitens/simple", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
+                    },
+                    {
+                        id: "6", title: "My Items Simple", methods: "Post or Get", url: "/get/myitems", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: " json format ",
+                        code: "{ 'ID': {'NAME_ITEM':'PATH_IMAGE','enchant':'ENCHANTS'} }",
+                    },
+                    {
+                        id: "7", title: "My Auctions", url: "/fill/myauctions", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
+                    },
+                    {
+                        id: "8", title: "Post Auctions", url: "/web/postauction", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity / Price ", output: " text/plain result "
+                    },
+                    {
+                        id: "9", title: "Send Mail", url: "/web/mail", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity ", output: " text/plain result "
+                    },
+                    {
+                        id: "10", title: "Buy Auction", url: "/buy/item", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID / Quantity ", output: " text/plain result "
+                    },
+                    {
+                        id: "11", title: "Cancel Auction", url: "/cancel/auction", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID ", output: " text/plain result"
+                    },
+                    {
+                        id: "12", title: "Admin Search", url: "/admsearch", style: "color:red", needlogin: "Yes", needadmin: "Yes", input: " nick / {information} ", output: " text/plain result with tables ",
+                        o: [
+                            { othersTitle: "Information", others: " playeritems, playermail, playerauctions, playertransaction " },
+                        ],
+                    },
+                    
                 ]
             };
             var template = Handlebars.compile(source);
             var html = template(context);
             $("#result").html(html);
+            var offset = 200;
+            $('.nav-list li a').click(function (event) {
+                event.preventDefault();
+                $($(this).attr('href'))[0].scrollIntoView();
+                scrollBy(0, -offset);
+            });
         </script>
         <script src="js/translate.js"></script>
         <script src="js/urlcall.js"></script>
