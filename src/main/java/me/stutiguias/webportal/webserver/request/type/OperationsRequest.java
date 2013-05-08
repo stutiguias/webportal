@@ -62,8 +62,8 @@ public class OperationsRequest extends HttpResponse {
     }
     
     public void Mail(String ip,String url,Map param) {
-        int id = (Integer)param.get("ID");
-        int quantity = (Integer)param.get("Quantity");
+        int id = Integer.parseInt((String)param.get("ID"));
+        int quantity = Integer.parseInt((String)param.get("Quantity"));
         Auction _Auction = plugin.dataQueries.getAuction(id);
         if(_Auction.getItemStack().getAmount() == quantity) {
             plugin.dataQueries.updateTable(id, plugin.Mail);
