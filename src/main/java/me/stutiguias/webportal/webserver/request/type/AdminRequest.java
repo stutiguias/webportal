@@ -9,6 +9,8 @@ import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -17,9 +19,9 @@ import me.stutiguias.webportal.webserver.HttpResponse;
 public class AdminRequest extends HttpResponse {
     
     WebPortal plugin;
-    AuctionPlayer _AuPlayer;
-    List<Auction> _PlayerItems;
-    List<AuctionMail> _PlayerMail;
+    AuctionPlayer _authPlayer;
+    List<Auction> _playerItems;
+    List<AuctionMail> _playerMail;
     List<Auction> _PlayerAuction;
     
     public AdminRequest(WebPortal plugin) {
@@ -42,31 +44,27 @@ public class AdminRequest extends HttpResponse {
     }
     
     private void playerinfo(String Hostadress,String name) {
-        _AuPlayer = plugin.dataQueries.getPlayer(name);
-        StringBuilder response = new StringBuilder();
-        if(_AuPlayer == null) {
+        _authPlayer = plugin.dataQueries.getPlayer(name);
+        if(_authPlayer == null) {
             Print("Player Not Found","text/html");
         }else{
-            response.append("<div id='playerinfo'>");
-                response.append("<div style=\"text-align:center;\" >Player Info</div><br/>");
-                response.append("<table ALIGN='center'><tr>");
-                response.append("<td>ID</td><td>").append(_AuPlayer.getId()).append("</td></tr><tr>");
-                response.append("<td>IP</td><td>").append(_AuPlayer.getIp()).append("</td></tr><tr>");
-                response.append("<td>Name</td><td>").append(_AuPlayer.getName()).append("</td></tr><tr>");
-                response.append("<td>CanBuy?</td><td>").append(_AuPlayer.getCanBuy()).append("</td></tr><tr>");
-                response.append("<td>CanSell?</td><td>").append(_AuPlayer.getCanSell()).append("</td></tr><tr>");
-                response.append("<td>isAdmin?</td><td>").append(_AuPlayer.getIsAdmin()).append("</td></tr><tr>");
-                response.append("<td>Banned?</td><td>").append("SOON").append("</td></tr><tr>");
-                response.append("<td>BAN</td><td>").append(HTMLBan(Hostadress,_AuPlayer.getId())).append("</td></tr>");
-                response.append("</table>");
-            response.append("</div>"); 
-            Print(response.toString(),"text/html");
+            JSONArray jsonarray = new JSONArray();
+            JSONObject json = new JSONObject();
+            json.put("IP",_authPlayer.getIp());
+            json.put("Name",_authPlayer.getName());
+            json.put("Can Buy ?",_authPlayer.getCanBuy());
+            json.put("Can Sell ?",_authPlayer.getCanSell());
+            json.put("is Admin ?",_authPlayer.getIsAdmin());
+            json.put("Banned ?","");
+            json.put("WebSite Ban", HTMLBan(Hostadress,_authPlayer.getId()) );
+            jsonarray.add(json);
+            Print(jsonarray.toJSONString(),"application/json");
         }
     }
     
     private String HTMLBan(String ip,int id) {
       if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getIsAdmin() == 1) {
-        return "<form action='ban/player' method='GET' onsubmit='return ban(this)'>"+
+        return "<form action='ban/player' onsubmit='return ban(this)'>"+
                 "<input type='hidden' name='ID' value='"+id+"' />"+
                 "<input type='submit' value='Ban' class='button' /></form><span id='"+id+"'></span>";
       }else{
@@ -76,101 +74,76 @@ public class AdminRequest extends HttpResponse {
     
     private void playertransaction(String name) {
         List<Transact> Transacts = plugin.dataQueries.GetTransactOfPlayer(name);
-        StringBuilder response = new StringBuilder();
-        response.append("<div id='playertransaction'>");
-            response.append("<table ALIGN='center'>");
-            response.append("<tr>");
-                response.append("<td>Buyer</td>");
-                response.append("<td>Item Name</td>");
-                response.append("<td>Price</td>");
-                response.append("<td>Quantity</td>");
-                response.append("<td>Seller</td>");
-            response.append("</tr>");
-            for (int i = 0; i < Transacts.size(); i++) {
-                Transact _Transact = Transacts.get(i);
-                String itemname = GetItemConfig(_Transact.getItemStack())[0];
-                response.append("<tr>");
-                    response.append("<td>").append(_Transact.getBuyer()).append("</td>");
-                    response.append("<td>").append(itemname).append("</td>");
-                    response.append("<td>").append(_Transact.getPrice()).append("</td>");
-                    response.append("<td>").append(_Transact.getQuantity()).append("</td>");
-                    response.append("<td>").append(_Transact.getSeller()).append("</td>");
-                response.append("</tr>");
-            }
-            response.append("</table>");
-        response.append("</div>"); 
-        Print(response.toString(),"text/html");
+        JSONArray jsonarray = new JSONArray();
+        JSONObject jsonObjectArray;
+        for (int i = 0; i < Transacts.size(); i++) {
+
+            Transact transact = Transacts.get(i);
+            String itemname = GetItemConfig(transact.getItemStack())[0];
+   
+            jsonObjectArray = new JSONObject();
+            jsonObjectArray.put("Buyer",transact.getBuyer());
+            jsonObjectArray.put("Item Name",itemname);
+            jsonObjectArray.put("Price",transact.getPrice());
+            jsonObjectArray.put("Quantity",transact.getQuantity());
+            jsonObjectArray.put("Seller", transact.getSeller());
+            jsonarray.add(jsonObjectArray);
+            
+        }
+        Print(jsonarray.toJSONString(),"application/json");
     }
     
     private void playeritems(String name) {
-        _PlayerItems = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
-        StringBuilder response = new StringBuilder();
-        response.append("<div id='playeritems'>");
-            response.append("<table ALIGN='center'>");
-            response.append("<tr>");
-                response.append("<td>Nick</td>");
-                response.append("<td>Item Name</td>");
-                response.append("<td>Quantity</td>");
-            response.append("</tr>");
-            for (int i = 0; i < _PlayerItems.size(); i++) {
-                Auction _Auction = _PlayerItems.get(i);
-                String itemname = GetItemConfig(_Auction.getItemStack())[0];
-                response.append("<tr>");
-                    response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
-                    response.append("<td>").append(itemname).append("</td>");
-                    response.append("<td>").append(_Auction.getItemStack().getAmount()).append("</td>");
-                response.append("</tr>");
-            }
-            response.append("</table>");
-        response.append("</div>"); 
-        Print(response.toString(),"text/html");
+        _playerItems = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
+
+        JSONArray jsonarray = new JSONArray();
+        JSONObject jsonObjectArray;
+        for (int i = 0; i < _playerItems.size(); i++) {
+            Auction _Auction = _playerItems.get(i);
+            String itemname = GetItemConfig(_Auction.getItemStack())[0];
+            jsonObjectArray = new JSONObject();
+            jsonObjectArray.put("Nick",_Auction.getPlayerName());
+            jsonObjectArray.put("Item Name",itemname);
+            jsonObjectArray.put("Quantity",_Auction.getItemStack().getAmount());
+            jsonarray.add(jsonObjectArray);
+        }
+        Print(jsonarray.toJSONString(),"application/json");
     }
     
     private void playermails(String name) {
-        _PlayerMail = plugin.dataQueries.getMail(name);
-        StringBuilder response = new StringBuilder();
-        response.append("<div id='playeritems'>");
-            response.append("<table ALIGN='center'>");
-            response.append("<tr>");
-                response.append("<td>Nick</td>");
-                response.append("<td>Item Name</td>");
-                response.append("<td>Quantity</td>");
-            response.append("</tr>");
-            for (int i = 0; i < _PlayerMail.size(); i++) {
-                AuctionMail _AuctionMail = _PlayerMail.get(i);
-                String itemname = GetItemConfig(_AuctionMail.getItemStack())[0];
-                response.append("<tr>");
-                    response.append("<td>").append(_AuctionMail.getPlayerName()).append("</td>");
-                    response.append("<td>").append(itemname).append("</td>");
-                    response.append("<td>").append(_AuctionMail.getItemStack().getAmount()).append("</td>");
-                response.append("</tr>");
-            }
-            response.append("</table>");
-        response.append("</div>"); 
-        Print(response.toString(),"text/html");
+        _playerMail = plugin.dataQueries.getMail(name);
+        
+        JSONArray jsonarray = new JSONArray();
+        JSONObject jsonObjectArray;
+  
+        for (int i = 0; i < _playerMail.size(); i++) {
+            AuctionMail auctionMail = _playerMail.get(i);
+            String itemname = GetItemConfig(auctionMail.getItemStack())[0];
+            jsonObjectArray = new JSONObject();
+            jsonObjectArray.put("Nick",auctionMail.getPlayerName());
+            jsonObjectArray.put("Item Name",itemname );
+            jsonObjectArray.put("Quantity", auctionMail.getItemStack().getAmount());
+            jsonarray.add(jsonObjectArray);
+        }
+
+        Print(jsonarray.toJSONString(),"application/json");
     }
         
     private void playerauction(String name) {
         _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Auction);
-        StringBuilder response = new StringBuilder();
-        response.append("<div id='playeritems'>");
-            response.append("<table ALIGN='center'>");
-            response.append("<tr>");
-                response.append("<td>Nick</td>");
-                response.append("<td>Item Name</td>");
-                response.append("<td>Quantity</td>");
-            response.append("</tr>");
-            for (int i = 0; i < _PlayerAuction.size(); i++) {
-                Auction _Auction = _PlayerAuction.get(i);
-                String itemname = GetItemConfig(_Auction.getItemStack())[0];
-                response.append("<tr>");
-                    response.append("<td>").append(_Auction.getPlayerName()).append("</td>");
-                    response.append("<td>").append(itemname).append("</td>");
-                    response.append("<td>").append(_Auction.getItemStack().getAmount()).append("</td>");
-                response.append("</tr>");
-            }
-            response.append("</table>");
-        response.append("</div>"); 
-        Print(response.toString(),"text/html");
+        JSONArray jsonarray = new JSONArray();
+        JSONObject jsonObjectArray;
+
+        for (int i = 0; i < _PlayerAuction.size(); i++) {
+            Auction auction = _PlayerAuction.get(i);
+            String itemname = GetItemConfig(auction.getItemStack())[0];
+            jsonObjectArray = new JSONObject();
+            jsonObjectArray.put("Nick",auction.getPlayerName() );
+            jsonObjectArray.put("Item Name", itemname );
+            jsonObjectArray.put("Quantity", auction.getItemStack().getAmount());
+            jsonarray.add(jsonObjectArray);
+        }
+        
+        Print(jsonarray.toJSONString(),"application/json");
     }
 }

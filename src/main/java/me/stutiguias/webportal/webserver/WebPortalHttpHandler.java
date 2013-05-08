@@ -112,7 +112,7 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else if(url.startsWith("/web/adminshoplist")){ 
                 Fill.List(HostAddress, url, params);
             }else if(url.equalsIgnoreCase("/")) {
-                Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
+                Fill.Response().ReadFile(htmlDir + "/index.html","text/html");
             }else{
                 Fill.Response().ReadFile(htmlDir + url,"text/html");
             }
