@@ -18,6 +18,16 @@ public class Html {
         this.plugin = plugin;
     }
     
+    public String HTMLBan(String ip,int id) {
+      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getIsAdmin() == 1) {
+        return "<form action='ban/player' onsubmit='return ban(this)'>"+
+                "<input type='hidden' name='ID' value='"+id+"' />"+
+                "<input type='submit' value='Ban' class='button' /></form><span id='"+id+"'></span>";
+      }else{
+        return "Can't Ban";
+      }
+    }
+        
     public String HTMLBuy(String ip,int ID){
       if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getCanBuy() == 1) {
         return "<form class='js-buyItems' onsubmit='return buy(this)'>"+

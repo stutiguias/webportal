@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
+import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -56,20 +57,10 @@ public class AdminRequest extends HttpResponse {
             json.put("Can Sell ?",_authPlayer.getCanSell());
             json.put("is Admin ?",_authPlayer.getIsAdmin());
             json.put("Banned ?","");
-            json.put("WebSite Ban", HTMLBan(Hostadress,_authPlayer.getId()) );
+            json.put("WebSite Ban", new Html(plugin).HTMLBan(Hostadress,_authPlayer.getId()) );
             jsonarray.add(json);
             Print(jsonarray.toJSONString(),"application/json");
         }
-    }
-    
-    private String HTMLBan(String ip,int id) {
-      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getIsAdmin() == 1) {
-        return "<form action='ban/player' onsubmit='return ban(this)'>"+
-                "<input type='hidden' name='ID' value='"+id+"' />"+
-                "<input type='submit' value='Ban' class='button' /></form><span id='"+id+"'></span>";
-      }else{
-        return "Can't Ban";
-      }
     }
     
     private void playertransaction(String name) {
