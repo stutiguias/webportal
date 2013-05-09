@@ -116,7 +116,12 @@ public class WebAuctionPlayerListener implements Listener {
                 if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
                 {
                     plugin.mailbox.MailBoxOperationType(event.getPlayer(), lines[2]);
-                }else if(lines[1].equalsIgnoreCase("vbox") && event.getPlayer().hasPermission("wa.vbox")) {
+                }else if(lines[1].equalsIgnoreCase("vbox")) {
+                    if(!event.getPlayer().hasPermission("wa.vbox"))
+                    {
+                        event.getPlayer().sendMessage(plugin.logPrefix + "You don't have permission to use vbox");
+                        return;
+                    }
                     plugin.vbox.Open(event);
                 }
                 
