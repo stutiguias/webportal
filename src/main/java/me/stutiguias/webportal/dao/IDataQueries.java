@@ -49,6 +49,7 @@ public interface IDataQueries {
         boolean hasMail(String player);
         void deleteMail(int id);
         List<AuctionMail> getMail(String player);
+        List<AuctionMail> getMail(String player,int to,int from);
         
 	// Admin
         void LogSellPrice(Integer name,Short damage,Integer time,String buyer,String seller,Integer quantity,Double price,String ench);

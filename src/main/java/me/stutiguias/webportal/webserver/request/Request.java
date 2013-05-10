@@ -17,6 +17,7 @@ import me.stutiguias.webportal.webserver.request.type.MyItemsRequest;
 import me.stutiguias.webportal.webserver.request.type.OperationsRequest;
 import me.stutiguias.webportal.webserver.request.type.UserRequest;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import me.stutiguias.webportal.webserver.request.type.MailRequest;
 
 /**
  *
@@ -34,6 +35,7 @@ public class Request {
     LoginRequest Login;
     UserRequest UserInfo;
     HttpResponse Response;
+    MailRequest Mail;
     
     public Request(WebPortal plugin) {
         Auction = new AuctionRequest(plugin);
@@ -46,6 +48,7 @@ public class Request {
         Login = new LoginRequest(plugin);
         UserInfo = new UserRequest(plugin);
         Response = new HttpResponse(plugin);
+        Mail = new MailRequest(plugin);
     }
     
     public void SetHttpExchange(HttpExchange t) {
@@ -59,6 +62,7 @@ public class Request {
         Login.setHttpExchange(t);
         UserInfo.setHttpExchange(t);
         Response.setHttpExchange(t);
+        Mail.setHttpExchange(t);
     }
     
     public void GetAuction(Map param) {
@@ -127,6 +131,10 @@ public class Request {
     
     public void GetInfo(String HostAddress) {
         UserInfo.GetInfo(HostAddress);
+    }
+    
+    public void GetMails(String HostAddress,Map param) {
+        Mail.GetMails(HostAddress,param);
     }
     
     public HttpResponse Response() {

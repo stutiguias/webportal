@@ -8,11 +8,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.request.Request;
 
@@ -87,6 +83,8 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.FillAuction(HostAddress,url,params);
             }else if(url.startsWith("/get/myitems")) {
                 Fill.GetMyItems(HostAddress);
+            }else if(url.startsWith("/mail/get")) {
+                Fill.GetMails(HostAddress,params);
             }else if(url.startsWith("/buy/item")) {
                 Fill.Buy(HostAddress,url,params);
             }else if(url.startsWith("/fill/myitens")) {

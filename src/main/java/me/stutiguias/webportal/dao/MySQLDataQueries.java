@@ -24,7 +24,7 @@ public class MySQLDataQueries implements IDataQueries {
 	public MySQLDataQueries(WebPortal plugin, String dbHost, String dbPort, String dbUser, String dbPass, String dbName) {
 		this.plugin = plugin;
                 try {
-                        WebPortal.logger.log(Level.WARNING, "{0} Starting pool....", plugin.logPrefix);
+                        WebPortal.logger.log(Level.INFO, "{0} Starting pool....", plugin.logPrefix);
                         pool = new WALConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://"+ dbHost +":"+ dbPort +"/"+ dbName, dbUser, dbPass);
                 }catch(Exception e) {
                         WebPortal.logger.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
@@ -1119,6 +1119,44 @@ public class MySQLDataQueries implements IDataQueries {
                 closeResources(conn, st, rs);
         }
         return true;
+    }
+
+    @Override
+    public List<AuctionMail> getMail(String player, int to, int from) {
+        List<AuctionMail> auctionMails = new ArrayList<AuctionMail>();
+
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS id,name,quantity,damage,player,ench FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
+                st.setString(1, player);
+                st.setInt(2, plugin.Mail);
+                st.setInt(3, to);
+                st.setInt(4, from);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                        AuctionMail auctionMail = new AuctionMail();
+                        auctionMail.setId(rs.getInt("id"));
+                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        stack = Chant(rs.getString("ench"),stack);
+                        auctionMail.setItemStack(stack);
+                        auctionMail.setPlayerName(rs.getString("player"));
+                        auctionMails.add(auctionMail);
+                }
+                st = conn.prepareStatement("SELECT FOUND_ROWS()");
+                rs = st.executeQuery();
+                while (rs.next()) {
+                      found = rs.getInt(1);
+                }
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return auctionMails;
     }
         
 

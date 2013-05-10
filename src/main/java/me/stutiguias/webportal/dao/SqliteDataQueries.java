@@ -27,6 +27,7 @@ public class SqliteDataQueries implements IDataQueries {
     private WebPortal plugin;
     private Integer found;
     private WALConnection connection;
+    private MySQLDataQueries MySQL;
     
     public SqliteDataQueries(WebPortal plugin) {
             this.plugin = plugin;
@@ -47,43 +48,43 @@ public class SqliteDataQueries implements IDataQueries {
     }
     
     private void closeResources(WALConnection conn, Statement st, ResultSet rs) {
-                    if (null != rs) {
-                            try {
-                                    rs.close();
-                            } catch (SQLException e) {
-                            }
-                    }
-                    if (null != st) {
-                            try {
-                                    st.close();
-                            } catch (SQLException e) {
-                            }
-                    }
-                    if (null != conn) {
-                                conn.close();
-                    }
+        if (null != rs) {
+                try {
+                        rs.close();
+                } catch (SQLException e) {
+                }
+        }
+        if (null != st) {
+                try {
+                        st.close();
+                } catch (SQLException e) {
+                }
+        }
+        if (null != conn) {
+                    conn.close();
+        }
     }
 	
     private boolean tableExists(String tableName) {
-		boolean exists = false;
-		WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
+        boolean exists = false;
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
-		try {
-			st = conn.prepareStatement("SELECT name FROM sqlite_master WHERE type = 'table' and name LIKE ?");
-			st.setString(1, tableName);
-			rs = st.executeQuery();
-			while (rs.next()) {
-				exists = true;
-			}
-		} catch (SQLException e) {
-			WebPortal.logger.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
-			WebPortal.logger.warning(e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-		return exists;
+        try {
+                st = conn.prepareStatement("SELECT name FROM sqlite_master WHERE type = 'table' and name LIKE ?");
+                st.setString(1, tableName);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                        exists = true;
+                }
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to check if table exists: {1}", new Object[]{plugin.logPrefix, tableName});
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return exists;
     }
     
     public int tableVersion() {
@@ -540,7 +541,7 @@ public class SqliteDataQueries implements IDataQueries {
                             found = rs.getInt(1);
                     }
             } catch (SQLException e) {
-                    WebPortal.logger.warning(plugin.logPrefix + "Unable to get auction ");
+                    WebPortal.logger.log(Level.WARNING, "{0}Unable to get auction ", plugin.logPrefix);
                     WebPortal.logger.warning(e.getMessage());
             } finally {
                     closeResources(conn, st, rs);
@@ -1071,7 +1072,7 @@ public class SqliteDataQueries implements IDataQueries {
                         Lock = rs.getString("lock");
                 }
         } catch (SQLException e) {
-                WebPortal.logger.warning(plugin.logPrefix + "Unable to maket price ");
+                WebPortal.logger.log(Level.WARNING, "{0}Unable to maket price ", plugin.logPrefix);
                 WebPortal.logger.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
@@ -1097,6 +1098,39 @@ public class SqliteDataQueries implements IDataQueries {
                 closeResources(conn, st, rs);
         }
         return true;
+    }
+
+    @Override
+    public List<AuctionMail> getMail(String player, int to, int from) {
+        List<AuctionMail> auctionMails = new ArrayList<AuctionMail>();
+
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("SELECT id,name,quantity,damage,player,ench FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
+                st.setString(1, player);
+                st.setInt(2, plugin.Mail);
+                st.setInt(3, to);
+                st.setInt(4, from);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                        AuctionMail auctionMail = new AuctionMail();
+                        auctionMail.setId(rs.getInt("id"));
+                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        stack = Chant(rs.getString("ench"),stack);
+                        auctionMail.setItemStack(stack);
+                        auctionMail.setPlayerName(rs.getString("player"));
+                        auctionMails.add(auctionMail);
+                }
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return auctionMails;
     }
     
 }
