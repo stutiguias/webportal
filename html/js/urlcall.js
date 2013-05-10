@@ -4,12 +4,16 @@ var getAuction = "/get/auction?to=0&from=10";
 var urlbox1 = "/box/1";
 var urlbox2 = "/box/2";
 
-var postAuctions = "/web/postauction";
-var postMail = "/web/mail";
+// MyItems Call
+var postAuctions = "/myitems/postauction";
+var postMail = "/mail/send";
 
 var userinfo = "/server/username/info";
 
-var buyUrl = "/buy/item";
-var cancelUrl = "/cancel/auction";
+// Auction
+var buyUrl = "/auction/buy";
+
+// MyAuction
+var cancelUrl = "/myauctions/cancel";
 
 var admsearch = "/admsearch";

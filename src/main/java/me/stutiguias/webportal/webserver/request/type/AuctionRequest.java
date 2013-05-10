@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.TradeSystem;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
@@ -21,54 +23,58 @@ public class AuctionRequest extends HttpResponse {
     
     private WebPortal plugin;
     private Html html;
+    TradeSystem tr;
     
     public AuctionRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
+        tr = new TradeSystem(plugin);
     }
-    
-    public void FillAuction(String ip,String url,Map param)
+        
+
+        
+    public void RequestAuctionBy(String ip,String url,Map param)
     {
         if(url.contains("byall")) {
-            getAuctionBy(ip, url, param,"nothing");
+            GetAuctionBy(ip, url, param,"nothing");
         }
         if(url.contains("byblock")) {
-            getAuctionBy(ip, url, param,"Block");
+            GetAuctionBy(ip, url, param,"Block");
         }
         if(url.contains("byfood")) {
-            getAuctionBy(ip, url, param,"Food");
+            GetAuctionBy(ip, url, param,"Food");
         }
         if(url.contains("bytools")) {
-            getAuctionBy(ip, url, param,"Tools");
+            GetAuctionBy(ip, url, param,"Tools");
         }
         if(url.contains("bycombat")) {
-            getAuctionBy(ip, url, param,"Combat");
+            GetAuctionBy(ip, url, param,"Combat");
         }
         if(url.contains("byredstone")) {
-            getAuctionBy(ip, url, param,"Redstone");
+            GetAuctionBy(ip, url, param,"Redstone");
         }
         if(url.contains("bydecoration")) {
-            getAuctionBy(ip, url, param,"Decoration");
+            GetAuctionBy(ip, url, param,"Decoration");
         }
         if(url.contains("bytransportation")) {
-            getAuctionBy(ip, url, param,"Transportation");
+            GetAuctionBy(ip, url, param,"Transportation");
         }
         if(url.contains("bymicellaneous")) {
-            getAuctionBy(ip, url, param,"Micellaneous");
+            GetAuctionBy(ip, url, param,"Micellaneous");
         }
         if(url.contains("bymaterials")) {
-            getAuctionBy(ip, url, param,"Materials");
+            GetAuctionBy(ip, url, param,"Materials");
         }
         if(url.contains("bybrewing")) {
-            getAuctionBy(ip, url, param,"Brewing");
+            GetAuctionBy(ip, url, param,"Brewing");
         }
         if(url.contains("byothers")) {
-            getAuctionBy(ip, url, param,"Others");
+            GetAuctionBy(ip, url, param,"Others");
         }
     }
     
-    public void getAuctionBy(String ip,String url,Map param,String searchtype) {
+    public void GetAuctionBy(String ip,String url,Map param,String searchtype) {
         
         int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
         int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
@@ -77,6 +83,8 @@ public class AuctionRequest extends HttpResponse {
         
         search = GetConfigKey(search, searchtype);
         List<Auction> auctions;
+ 
+        if(search == null) search = "%";
         
         if(searchtype.equals("nothing")) {
             auctions = plugin.dataQueries.getAuctions(iDisplayStart,iDisplayLength);
@@ -211,5 +219,34 @@ public class AuctionRequest extends HttpResponse {
         ServerAuction.put("6", "0%");
         ServerAuction.put("7", html.HTMLBuy(ip,item.getId()));
         return ServerAuction;
+    }
+    
+    public void Buy(String ip,String url,Map param) {
+       try { 
+           int qtd =  Integer.parseInt((String)param.get("Quantity"));
+           int id =  Integer.parseInt((String)param.get("ID"));
+           
+           AuctionPlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
+           Auction au = plugin.dataQueries.getAuction(id);
+           String item_name = GetItemConfig(au.getItemStack())[0];
+           if(qtd <= 0)
+           {
+              Print("Quantity greater then 0","text/plain");
+           } else if(qtd > au.getItemStack().getAmount())
+           {
+              Print("You are attempting to purchase more than the maximum available","text/plain");
+           } else if(!plugin.economy.has(ap.getName(),au.getPrice() * qtd))
+           {
+              Print("You do not have enough money.","text/plain");
+           } else if(ap.getName().equals(au.getPlayerName())) {
+              Print("You cannnot buy your own items.","text/plain");
+           } else {
+               tr = new TradeSystem(plugin);
+               Print(tr.Buy(ap.getName(),au, qtd, item_name, false),"text/plain");
+           }
+       }catch(Exception ex){
+           WebPortal.logger.warning(ex.getMessage());
+       }
+        
     }
 }

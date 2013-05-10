@@ -7,6 +7,7 @@ package me.stutiguias.webportal.webserver.request.type;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
@@ -50,4 +51,24 @@ public class MailRequest extends HttpResponse {
         Print(jsonresult.toJSONString(),"application/json");
     }
     
+    
+    public void SendMail(String ip,String url,Map param) {
+        int id = Integer.parseInt((String)param.get("ID"));
+        int quantity = Integer.parseInt((String)param.get("Quantity"));
+        Auction _Auction = plugin.dataQueries.getAuction(id);
+        if(_Auction.getItemStack().getAmount() == quantity) {
+            plugin.dataQueries.updateTable(id, plugin.Mail);
+        }else if(_Auction.getItemStack().getAmount() < quantity) {
+            Print("Not enought items","text/plain");
+            return;
+        }else if(_Auction.getItemStack().getAmount() > quantity) {
+            plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
+            String[] ItemConfig = GetItemConfig(_Auction.getItemStack());
+            String itemName = ItemConfig[0];
+            String SearchType = ItemConfig[2];
+            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType(), itemName , SearchType );
+        }
+        Print("Mailt send","text/plain");
+    }
+        
 }

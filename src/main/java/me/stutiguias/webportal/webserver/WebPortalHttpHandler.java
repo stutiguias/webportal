@@ -79,28 +79,16 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else if(url.startsWith("/logout")) {
                 WebPortal.AuthPlayers.remove(HostAddress);
                 Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
-            }else if(url.startsWith("/fill/auction")) {
-                Fill.FillAuction(HostAddress,url,params);
-            }else if(url.startsWith("/get/myitems")) {
-                Fill.GetMyItems(HostAddress);
-            }else if(url.startsWith("/mail/get")) {
-                Fill.GetMails(HostAddress,params);
-            }else if(url.startsWith("/buy/item")) {
-                Fill.Buy(HostAddress,url,params);
-            }else if(url.startsWith("/fill/myitens")) {
-                Fill.GetMyItems(HostAddress, url, params);
-            }else if(url.startsWith("/web/postauction") && !isLocked(HostAddress)) {
-                Fill.CreateAuction(HostAddress, url, params);
-            }else if(url.startsWith("/web/mail") && !isLocked(HostAddress)) {
-                Fill.Mail(HostAddress, url, params);
-            }else if(url.startsWith("/fill/myauctions")) {
-                Fill.GetMyAuctions(HostAddress, url, params);
-            }else if(url.startsWith("/cancel/auction")) {
-                Fill.Cancel(HostAddress, url, params);
-            }else if(url.startsWith("/box/1")) {
-                Fill.Box1(HostAddress);
-            }else if(url.startsWith("/box/2")) {
-                Fill.Box2(HostAddress);
+            }else if(url.startsWith("/myitems")) {
+                MyItemsHandler(HostAddress);
+            }else if(url.startsWith("/mail")) {
+                MailHandler(HostAddress);
+            }else if(url.startsWith("/myauctions")) {
+                MyAuctionHandler(HostAddress);
+            }else if(url.startsWith("/box")) {
+                BoxHandler(HostAddress);
+            }else if(url.startsWith("/auction")) {
+                AuctionHandler(HostAddress);
             }else if(url.startsWith("/admsearch")) {
                 Fill.ADM(HostAddress,params);
             }else if(url.startsWith("/web/delete")){     
@@ -111,9 +99,49 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.List(HostAddress, url, params);
             }else if(url.equalsIgnoreCase("/")) {
                 Fill.Response().ReadFile(htmlDir + "/index.html","text/html");
-            }else{
-                Fill.Response().ReadFile(htmlDir + url,"text/html");
             }
+    }
+    
+    public void MailHandler(String HostAddress) {
+        if(url.startsWith("/mail/get")) {
+                Fill.GetMails(HostAddress,params);
+        }else if(url.startsWith("/mail/send") && !isLocked(HostAddress)) {
+                Fill.SendMail(HostAddress, url, params);
+        }
+    }
+    
+    public void BoxHandler(String HostAddress) {
+        if(url.startsWith("/box/1")) {
+                Fill.Box1(HostAddress);
+        }else if(url.startsWith("/box/2")) {
+                Fill.Box2(HostAddress);
+        }
+    }
+    
+    public void MyItemsHandler(String HostAddress) {
+        if(url.startsWith("/myitems/get")) {
+                Fill.GetMyItems(HostAddress);
+        }else if(url.startsWith("/myitems/dataTable")) {
+                Fill.GetMyItems(HostAddress, url, params);
+        }else if(url.startsWith("/myitems/postauction") && !isLocked(HostAddress)) {
+                Fill.CreateAuction(HostAddress, url, params);
+        }
+    }
+    
+    public void MyAuctionHandler(String HostAddress) {
+         if(url.startsWith("/myauctions/cancel")) {
+                Fill.Cancel(HostAddress, url, params);
+        }else if(url.startsWith("/myauctions/get")) {
+                Fill.GetMyAuctions(HostAddress, url, params);
+        }
+    }
+    
+    public void AuctionHandler(String HostAddress) {
+        if(url.startsWith("/auction/get")) {
+                Fill.RequestAuctionBy(HostAddress,url,params);
+        }else if(url.startsWith("/auction/buy")) {
+                Fill.Buy(HostAddress,url,params);
+        }
     }
     
     public Boolean isLocked(String HostAddress) {
@@ -145,7 +173,17 @@ public class WebPortalHttpHandler implements HttpHandler {
            url.startsWith("/img") ||
            url.startsWith("/js") || 
            url.startsWith("/scripts") ||
-           url.startsWith("/about"))
+           url.startsWith("/about") ||
+           url.startsWith("/myitems.html") ||
+           url.startsWith("/login.html") || 
+           url.startsWith("/admin.html") || 
+           url.startsWith("/myauctions.html") || 
+           url.startsWith("/index.html") || 
+           url.startsWith("/about.html") || 
+           url.startsWith("/auction.html") ||
+           url.startsWith("/mail.html") ||
+           url.startsWith("/sign.html")
+                )
             return true;
         
         return false;

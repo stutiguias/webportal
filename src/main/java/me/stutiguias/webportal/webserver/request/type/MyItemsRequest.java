@@ -11,6 +11,7 @@ import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -28,7 +29,41 @@ public class MyItemsRequest extends HttpResponse {
         this.plugin = plugin;
         html = new Html(plugin);
     }
-    
+        
+    public void CreateAuction(String ip,String url,Map param) {
+        int qtd;
+        Double price;
+        int id;
+        try {
+            price = Double.parseDouble((String)param.get("Price"));
+            id = Integer.parseInt((String)param.get("ID"));
+            qtd = Integer.parseInt((String)param.get("Quantity"));
+        }catch(NumberFormatException ex) {
+            Print("Invalid Number","text/plain");
+            return;
+        }
+        Auction auction = plugin.dataQueries.getItemById(id,plugin.Myitems);
+        if(auction.getQuantity() == qtd) {
+            plugin.dataQueries.setPriceAndTable(id,price);
+            Print("You have sucess create Auction","text/plain");
+        }else{
+            if(auction.getQuantity() > qtd)
+            {
+              plugin.dataQueries.UpdateItemAuctionQuantity(auction.getQuantity() - qtd, id);
+              Short dmg = Short.valueOf(String.valueOf(auction.getDamage()));
+              ItemStack stack = new ItemStack(auction.getName(),auction.getQuantity(),dmg);  
+              String type =  stack.getType().toString();
+              String[] itemConfig = GetItemConfig(stack);
+              String ItemName = itemConfig[0];
+              String searchtype = itemConfig[2];
+              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,ItemName,searchtype);
+              Print("You have successfully created an Auction","text/plain");
+            }else{
+              Print("You not permit to sell more then you have","text/plain");
+            }
+        }
+    }
+        
     public void GetMyItems(String ip,String url,Map param) {
 
         int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));

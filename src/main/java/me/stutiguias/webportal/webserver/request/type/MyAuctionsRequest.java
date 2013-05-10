@@ -83,4 +83,29 @@ public class MyAuctionsRequest extends HttpResponse {
         
         Print(json.toJSONString(),"text/plain");
     }
+    
+        public void Cancel(String ip,String url,Map param) {
+        int id = Integer.parseInt((String)param.get("ID"));
+        
+        Auction auction = plugin.dataQueries.getAuction(id);
+        
+        String player = auction.getPlayerName();
+        Integer cancelItemId = auction.getItemStack().getTypeId();
+        Short cancelItemDamage = auction.getItemStack().getDurability();
+        
+        List<Auction> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
+        
+        if(!auctions.isEmpty()) {
+            
+            Integer newAmount = auction.getItemStack().getAmount() + auctions.get(0).getItemStack().getAmount();
+            Integer itemId = auctions.get(0).getId();
+            plugin.dataQueries.updateItemQuantity(newAmount,itemId);
+            plugin.dataQueries.DeleteAuction(id);
+            
+            
+        }else{
+            plugin.dataQueries.updateTable(id, plugin.Myitems);
+        }
+        Print("Cancel Done.","text/plain");
+    }
 }

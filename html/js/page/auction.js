@@ -73,55 +73,55 @@ var selectGroup = function (group,t) {
 };
 
 $(document).ready(function () {
-    table("fill/auction/byall");
+    table("/auction/get/byall");
     $(".byall").addClass("active");
 
     $(".byall").click(function () {
-        selectGroup("fill/auction/byall",".byall");
+        selectGroup("/auction/get/byall",".byall");
     });
 
     $(".byblock").click(function () {
-        selectGroup("fill/auction/byblock", ".byblock");
+        selectGroup("/auction/get/byblock", ".byblock");
     });
 
     $(".byCombat").click(function () {
-        selectGroup("fill/auction/bycombat", ".bycombat");
+        selectGroup("/auction/get/bycombat", ".bycombat");
     });
 
     $(".byDecoration").click(function () {
-        selectGroup("fill/auction/bydecoration", ".bydecoration");
+        selectGroup("/auction/get/bydecoration", ".bydecoration");
     });
 
     $(".byFood").click(function () {
-        selectGroup("fill/auction/byfood", ".byfood");
+        selectGroup("/auction/get/byfood", ".byfood");
     });
 
     $(".byMaterials").click(function () {
-        selectGroup("fill/auction/bymaterials", ".bymaterials");
+        selectGroup("/auction/get/bymaterials", ".bymaterials");
     });
 
     $(".byMicellaneous").click(function () {
-        selectGroup("fill/auction/bymicellaneous", ".bymicellaneous");
+        selectGroup("/auction/get/bymicellaneous", ".bymicellaneous");
     });
 
     $(".byOthers").click(function () {
-        selectGroup("fill/auction/byothers", ".byothers");
+        selectGroup("/auction/get/byothers", ".byothers");
     });
 
     $(".byRedstone").click(function () {
-        selectGroup("fill/auction/byredstone", ".byredstone");
+        selectGroup("/auction/get/byredstone", ".byredstone");
     });
 
     $(".byTools").click(function () {
-        selectGroup("fill/auction/bytools", ".bytools");
+        selectGroup("/auction/get/bytools", ".bytools");
     });
 
     $(".byTransportation").click(function () {
-        selectGroup("fill/auction/bytransportation", ".bytransportation");
+        selectGroup("/auction/get/bytransportation", ".bytransportation");
     });
 
     $(".byBrewing").click(function () {
-        selectGroup("fill/auction/bybrewing", ".bybrewing");
+        selectGroup("/auction/get/bybrewing", ".bybrewing");
     });
     
 });

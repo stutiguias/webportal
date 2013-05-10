@@ -7,7 +7,7 @@ $(document).ready(function () {
         "bJQueryUI": true,
         "bStateSave": false,
         "bServerSide": true,
-        "sAjaxSource": "fill/myauctions",
+        "sAjaxSource": "/myauctions/get",
         "oLanguage": {
             "sProcessing": jsIndex['sProcessing'],
             "sLengthMenu": jsIndex['sLengthMenu'],

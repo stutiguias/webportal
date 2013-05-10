@@ -18,7 +18,7 @@ $(document).ready(function () {
 
 var getItems = function () {
     $.ajax({
-        url: "/get/myitems",
+        url: "/myitems/get",
         success: function (data) {
             $(".selectItem").empty();
             $(".selectItemMail").empty();
@@ -62,7 +62,7 @@ var table = function () {
         "bStateSave": false,
         "bServerSide": true,
         "bDestroy": true,
-        "sAjaxSource": "fill/myitens/simple",
+        "sAjaxSource": "/myitems/dataTable",
         "oLanguage": {
             "sProcessing": jsIndex['sProcessing'],
             "sLengthMenu": jsIndex['sLengthMenu'],
