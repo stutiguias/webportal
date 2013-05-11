@@ -87,19 +87,25 @@ public class WebPortalHttpHandler implements HttpHandler {
                 MyAuctionHandler(HostAddress);
             }else if(url.startsWith("/box")) {
                 BoxHandler(HostAddress);
+            }else if(url.startsWith("/adm")) {
+                AdmHandler(HostAddress);
             }else if(url.startsWith("/auction")) {
                 AuctionHandler(HostAddress);
-            }else if(url.startsWith("/admsearch")) {
-                Fill.ADM(HostAddress,params);
-            }else if(url.startsWith("/web/delete")){     
-                Fill.Delete(HostAddress, url, params);
-            }else if(url.startsWith("/web/shop")){ 
-                Fill.AddShop(HostAddress, url, params);
-            }else if(url.startsWith("/web/adminshoplist")){ 
-                Fill.List(HostAddress, url, params);
             }else if(url.equalsIgnoreCase("/")) {
                 Fill.Response().ReadFile("Please Log","text/html");
             }
+    }
+    
+    public void AdmHandler(String HostAddress) {
+        if(url.startsWith("/adm/search")) {
+                Fill.AdmGetInfo(HostAddress,params);
+        }else if(url.startsWith("/adm/deleteshop")){     
+                Fill.AdmDeleteShop(HostAddress, url, params);
+        }else if(url.startsWith("/adm/addshop")){ 
+                Fill.AdmAddShop(HostAddress, url, params);
+        }else if(url.startsWith("/adm/shoplist")){ 
+                Fill.AdmListShop(HostAddress, url, params);
+        }
     }
     
     public void MailHandler(String HostAddress) {

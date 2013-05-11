@@ -30,7 +30,7 @@ public class AdminRequest extends HttpResponse {
         this.plugin = plugin;
     }
     
-    public void ADM(String Hostadress,Map param) {
+    public void AdmGetInfo(String Hostadress,Map param) {
         if(isAdmin(Hostadress)) {
             String name = (String)param.get("nick");
             String info = (String)param.get("information");

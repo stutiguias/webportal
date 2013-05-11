@@ -105,19 +105,19 @@ public class Request {
         Box.BOX2(HostAddress);
     }
       
-    public void ADM(String HostAddress,Map param){
-        Admin.ADM(HostAddress, param);
+    public void AdmGetInfo(String HostAddress,Map param){
+        Admin.AdmGetInfo(HostAddress, param);
     }
     
-    public void Delete(String HostAddress,String url,Map param){
+    public void AdmDeleteShop(String HostAddress,String url,Map param){
         AdminShop.Delete(HostAddress, url, param);
     }
      
-    public void AddShop(String HostAddress,String url,Map param){
+    public void AdmAddShop(String HostAddress,String url,Map param){
         AdminShop.AddShop(HostAddress, url, param);
     }
     
-    public void List(String HostAddress,String url,Map param){
+    public void AdmListShop(String HostAddress,String url,Map param){
         AdminShop.List(HostAddress, url, param);
     }
     

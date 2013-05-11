@@ -44,6 +44,7 @@ public class AdminShopRequest extends HttpResponse {
             String searchtype = itemConfig[2];
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, ItemName, searchtype );
             Print("ok","text/html");
+            
         }else{
             Print("You r not admin","text/html");
         }
@@ -109,11 +110,11 @@ public class AdminShopRequest extends HttpResponse {
     
     public String HTMLDelete(String ip,int ID){
       if(isAdmin(ip)) {
-        return "<form class='js-adminShopDelete' action='web/delete' method='GET' onsubmit='return del(this)'>"+
+        return "<form class='js-adminShopDelete' onsubmit='return del(this)'>"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
                 "<input type='submit' value='Delete' class='button' /></form><span id='"+ID+"'></span>";
       }else{
-        return "Can't Buy";
+        return "Your r not admin";
       }
     }
     
