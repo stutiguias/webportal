@@ -10,7 +10,7 @@ var langIndex = {
     //	Painel
     ///////////////////
     'lang1Name': 'Name',
-    'lang1Money': 'Money',
+    'lang1Money': 'Money $',
     'lang1Admin': 'Admin',
     'lang1Mail': 'Mail',
     ///////////////////

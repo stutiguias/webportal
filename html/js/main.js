@@ -17,12 +17,12 @@ $(document).ready(function () {
         url: userinfo,
         success: function (data) {
             try {
-                var vals = data.split(',');
-                $('#user').html(vals[0] + vals[1]);
-                $('#money').html(vals[2].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
-                $('#mail').html(vals[3]);
-                $('#avatarimg').attr('src', 'http://minotar.net/avatar/' + vals[0]);
-
+                var adm = " <a href='admin.html'>Admin Panel</a>";
+                var isAdmin = (data["Admin"].toString().indexOf("1") != -1) ? adm : "";
+                $('#user').html(data["Name"] + " " + isAdmin);
+                $('#money').html(data["Money"].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
+                $('#mail').html(data["Mail"]);
+                $('#avatarimg').attr('src', 'http://minotar.net/avatar/' + data["Name"]);
             } catch (err) {
                 $('#user').html(err);
             };
@@ -30,7 +30,7 @@ $(document).ready(function () {
         error: function (data) {
             $('#user').html("Null");
         },
-        dataType: "text"
+        dataType: "json"
     });
 
 });
