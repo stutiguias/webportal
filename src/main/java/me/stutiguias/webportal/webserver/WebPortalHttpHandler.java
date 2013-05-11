@@ -169,7 +169,8 @@ public class WebPortalHttpHandler implements HttpHandler {
         
         if(url.startsWith("/css") || 
            url.startsWith("/styles") || 
-           url.startsWith("/image") || 
+           url.contains("/image") || 
+           url.contains("/Images") || 
            url.startsWith("/img") ||
            url.startsWith("/js") || 
            url.startsWith("/scripts") ||

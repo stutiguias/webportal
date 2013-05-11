@@ -31,5 +31,6 @@ public class UserRequest extends HttpResponse {
         response += plugin.dataQueries.getMail(Name).size();
         Print(response,"text/plain");
     }
+   
 
 }

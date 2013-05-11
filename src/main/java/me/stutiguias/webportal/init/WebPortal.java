@@ -28,6 +28,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,21 +46,20 @@ public class WebPortal extends JavaPlugin {
 	public Map<String, Long> lastSignUse = new HashMap<String, Long>();
         public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<String, AuthPlayer>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
-        //public WebAuctionServerListenTask server;
         public WebPortalHttpServer server;
 	public int signDelay;
         
         public ConfigAccessor materials;
+        public ConfigAccessor config;
+        public ConfigAccessor web;
         
         public HashMap<String,String> Messages;
         
         // Mcmmo Settings
-        public HashMap<String,Object> mcmmoconfig;
         public McMMO mcmmo;
         
         //Essentials settings
         public Essentials essentials;
-        public Boolean UseEssentialsBox;
         
         public Boolean showSalesOnJoin = false;
         public Boolean allowlogifonline = false;
@@ -73,9 +73,7 @@ public class WebPortal extends JavaPlugin {
         
 	public Permission permission = null;
 	public Economy economy = null;
-        
-        public int connections;
-        
+
         public int Mail = 3;
         public int Auction = 2;
         public int Myitems = 1;
@@ -145,14 +143,16 @@ public class WebPortal extends JavaPlugin {
 
         public void onReload() {
             try {
-                //server.server.close();
                 server.server.stop(0);
             }catch(Exception ex) {
                 WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
             }
             server.interrupt();
-            this.reloadConfig();
-            saveConfig();
+            
+            config.reloadConfig();
+            materials.reloadConfig();
+            web.reloadConfig();
+            
             getServer().getPluginManager().disablePlugin(this);
             getServer().getPluginManager().enablePlugin(this);
         }
@@ -161,62 +161,16 @@ public class WebPortal extends JavaPlugin {
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
                 try {
-                    //server.server.close();
                     server.server.stop(0);
                 }catch(Exception ex) {
                     WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
                 }
                 server.interrupt();
-                this.reloadConfig();
-                saveConfig();
+                
 		logger.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
 	}
 
-	private void initConfig() {
-                getConfig().addDefault("DataBase.Type", "SQLite");
-		getConfig().addDefault("MySQL.Host", "localhost");
-		getConfig().addDefault("MySQL.Username", "root");
-		getConfig().addDefault("MySQL.Password", "password123");
-		getConfig().addDefault("MySQL.Port", "3306");
-		getConfig().addDefault("MySQL.Database", "minecraft");
-		getConfig().addDefault("Misc.ReportSales", false);
-		getConfig().addDefault("Misc.ShowSalesOnJoin", false);
-                getConfig().addDefault("Misc.AllowLogOnlyIfOnline", false);
-                getConfig().addDefault("Misc.UseInsideServer",true);
-                getConfig().addDefault("Misc.WebServicePort",25900);
-		getConfig().addDefault("Misc.SignDelay", 1000);
-                getConfig().addDefault("Misc.MaxSimultaneousConnection", 200);
-                getConfig().addDefault("Misc.BlockCreative",true);
-                
-                getConfig().addDefault("SignMessage.StackStored", "Item stack stored.");
-                getConfig().addDefault("SignMessage.HoldHelp","Please hold a stack of item in your hand and right click to deposit them.");
-                getConfig().addDefault("SignMessage.InventoryFull", "Inventory full, Store again not fit itens");
-                getConfig().addDefault("SignMessage.InventoryFullNot", "Inventory full, cannot get mail");
-                getConfig().addDefault("SignMessage.MailRetrieved","Mail retrieved");
-                getConfig().addDefault("SignMessage.NoMailRetrieved", "No mail to retrieve");
-                getConfig().addDefault("SignMessage.NoPermission","You do not have permission to use the mailbox");
-                getConfig().addDefault("WebMessage.Buy","Buy");
-                getConfig().addDefault("WebMessage.Cancel","Cancel");
-                getConfig().addDefault("WebMessage.Mailit","Mail it");
-                getConfig().addDefault("WebMessage.CreateAuction","Create Auction");
-                
-                mcmmoconfig = new HashMap<String, Object>();
-                mcmmoconfig.put("UseMcMMO", false);
-                mcmmoconfig.put("McMMOMYSql", false );
-                mcmmoconfig.put("McMMOTablePrefix", "mcmmo_"); 
-                getConfig().addDefault("PortalBox.McMMO", mcmmoconfig);
-                getConfig().addDefault("PortalBox.Essentials", false);
-                
-                getConfig().addDefault("AuthSystem.System", "WebPortal");
-                getConfig().addDefault("AuthSystem.Algorithm", "MD5");
-                getConfig().addDefault("AuthSystem.TableName", "minecraft");
-                getConfig().addDefault("AuthSystem.ColumnPassword", "password");
-                getConfig().addDefault("AuthSystem.ColumnUsername", "username");
-                
-		getConfig().addDefault("Updates.SaleAlertFrequency", 30L);
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-	}
+
 
         private boolean setupPermissions() {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
@@ -235,74 +189,65 @@ public class WebPortal extends JavaPlugin {
         public void onLoadConfig() {
             
             	initConfig();
+                WebConfig();
                 
-                Messages = new HashMap<String, String>();
-                Messages.put("StackStored", getConfig().getString("SignMessage.StackStored"));
-                Messages.put("HoldHelp", getConfig().getString("SignMessage.HoldHelp"));
-                Messages.put("InventoryFull", getConfig().getString("SignMessage.InventoryFull"));
-                Messages.put("InventoryFullNot", getConfig().getString("SignMessage.InventoryFullNot"));
-                Messages.put("MailRetrieved", getConfig().getString("SignMessage.MailRetrieved"));
-                Messages.put("NoMailRetrieved",getConfig().getString("SignMessage.NoMailRetrieved"));
-                Messages.put("NoPermission",getConfig().getString("Sign.NoPermission"));
-                Messages.put("Buy",getConfig().getString("WebMessage.Buy"));
-                Messages.put("Cancel",getConfig().getString("WebMessage.Cancel"));
-                Messages.put("Mailit",getConfig().getString("WebMessage.Mailit"));
-                Messages.put("CreateAuction",getConfig().getString("WebMessage.CreateAuction"));
-                getMcMMOConfig();
-
-                UseEssentialsBox = getConfig().getBoolean("PortalBox.Essentials");
-                if(UseEssentialsBox) {
-                    essentials = new Essentials(this);
-                }
-                
-		String dbHost = getConfig().getString("MySQL.Host");
-		String dbUser = getConfig().getString("MySQL.Username");
-		String dbPass = getConfig().getString("MySQL.Password");
-		String dbPort = getConfig().getString("MySQL.Port");
-		String dbDatabase = getConfig().getString("MySQL.Database");
-                
-                authplugin = getConfig().getString("AuthSystem.System");
-                algorithm = getConfig().getString("AuthSystem.Algorithm");
-                Table = getConfig().getString("AuthSystem.TableName");
-                ColumnPassword = getConfig().getString("AuthSystem.ColumnPassword");
-                Username = getConfig().getString("AuthSystem.ColumnUsername");
-                blockcreative = getConfig().getBoolean("Misc.BlockCreative");
-                
-		long saleAlertFrequency = getConfig().getLong("Updates.SaleAlertFrequency");
-		boolean getMessages = getConfig().getBoolean("Misc.ReportSales");
-		showSalesOnJoin = getConfig().getBoolean("Misc.ShowSalesOnJoin");
-                allowlogifonline = getConfig().getBoolean("Misc.AllowLogOnlyIfOnline");
-		signDelay = getConfig().getInt("Misc.SignDelay");
-                
-                port = getConfig().getInt("Misc.WebServicePort");
-                int NUM_CONN_MAX = getConfig().getInt("Misc.MaxSimultaneousConnection");
-                logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
-                connections = 0;
-                
-                if(getConfig().getBoolean("Misc.UseInsideServer")) {
-                    //server = new WebAuctionServerListenTask(this,NUM_CONN_MAX);
-                    //server.start();
-                    server = new WebPortalHttpServer(this, NUM_CONN_MAX);
-                    server.start();
-                }
-
                 materials = new ConfigAccessor(this, "materials.yml");
-                
                 try {
                     materials.setupConfig();
-                    materials.getConfig();
                 }catch(IOException ex) {
                     logger.warning("unable to setup materials.yml");
+                    onDisable();
                 }
                 
+                PluginManager pm = getServer().getPluginManager();
+                pm.registerEvents(playerListener, this);
+                pm.registerEvents(blockListener, this);
+        }
+        
+        private void initConfig() {
+            
+                config = new ConfigAccessor(this,"config.yml");
+                try {
+                    config.setupConfig();
+                }catch(IOException ex) {
+                    logger.warning("unable to setup config.yml");
+                    onDisable();
+                }
                 
-                String dbtype = getConfig().getString("DataBase.Type");
+                FileConfiguration c = config.getConfig();
+                Messages = new HashMap<String, String>();
+                Messages.put("StackStored", c.getString("Sign.Message.StackStored"));
+                Messages.put("HoldHelp", c.getString("Sign.Message.HoldHelp"));
+                Messages.put("InventoryFull", c.getString("Sign.Message.InventoryFull"));
+                Messages.put("InventoryFullNot", c.getString("Sign.Message.InventoryFullNot"));
+                Messages.put("MailRetrieved", c.getString("Sign.Message.MailRetrieved"));
+                Messages.put("NoMailRetrieved",c.getString("Sign.Message.NoMailRetrieved"));
+                Messages.put("NoPermission",c.getString("Sign.NoPermission"));
+                
+                blockcreative =         c.getBoolean("Misc.BlockCreative");
+		showSalesOnJoin =       c.getBoolean("Misc.ShowSalesOnJoin");
+                allowlogifonline =      c.getBoolean("Misc.AllowLogOnlyIfOnline");
+		signDelay =             c.getInt("Misc.SignDelay");
+                port =                  c.getInt("Misc.WebServicePort");
+                
+                long saleAlertFrequency = c.getLong("Updates.SaleAlertFrequency");
+		boolean getMessages = c.getBoolean("Misc.ReportSales");
+                
+                if (getMessages) {
+                    getServer().getScheduler().runTaskTimerAsynchronously(this, new SaleAlertTask(this), saleAlertFrequency, saleAlertFrequency);
+                }
 
-                if(!dbPass.equals("password123") && !dbtype.equalsIgnoreCase("SQLite") )
+                if(!c.getString("DataBase.Type").equalsIgnoreCase("SQLite"))
                 {
                     logger.log(Level.INFO, "{0} Choose MySQL db type.", logPrefix);
                     logger.log(Level.INFO, "{0} MySQL Initializing.", logPrefix);
 
+                    String dbHost = c.getString("MySQL.Host");
+                    String dbUser = c.getString("MySQL.Username");
+                    String dbPass = c.getString("MySQL.Password");
+                    String dbPort = c.getString("MySQL.Port");
+                    String dbDatabase = c.getString("MySQL.Database");
+                    
                     dataQueries = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
                     dataQueries.initTables();
                }else{ 
@@ -311,32 +256,50 @@ public class WebPortal extends JavaPlugin {
                     
                     dataQueries = new SqliteDataQueries(this);
                     dataQueries.initTables();
-                    
+                }
+                
+                int NUM_CONN_MAX = c.getInt("Misc.MaxSimultaneousConnection");
+                logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
+                if(getConfig().getBoolean("Misc.UseInsideServer")) {
+                    server = new WebPortalHttpServer(this, NUM_CONN_MAX);
+                    server.start();
+                }
+                
+	}
+                
+        public void WebConfig(){
+                
+                web = new ConfigAccessor(this,"web.yml");
+                try {
+                    web.setupConfig();
+                }catch(IOException ex) {
+                    logger.warning("unable to setup web.yml");
+                    onDisable();
+                }
+                
+                FileConfiguration w = web.getConfig();
+                
+                authplugin =     w.getString("AuthSystem.System");
+                algorithm =      w.getString("AuthSystem.Algorithm");
+                Table =          w.getString("AuthSystem.TableName");
+                ColumnPassword = w.getString("AuthSystem.ColumnPassword");
+                Username =       w.getString("AuthSystem.ColumnUsername");
+                
+                Messages.put("Buy",w.getString("Message.Buy"));
+                Messages.put("Cancel",w.getString("Message.Cancel"));
+                Messages.put("Mailit",w.getString("Message.Mailit"));
+                Messages.put("CreateAuction",w.getString("Message.CreateAuction"));
 
-                }
-   
-                if (getMessages) {
-                    getServer().getScheduler().scheduleAsyncRepeatingTask(this, new SaleAlertTask(this), saleAlertFrequency, saleAlertFrequency);
-                }
-                          
-                PluginManager pm = getServer().getPluginManager();
-                pm.registerEvents(playerListener, this);
-                pm.registerEvents(blockListener, this);
-        }
-        
-        public void getMcMMOConfig(){
-            try {
-                mcmmoconfig = new HashMap<String, Object>();
-                for (String key : getConfig().getConfigurationSection("PortalBox.McMMO").getKeys(false)){
-                mcmmoconfig.put(key, getConfig().get("PortalBox.McMMO." + key));
-                }
-                if((Boolean)mcmmoconfig.get("UseMcMMO")) {
+                if(w.getBoolean("Index.McMMO.Active")) {
+                    ConfigurationSection s = w.getConfigurationSection("Index.McMMO");
                     mcmmo = new McMMO(this);
+                    mcmmo.Config.put("McMMOMYSql",s.getBoolean("McMMOMYSql") );
+                    mcmmo.Config.put("McMMOTablePrefix", s.getString("McMMOTablePrefix"));
                 }
-            }catch(NullPointerException ex){
-                logger.log(Level.INFO, "{0} McmmoBox Disable", logPrefix);
-            }
-            
+
+                if(w.getBoolean("Index.Essentials.Active")) {
+                    essentials = new Essentials(this);
+                }
         }
         
         public String getSearchType(String itemId) {

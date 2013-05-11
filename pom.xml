@@ -63,6 +63,8 @@
         <includes>
           <include>plugin.yml</include>
           <include>materials.yml</include>
+          <include>web.yml</include>
+          <include>config.yml</include>
         </includes>
       </resource>
       

@@ -16,6 +16,7 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.SkillType;
 import com.gmail.nossr50.util.Users;
+import java.util.HashMap;
 
 /**
  *
@@ -25,13 +26,15 @@ public class McMMO {
     
     public WebPortal plugin;
     public ProfileMcMMO profile;
+    public HashMap<String,Object> Config;
     
     public McMMO(WebPortal instance) {
         plugin = instance;
         profile = new ProfileMcMMO();
+        Config = new HashMap<String, Object>();
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("mcMMO");
         if(pl != null) {
-            WebPortal.logger.log(Level.INFO, "{0} PortalBox mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
+            WebPortal.logger.log(Level.INFO, "{0} mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);
         }
     }
     
@@ -78,7 +81,7 @@ public class McMMO {
     }
     
     public void GetInfoOnMysql(String player) {
-        profile = plugin.dataQueries.getMcMMOProfileMySql((String)plugin.mcmmoconfig.get("McMMOTablePrefix"), player);
+        profile = plugin.dataQueries.getMcMMOProfileMySql((String)Config.get("McMMOTablePrefix"), player);
     }
     
     public int getPowerLevel(Player player) {
@@ -111,5 +114,19 @@ public class McMMO {
             sb.append("Your Power Level is ").append(profile.getPowerlevel()).append("</td><br/>");
         sb.append("</div>");   
         return sb;
+    }
+
+    /**
+     * @return the mcmmoconfig
+     */
+    public HashMap<String,Object> getMcmmoconfig() {
+        return Config;
+    }
+
+    /**
+     * @param mcmmoconfig the mcmmoconfig to set
+     */
+    public void setMcmmoconfig(HashMap<String,Object> mcmmoconfig) {
+        this.Config = mcmmoconfig;
     }
 }

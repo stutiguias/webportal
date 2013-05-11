@@ -1,0 +1,47 @@
+#Use SQLite or MYSQL
+DataBase:
+  # You need to choose if you will use SQLite or Mysql ( default is SQLite )
+  Type: SQLite
+#MySQL config if you will use mysql ( set type to mysql )
+MySQL:
+  Host: localhost
+  Username: root
+  Password: change_this
+  Port: '3306'
+  Database: minecraft
+  
+Misc:
+  # Report the sale in game if web sell something
+  ReportSales: false
+  # Show the sales that player have on player join
+  ShowSalesOnJoin: false
+  #If the player not Online on the Server the login will fail
+  AllowLogOnlyIfOnline: false
+  
+  UseInsideServer: true
+  # Port number for webserver 
+  # Check if your host not will block that port
+  # Check if your server is not behind firewall
+  WebServicePort: 25900
+  # Delay for don't allow spam on sign
+  SignDelay: 1000
+  # Max Simultaneous Connection the Server Can Hold !
+  # This base on WebSite Request
+  MaxSimultaneousConnection: 500
+  # Check this if you don't allow player use sign
+  # on creative mode on
+  BlockCreative: true
+Updates:
+  # Frequency alert will be send 
+  # Only if you Set  ReportSales to true
+  SaleAlertFrequency: 30  
+
+Sign:
+  Message:
+    StackStored: Item stack stored.
+    HoldHelp: Please hold a stack of item in your hand and right click to deposit them.
+    InventoryFull: Inventory full, Store again not fit itens
+    InventoryFullNot: Inventory full, cannot get mail
+    MailRetrieved: Mail retrieved
+    NoMailRetrieved: No mail to retrieve
+    NoPermission: You do not have permission to use the mailbox

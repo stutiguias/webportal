@@ -1,0 +1,33 @@
+## Setting for WEBSITE.
+## Setup for Some Text on the Site
+Message:
+  Buy: Buy
+  Cancel: Cancel
+  Mailit: Mail it
+  CreateAuction: Create Auction
+## This is the list what you can 
+## Show on Index Page
+## Set this Active if you have the 
+## plugin and want to show on 
+## index page
+Index:
+  McMMO:
+    Active: false
+    # if your McMMO use mysql
+    McMMOMYSql: false
+    # What table prefix ( only if McMMOMySql is true )
+    McMMOTablePrefix: mcmmo_
+  Essentials:
+    Active: false
+# Authentication System for WebSite
+AuthSystem:
+  # Choose WebPortal or if you r using MySQL you can use AuthDb or AuthMe
+  System: WebPortal
+  # MD5 - SHA1 - SHA-256
+  Algorithm: MD5
+  # if you r using AuthDb or AuthMe put here your the table name
+  TableName: minecraft
+  # if you r using AuthDb or AuthMe put here password column name
+  ColumnPassword: password
+  # if you r using AuthDb or AuthMe put here the username column name
+  ColumnUsername: username

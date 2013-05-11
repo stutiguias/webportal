@@ -1,6 +1,6 @@
 name: WebPortal
 main: me.stutiguias.webportal.init.WebPortal
-version: 0.6.5.1-SNAPSHOT
+version: 0.7.5
 author: Stutiguias
 depend: [Vault]
 commands:
@@ -67,7 +67,7 @@ permissions:
         description: Use Virtual Inventory
         default: op
     wa.command.vbox:
-        description: Use Virtual Inventory
+        description: Use Virtual Inventory Command
         default: op
     wa.remove:
         description: Lets you remove signs

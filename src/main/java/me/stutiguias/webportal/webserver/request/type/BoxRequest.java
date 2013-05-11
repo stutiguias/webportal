@@ -4,6 +4,7 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
+import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
@@ -23,29 +24,38 @@ public class BoxRequest extends HttpResponse {
     }
     
     public void BOX1(String HostAddress) {
+        if(plugin.mcmmo == null) {
+            NotActive();
+            return;
+        }
+        
         StringBuilder sb = new StringBuilder();
         AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
         String Name = authPlayer.AuctionPlayer.getName();
-        if((Boolean)plugin.mcmmoconfig.get("UseMcMMO") && !(Boolean)plugin.mcmmoconfig.get("McMMOMYSql")) {
+
+        if(!(Boolean)plugin.mcmmo.Config.get("McMMOMYSql")) {
             OfflinePlayer player = plugin.getServer().getOfflinePlayer(Name);
             sb.append(plugin.mcmmo.getBox(player));
-        }else if((Boolean)plugin.mcmmoconfig.get("UseMcMMO") && (Boolean)plugin.mcmmoconfig.get("McMMOMYSql")) {
+        }else {
             sb.append(plugin.mcmmo.getBox(Name));
-        }else{
-            sb.append("");
         }
         Print(sb.toString(), "text/plain");
     }
     
     public void BOX2(String HostAddress) {
+        if(plugin.essentials == null) {
+            NotActive();
+            return;
+        }
+        
         StringBuilder sb = new StringBuilder();
         AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
         String Name = authPlayer.AuctionPlayer.getName();
-        if(plugin.UseEssentialsBox) {
-           sb.append(plugin.essentials.getBox(Name));
-        }else{
-            sb.append("");
-        }
+        sb.append(plugin.essentials.getBox(Name));
         Print(sb.toString(),"text/plain");
-    }  
+    }
+    
+    private void NotActive() {
+        Print("","text/plain");
+    }
 }
