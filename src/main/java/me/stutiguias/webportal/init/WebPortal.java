@@ -44,26 +44,27 @@ public class WebPortal extends JavaPlugin {
 	public IDataQueries dataQueries;
 
 	public Map<String, Long> lastSignUse = new HashMap<String, Long>();
+        
         public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<String, AuthPlayer>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
-        public WebPortalHttpServer server;
-	public int signDelay;
         
+        public WebPortalHttpServer server;
+
         public ConfigAccessor materials;
         public ConfigAccessor config;
         public ConfigAccessor web;
         
         public HashMap<String,String> Messages;
         
-        // Mcmmo Settings
+        // Plugins Settings
         public McMMO mcmmo;
-        
-        //Essentials settings
         public Essentials essentials;
         
         public Boolean showSalesOnJoin = false;
         public Boolean allowlogifonline = false;
         public Boolean blockcreative = true;
+        
+        public int signDelay;
         
         public String authplugin;
         public String algorithm;
@@ -114,10 +115,10 @@ public class WebPortal extends JavaPlugin {
                 
 		getCommand("wa").setExecutor(new WebPortalCommands(this));
                 
-                wsell = new wSell(this);
+                wsell   = new wSell(this);
                 mailbox = new Mailbox(this);
-                vbox = new vBox(this);
-                wshop = new wShop(this);
+                vbox    = new vBox(this);
+                wshop   = new wShop(this);
                 
                 // Setup Vault
 		setupEconomy();

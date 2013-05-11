@@ -55,8 +55,8 @@ public class MyAuctionsRequest extends HttpResponse {
                 jsonTwo.put("0", ConvertItemToResult(item,item.getType()));
                 jsonTwo.put("1", item.getId());
                 jsonTwo.put("2", item.getItemStack().getAmount());
-                jsonTwo.put("3", "$ " + item.getPrice());
-                jsonTwo.put("4", "$ " + item.getPrice() * item.getItemStack().getAmount());
+                jsonTwo.put("3", item.getPrice());
+                jsonTwo.put("4", item.getPrice() * item.getItemStack().getAmount());
                 jsonTwo.put("5", Format(MarketPrice(item, item.getPrice())) + "%" );
                 jsonTwo.put("6", GetEnchant(item));
                 jsonTwo.put("7", GetDurability(item));

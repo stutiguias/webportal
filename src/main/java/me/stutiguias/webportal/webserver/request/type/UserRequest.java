@@ -7,6 +7,7 @@ package me.stutiguias.webportal.webserver.request.type;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -24,12 +25,12 @@ public class UserRequest extends HttpResponse {
     
     public void GetInfo(String HostAddress)  {
         AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
-        String Name = authPlayer.AuctionPlayer.getName();
-        String Admin = (authPlayer.AuctionPlayer.getIsAdmin() == 1) ? ", <a href='/admin.html' >Admin Panel</a>":",";
-        String response = Name + Admin + ",";
-        response += "$ " + Format(plugin.economy.getBalance(Name)) + ",";
-        response += plugin.dataQueries.getMail(Name).size();
-        Print(response,"text/plain");
+        JSONObject json = new JSONObject();
+            json.put("Name", authPlayer.AuctionPlayer.getName() );
+            json.put("Admin", authPlayer.AuctionPlayer.getIsAdmin() );
+            json.put("Money", plugin.economy.getBalance( authPlayer.AuctionPlayer.getName() ) );
+            json.put("Mail", plugin.dataQueries.getMail(authPlayer.AuctionPlayer.getName() ).size() );
+        Print(json.toJSONString(),"application/json");
     }
    
 

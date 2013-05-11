@@ -94,8 +94,8 @@ public class MyItemsRequest extends HttpResponse {
                 jsonTwo.put("DT_RowClass", "gradeA");
                 jsonTwo.put("0", ConvertItemToResult(item,item.getType()));
                 jsonTwo.put("1", item.getItemStack().getAmount());
-                jsonTwo.put("2", "$ " + mprice);
-                jsonTwo.put("3", "$ " + mprice * item.getItemStack().getAmount());
+                jsonTwo.put("2", mprice);
+                jsonTwo.put("3", mprice * item.getItemStack().getAmount());
                 jsonTwo.put("4", GetEnchant(item));
                 jsonTwo.put("5", GetDurability(item));
                 

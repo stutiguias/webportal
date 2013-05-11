@@ -118,7 +118,7 @@ public class AuctionRequest extends HttpResponse {
                 tmp_Data.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
                 tmp_Data.put("2", "Never");
                 tmp_Data.put("3", item.getItemStack().getAmount());
-                tmp_Data.put("4", "$ " + item.getPrice());
+                tmp_Data.put("4", item.getPrice());
                 tmp_Data.put("5", GetEnchant(item));
                 tmp_Data.put("6", GetDurability(item));
                 tmp_Data.put("7", Format(MakertPercent) + "%");
