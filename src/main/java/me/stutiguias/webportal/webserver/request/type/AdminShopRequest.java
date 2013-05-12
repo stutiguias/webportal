@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -27,10 +28,11 @@ public class AdminShopRequest extends HttpResponse {
     }
     
     public void AddShop(String ip,String url,Map param){
+        
         if(isAdmin(ip)){
             
             String itemId = (String)param.get("itemId");
-            String price = (String)param.get("Price");
+            String price = (String)param.get("price");
             String quantity = (String)param.get("quantity");
             
             ItemStack Item = ConvertToItemStack(itemId);
@@ -51,48 +53,34 @@ public class AdminShopRequest extends HttpResponse {
     }
     
     public void List(String ip,String url,Map param){
+        
         if(isAdmin(ip)) {
 
-            int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
-            int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
-            String search = (String)param.get("sSearch");
-            int sEcho =  Integer.parseInt((String)param.get("sEcho"));
-
+            int iDisplayStart = Integer.parseInt((String)param.get("DisplayStart"));
+            int iDisplayLength = Integer.parseInt((String)param.get("DisplayLength"));
+            
             List<Auction> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Auction);
             
-            int iTotalRecords = plugin.dataQueries.getFound();
-            int iTotalDisplayRecords = plugin.dataQueries.getFound();
+            int TotalRecords = plugin.dataQueries.getFound();
+            
+            JSONArray jsonarray = new JSONArray();
+            JSONObject jsonresult = new JSONObject();
+            JSONObject jsonObjectArray;
 
-            JSONObject Response = new JSONObject();
-            JSONArray Data = new JSONArray();
-            JSONObject tmp_Data;
-
-            Response.put("sEcho", sEcho);
-            Response.put("iTotalRecords", iTotalRecords);
-            Response.put("iTotalDisplayRecords", iTotalDisplayRecords);
-
-            if(iTotalRecords > 0) {
-                 for (int i = 0; i < Auctions.size(); i++) {
+            for (int i = 0; i < Auctions.size(); i++) {
+                
                     Auction auction = Auctions.get(i);
-                    tmp_Data = new JSONObject();
-                    tmp_Data.put("DT_RowId","row_" + auction.getId() );
-                    tmp_Data.put("DT_RowClass", "A");
-                    tmp_Data.put("0", ConvertItemToResult(auction,auction.getType()));
-                    tmp_Data.put("1", "Server");
-                    tmp_Data.put("2", "Never");
-                    tmp_Data.put("3", auction.getItemStack().getAmount());
-                    tmp_Data.put("4", "$ " + auction.getPrice());
-                    tmp_Data.put("5", "");
-                    tmp_Data.put("6", "");
-                    tmp_Data.put("7", HTMLDelete(ip,auction.getId()));
-                    Data.add(tmp_Data);
-                 }
-            }else{
-                    Data.add(NoAuction());
+                    jsonObjectArray = new JSONObject();
+                    jsonObjectArray.put("Item Name", ConvertItemToResult(auction,auction.getType()) );
+                    jsonObjectArray.put("Quantity", auction.getItemStack().getAmount());
+                    jsonObjectArray.put("Price", auction.getPrice());
+                    jsonObjectArray.put("Delete", HTMLDelete(ip,auction.getId()));
+                    jsonarray.add(jsonObjectArray);
+                 
             }
-            Response.put("aaData",Data);
-
-            Print(Response.toJSONString(),"text/plain");
+            jsonresult.put(TotalRecords,jsonarray);
+            Print(jsonresult.toJSONString(),"application/json");
+            
         }else{
             Print("You r not admin","text/html");
         }
@@ -112,7 +100,7 @@ public class AdminShopRequest extends HttpResponse {
       if(isAdmin(ip)) {
         return "<form class='js-adminShopDelete' onsubmit='return del(this)'>"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
-                "<input type='submit' value='Delete' class='button' /></form><span id='"+ID+"'></span>";
+                "<input type='submit' value='Delete' class='btn' /></form><span id='"+ID+"'></span>";
       }else{
         return "Your r not admin";
       }

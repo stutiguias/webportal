@@ -214,10 +214,11 @@ public class AuctionRequest extends HttpResponse {
         }else{
             ServerAuction.put("3", item.getItemStack().getAmount());
         }
-        ServerAuction.put("4", "$ " + item.getPrice());
-        ServerAuction.put("5", "Infinit");
-        ServerAuction.put("6", "0%");
-        ServerAuction.put("7", html.HTMLBuy(ip,item.getId()));
+        ServerAuction.put("4", item.getPrice());
+        ServerAuction.put("5", GetEnchant(item));
+        ServerAuction.put("6", GetDurability(item));
+        ServerAuction.put("7", "");
+        ServerAuction.put("8", html.HTMLBuy(ip,item.getId()));
         return ServerAuction;
     }
     

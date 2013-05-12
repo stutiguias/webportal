@@ -16,4 +16,5 @@ var buyUrl = "/auction/buy";
 // MyAuction
 var cancelUrl = "/myauctions/cancel";
 
-var admsearch = "/admsearch";
+// Admin Search
+var admsearch = "/adm/search";
