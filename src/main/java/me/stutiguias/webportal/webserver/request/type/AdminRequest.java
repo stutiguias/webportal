@@ -66,6 +66,8 @@ public class AdminRequest extends HttpResponse {
         json.put("Server Version",server.getVersion());
         json.put("Online Players",server.getOnlinePlayers().length);
         json.put("Operators",server.getOperators().size());
+        json.put("Mem. used/max", String.valueOf((Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory())/ 1024 / 1024) + " / " + String.valueOf(Runtime.getRuntime().maxMemory() / 1024 / 1024) );
+        json.put("Mem. free/total", String.valueOf(Runtime.getRuntime().freeMemory() / 1024 / 1024) + " / " + String.valueOf(Runtime.getRuntime().totalMemory() / 1024 / 1024) );
         jsonarray.add(json);
         Print(jsonarray.toJSONString(),"application/json");
     }

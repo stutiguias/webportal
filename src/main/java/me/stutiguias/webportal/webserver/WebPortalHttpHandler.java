@@ -203,7 +203,7 @@ public class WebPortalHttpHandler implements HttpHandler {
            url.startsWith("/about.html") || 
            url.startsWith("/auction.html") ||
            url.startsWith("/mail.html") ||
-           url.startsWith("/sign.html")
+           url.startsWith("/signs.html")
                 )
             return true;
         

@@ -32,56 +32,116 @@
     <div class="menu"></div>
 
      <div class="container replace">
-         <h4 class="text-center">Search Player Info</h4>
-         <form onsubmit="return adm(this)" class=".form-inline text-center" >
-             <div class="input-prepend input-append">
-                 <div class="add-on">Name</div>
-                 <input type="text" name="nick" value="" placeholder="Insert Name Here" />
-             </div>
-             <div class="input-append">
-                <select name="information">
-                        <option selected="selected" value="playerinfo">Info</option>
-                        <option value="playeritems">Items</option>
-                        <option value="playermail">Mail</option>
-                        <option value="playerauctions">Auctions</option>
-                        <option value="playertransaction">Transaction</option>
-                </select>
-                <input type="submit" name="enviar" value="Submit" class="btn" />
-            </div>
-         </form>
 
-         <h4 class="text-center">List Server Shop</h4>
-         <form onsubmit="return listshop(this)" class=".form-inline text-center">
-                <input type="submit" name="enviar" value="List" class="btn" />
-         </form>
 
-         <h4 class="text-center">Add Item for Sell</h4>
-         <div class="text-center"><small >Quantity 9999 for Infinity</small></div>
-         <form onsubmit="return additem(this)" class=".form-inline text-center">
-                <div class="input-prepend input-append">
-                    <span class="add-on">Item Id ( x or x:x ) </span>
-                    <input name='itemId' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
-                    <span class="add-on"><a href="http://www.minecraftinfo.com/IDList.htm" target="_blank">Help</a></span>
-                </div>
-                <div class="input-prepend">
-                    <span class="add-on">Quantity</span>
-                    <input name='quantity' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
-                </div>
-
-                <div class="input-prepend input-append">
-                    <span class="add-on">Price</span>
-                    <input name='price' type="number" onKeyPress='return numbersonly(this, event);' class='input' max="99999" required />
+         <div id="resultado" class="alert" style="text-align:center;">Use with care</div>
+         
+         <div class="GetInfoPlayer hide">
+             <h4 class="text-center">Search Player Info</h4>
+             <form onsubmit="return adm(this)" class=".form-inline text-center" >
+                 <div class="input-prepend input-append">
+                     <div class="add-on">Name</div>
+                     <input type="text" name="nick" value="" placeholder="Insert Name Here" />
+                 </div>
+                 <div class="input-append">
+                    <select name="information">
+                            <option selected="selected" value="playerinfo">Info</option>
+                            <option value="playeritems">Items</option>
+                            <option value="playermail">Mail</option>
+                            <option value="playerauctions">Auctions</option>
+                            <option value="playertransaction">Transaction</option>
+                    </select>
                     <input type="submit" name="enviar" value="Submit" class="btn" />
                 </div>
-         </form>
+             </form>
+         </div>
 
-		<div id="resultado" style="text-align:center;"></div>
-        <table class="auction replace table table-striped table-bordered">
-                <thead>
-                    <tr class="theadInput"></tr>
-                </thead>
-                <tbody class="tbodyInput"></tbody>
-        </table>
+         <div class="addItemShop hide">
+             <h4 class="text-center">Add Item for Sell</h4>
+             <div class="text-center"><small >Quantity 9999 for Infinity</small></div>
+             <form onsubmit="return additem(this)" class=".form-inline text-center">
+                    <div class="input-prepend input-append">
+                        <span class="add-on">Item Id ( x or x:x ) </span>
+                        <input name='itemId' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
+                        <span class="add-on"><a href="http://www.minecraftinfo.com/IDList.htm" target="_blank">Help</a></span>
+                    </div>
+                    <div class="input-prepend">
+                        <span class="add-on">Quantity</span>
+                        <input name='quantity' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
+                    </div>
+
+                    <div class="input-prepend input-append">
+                        <span class="add-on">Price</span>
+                        <input name='price' type="number" onKeyPress='return numbersonly(this, event);' class='input' max="99999" required />
+                        <input type="submit" name="enviar" value="Submit" class="btn" />
+                    </div>
+             </form>
+         </div>
+
+        <fieldset>
+            <legend>Server Options</legend>
+        
+            <div class="row">
+                <div class="span2">
+                    <form onsubmit="return listshop(this)" class=".form-inline">
+                        <input type="submit" name="enviar" value="List Admin Shop" class="btn" />
+                    </form>
+                    <form onsubmit="return admshop()" class=".form-inline">
+                            <input type="submit" value="Add Admin Shop" class="btn" />
+                    </form>
+                     <form onsubmit="return getinfo()" class=".form-inline">
+                            <input type="submit" name="enviar" value="Server Info" class="btn" />
+                     </form>
+                    <form onsubmit="return shutdown(this)" class=".form-inline">
+                            <input type="submit" name="enviar" value="ShutDown" class="btn btn-danger" />
+                     </form>
+                     <form onsubmit="return reload(this)" class=".form-inline">
+                            <input type="submit" name="enviar" value="Reload" class="btn btn-danger" />
+                     </form>
+                    <form onsubmit="return viewplugins(this)" class=".form-inline">
+                            <input type="submit" value="View Plugins" class="btn" />
+                     </form>
+                    <form onsubmit="return infoplayer()" class=".form-inline">
+                            <input type="submit" value="Player Info" class="btn" />
+                    </form>
+                </div>
+                <div class="table hide span10">                   
+                    <div class="pagination"></div>
+                    <table class="auction replace table table-striped table-bordered">
+                        <thead>
+                            <tr class="theadInput"></tr>
+                        </thead>
+                        <tbody class="tbodyInput"></tbody>
+                    </table>
+                </div>
+                <div class="serverinfo span10">
+                    <h4 style="text-align:center;">Console Display</h4>
+                    <div class="hero-unit console"></div>
+
+                     <form onsubmit="return sendcmd(this)" class=".form-inline">
+                        <div class="input-prepend input-append">
+                            <span class="add-on">Command</span>
+                            <input name='cmd' type="text" required />
+                            <input type="submit" name="enviar" value="Send Command" class="btn" />
+                        </div>
+                     </form>
+             
+              
+                     <form onsubmit="return sendmsg(this)" class=".form-inline">
+                        <div class="input-prepend input-append">
+                            <span class="add-on">Msg</span>
+                            <input name='msg' type="text" required />
+                            <input type="submit" name="enviar" value="Send BroardCastMessage" class="btn" />
+                        </div>
+                     </form>
+              
+                </div>
+            </div>
+        </fieldset>
+
+        
+		
+
          
         <footer>
             <p>
