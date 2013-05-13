@@ -144,6 +144,11 @@ public class Request {
     public void AdmCmdSend(String HostAddress,Map param) {
         Admin.Command(HostAddress,param);
     }
+    
+    public void AdmSeeConsole(String HostAddress) {
+        Admin.SeeConsole(HostAddress);
+    }
+    
     public void TryLogin(String HostAddress,Map param) {
         Login.TryToLogin(HostAddress, param);
     }

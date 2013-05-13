@@ -149,7 +149,34 @@ public class AdminRequest extends HttpResponse {
             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),cmd);
             File f = new File("server.log");
             RandomAccessFile randomFile = new RandomAccessFile(f, "r");
-            long numberOfLines = Long.valueOf(4).longValue();
+            long numberOfLines = Long.valueOf(14).longValue();
+            long fileLength = randomFile.length();
+            long startPosition = fileLength - (numberOfLines * 100);
+            if(startPosition < 0)  startPosition = 0;
+            randomFile.seek(startPosition);
+
+            while( ( line = randomFile.readLine() ) != null ){
+                    console.add(line);
+            }
+            randomFile.close();
+        }catch(Exception e){ 
+            e.printStackTrace();
+        }
+        Print(console.toJSONString(),"text/plain");
+    }
+    
+    public void SeeConsole(String Hostaddress) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String line;
+        JSONArray console = new JSONArray();
+        try
+        { 
+            File f = new File("server.log");
+            RandomAccessFile randomFile = new RandomAccessFile(f, "r");
+            long numberOfLines = Long.valueOf(14).longValue();
             long fileLength = randomFile.length();
             long startPosition = fileLength - (numberOfLines * 100);
             if(startPosition < 0)  startPosition = 0;

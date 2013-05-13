@@ -117,6 +117,8 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.AdmShutDown(HostAddress);
         }else if(url.startsWith("/adm/reload")) {
                 Fill.AdmRestart(HostAddress);
+        }else if(url.startsWith("/adm/seeconsole")) {
+                Fill.AdmSeeConsole(HostAddress);
         }
     }
     
