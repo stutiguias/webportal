@@ -119,6 +119,16 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.AdmRestart(HostAddress);
         }else if(url.startsWith("/adm/seeconsole")) {
                 Fill.AdmSeeConsole(HostAddress);
+        }else if(url.startsWith("/adm/playerlist")) {
+                Fill.AdmPlayerList(HostAddress);
+        }else if(url.startsWith("/adm/banlist")) {
+                Fill.AdmBanList(HostAddress);
+        }else if(url.startsWith("/adm/ban")) {
+                Fill.AdmBan(HostAddress, params);
+        }else if(url.startsWith("/adm/unban")) {
+                Fill.AdmUnBan(HostAddress, params);
+        }else if(url.startsWith("/adm/kick")) {
+                Fill.AdmKickPlayer(HostAddress, params);
         }
     }
     

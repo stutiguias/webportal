@@ -149,6 +149,26 @@ public class Request {
         Admin.SeeConsole(HostAddress);
     }
     
+    public void AdmPlayerList(String HostAddress) {
+        Admin.PlayersOnline(HostAddress);
+    }
+    
+    public void AdmKickPlayer(String HostAddress,Map param) {
+        Admin.Kick(HostAddress, param);
+    }
+    
+    public void AdmBanList(String Hostaddress) {
+        Admin.BanList(Hostaddress);
+    }
+    
+    public void AdmBan(String Hostaddress,Map param) {
+        Admin.Ban(Hostaddress, param);
+    }
+    
+    public void AdmUnBan(String Hostaddress,Map param) {
+        Admin.UnBan(Hostaddress, param);
+    }
+    
     public void TryLogin(String HostAddress,Map param) {
         Login.TryToLogin(HostAddress, param);
     }

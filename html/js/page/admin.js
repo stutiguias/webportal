@@ -22,6 +22,11 @@ function getinfo() {
     return false;
 }
 
+function svpllist() {
+    get("", "/adm/playerlist");
+    return false;
+}
+
 function consoleinfohide() {
     $(".serverinfo").hide();
     clearInterval(Interval);

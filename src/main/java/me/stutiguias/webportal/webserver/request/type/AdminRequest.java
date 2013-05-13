@@ -9,11 +9,14 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -70,6 +73,82 @@ public class AdminRequest extends HttpResponse {
         json.put("Mem. free/total", String.valueOf(Runtime.getRuntime().freeMemory() / 1024 / 1024) + " / " + String.valueOf(Runtime.getRuntime().totalMemory() / 1024 / 1024) );
         jsonarray.add(json);
         Print(jsonarray.toJSONString(),"application/json");
+    }
+    
+    public void PlayersOnline(String Hostaddress) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        JSONArray jsonarray = new JSONArray();
+        JSONObject json;
+        Player[] players = plugin.getServer().getOnlinePlayers();
+        for (int i = 0; i < players.length; i++) {
+            json = new JSONObject();
+            json.put("Name",players[i].getName());
+            Location loc = players[i].getLocation();
+            json.put("Location",loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ());
+            json.put("GameMode",players[i].getGameMode().toString());
+            json.put("is OP ?",String.valueOf(players[i].isOp()));
+            json.put("Ip",String.valueOf(players[i].getAddress()));
+            json.put("Kick","<button type=\"button\" onclick=\"return kick('"+players[i].getName()+"')\" class=\"btn\" style=\"margin:10px\">Kick</button>");
+            json.put("Ban","<button type=\"button\" onclick=\"return ban('"+players[i].getName()+"')\" class=\"btn\" style=\"margin:10px\">Ban</button>");
+            jsonarray.add(json);
+        }
+        Print(jsonarray.toJSONString(),"application/json");
+    }
+    
+    public void BanList(String Hostaddress) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        JSONArray jsonarray = new JSONArray();
+        JSONObject json;
+        Set<OfflinePlayer> players = plugin.getServer().getBannedPlayers();
+        for (OfflinePlayer offlinePlayer : players) {
+            json = new JSONObject();
+            json.put("Name",offlinePlayer.getName());
+            json.put("UnBan","<button type=\"button\" onclick=\"return uban('"+offlinePlayer.getName()+"')\" class=\"btn\" style=\"margin:10px\">UnBan</button>");
+            jsonarray.add(json);
+        }
+        Print(jsonarray.toJSONString(),"application/json");
+    }
+    
+    public void Kick(String Hostaddress,Map param) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String name = WebPortal.AuthPlayers.get(Hostaddress).AuctionPlayer.getName();
+        String setplayer = (String)param.get("player");
+        Player player = plugin.getServer().getPlayer(setplayer);
+        player.kickPlayer("Kick by Admin " + name);
+        Print("Player kicked","text/plain");
+    }
+    
+    public void Ban(String Hostaddress,Map param) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String setplayer = (String)param.get("player");
+        Player player = plugin.getServer().getPlayer(setplayer);
+        player.setBanned(true);
+        String name = WebPortal.AuthPlayers.get(Hostaddress).AuctionPlayer.getName();
+        player.kickPlayer("Banned by Admin " + name);
+        Print("Player Banned","text/plain");
+    }
+    
+    public void UnBan(String Hostaddress,Map param) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String setplayer = (String)param.get("player");
+        OfflinePlayer player = plugin.getServer().getOfflinePlayer(setplayer);
+        player.setBanned(false);
+        Print("Player UnBanned","text/plain");
     }
     
     public void AdmViewPlugins(String Hostaddress) {
