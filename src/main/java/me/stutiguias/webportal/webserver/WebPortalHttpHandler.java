@@ -92,7 +92,7 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else if(url.startsWith("/auction")) {
                 AuctionHandler(HostAddress);
             }else if(url.equalsIgnoreCase("/")) {
-                Fill.Response().ReadFile("Please Log","text/html");
+                Fill.Response().Print("Please Log","text/plain");
             }
     }
     
@@ -105,6 +105,18 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.AdmAddShop(HostAddress, url, params);
         }else if(url.startsWith("/adm/shoplist")){ 
                 Fill.AdmListShop(HostAddress, url, params);
+        }else if(url.startsWith("/adm/getinfo")) {
+                Fill.AdmGetServerInfo(HostAddress);
+        }else if(url.startsWith("/adm/viewplugins")) {
+                Fill.AdmViewPlugins(HostAddress);
+        }else if(url.startsWith("/adm/sendmsg")) {
+                Fill.AdmMsg(HostAddress, params);
+        }else if(url.startsWith("/adm/sendcmd")) {
+                Fill.AdmCmdSend(HostAddress, params);
+        }else if(url.startsWith("/adm/shutdown")) {
+                Fill.AdmShutDown(HostAddress);
+        }else if(url.startsWith("/adm/reload")) {
+                Fill.AdmRestart(HostAddress);
         }
     }
     

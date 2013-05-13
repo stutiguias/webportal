@@ -4,12 +4,20 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
+import java.awt.Color;
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.bukkit.ChatColor;
+import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -42,6 +50,119 @@ public class AdminRequest extends HttpResponse {
         }else{
             Print("Your r not admin","text/html");
         }
+    }
+
+    public void AdmGetServerInfo(String Hostadress) {
+        if(!isAdmin(Hostadress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        JSONArray jsonarray = new JSONArray();
+        JSONObject json = new JSONObject();
+        Server server = plugin.getServer();
+        json.put("IP",server.getIp() + ":" + server.getPort());
+        json.put("Name",server.getServerName());
+        json.put("Server Bukkit Version",server.getBukkitVersion());
+        json.put("Server Version",server.getVersion());
+        json.put("Online Players",server.getOnlinePlayers().length);
+        json.put("Operators",server.getOperators().size());
+        jsonarray.add(json);
+        Print(jsonarray.toJSONString(),"application/json");
+    }
+    
+    public void AdmViewPlugins(String Hostaddress) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        try {
+            Server server = plugin.getServer();
+            Plugin[] plugins = server.getPluginManager().getPlugins();
+            JSONArray jsonarray = new JSONArray();
+            JSONObject jsonObjectArray;
+            for (int i = 0; i < server.getPluginManager().getPlugins().length; i++) {
+                jsonObjectArray = new JSONObject();
+                jsonObjectArray.put("Plugin Name",plugins[i].getDescription().getName());
+                jsonObjectArray.put("Version",plugins[i].getDescription().getVersion());
+                jsonObjectArray.put("isEnable ?",plugins[i].isEnabled());
+                if(plugins[i].getDescription().getDepend() != null) {
+                    for(int x = 0;x < plugins[i].getDescription().getDepend().size(); x++) {
+                        jsonObjectArray.put("Depend",plugins[i].getDescription().getDepend().get(x).toString());
+                    }
+                }else{
+                    jsonObjectArray.put("Depend","");
+                }
+                if(plugins[i].getDescription().getSoftDepend() != null) {
+                    for(int x = 0;x < plugins[i].getDescription().getSoftDepend().size(); x++) {
+                        jsonObjectArray.put("Soft Depend",plugins[i].getDescription().getSoftDepend().get(x).toString());
+                    }
+                }else{
+                    jsonObjectArray.put("Soft Depend","");
+                }
+                jsonarray.add(jsonObjectArray);
+            }
+            Print(jsonarray.toJSONString(),"application/json");
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void SendMsg(String Hostaddress,Map params){
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String msg = (String)params.get("msg");
+        String name = WebPortal.AuthPlayers.get(Hostaddress).AuctionPlayer.getName();
+        plugin.getServer().broadcastMessage(ChatColor.YELLOW + name + " : " + msg);
+        Print(msg +  " Message Send","text/plain");
+    }
+    
+    public void ShutDown(String Hostaddress){
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        Print("ShutDown Send","text/plain");
+        plugin.getServer().shutdown();
+    }
+    
+    public void Reload(String Hostaddress) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        Print("Reload Send","text/plain");
+        plugin.getServer().reload();
+    }
+    
+    public void Command(String Hostaddress,Map params) {
+        if(!isAdmin(Hostaddress)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String line = "";
+        JSONArray console = new JSONArray();
+        try
+        { 
+            String cmd = (String)params.get("cmd");
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),cmd);
+            File f = new File("server.log");
+            RandomAccessFile randomFile = new RandomAccessFile(f, "r");
+            long numberOfLines = Long.valueOf(4).longValue();
+            long fileLength = randomFile.length();
+            long startPosition = fileLength - (numberOfLines * 100);
+            if(startPosition < 0)  startPosition = 0;
+            randomFile.seek(startPosition);
+
+            while( ( line = randomFile.readLine() ) != null ){
+                    console.add(line);
+            }
+            randomFile.close();
+        }catch(Exception e){ 
+            e.printStackTrace();
+        }
+        Print(console.toJSONString(),"text/plain");
     }
     
     private void playerinfo(String Hostadress,String name) {

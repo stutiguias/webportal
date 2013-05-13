@@ -91,7 +91,7 @@ public class HttpResponse extends Info {
                 
             } else
             {
-                Error(archivo.getAbsolutePath() + "404 Not Found");
+                Error("404 Not Found");
             }
         }
         catch(Exception e)

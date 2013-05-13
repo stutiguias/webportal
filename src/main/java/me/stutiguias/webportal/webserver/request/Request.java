@@ -121,6 +121,29 @@ public class Request {
         AdminShop.List(HostAddress, url, param);
     }
     
+    public void AdmGetServerInfo(String HostAddress) {
+        Admin.AdmGetServerInfo(HostAddress);
+    }
+    
+    public void AdmViewPlugins(String HostAddress) {
+        Admin.AdmViewPlugins(HostAddress);
+    }
+    
+    public void AdmMsg(String HostAddress,Map param) {
+        Admin.SendMsg(HostAddress, param);
+    }
+    
+    public void AdmShutDown(String HostAddress) {
+        Admin.ShutDown(HostAddress);
+    }
+
+    public void AdmRestart(String HostAddress) {
+        Admin.Reload(HostAddress);
+    }
+        
+    public void AdmCmdSend(String HostAddress,Map param) {
+        Admin.Command(HostAddress,param);
+    }
     public void TryLogin(String HostAddress,Map param) {
         Login.TryToLogin(HostAddress, param);
     }

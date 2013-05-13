@@ -161,7 +161,7 @@ public class AuctionRequest extends HttpResponse {
             jsonNameImg.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
             jsonNameImg.put("2", "Never");
             jsonNameImg.put("3", item.getItemStack().getAmount());
-            jsonNameImg.put("4", "$ " + item.getPrice());
+            jsonNameImg.put("4", item.getPrice());
             jsonNameImg.put("5", GetEnchant(item));
             jsonNameImg.put("6", GetDurability(item));
             
