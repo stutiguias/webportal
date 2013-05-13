@@ -92,7 +92,7 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else if(url.startsWith("/auction")) {
                 AuctionHandler(HostAddress);
             }else if(url.equalsIgnoreCase("/")) {
-                Fill.Response().Print("Please Log","text/plain");
+                Fill.Response().ReadFile(htmlDir+"/index.html","text/html");
             }
     }
     
