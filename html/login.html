@@ -23,6 +23,7 @@
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
+
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
@@ -47,6 +48,7 @@
                         <form name="login" onsubmit="return loginform(this)" class="navbar-form pull-right">
                             <input name="Username" class="span2" type="text" placeholder="UserName">
                             <input name="Password" class="span2" type="password" placeholder="Password">
+                            <input id="Sessionid" name="Sessionid" type="hidden" />
                             <button name="Submit" type="submit" class="btn replace">langSubmit</button>
                         </form>
                         <div class="brand error"></div>

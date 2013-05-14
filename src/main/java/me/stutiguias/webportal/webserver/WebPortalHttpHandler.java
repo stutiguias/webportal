@@ -49,13 +49,13 @@ public class WebPortalHttpHandler implements HttpHandler {
             return;
         }
 
-        String HostAddress = t.getLocalAddress().getHostName();
-
-        if(!WebPortal.AuthPlayers.containsKey(HostAddress))
+        String Sessionid = (String)params.get("sessionid");
+ 
+        if(!WebPortal.AuthPlayers.containsKey(Sessionid))
         {
-            RequestWithoutLogin(HostAddress);
+            RequestWithoutLogin(Sessionid);
         }else {
-            RequestWithLogin(HostAddress);
+            RequestWithLogin(Sessionid);
         }
     }
 

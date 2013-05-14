@@ -27,6 +27,7 @@ public class LoginRequest extends HttpResponse {
     }
     
     public void TryToLogin(String HostAddress,Map param) {
+        String sessionid = (String)param.get("Sessionid");
         String username = (String)param.get("Username");
         String pass = (String)param.get("Password");
         if(AS.Auth(username, pass))
@@ -39,7 +40,7 @@ public class LoginRequest extends HttpResponse {
             }
             _AuthPlayer.AuctionPlayer = _AuctionPlayer;
             _AuthPlayer.AuctionPlayer.setIp(HostAddress);
-            WebPortal.AuthPlayers.put(HostAddress,_AuthPlayer);
+            WebPortal.AuthPlayers.put(sessionid,_AuthPlayer);
             Print("ok","text/plain");
         }else{
             Print("no","text/plain");

@@ -1,3 +1,33 @@
+function setCookie(szName, szValue, szExpires, szPath, szDomain, bSecure) {
+    var szCookieText = escape(szName) + '=' + escape(szValue);
+    szCookieText += (szExpires ? '; EXPIRES=' + szExpires.toGMTString() : '');
+    szCookieText += (szPath ? '; PATH=' + szPath : '');
+    szCookieText += (szDomain ? '; DOMAIN=' + szDomain : '');
+    szCookieText += (bSecure ? '; SECURE' : '');
+
+    document.cookie = szCookieText;
+}function getCookie(szName) {
+    var szValue = null;
+    if (document.cookie)	   //only if exists
+    {
+        var arr = document.cookie.split((escape(szName) + '='));
+        if (2 <= arr.length) {
+            var arr2 = arr[1].split(';');
+            szValue = unescape(arr2[0]);
+        }
+    }
+    return szValue;
+}function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+
 function loginform(form) {
     $.ajax({
         url: login,
@@ -34,6 +64,9 @@ for (var prop in langIndex) {
 }
 
 $(document).ready(function () {
+    setCookie("sessionid", makeid());
+    $("#Sessionid").val(getCookie("sessionid"));
+
     $.ajax({
         url: getAuction,
         success: function (data) {

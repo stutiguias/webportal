@@ -4,6 +4,8 @@
  */
 package me.stutiguias.webportal.tasks;
 
+import com.sun.net.httpserver.BasicAuthenticator;
+import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
@@ -36,7 +38,10 @@ public class WebPortalHttpServer extends Thread {
             WebPortal.logger.log(Level.INFO,"{0} Start HTTP Server",plugin.logPrefix);
             
             server = HttpServer.create(new InetSocketAddress(Port),NUM_CONN_MAX);
-            server.createContext("/", new WebPortalHttpHandler(plugin)).getFilters().add(new ParameterFilter());
+            HttpContext cc  = server.createContext("/", new WebPortalHttpHandler(plugin));
+            
+            cc.getFilters().add(new ParameterFilter());
+            
             server.start();
             
             WebPortal.logger.log(Level.INFO,"{0} Server start on port {1} ",new Object[]{ plugin.logPrefix , Port });
