@@ -39,7 +39,6 @@ public interface IDataQueries {
         void updatePlayerPermissions(String player, int canBuy, int canSell, int isAdmin);
         void createPlayer(String player, String pass, double money, int canBuy, int canSell, int isAdmin);
         String getPassword(String player);
-        void updatePlayerMoney(String player, double money);
 	AuctionPlayer getPlayer(String player);	
         List<Auction> getPlayerItems(String player);
         String getLock(String player);
