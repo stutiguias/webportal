@@ -37,7 +37,7 @@ var getItems = function () {
 
 var select = function (itemId, nameImage, selector, img, enchants) {
     $(selector).change(function () {
-        var imgsrc = "Images/" + nameImage[$(selector + ' :selected').text()];
+        var imgsrc = "images/" + nameImage[$(selector + ' :selected').text()];
         if ($(selector + ' :selected').val().indexOf(itemId) != -1) {
             $(img).attr("src", imgsrc);
             $(enchants).html(nameImage["enchant"]);
@@ -48,7 +48,7 @@ var select = function (itemId, nameImage, selector, img, enchants) {
         if (name.indexOf("enchant") == -1) {
             $(selector).append(new Option(name, itemId));
         }
-        var imgsrc = "Images/" + nameImage[$(selector + ' :selected').text()];
+        var imgsrc = "images/" + nameImage[$(selector + ' :selected').text()];
         if (imgsrc.indexOf("undefined") == -1)
             $(img).attr("src", imgsrc);
     });

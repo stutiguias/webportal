@@ -485,7 +485,7 @@ public class MySQLDataQueries implements IDataQueries {
 				waPlayer.setIsAdmin(rs.getInt("isAdmin"));
 			}
 		} catch (SQLException e) {
-			WebPortal.logger.log(Level.WARNING, "{0}Unable to get player {1}", new Object[]{plugin.logPrefix, player});
+			WebPortal.logger.log(Level.WARNING, "{0} Unable to get player {1}", new Object[]{plugin.logPrefix, player});
 			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);

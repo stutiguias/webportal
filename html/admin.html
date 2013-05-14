@@ -83,27 +83,15 @@
         
             <div class="row">
                 <div class="span2">
-                    <form onsubmit="return listshop(this)" class=".form-inline">
-                        <input type="submit" name="enviar" value="List Admin Shop" class="btn" />
-                    </form>
-                    <form onsubmit="return admshop()" class=".form-inline">
-                            <input type="submit" value="Add Admin Shop" class="btn" />
-                    </form>
-                     <form onsubmit="return getinfo()" class=".form-inline">
-                            <input type="submit" name="enviar" value="Server Info" class="btn" />
-                     </form>
-                    <form onsubmit="return shutdown(this)" class=".form-inline">
-                            <input type="submit" name="enviar" value="ShutDown" class="btn btn-danger" />
-                     </form>
-                     <form onsubmit="return reload(this)" class=".form-inline">
-                            <input type="submit" name="enviar" value="Reload" class="btn btn-danger" />
-                     </form>
-                    <form onsubmit="return viewplugins(this)" class=".form-inline">
-                            <input type="submit" value="View Plugins" class="btn" />
-                     </form>
-                    <form onsubmit="return infoplayer()" class=".form-inline">
-                            <input type="submit" value="Player Info" class="btn" />
-                    </form>
+                    <button type="button" onclick="return listshop(this)" class="btn" style="margin:10px">List Admin Shop</button>
+                    <button type="button" onclick="return admshop()"  class="btn" style="margin:10px">Add Admin Shop<//button>
+                    <button type="button" onclick="return getinfo()"  class="btn" style="margin:10px" >Server Info<//button>
+                    <button type="button" onclick="return shutdown(this)" class="btn btn-danger" style="margin:10px" >ShutDown</button>
+                    <button type="button" onclick="return reload(this)" class="btn btn-danger" style="margin:10px" >Reload</button>
+                    <button type="button" onclick="return viewplugins(this)" class="btn" style="margin:10px" >View Plugins</button>
+                    <button type="button" onclick="return infoplayer()" class="btn" style="margin:10px" >Player Website Info</button>
+                    <button type="button" onclick="return svpllist()" class="btn" style="margin:10px" >Players Online</button>
+                    <button type="button" onclick="return banlist()" class="btn" style="margin:10px" >Ban List</button>
                 </div>
                 <div class="table hide span10">                   
                     <div class="pagination"></div>

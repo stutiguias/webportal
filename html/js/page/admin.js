@@ -24,6 +24,13 @@ function getinfo() {
 
 function svpllist() {
     get("", "/adm/playerlist");
+    consoleinfohide();
+    return false;
+}
+
+function banlist() {
+    get("", "/adm/banlist");
+    consoleinfohide();
     return false;
 }
 
@@ -185,6 +192,53 @@ function shutdown(form) {
     return false;
 }
 
+function kick(player) {
+    hideall();
+    $.ajax({
+        url: "/adm/kick",
+        data: "player="+player,
+        success: function (data) {
+            $('#resultado').html(data);
+        },
+        error: function (error, data) {
+            $('#resultado').html(error);
+        },
+        dataType: "text"
+    });
+    return false;
+}
+
+function ban(player) {
+    hideall();
+    $.ajax({
+        url: "/adm/ban",
+        data: "player=" + player,
+        success: function (data) {
+            $('#resultado').html(data);
+        },
+        error: function (error, data) {
+            $('#resultado').html(error);
+        },
+        dataType: "text"
+    });
+    return false;
+}
+
+function uban(player) {
+    hideall();
+    $.ajax({
+        url: "/adm/unban",
+        data: "player=" + player,
+        success: function (data) {
+            $('#resultado').html(data);
+        },
+        error: function (error, data) {
+            $('#resultado').html(error);
+        },
+        dataType: "text"
+    });
+    return false;
+}
 
 function reload(form) {
     hideall();
