@@ -3,6 +3,7 @@ package me.stutiguias.webportal.listeners;
 import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.settings.AuctionPlayer;
 import me.stutiguias.webportal.settings.SaleAlert;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -36,7 +37,8 @@ public class WebAuctionPlayerListener implements Listener {
         @EventHandler(priority = EventPriority.NORMAL)
 	public void PlayerJoin(PlayerJoinEvent event) {
 		String player = event.getPlayer().getName();
-                if (null != plugin.dataQueries.getPlayer(player)) {
+                AuctionPlayer auplayer = plugin.dataQueries.getPlayer(player);
+                if (auplayer != null) {
                     
                     // Alert player of any new sale alerts
                     if (plugin.showSalesOnJoin == true){
@@ -51,23 +53,8 @@ public class WebAuctionPlayerListener implements Listener {
                             event.getPlayer().sendMessage("You have new mail!");
                     }
 
-                    // Determine permissions
-                    int canBuy = 0;
-                    int canSell = 0;
-                    int isAdmin = 0;
-                    if (plugin.permission.has(event.getPlayer().getWorld(),event.getPlayer().getName(), "wa.canbuy")) {
-                            canBuy = 1;
-                    }
-                    if (plugin.permission.has(event.getPlayer().getWorld(),event.getPlayer().getName(), "wa.cansell")) {
-                            canSell = 1;
-                    }
-                    if (plugin.permission.has(event.getPlayer().getWorld(),event.getPlayer().getName(), "wa.webadmin")) {
-                            isAdmin = 1;
-                    }
 		
-                    WebPortal.logger.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, player, canBuy, canSell, isAdmin});
-                    // Update permissions
-                    plugin.dataQueries.updatePlayerPermissions(player, canBuy, canSell, isAdmin);
+                    WebPortal.logger.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, auplayer.getName(), auplayer.getCanBuy(), auplayer.getCanSell(), auplayer.getIsAdmin()});
 		}
 	}
 

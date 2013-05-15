@@ -25,6 +25,7 @@ permissions:
             wa.save: true
             wa.command.vbox : true
             wa.vbox : true
+            wa.view : true
     wa.use.*:
         description: Gives access to all WebAuction commands
         children:
@@ -36,6 +37,7 @@ permissions:
             wa.webadmin: false
             wa.command.vbox : true
             wa.vbox: true
+            wa.view: false
     wa.use.withdraw.items:
         description: Lets you use the mailbox
         default: true
@@ -83,4 +85,7 @@ permissions:
        default: op
     wa.view:
        description: View Player Permission
+       default: op
+    wa.set:
+       description: Set Player Permission
        default: op

@@ -52,6 +52,12 @@ public class WebPortalCommands implements CommandExecutor {
                             break;
                         }
                         return View(sender, args[1]);
+                    case "set":
+                        if(params != 4){
+                            sender.sendMessage(ChatColor.RED + " Need to infor the player name, option ( buy,sell,admin ) and yes or no");
+                            break;
+                        }
+                        return SetPerm(sender,args[1],args[2],args[3]);
                     default:
                         return CommandNotFound(sender);
                 }
@@ -60,6 +66,44 @@ public class WebPortalCommands implements CommandExecutor {
         
         private boolean CommandNotFound(CommandSender sender) {
             sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " Command not found try /wa help ");
+            return true;
+        }
+        
+        public boolean SetPerm(CommandSender sender,String name,String param,String value){
+            if (!sender.hasPermission("wa.set")){
+                sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " You do not have permission");
+                return false;
+            }
+            AuctionPlayer player = plugin.dataQueries.getPlayer(name);
+            sender.sendMessage("-----------------------------------------------------");
+            if(player == null) {
+                sender.sendMessage(ChatColor.YELLOW + " Player Not Found");
+                sender.sendMessage("-----------------------------------------------------");
+                return false;
+            }
+            int canBuy = player.getCanBuy();
+            int canSell = player.getCanSell();
+            int isAdmin = player.getIsAdmin();
+            sender.sendMessage(ChatColor.YELLOW + " Player - " + player.getName());
+            switch(param){
+                case "buy":
+                    canBuy = ( (value.equalsIgnoreCase("yes"))? 1 : 0 ) ;
+                    sender.sendMessage(ChatColor.YELLOW + " Can Buy Altered to " + ( (canBuy == 1) ? "YES" : "NO" ) );
+                    break;
+                case "sell":
+                    canSell = ( (value.equalsIgnoreCase("yes"))? 1 : 0 ) ;
+                    sender.sendMessage(ChatColor.YELLOW + " Can Sell Altered to " + ( (canSell == 1) ? "YES" : "NO" ) );
+                    break;
+                case "admin":
+                    isAdmin = ( (value.equalsIgnoreCase("yes"))? 1 : 0 ) ;
+                    sender.sendMessage(ChatColor.YELLOW + " Is Admin Altered to " + ( (isAdmin == 1) ? "YES" : "NO" ) );
+                    break;
+                default:
+                    sender.sendMessage(ChatColor.YELLOW + " Invalid Param");
+
+            }
+            sender.sendMessage("-----------------------------------------------------");
+            plugin.dataQueries.updatePlayerPermissions(player.getName(), canBuy, canSell, isAdmin);
             return true;
         }
         
@@ -72,6 +116,7 @@ public class WebPortalCommands implements CommandExecutor {
             sender.sendMessage("-----------------------------------------------------");
             if(player == null) {
                 sender.sendMessage(ChatColor.YELLOW + " Player Not Found");
+                sender.sendMessage("-----------------------------------------------------");
                 return false;
             }
             sender.sendMessage(ChatColor.YELLOW + " Player - " + player.getName());
@@ -152,6 +197,9 @@ public class WebPortalCommands implements CommandExecutor {
         }
         if (sender.hasPermission("wa.reload")){
             sender.sendMessage(ChatColor.RED + "/wa reload | Reload All Config File");
+        }
+        if (sender.hasPermission("wa.view")) {
+            sender.sendMessage(ChatColor.RED + "/wa view <player> | View Player Stats");
         }
         if (sender.hasPermission("wa.command.vbox")) {
             sender.sendMessage(ChatColor.YELLOW + "/wa mailbox | Use Mailbox Inventory");
