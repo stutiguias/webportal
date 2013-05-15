@@ -17,7 +17,7 @@ Misc:
   ShowSalesOnJoin: false
   #If the player not Online on the Server the login will fail
   AllowLogOnlyIfOnline: false
-  
+  # Always let this true
   UseInsideServer: true
   # Port number for webserver 
   # Check if your host not will block that port
@@ -31,6 +31,9 @@ Misc:
   # Check this if you don't allow player use sign
   # on creative mode on
   BlockCreative: true
+  # Use OnJoinCheckPermission permission will overwrite the permission 
+  # you set or alter by command /wa set <player> <option> <yes/no>
+  OnJoinCheckPermission: false
 Updates:
   # Frequency alert will be send 
   # Only if you Set  ReportSales to true

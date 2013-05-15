@@ -26,6 +26,7 @@ permissions:
             wa.command.vbox : true
             wa.vbox : true
             wa.view : true
+            wa.set: true
     wa.use.*:
         description: Gives access to all WebAuction commands
         children:

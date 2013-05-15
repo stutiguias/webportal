@@ -4,7 +4,6 @@
  */
 package me.stutiguias.webportal.tasks;
 
-import com.sun.net.httpserver.BasicAuthenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;

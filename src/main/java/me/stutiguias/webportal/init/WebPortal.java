@@ -63,7 +63,7 @@ public class WebPortal extends JavaPlugin {
         public Boolean showSalesOnJoin = false;
         public Boolean allowlogifonline = false;
         public Boolean blockcreative = true;
-        
+        public Boolean OnJoinCheckPermission = false;
         public int signDelay;
         
         public String authplugin;
@@ -230,6 +230,7 @@ public class WebPortal extends JavaPlugin {
                 allowlogifonline =      c.getBoolean("Misc.AllowLogOnlyIfOnline");
 		signDelay =             c.getInt("Misc.SignDelay");
                 port =                  c.getInt("Misc.WebServicePort");
+                OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
                 
                 long saleAlertFrequency = c.getLong("Updates.SaleAlertFrequency");
 		boolean getMessages = c.getBoolean("Misc.ReportSales");

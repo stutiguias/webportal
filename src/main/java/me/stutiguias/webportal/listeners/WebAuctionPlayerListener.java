@@ -52,9 +52,22 @@ public class WebAuctionPlayerListener implements Listener {
                     if (plugin.dataQueries.hasMail(player)) {
                             event.getPlayer().sendMessage("You have new mail!");
                     }
+                    
+                    if(plugin.OnJoinCheckPermission){
+                        int canBuy = 0;
+                        int canSell = 0;
+                        int isAdmin = 0;
+                        if (plugin.permission.has(event.getPlayer(), "wa.canbuy"))
+                                canBuy = 1;
+                        if (plugin.permission.has(event.getPlayer(), "wa.cansell"))
+                                canSell = 1;
+                        if (plugin.permission.has(event.getPlayer(), "wa.webadmin"))
+                                isAdmin = 1;
+                        plugin.dataQueries.updatePlayerPermissions(player, canBuy, canSell, isAdmin);
+                    }
+                    
+                    WebPortal.logger.log(Level.INFO, "{0} Player Logged - {1} ", new Object[]{plugin.logPrefix, auplayer.getName()});
 
-		
-                    WebPortal.logger.log(Level.INFO, "{0} Player - {1} : canbuy = {2} cansell = {3} isAdmin = {4}", new Object[]{plugin.logPrefix, auplayer.getName(), auplayer.getCanBuy(), auplayer.getCanSell(), auplayer.getIsAdmin()});
 		}
 	}
 

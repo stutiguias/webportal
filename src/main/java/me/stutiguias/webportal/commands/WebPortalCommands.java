@@ -191,23 +191,27 @@ public class WebPortalCommands implements CommandExecutor {
         }
 
     private boolean help(CommandSender sender) {
-        sender.sendMessage("-----------------------------------------------------");
+        sender.sendMessage("-----------------"+ChatColor.GOLD+"Help WebPortal"+ChatColor.WHITE+"----------------------");
+        sender.sendMessage(ChatColor.YELLOW + "All /wa commands");
         if (sender.hasPermission("wa.save")){
-            sender.sendMessage(ChatColor.RED + "/wa save | Save the All Config File");
+            sender.sendMessage(ChatColor.RED + "save: Save the All Config File");
         }
         if (sender.hasPermission("wa.reload")){
-            sender.sendMessage(ChatColor.RED + "/wa reload | Reload All Config File");
+            sender.sendMessage(ChatColor.RED + "reload: Reload All Config File");
         }
         if (sender.hasPermission("wa.view")) {
-            sender.sendMessage(ChatColor.RED + "/wa view <player> | View Player Stats");
+            sender.sendMessage(ChatColor.RED + "view <player>: View Player Stats");
+        }
+        if (sender.hasPermission("wa.set")) {
+            sender.sendMessage(ChatColor.RED + "set <player> <option(buy,sell,admin)> <yes/no>: Set Player Perm");
         }
         if (sender.hasPermission("wa.command.vbox")) {
-            sender.sendMessage(ChatColor.YELLOW + "/wa mailbox | Use Mailbox Inventory");
+            sender.sendMessage(ChatColor.YELLOW + "mailbox: Use Mailbox Inventory");
         }
-        sender.sendMessage(ChatColor.YELLOW + "/wa password <password> | Change/Create Your Password");
+        sender.sendMessage(ChatColor.YELLOW + "password <password>: Change/Create Your Password");
         sender.sendMessage("-----------------------------------------------------");
-        sender.sendMessage(ChatColor.YELLOW + "YELLOW : Normal Comands");
-        sender.sendMessage(ChatColor.RED + "RED : Admin Comands");
+        sender.sendMessage(ChatColor.YELLOW + "YELLOW: Normal Commands");
+        sender.sendMessage(ChatColor.RED + "RED: Admin Commands");
         sender.sendMessage("-----------------------------------------------------");
         return true;
     }
