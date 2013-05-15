@@ -42,4 +42,9 @@ public class WALDriver implements Driver {
         return driver.jdbcCompliant();
     }
 
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

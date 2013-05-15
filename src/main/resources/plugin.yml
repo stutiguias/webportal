@@ -1,6 +1,6 @@
 name: WebPortal
 main: me.stutiguias.webportal.init.WebPortal
-version: 0.7.5
+version: 0.8
 author: Stutiguias
 depend: [Vault]
 commands:
@@ -65,7 +65,7 @@ permissions:
         default: op
     wa.vbox:
         description: Use Virtual Inventory
-        default: op
+        default: true
     wa.command.vbox:
         description: Use Virtual Inventory Command
         default: op
@@ -80,4 +80,7 @@ permissions:
        default: op
     wa.save:
        description: Saves the WebAuctionPlus config.yml
+       default: op
+    wa.view:
+       description: View Player Permission
        default: op

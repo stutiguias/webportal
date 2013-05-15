@@ -43,10 +43,10 @@ public class WebPortal extends JavaPlugin {
 
 	public IDataQueries dataQueries;
 
-	public Map<String, Long> lastSignUse = new HashMap<String, Long>();
+	public Map<String, Long> lastSignUse = new HashMap<>();
         
-        public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<String, AuthPlayer>();
-        public static final HashMap<String, Boolean> LockTransact = new HashMap<String, Boolean>();
+        public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<>();
+        public static final HashMap<String, Boolean> LockTransact = new HashMap<>();
         
         public WebPortalHttpServer server;
 
@@ -216,7 +216,7 @@ public class WebPortal extends JavaPlugin {
                 }
                 
                 FileConfiguration c = config.getConfig();
-                Messages = new HashMap<String, String>();
+                Messages = new HashMap<>();
                 Messages.put("StackStored", c.getString("Sign.Message.StackStored"));
                 Messages.put("HoldHelp", c.getString("Sign.Message.HoldHelp"));
                 Messages.put("InventoryFull", c.getString("Sign.Message.InventoryFull"));

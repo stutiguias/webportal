@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.stutiguias</groupId>
   <artifactId>WebPortal</artifactId>
-  <version>0.7.5</version>
+  <version>0.8</version>
   <name>WebPortal</name>
   <description>WebPortal por minecraft</description>
   
@@ -84,8 +84,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.7</source>
+          <target>1.7</target>
           <showDeprecation>false</showDeprecation>
         </configuration>
       </plugin>
