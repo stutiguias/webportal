@@ -4,6 +4,7 @@
  */
 package me.stutiguias.webportal.webserver.authentication;
 
+import java.util.Date;
 import me.stutiguias.webportal.settings.AuctionPlayer;
 
 /**
@@ -13,6 +14,7 @@ import me.stutiguias.webportal.settings.AuctionPlayer;
 public class AuthPlayer {
     
     public  AuctionPlayer AuctionPlayer;
+    private  Date date;
     
     public AuthPlayer() {
         AuctionPlayer = new AuctionPlayer();
@@ -25,6 +27,9 @@ public class AuthPlayer {
         return true;
     }
     
+    public String GetLogin() {
+        return AuctionPlayer.getName();
+    }
     
     public boolean isLogin(String name){
         return AuctionPlayer.isLogin();
@@ -37,5 +42,19 @@ public class AuthPlayer {
             return false;
         }
     }
-    
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }

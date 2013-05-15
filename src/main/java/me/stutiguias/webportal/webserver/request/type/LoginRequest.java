@@ -4,6 +4,9 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuctionPlayer;
@@ -40,6 +43,21 @@ public class LoginRequest extends HttpResponse {
             }
             _AuthPlayer.AuctionPlayer = _AuctionPlayer;
             _AuthPlayer.AuctionPlayer.setIp(HostAddress);
+            
+            Calendar cal = Calendar.getInstance(); 
+            cal.setTime(new Date()); 
+            cal.add(Calendar.MINUTE, plugin.SessionTime);
+            cal.getTime(); 
+            _AuthPlayer.setDate(cal.getTime());
+
+            Date d = new Date();
+            
+            for (Map.Entry<String,AuthPlayer> pairs : WebPortal.AuthPlayers.entrySet()) {
+                AuthPlayer authplayer = pairs.getValue();
+                if(authplayer.GetLogin().equalsIgnoreCase(username) || authplayer.getDate().before(d))
+                    WebPortal.AuthPlayers.remove(pairs.getKey());
+            }
+            
             WebPortal.AuthPlayers.put(sessionid,_AuthPlayer);
             Print("ok","text/plain");
         }else{

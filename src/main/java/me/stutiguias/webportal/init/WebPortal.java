@@ -64,6 +64,7 @@ public class WebPortal extends JavaPlugin {
         public Boolean allowlogifonline = false;
         public Boolean blockcreative = true;
         public Boolean OnJoinCheckPermission = false;
+        public Integer SessionTime;
         public int signDelay;
         
         public String authplugin;
@@ -286,6 +287,7 @@ public class WebPortal extends JavaPlugin {
                 Table =          w.getString("AuthSystem.TableName");
                 ColumnPassword = w.getString("AuthSystem.ColumnPassword");
                 Username =       w.getString("AuthSystem.ColumnUsername");
+                SessionTime =    w.getInt("Setting.SessionTime");
                 
                 Messages.put("Buy",w.getString("Message.Buy"));
                 Messages.put("Cancel",w.getString("Message.Cancel"));

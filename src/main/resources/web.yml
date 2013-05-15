@@ -1,4 +1,8 @@
 ## Setting for WEBSITE.
+Setting:
+  # How much time in minute player 
+  # will have before auto-logout
+  SessionTime: 20
 ## Setup for Some Text on the Site
 Message:
   Buy: Buy
