@@ -81,7 +81,7 @@ public class Info {
     }
     
     public Boolean isPotion(ItemStack item) {
-        return item.getType() == org.bukkit.Material.POTION;
+        return item.getType() == Material.POTION || item.getType() == Material.INK_SACK;
     }
     
     // Return Name,Image,SearchType
@@ -106,7 +106,7 @@ public class Info {
         
         String itemId;
         Short dmg = item.getDurability();
-        if( ( item.getType().isBlock() || isPotion(item) ) && !dmg.equals(Short.valueOf("0")) ) 
+        if( ( item.getType().isBlock() || isPotion(item)  ) && !dmg.equals(Short.valueOf("0")) ) 
             itemId = item.getTypeId() + "-" + item.getDurability();
         else
             itemId = String.valueOf(item.getTypeId());

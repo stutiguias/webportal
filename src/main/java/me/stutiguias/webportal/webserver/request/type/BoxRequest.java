@@ -4,7 +4,6 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
-import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
