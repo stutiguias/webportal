@@ -55,6 +55,10 @@ public class MailRequest extends HttpResponse {
     public void SendMail(String ip,String url,Map param) {
         int id = Integer.parseInt((String)param.get("ID"));
         int quantity = Integer.parseInt((String)param.get("Quantity"));
+        if(quantity < 0) {
+            Print("Invalid Number","text/plain");
+            return;
+        }
         Auction _Auction = plugin.dataQueries.getAuction(id);
         if(_Auction.getItemStack().getAmount() == quantity) {
             plugin.dataQueries.updateTable(id, plugin.Mail);

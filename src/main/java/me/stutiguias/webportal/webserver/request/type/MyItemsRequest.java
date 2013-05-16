@@ -38,6 +38,10 @@ public class MyItemsRequest extends HttpResponse {
             price = Double.parseDouble((String)param.get("Price"));
             id = Integer.parseInt((String)param.get("ID"));
             qtd = Integer.parseInt((String)param.get("Quantity"));
+            if(qtd < 0) {
+                Print("Invalid Number","text/plain");
+                return;
+            }
         }catch(NumberFormatException ex) {
             Print("Invalid Number","text/plain");
             return;
