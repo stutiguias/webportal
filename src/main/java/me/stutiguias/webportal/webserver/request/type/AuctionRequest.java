@@ -115,7 +115,7 @@ public class AuctionRequest extends HttpResponse {
                 tmp_Data.put("DT_RowId","row_" + item.getId() );
                 tmp_Data.put("DT_RowClass", Grade(MakertPercent));
                 tmp_Data.put("0", ConvertItemToResult(item,searchtype));
-                tmp_Data.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
+                tmp_Data.put("1", "<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + item.getPlayerName() +"' /><br />"+ item.getPlayerName());
                 tmp_Data.put("2", "Never");
                 tmp_Data.put("3", item.getItemStack().getAmount());
                 tmp_Data.put("4", item.getPrice());

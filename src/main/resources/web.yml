@@ -3,6 +3,8 @@ Setting:
   # How much time in minute player 
   # will have before auto-logout
   SessionTime: 20
+  # Url for avatar img
+  Avatarurl: 'http://minotar.net/avatar/'
 ## Setup for Some Text on the Site
 Message:
   Buy: Buy

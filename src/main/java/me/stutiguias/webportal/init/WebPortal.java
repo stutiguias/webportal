@@ -65,6 +65,7 @@ public class WebPortal extends JavaPlugin {
         public Boolean blockcreative = true;
         public Boolean OnJoinCheckPermission = false;
         public Integer SessionTime;
+        public String Avatarurl;
         public int signDelay;
         
         public String authplugin;
@@ -288,6 +289,7 @@ public class WebPortal extends JavaPlugin {
                 ColumnPassword = w.getString("AuthSystem.ColumnPassword");
                 Username =       w.getString("AuthSystem.ColumnUsername");
                 SessionTime =    w.getInt("Setting.SessionTime");
+                Avatarurl=       w.getString("Setting.Avatarurl");
                 
                 Messages.put("Buy",w.getString("Message.Buy"));
                 Messages.put("Cancel",w.getString("Message.Cancel"));

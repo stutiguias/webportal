@@ -30,6 +30,7 @@ public class UserRequest extends HttpResponse {
             json.put("Admin", authPlayer.AuctionPlayer.getIsAdmin() );
             json.put("Money", plugin.economy.getBalance( authPlayer.AuctionPlayer.getName() ) );
             json.put("Mail", plugin.dataQueries.getMail(authPlayer.AuctionPlayer.getName() ).size() );
+            json.put("Avatarurl", plugin.Avatarurl + authPlayer.AuctionPlayer.getName() );
         Print(json.toJSONString(),"application/json");
     }
    
