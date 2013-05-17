@@ -7,7 +7,7 @@ $(function () {
 var AjaxMail = function (to, from) {
     $.ajax({
         url: "/mail/get",
-        data: "to=" + to + "&from=" + from,
+        data: "to=" + to + "&from=" + from + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             try {
                 LoadTable(data);

@@ -81,6 +81,7 @@ var table = function () {
             }
         },
         "fnServerData": function (sSource, aoData, fnCallback) {
+            aoData.push({ name: "sessionid", value: getCookie("sessionid") });
             $.ajax({
                 "dataType": 'json',
                 "type": "POST",
@@ -99,7 +100,7 @@ function postauction(form) {
     var ar = $(form).serializeArray();
     $.ajax({
         url: postAuctions,
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             if (data == "no") {
                 $('#error').html('Invalid');
@@ -122,7 +123,7 @@ function mail(form) {
     var ar = $(form).serializeArray();
     $.ajax({
         url: postMail,
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $(".hideform").hide();
             table();

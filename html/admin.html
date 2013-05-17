@@ -62,7 +62,7 @@
              <form onsubmit="return additem(this)" class=".form-inline text-center">
                     <div class="input-prepend input-append">
                         <span class="add-on">Item Id ( x or x:x ) </span>
-                        <input name='itemId' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
+                        <input name='itemId' type="text" pattern="[0-9]+:?[0-9]*" title="x or x:x" class='input' value=" " required />
                         <span class="add-on"><a href="http://www.minecraftinfo.com/IDList.htm" target="_blank">Help</a></span>
                     </div>
                     <div class="input-prepend">

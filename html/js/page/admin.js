@@ -111,7 +111,7 @@ function viewplugins(form) {
 function sendmsg(form) {
     $.ajax({
         url: "/adm/sendmsg",
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -161,7 +161,7 @@ function replaceAll(find, replace, str) {
 function sendcmd(form) {
     $.ajax({
         url: "/adm/sendcmd",
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             var result = "";
             $.each(data, function (key, val) {
@@ -196,7 +196,7 @@ function kick(player) {
     hideall();
     $.ajax({
         url: "/adm/kick",
-        data: "player="+player,
+        data: "player=" + player + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -212,7 +212,7 @@ function ban(player) {
     hideall();
     $.ajax({
         url: "/adm/ban",
-        data: "player=" + player,
+        data: "player=" + player + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -228,7 +228,7 @@ function uban(player) {
     hideall();
     $.ajax({
         url: "/adm/unban",
-        data: "player=" + player,
+        data: "player=" + player + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -262,7 +262,7 @@ function adm(form) {
     consoleinfohide();
     $.ajax({
         url: admsearch,
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             try {
                 var result = "";
@@ -301,7 +301,7 @@ function additem(form) {
     $(".table").show();
     $.ajax({
         url: "/adm/addshop",
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             if (data.indexOf("ok") == -1) {
                 $('#resultado').html(data);
@@ -322,7 +322,7 @@ function del(form) {
     $(form).hide();
     $.ajax({
         url: "/adm/deleteshop",
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -349,7 +349,7 @@ function list(to, from) {
     $(".pagination").html("");
     $.ajax({
         url: "/adm/shoplist",
-        data: "DisplayStart=" + to + "&DisplayLength=" + from,
+        data: "DisplayStart=" + to + "&DisplayLength=" + from + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             try {
                 LoadTable(data);

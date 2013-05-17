@@ -39,7 +39,7 @@ $(document).ready(function () {
                 $('#user').html(data["Name"] + " " + isAdmin);
                 $('#money').html(data["Money"].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
                 $('#mail').html(data["Mail"]);
-                $('#avatarimg').attr('src', 'http://minotar.net/avatar/' + data["Name"]);
+                $('#avatarimg').attr('src', data["Avatarurl"]);
             } catch (err) {
                 $('#user').html(err);
             };

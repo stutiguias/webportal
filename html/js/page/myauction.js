@@ -26,6 +26,7 @@ $(document).ready(function () {
             }
         },
         "fnServerData": function (sSource, aoData, fnCallback) {
+            aoData.push({ name: "sessionid", value: getCookie("sessionid") });
             $.ajax({
                 "dataType": 'json',
                 "type": "POST",
@@ -43,7 +44,7 @@ function cancel(form) {
     var ar = $(form).serializeArray();
     $.ajax({
         url: cancelUrl,
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $(form).hide();
             $('#' + 'C' + ar[0].value).html(data);

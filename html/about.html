@@ -179,36 +179,36 @@
                         id: "3", title: "User Information", url: "/server/username/info", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: "NAME , ADMURL, MONEY , MAIL"
                     },
                     {
-                        id: "4", title: "Auctions With Buy Form", methods: "Post or Get", url: "/fill/auction/{category}", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format ",
+                        id: "4", title: "Auctions With Buy Form", methods: "Post or Get", url: "/auction/get/{category}", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format ",
                         o: [
                            { othersTitle: "Category", others: "byall, byblock, byfood, bytools, bycombat, byredstone, bydecoration, bytransportation, bymicellaneous, bymaterials, bybrewing, byothers" },
                            { othersTitle: "Buy Form", others: "implement onsubmit='return buy(this)' function" },
                         ]
                     },
                     {
-                        id: "5", title: "My Items", url: "/fill/myitens/simple", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
+                        id: "5", title: "My Items", url: "/myitens/dataTable", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
                     },
                     {
-                        id: "6", title: "My Items Simple", methods: "Post or Get", url: "/get/myitems", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: " json format ",
+                        id: "6", title: "My Items Simple", methods: "Post or Get", url: "/myitems/get", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: " json format ",
                         code: "{ 'ID': {'NAME_ITEM':'PATH_IMAGE','enchant':'ENCHANTS'} }",
                     },
                     {
-                        id: "7", title: "My Auctions", url: "/fill/myauctions", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
+                        id: "7", title: "My Auctions", url: "/myauctions/get", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
                     },
                     {
-                        id: "8", title: "Post Auctions", url: "/web/postauction", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity / Price ", output: " text/plain result "
+                        id: "8", title: "Post Auctions", url: "/myitems/postauction", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity / Price ", output: " text/plain result "
                     },
                     {
-                        id: "9", title: "Send Mail", url: "/web/mail", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity ", output: " text/plain result "
+                        id: "9", title: "Send Mail", url: "/mail/send", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity ", output: " text/plain result "
                     },
                     {
-                        id: "10", title: "Buy Auction", url: "/buy/item", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID / Quantity ", output: " text/plain result "
+                        id: "10", title: "Buy Auction", url: "/auction/buy", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID / Quantity ", output: " text/plain result "
                     },
                     {
-                        id: "11", title: "Cancel Auction", url: "/cancel/auction", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID ", output: " text/plain result"
+                        id: "11", title: "Cancel Auction", url: "/myauctions/cancel", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID ", output: " text/plain result"
                     },
                     {
-                        id: "12", title: "Admin Search", url: "/admsearch", style: "color:red", needlogin: "Yes", needadmin: "Yes", input: " nick / {information} ", output: " text/plain result with tables ",
+                        id: "12", title: "Admin Search", url: "/adm/search", style: "color:red", needlogin: "Yes", needadmin: "Yes", input: " nick / {information} ", output: " text/plain result with tables ",
                         o: [
                             { othersTitle: "Information", others: " playeritems, playermail, playerauctions, playertransaction " },
                         ],

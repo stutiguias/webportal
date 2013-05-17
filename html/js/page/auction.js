@@ -2,7 +2,7 @@ function buy(form) {
     var ar = $(form).serializeArray();
     $.ajax({
         url: buyUrl,
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             if (data == "ok") {
                 $(form).hide();
@@ -51,6 +51,7 @@ var table = function (by) {
             }
         },
         "fnServerData": function (sSource, aoData, fnCallback) {
+            aoData.push({ name : "sessionid" , value : getCookie("sessionid") });
             $.ajax({
                 "dataType": 'json',
                 "type": "POST",
