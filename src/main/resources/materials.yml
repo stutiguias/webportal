@@ -208,6 +208,8 @@ Decoration:
   119:   End Portal,Blocks/End_Portal.png
   130:   Ender Chest,Blocks/Ender_Chest.png
   145:   Anvil,Blocks/Anvil.png
+  145-1: Anvil (Slightly Damaged),Blocks/Anvil.png
+  145-2: Anvil (Very Damaged),Blocks/Anvil.png
   146:   Trapped Chest,Blocks/Trapped_Chest.png
   321:   Painting,Items/Decoration/Painting.png
   323:   Sign,Items/Utility/Sign.png
