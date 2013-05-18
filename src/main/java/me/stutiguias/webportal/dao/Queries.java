@@ -127,7 +127,7 @@ public class Queries implements IDataQueries {
 
     @Override
     public List<SaleAlert> getNewSaleAlertsForSeller(String player) {
-        List<SaleAlert> saleAlerts = new ArrayList<SaleAlert>();
+        List<SaleAlert> saleAlerts = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -416,7 +416,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT WA_Players.lock FROM WA_Players where name = ?");
+                st = conn.prepareStatement("SELECT lock FROM WA_Players where name = ?");
                 st.setString(1, player);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -438,12 +438,12 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Players SET lock = ? where name = ? ");
+                st = conn.prepareStatement("UPDATE WA_Players SET WA_Players.lock = ? WHERE name = ?");
                 st.setString(1, lock);
                 st.setString(2, player);
                 st.executeUpdate();
         } catch (SQLException e) {
-                WebPortal.logger.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
+                WebPortal.logger.log(Level.WARNING, "{0} Unable setLock", plugin.logPrefix);
                 WebPortal.logger.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
