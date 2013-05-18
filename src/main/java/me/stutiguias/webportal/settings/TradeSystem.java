@@ -5,6 +5,8 @@
 package me.stutiguias.webportal.settings;
 
 import java.math.BigDecimal;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
@@ -14,6 +16,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -69,10 +72,8 @@ public class TradeSystem {
             plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
         }else if(!ingame) {
             String Type = sellerauction.getItemStack().getType().toString();
-            String[] itemConfig = info.GetItemConfig(sellerauction.getItemStack());
-            String ItemName = itemConfig[0];
-            String searchtype = itemConfig[2];
-            plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,ItemName,searchtype);
+            String searchtype = info.GetSearchType(sellerauction.getItemStack());
+            plugin.dataQueries.createItem(sellerauction.getItemStack().getTypeId(), sellerauction.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, sellerauction.getEnchantments(), plugin.Myitems,Type,searchtype);
         }
         
         if(sellerauction.getPlayerName().equalsIgnoreCase("Server") && sellerauction.getItemStack().getAmount() == 9999 ){
@@ -102,34 +103,65 @@ public class TradeSystem {
     public void ItemtoStore(ItemStack stack,Player player){
         
         int itemDamage = getDurability(stack);
-        String enchants = getEnchants(stack);
+        String enchants = ConvertEnchantsToStringCSV(stack);
         int quantityInt = stack.getAmount();
                 
         List<Auction> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
         
         Boolean foundMatch = false;
-        
-        for (Auction auction : auctions) {
-            
-                int itemTableIdNumber = auction.getId();
 
-                if (isEnchantsEqual(enchants,auction) && !foundMatch ) {
-                        int currentQuantity = auction.getQuantity();
-                        currentQuantity += quantityInt;
-                        plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);
-                        foundMatch = true;
-                }
+        for (Auction auction : auctions) {
+
+            int itemTableIdNumber = auction.getId();
+            
+            if( stack.hasItemMeta() && !isMetaEqual(stack, auction) ) continue;
+                
+            if (isEnchantsEqual(enchants, auction) && !foundMatch) {
+                int currentQuantity = auction.getQuantity();
+                currentQuantity += quantityInt;
+                plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);
+                foundMatch = true;
+            }
         }
 
         if (foundMatch == false) {
+            
                 String type = stack.getType().toString();
-                String[] itemConfig = info.GetItemConfig(stack);
-                String ItemName = itemConfig[0];
-                String searchtype = itemConfig[2];
-                plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,ItemName,searchtype);
+                String searchtype = info.GetSearchType(stack);
+                int createdId = plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
+                
+                if( plugin.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
+                   String ItemMeta = ConvertItemMetaToStringCSV(stack);
+                   plugin.dataQueries.InsertItemInfo(createdId,"meta", ItemMeta);
+                }
         }
         
     }
+    
+    
+    public boolean isMetaEqual(ItemStack item,Auction auction) {
+        String auctionMeta = plugin.dataQueries.GetItemInfo(auction.getId(),"meta");
+        String itemMeta = ConvertItemMetaToStringCSV(item);
+        return auctionMeta.equalsIgnoreCase(itemMeta);
+    }
+    
+    public String ConvertItemMetaToStringCSV(ItemStack item) {
+        
+        ItemMeta meta = item.getItemMeta();
+        StringBuilder ItemName = new StringBuilder();
+        if( meta.hasDisplayName() )  {
+            ItemName.append("N[#$]").append(meta.getDisplayName());
+        }
+        
+        if( meta.hasLore() ) {
+            for (int i = 0; i < meta.getLore().size(); i++) {
+                ItemName.append(",").append("L[#$]").append(meta.getLore().get(i));
+            }
+        }
+        
+        return ItemName.toString();
+    }
+
     
     public int getDurability(ItemStack itemstack) {
         if (itemstack.getDurability() >= 0) {
@@ -139,7 +171,7 @@ public class TradeSystem {
         }
     }
     
-    public String getEnchants(ItemStack itemstack) {
+    public String ConvertEnchantsToStringCSV(ItemStack itemstack) {
         Map<Enchantment, Integer> itemEnchantments;
         String enchants = "";
         

@@ -48,6 +48,21 @@ public class Info {
         String item_name = nameAndImg[0];
         String img_name = nameAndImg[1];
         
+        if(plugin.AllowMetaItem) {
+            String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
+            if(!meta.isEmpty()) {
+                item.setItemStack(SetItemMeta(item.getItemStack(), meta));
+                String pattern = "\\xA7\\w";
+                try{
+                    WebPortal.logger.info(item.getItemStack().getItemMeta().getDisplayName().replaceAll(pattern, meta));
+                    item_name = item.getItemStack().getItemMeta().getDisplayName().replaceAll(pattern, meta);
+                }catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        }
+        
         if(!img_name.contains("http") || !img_name.contains("www"))
             img_name = String.format("images/%s",img_name);
         
@@ -87,7 +102,7 @@ public class Info {
         return item.getType() == Material.POTION || item.getType() == Material.INK_SACK;
     }
     
-    // Return Name,Image,SearchType
+    // Return Name,Image
     public String[] GetItemConfig(ItemStack item) {
         
         String itemId = GetItemId(item);
@@ -99,8 +114,6 @@ public class Info {
             itemConfig = GetConfigName(itemId,SearchType);
         else
             itemConfig = "Not Found,Not Found";
-        
-        itemConfig += "," + SearchType;
         
         return itemConfig.split(",");
     }

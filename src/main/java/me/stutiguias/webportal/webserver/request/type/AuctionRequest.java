@@ -154,10 +154,9 @@ public class AuctionRequest extends HttpResponse {
         JSONObject json = new JSONObject();
         int count = 0;
         for(Auction item:auctions){
-            String[] itemConfig = GetItemConfig(item.getItemStack());
-            
+            String seatchtype = GetSearchType(item.getItemStack());
             JSONObject jsonNameImg = new JSONObject();
-            jsonNameImg.put("0", ConvertItemToResult(item,itemConfig[2]));
+            jsonNameImg.put("0", ConvertItemToResult(item,seatchtype));
             jsonNameImg.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
             jsonNameImg.put("2", "Never");
             jsonNameImg.put("3", item.getItemStack().getAmount());
