@@ -57,10 +57,8 @@ public class MyItemsRequest extends HttpResponse {
               Short dmg = Short.valueOf(String.valueOf(auction.getDamage()));
               ItemStack stack = new ItemStack(auction.getName(),auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
-              String[] itemConfig = GetItemConfig(stack);
-              String ItemName = itemConfig[0];
-              String searchtype = itemConfig[2];
-              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,ItemName,searchtype);
+              String searchtype = GetSearchType(stack);
+              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,searchtype);
               Print("You have successfully created an Auction","text/plain");
             }else{
               Print("You not permit to sell more then you have","text/plain");

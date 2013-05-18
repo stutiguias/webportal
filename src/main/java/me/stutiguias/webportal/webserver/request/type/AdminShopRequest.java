@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -41,10 +40,8 @@ public class AdminShopRequest extends HttpResponse {
             Integer Quantity = Integer.parseInt(quantity);
             
             String type = Item.getType().toString();
-            String[] itemConfig = GetItemConfig(Item);
-            String ItemName = itemConfig[0];
-            String searchtype = itemConfig[2];
-            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, ItemName, searchtype );
+            String searchtype = GetSearchType(Item);
+            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, searchtype);
             Print("ok","text/html");
             
         }else{

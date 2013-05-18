@@ -32,6 +32,7 @@ public interface IDataQueries {
         List<Auction> getAuctionsLimitbyPlayer(String player,int to,int from,int table);
         void UpdateItemAuctionQuantity(Integer numberleft, Integer id);
         void DeleteAuction(Integer id);
+        void DeleteInfo(int auctionId);
         void setPriceAndTable(int id,Double price);
         
         //Player
@@ -61,9 +62,10 @@ public interface IDataQueries {
         void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
 	//void CreateAuction(int quantity, int id);
-	void createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int on,String type,String Itemname,String searchtype);
+	int createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
         int GetMarketPriceofItem(int itemID, int itemDamage);
-        
+        int InsertItemInfo(int auctionId,String type,String value);
+        String GetItemInfo(int auctionId,String type);
         ItemStack Chant(String ench,ItemStack stack);
         
         //Plugins

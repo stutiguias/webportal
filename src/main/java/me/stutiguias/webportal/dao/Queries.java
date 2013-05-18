@@ -182,7 +182,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT name,quantity,damage,player,price,created,allowBids,currentBid,currentWinner,ench FROM WA_Auctions WHERE id = ?");
+                st = conn.prepareStatement("SELECT name,quantity,damage,player,price,created,ench FROM WA_Auctions WHERE id = ?");
                 st.setInt(1, id);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -194,9 +194,6 @@ public class Queries implements IDataQueries {
                         auction.setPlayerName(rs.getString("player"));
                         auction.setPrice(rs.getDouble("price"));
                         auction.setCreated(rs.getInt("created"));
-                        auction.setAllowBids(rs.getBoolean("allowBids"));
-                        auction.setCurrentBid(rs.getDouble("currentBid"));
-                        auction.setCurrentWinner(rs.getString("currentWinner"));
                         auction.setEnchantments(rs.getString("ench"));
                 }
         } catch (SQLException e) {
@@ -256,6 +253,7 @@ public class Queries implements IDataQueries {
         } finally {
                 closeResources(conn, st, rs);
         }
+        DeleteInfo(id);
     }
 
     @Override
@@ -592,7 +590,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                String sql = "SELECT id,name,damage,player,quantity,ench,itemname,price FROM WA_Auctions WHERE id = ? AND tableid = ?";
+                String sql = "SELECT id,name,damage,player,quantity,ench,price FROM WA_Auctions WHERE id = ? AND tableid = ?";
                 st = conn.prepareStatement(sql);
                 st.setInt(1, ID);
                 st.setInt(2, tableid);
@@ -602,7 +600,6 @@ public class Queries implements IDataQueries {
                         auction.setId(rs.getInt("id"));
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
-                        auction.setItemName(rs.getString("itemname"));
                         auction.setPlayerName(rs.getString("player"));
                         auction.setPrice(rs.getDouble("price"));
                         ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
@@ -622,7 +619,7 @@ public class Queries implements IDataQueries {
 
     @Override
     public List<Auction> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
-        List<Auction> auctions = new ArrayList<Auction>();
+        List<Auction> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -662,7 +659,7 @@ public class Queries implements IDataQueries {
 
     @Override
     public List<Auction> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
-        List<Auction> auctions = new ArrayList<Auction>();
+        List<Auction> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -688,7 +685,6 @@ public class Queries implements IDataQueries {
                         stack = Chant(rs.getString("ench"),stack);
                         auction.setItemStack(stack);
                         auction.setPrice(rs.getDouble("price"));
-                        auction.setItemName(rs.getString("itemname"));
                         auction.setEnchantments(rs.getString("ench"));
                         auctions.add(auction);
                 }
@@ -740,30 +736,35 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public void createItem(int itemID, int itemDamage, String player, int quantity, Double price, String ench, int on, String type, String Itemname, String searchtype) {
+    public int createItem(int itemID, int itemDamage, String player, int quantity, Double price, String ench, int tableId, String type, String searchtype) {
+        int id = 0;
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, itemname, searchtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, searchtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 st.setInt(1, itemID);
                 st.setInt(2, itemDamage);
                 st.setString(3, player);
                 st.setInt(4, quantity);
                 st.setDouble(5, price);
                 st.setString(6, ench);
-                st.setInt(7, on);
+                st.setInt(7, tableId);
                 st.setString(8, type);
-                st.setString(9, Itemname);
-                st.setString(10, searchtype);
+                st.setString(9, searchtype);
                 st.executeUpdate();
+                rs = st.getGeneratedKeys();
+                if (rs.next()){
+                    id = rs.getInt(1);
+                }
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to create item", plugin.logPrefix);
                 WebPortal.logger.warning(e.getMessage());
         } finally {
                 closeResources(conn, st, rs);
         }
+        return id;
     }
 
     @Override
@@ -817,6 +818,73 @@ public class Queries implements IDataQueries {
     @Override
     public ProfileMcMMO getMcMMOProfileMySql(String tableprefix, String player) {
         throw new UnsupportedOperationException("Implement On Children.");
+    }
+
+    @Override
+    public int InsertItemInfo(int auctionId,String type, String value) {
+        int id = 0;
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("INSERT INTO WA_ItemExtraInfo (auctionId,type,value) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                st.setInt(1, auctionId);
+                st.setString(2, type);
+                st.setString(3, value);
+                st.executeUpdate();
+                rs = st.getGeneratedKeys();
+                if (rs.next()){
+                    id = rs.getInt(1);
+                }
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to insert item info", plugin.logPrefix);
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return id;
+    }
+
+    @Override
+    public String GetItemInfo(int auctionId,String type) {
+         String info = "";
+         WALConnection conn = getConnection();
+         PreparedStatement st = null;
+         ResultSet rs = null;
+
+         try {
+                 st = conn.prepareStatement("SELECT value FROM WA_ItemExtraInfo where auctionId = ? and type = ?");
+                 st.setInt(1, auctionId);
+                 st.setString(2, type);
+                 rs = st.executeQuery();
+                 while (rs.next()) {
+                         info = rs.getString("value");
+                 }
+         } catch (SQLException e) {
+                 WebPortal.logger.log(Level.WARNING, "{0} Unable to get item info ", plugin.logPrefix);
+                 WebPortal.logger.warning(e.getMessage());
+         } finally {
+                 closeResources(conn, st, rs);
+         }
+         return info;
+    }
+    
+    @Override
+    public void DeleteInfo(int auctionId) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("DELETE FROM WA_ItemExtraInfo WHERE auctionId = ?");
+                st.setInt(1, auctionId);
+                st.executeUpdate();
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, auctionId});
+        } finally {
+                closeResources(conn, st, rs);
+        }
     }
     
 }

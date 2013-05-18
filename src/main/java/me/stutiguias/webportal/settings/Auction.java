@@ -4,148 +4,113 @@ import org.bukkit.inventory.ItemStack;
 
 public class Auction {
 
-	private int id;
-        private int name;
-        private int damage;
-        private int quantity;
-        private String itemName;
-        private String type;
-	private ItemStack itemStack;
-	private String playerName;
-	private double price;
-	private int created;
-	private Boolean allowBids;
-	private Double currentBid;
-	private String currentWinner;
-        private String Enchantments;
-        
-        public String getItemName() {
-		return itemName;
-	}
+    private int id;
+    private int name;
+    private int damage;
+    private int quantity;
+    private String type;
+    private ItemStack itemStack;
+    private String playerName;
+    private double price;
+    private int created;
+    private String Enchantments;
 
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-        
-        public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
-        
-	public int getId() {
-		return id;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public ItemStack getItemStack() {
-		return itemStack;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setItemStack(ItemStack itemStack) {
-		this.itemStack = itemStack;
-	}
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
 
-	public String getPlayerName() {
-		return playerName;
-	}
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
 
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
+    public String getPlayerName() {
+        return playerName;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public int getCreated() {
-		return created;
-	}
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-	public void setCreated(int created) {
-		this.created = created;
-	}
-	
-	public Boolean getAllowBids(){
-		return allowBids;
-	}
-	
-	public void setAllowBids(Boolean bid){
-		this.allowBids = bid;
-	}
-	
-	public Double getCurrentBid(){
-		return currentBid;
-	}
-	
-	public void setCurrentBid(Double bid){
-		this.currentBid = bid;
-	}
-	
-	public String getCurrentWinner(){
-		return currentWinner;
-	}
-	
-	public void setCurrentWinner(String player){
-		this.currentWinner = player;
-	}
+    public int getCreated() {
+        return created;
+    }
 
-        public String getEnchantments() {
-            return Enchantments;
-        }
+    public void setCreated(int created) {
+        this.created = created;
+    }
 
-        public void setEnchantments(String Enchantments) {
-            this.Enchantments = Enchantments;
-        }
+    public String getEnchantments() {
+        return Enchantments;
+    }
 
-        /**
-         * @return the name
-         */
-        public int getName() {
-            return name;
-        }
+    public void setEnchantments(String Enchantments) {
+        this.Enchantments = Enchantments;
+    }
 
-        /**
-         * @param name the name to set
-         */
-        public void setName(int name) {
-            this.name = name;
-        }
+    /**
+     * @return the name
+     */
+    public int getName() {
+        return name;
+    }
 
-        /**
-         * @return the damage
-         */
-        public int getDamage() {
-            return damage;
-        }
+    /**
+     * @param name the name to set
+     */
+    public void setName(int name) {
+        this.name = name;
+    }
 
-        /**
-         * @param damage the damage to set
-         */
-        public void setDamage(int damage) {
-            this.damage = damage;
-        }
+    /**
+     * @return the damage
+     */
+    public int getDamage() {
+        return damage;
+    }
 
-        /**
-         * @return the quantity
-         */
-        public int getQuantity() {
-            return quantity;
-        }
+    /**
+     * @param damage the damage to set
+     */
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 
-        /**
-         * @param quantity the quantity to set
-         */
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
 }

@@ -4,7 +4,9 @@
  */
 package me.stutiguias.webportal.information;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
@@ -13,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -102,6 +105,11 @@ public class Info {
         return itemConfig.split(",");
     }
     
+    public String GetSearchType(ItemStack item) {
+        String itemId = GetItemId(item);        
+        return plugin.getSearchType(itemId);
+    }
+    
     public String GetItemId(ItemStack item) {
         
         String itemId;
@@ -112,6 +120,30 @@ public class Info {
             itemId = String.valueOf(item.getTypeId());
         return itemId;
         
+    }
+    
+        
+    public ItemStack SetItemMeta(ItemStack item,String MetaCSV) {
+        
+        ItemMeta meta = item.getItemMeta();
+        
+        String[] metas = MetaCSV.split(",");
+        List<String> lores = new ArrayList<>();
+        for (int i = 0; i < metas.length; i++) {
+            if(metas[i].startsWith("N[#$]")) {
+                String metad = metas[i].replace("N[#$]","");
+                meta.setDisplayName(metad);
+            } else {
+                String metal = metas[i].replace("L[#$]","");
+                lores.add(metal);
+            }
+        }
+        if(lores.size() > 0)
+            meta.setLore(lores);
+        
+        item.setItemMeta(meta);
+        
+        return item;
     }
     
     private String GetConfigName(String itemId,String type) {

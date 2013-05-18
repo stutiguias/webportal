@@ -64,6 +64,7 @@ public class WebPortal extends JavaPlugin {
         public Boolean allowlogifonline = false;
         public Boolean blockcreative = true;
         public Boolean OnJoinCheckPermission = false;
+        public Boolean AllowMetaItem = false;
         public Integer SessionTime;
         public String Avatarurl;
         public int signDelay;
@@ -233,6 +234,7 @@ public class WebPortal extends JavaPlugin {
 		signDelay =             c.getInt("Misc.SignDelay");
                 port =                  c.getInt("Misc.WebServicePort");
                 OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
+                AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");
                 
                 long saleAlertFrequency = c.getLong("Updates.SaleAlertFrequency");
 		boolean getMessages = c.getBoolean("Misc.ReportSales");

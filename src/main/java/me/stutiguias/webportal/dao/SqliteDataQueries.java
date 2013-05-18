@@ -81,7 +81,7 @@ public class SqliteDataQueries extends Queries {
 		}
 		if (!tableExists("WA_Auctions")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
-			executeRawSQL("CREATE TABLE WA_Auctions (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, player VARCHAR(255), quantity INTEGER, price DOUBLE, created INTEGER, allowBids BOOLEAN Default '0', currentBid DOUBLE, currentWinner VARCHAR(255), ench VARCHAR(45), tableid INTEGER(1));");
+			executeRawSQL("CREATE TABLE WA_Auctions (id INTEGER PRIMARY KEY, name INTEGER, damage INTEGER, player VARCHAR(255), quantity INTEGER, price DOUBLE, created INTEGER, ench VARCHAR(45), tableid INTEGER(1));");
 		}
 		if (!tableExists("WA_SellPrice")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
@@ -107,6 +107,11 @@ public class SqliteDataQueries extends Queries {
                         WebPortal.logger.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
                         executeRawSQL("ALTER TABLE WA_Players ADD COLUMN lock VARCHAR(1) Default 'N';");
                         executeRawSQL("UPDATE WA_DbVersion SET dbversion = 2 where id = 1");
+                }
+                if (tableVersion() == 2) {
+                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 3", plugin.logPrefix);
+                        executeRawSQL("CREATE TABLE WA_ItemExtraInfo (id INTEGER PRIMARY KEY, auctionId INTEGER, type VARCHAR(45), value TEXT );");
+                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 3 where id = 1");
                 }
     }
 
@@ -158,10 +163,10 @@ public class SqliteDataQueries extends Queries {
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-                List<Auction> la = new ArrayList<Auction>();
+                List<Auction> la = new ArrayList<>();
                 
 		try {
-			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,itemname FROM WA_Auctions where tableid = ? and ( itemname like ? and searchtype = ? ) LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and ( itemname like ? and searchtype = ? ) LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
                         st.setString(2, "%" + search + "%");
                         st.setString(3, searchtype);
@@ -173,7 +178,6 @@ public class SqliteDataQueries extends Queries {
 				auction.setId(rs.getInt("id"));
                                 ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                                 stack = Chant(rs.getString("ench"), stack);
-                                auction.setItemName(rs.getString("itemname"));
                                 auction.setType(rs.getString("type"));
 				auction.setItemStack(stack);
 				auction.setPlayerName(rs.getString("player"));

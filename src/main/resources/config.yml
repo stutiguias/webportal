@@ -34,6 +34,13 @@ Misc:
   # Use OnJoinCheckPermission permission will overwrite the permission 
   # you set or alter by command /wa set <player> <option> <yes/no>
   OnJoinCheckPermission: false
+  # Allow MetaItem Sell
+  # if you enable this the items with
+  # custom meta tag will hold the tag
+  # but this increase amount of query 
+  # need it to make and search the item
+  # Use with caution
+  AllowMetaItem: false
 Updates:
   # Frequency alert will be send 
   # Only if you Set  ReportSales to true

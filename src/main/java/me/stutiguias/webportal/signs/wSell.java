@@ -4,6 +4,7 @@
  */
 package me.stutiguias.webportal.signs;
 
+import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
 import me.stutiguias.webportal.settings.TradeSystem;
@@ -22,9 +23,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class wSell {
     
     WebPortal plugin;
-            
+    Info info;
+    
     public wSell(WebPortal instance) {
         plugin = instance;
+        info = new Info(plugin);
     }
     
     public void addwSell(String[] lines,Player player,Block sign,SignChangeEvent event) {
@@ -44,7 +47,7 @@ public class wSell {
             return;
         }
         event.setLine(0, ChatColor.GREEN + "[wSell]" );
-        event.setLine(1, auction.getItemName());
+        event.setLine(1, info.GetItemConfig(auction.getItemStack())[0]);
         if(lines[2].isEmpty()) {
             event.setLine(2,"1-" + auction.getQuantity() + "-" + auction.getPrice());
         }else{
