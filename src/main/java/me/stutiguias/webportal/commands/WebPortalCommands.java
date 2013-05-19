@@ -65,13 +65,13 @@ public class WebPortalCommands implements CommandExecutor {
 	}
         
         private boolean CommandNotFound(CommandSender sender) {
-            sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " Command not found try /wa help ");
+            sender.sendMessage(ChatColor.YELLOW + " Command not found try /wa help ");
             return true;
         }
         
         public boolean SetPerm(CommandSender sender,String name,String param,String value){
             if (!sender.hasPermission("wa.set")){
-                sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " You do not have permission");
+                sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
                 return false;
             }
             AuctionPlayer player = plugin.dataQueries.getPlayer(name);
@@ -109,7 +109,7 @@ public class WebPortalCommands implements CommandExecutor {
         
         public boolean View(CommandSender sender,String name){
             if (!sender.hasPermission("wa.view")){
-                sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " You do not have permission");
+                sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
                 return false;
             }
             AuctionPlayer player = plugin.dataQueries.getPlayer(name);
@@ -170,28 +170,28 @@ public class WebPortalCommands implements CommandExecutor {
         
         public boolean Reload(CommandSender sender){
             if (!sender.hasPermission("wa.reload")){
-                sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " You do not have permission");
+                sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
                 return false;
             }
-            sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + "Reloading..");
+            sender.sendMessage(ChatColor.YELLOW + "Reloading..");
             plugin.onReload();
-            sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + "Finished reloading");
+            sender.sendMessage(ChatColor.YELLOW + "Finished reloading");
             return true;
         }
         
         public boolean Save(CommandSender sender){
             if (!sender.hasPermission("wa.save")){
-                     sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " You do not have permission");
+                     sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
                      return false;
             }
-            sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + "Saving config...");
+            sender.sendMessage(ChatColor.YELLOW + "Saving config...");
             plugin.saveConfig();
-            sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + "Config Saved");
+            sender.sendMessage(ChatColor.YELLOW + "Config Saved");
             return true;
         }
 
     private boolean help(CommandSender sender) {
-        sender.sendMessage("-----------------"+ChatColor.GOLD+"Help WebPortal"+ChatColor.WHITE+"----------------------");
+        sender.sendMessage("-----------------"+ChatColor.GOLD+"Help"+ChatColor.WHITE+"---------------------------");
         sender.sendMessage(ChatColor.YELLOW + "All /wa commands");
         if (sender.hasPermission("wa.save")){
             sender.sendMessage(ChatColor.RED + "save: Save the All Config File");
@@ -218,7 +218,7 @@ public class WebPortalCommands implements CommandExecutor {
     
     private boolean inv(CommandSender sender) {
         if (!sender.hasPermission("wa.command.vbox")){
-            sender.sendMessage(ChatColor.YELLOW + plugin.logPrefix + " You do not have permission");
+            sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
             return false;
         }
             
