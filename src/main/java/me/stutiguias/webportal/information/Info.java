@@ -191,13 +191,16 @@ public class Info {
     public String ChangeItemToItemMeta(Auction item, String item_name) {
         String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
         if(!meta.isEmpty()) {
-            item.setItemStack(SetItemMeta(item.getItemStack(), meta));
-            try{
-                item_name = item.getItemStack().getItemMeta().getDisplayName().replaceAll("§\\w","");
-            }catch(Exception ex) {
-                ex.printStackTrace();
+            String[] metas = meta.split(",");
+            for (int i = 0; i < metas.length; i++) {
+                if(metas[i].startsWith("N[#$]")) {
+                    String metad = metas[i].replace("N[#$]","").replaceAll("§\\w","");
+                    item_name = metad;
+                } else {
+                    String metal = metas[i].replace("L[#$]","").replaceAll("§\\w","");
+                    item_name += " " + metal;
+                }
             }
-
         }
         return item_name;
     }

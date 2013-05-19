@@ -59,9 +59,9 @@ public class WebPortalHttpHandler implements HttpHandler {
         }
     }
 
-    public void RequestWithoutLogin(String HostAddress) throws IOException {
+    public void RequestWithoutLogin(String SessionId) throws IOException {
         if(url.startsWith("/web/login")){
-            Fill.TryLogin(HostAddress,params);
+            Fill.TryLogin(SessionId,params);
         }else if(url.startsWith("/get/auction")) {
             Fill.GetAuction(params);
         }else if(isAllowed(url)) {
@@ -71,112 +71,114 @@ public class WebPortalHttpHandler implements HttpHandler {
         } 
     }
 
-    public void RequestWithLogin(String HostAddress) throws IOException {
+    public void RequestWithLogin(String SessionId) throws IOException {
            if(isAllowed(url)) {
                 Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
             }else if(url.startsWith("/server/username/info")) {
-                Fill.GetInfo(HostAddress);
+                Fill.GetInfo(SessionId);
             }else if(url.startsWith("/logout")) {
-                WebPortal.AuthPlayers.remove(HostAddress);
+                WebPortal.AuthPlayers.remove(SessionId);
                 Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else if(url.startsWith("/myitems")) {
-                MyItemsHandler(HostAddress);
+                MyItemsHandler(SessionId);
             }else if(url.startsWith("/mail")) {
-                MailHandler(HostAddress);
+                MailHandler(SessionId);
             }else if(url.startsWith("/myauctions")) {
-                MyAuctionHandler(HostAddress);
+                MyAuctionHandler(SessionId);
             }else if(url.startsWith("/box")) {
-                BoxHandler(HostAddress);
+                BoxHandler(SessionId);
             }else if(url.startsWith("/adm")) {
-                AdmHandler(HostAddress);
+                AdmHandler(SessionId);
             }else if(url.startsWith("/auction")) {
-                AuctionHandler(HostAddress);
+                AuctionHandler(SessionId);
             }else if(url.equalsIgnoreCase("/")) {
                 Fill.Response().ReadFile(htmlDir+"/index.html","text/html");
             }
     }
     
-    public void AdmHandler(String HostAddress) {
+    public void AdmHandler(String SessionId) {
         if(url.startsWith("/adm/search")) {
-                Fill.AdmGetInfo(HostAddress,params);
+                Fill.AdmGetInfo(SessionId,params);
         }else if(url.startsWith("/adm/deleteshop")){     
-                Fill.AdmDeleteShop(HostAddress, url, params);
+                Fill.AdmDeleteShop(SessionId, url, params);
         }else if(url.startsWith("/adm/addshop")){ 
-                Fill.AdmAddShop(HostAddress, url, params);
+                Fill.AdmAddShop(SessionId, url, params);
         }else if(url.startsWith("/adm/shoplist")){ 
-                Fill.AdmListShop(HostAddress, url, params);
+                Fill.AdmListShop(SessionId, url, params);
         }else if(url.startsWith("/adm/getinfo")) {
-                Fill.AdmGetServerInfo(HostAddress);
+                Fill.AdmGetServerInfo(SessionId);
         }else if(url.startsWith("/adm/viewplugins")) {
-                Fill.AdmViewPlugins(HostAddress);
+                Fill.AdmViewPlugins(SessionId);
         }else if(url.startsWith("/adm/sendmsg")) {
-                Fill.AdmMsg(HostAddress, params);
+                Fill.AdmMsg(SessionId, params);
         }else if(url.startsWith("/adm/sendcmd")) {
-                Fill.AdmCmdSend(HostAddress, params);
+                Fill.AdmCmdSend(SessionId, params);
         }else if(url.startsWith("/adm/shutdown")) {
-                Fill.AdmShutDown(HostAddress);
+                Fill.AdmShutDown(SessionId);
         }else if(url.startsWith("/adm/reload")) {
-                Fill.AdmRestart(HostAddress);
+                Fill.AdmRestart(SessionId);
         }else if(url.startsWith("/adm/seeconsole")) {
-                Fill.AdmSeeConsole(HostAddress);
+                Fill.AdmSeeConsole(SessionId);
         }else if(url.startsWith("/adm/playerlist")) {
-                Fill.AdmPlayerList(HostAddress);
+                Fill.AdmPlayerList(SessionId);
         }else if(url.startsWith("/adm/banlist")) {
-                Fill.AdmBanList(HostAddress);
+                Fill.AdmBanList(SessionId);
         }else if(url.startsWith("/adm/ban")) {
-                Fill.AdmBan(HostAddress, params);
+                Fill.AdmBan(SessionId, params);
         }else if(url.startsWith("/adm/unban")) {
-                Fill.AdmUnBan(HostAddress, params);
+                Fill.AdmUnBan(SessionId, params);
         }else if(url.startsWith("/adm/kick")) {
-                Fill.AdmKickPlayer(HostAddress, params);
+                Fill.AdmKickPlayer(SessionId, params);
         }
     }
     
-    public void MailHandler(String HostAddress) {
+    public void MailHandler(String SessionId) {
         if(url.startsWith("/mail/get")) {
-                Fill.GetMails(HostAddress,params);
-        }else if(url.startsWith("/mail/send") && !isLocked(HostAddress)) {
-                Fill.SendMail(HostAddress, url, params);
+                Fill.GetMails(SessionId,params);
+        }else if(url.startsWith("/mail/send") && !isLocked(SessionId)) {
+                Fill.SendMail(SessionId, url, params);
         }
     }
     
-    public void BoxHandler(String HostAddress) {
+    public void BoxHandler(String SessionId) {
         if(url.startsWith("/box/1")) {
-                Fill.Box1(HostAddress);
+                Fill.Box1(SessionId);
         }else if(url.startsWith("/box/2")) {
-                Fill.Box2(HostAddress);
+                Fill.Box2(SessionId);
         }
     }
     
-    public void MyItemsHandler(String HostAddress) {
+    public void MyItemsHandler(String SessionId) {
         if(url.startsWith("/myitems/get")) {
-                Fill.GetMyItems(HostAddress);
+                Fill.GetMyItems(SessionId);
         }else if(url.startsWith("/myitems/dataTable")) {
-                Fill.GetMyItems(HostAddress, url, params);
-        }else if(url.startsWith("/myitems/postauction") && !isLocked(HostAddress)) {
-                Fill.CreateAuction(HostAddress, url, params);
+                Fill.GetMyItems(SessionId, url, params);
+        }else if(url.startsWith("/myitems/postauction") && !isLocked(SessionId)) {
+                Fill.CreateAuction(SessionId, url, params);
+        }else if(url.startsWith("/myitems/lore")) {
+                Fill.ItemLore(SessionId, params);
         }
     }
     
-    public void MyAuctionHandler(String HostAddress) {
+    public void MyAuctionHandler(String SessionId) {
          if(url.startsWith("/myauctions/cancel")) {
-                Fill.Cancel(HostAddress, url, params);
+                Fill.Cancel(SessionId, url, params);
         }else if(url.startsWith("/myauctions/get")) {
-                Fill.GetMyAuctions(HostAddress, url, params);
+                Fill.GetMyAuctions(SessionId, url, params);
         }
     }
     
-    public void AuctionHandler(String HostAddress) {
+    public void AuctionHandler(String SessionId) {
         if(url.startsWith("/auction/get")) {
-                Fill.RequestAuctionBy(HostAddress,url,params);
+                Fill.RequestAuctionBy(SessionId,url,params);
         }else if(url.startsWith("/auction/buy")) {
-                Fill.Buy(HostAddress,url,params);
+                Fill.Buy(SessionId,url,params);
         }
     }
     
-    public Boolean isLocked(String HostAddress) {
-        if(WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(HostAddress).AuctionPlayer.getName()) != null) {
-            return WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(HostAddress).AuctionPlayer.getName());
+    public Boolean isLocked(String SessionId) {
+        if(WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(SessionId).AuctionPlayer.getName()) != null) {
+            return WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(SessionId).AuctionPlayer.getName());
         }else{
             return false;
         }

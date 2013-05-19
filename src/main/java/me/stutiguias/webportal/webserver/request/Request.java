@@ -93,6 +93,10 @@ public class Request {
         MyAuctions.GetMyAuctions(HostAddress,url,param);
     }
     
+    public void ItemLore(String SessionId,Map param){
+        UserInfo.ItemLore(SessionId, param);
+    }
+    
     public void Cancel(String HostAddress,String url,Map param){
        MyAuctions.Cancel(HostAddress, url, param);
     }
