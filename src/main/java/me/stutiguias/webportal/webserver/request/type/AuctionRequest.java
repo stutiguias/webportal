@@ -89,7 +89,7 @@ public class AuctionRequest extends HttpResponse {
         if(searchtype.equals("nothing")) {
             auctions = plugin.dataQueries.getAuctions(iDisplayStart,iDisplayLength);
         }else{
-            auctions = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,search,searchtype);
+            auctions = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,searchtype);
         }
         
         int iTotalRecords = plugin.dataQueries.getFound();

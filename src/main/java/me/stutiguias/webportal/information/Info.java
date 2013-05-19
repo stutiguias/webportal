@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.settings.Enchant;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -49,18 +50,7 @@ public class Info {
         String img_name = nameAndImg[1];
         
         if(plugin.AllowMetaItem) {
-            String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
-            if(!meta.isEmpty()) {
-                item.setItemStack(SetItemMeta(item.getItemStack(), meta));
-                String pattern = "\\xA7\\w";
-                try{
-                    WebPortal.logger.info(item.getItemStack().getItemMeta().getDisplayName().replaceAll(pattern, meta));
-                    item_name = item.getItemStack().getItemMeta().getDisplayName().replaceAll(pattern, meta);
-                }catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-
-            }
+            item_name = ChangeItemToItemMeta(item, item_name);
         }
         
         if(!img_name.contains("http") || !img_name.contains("www"))
@@ -189,6 +179,27 @@ public class Info {
              return 0.0;
            }
            return (( price * 100 ) / mprice);
+    }
+    
+    public String ChangeItemToItemMeta(AuctionMail mail,String item_name) {
+        Auction auction = new Auction();
+        auction.setItemStack(mail.getItemStack());
+        auction.setId(mail.getId());
+        return ChangeItemToItemMeta(auction, item_name);
+    }
+    
+    public String ChangeItemToItemMeta(Auction item, String item_name) {
+        String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
+        if(!meta.isEmpty()) {
+            item.setItemStack(SetItemMeta(item.getItemStack(), meta));
+            try{
+                item_name = item.getItemStack().getItemMeta().getDisplayName().replaceAll("§\\w","");
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return item_name;
     }
 
 }

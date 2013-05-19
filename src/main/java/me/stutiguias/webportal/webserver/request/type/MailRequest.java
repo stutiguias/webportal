@@ -38,12 +38,17 @@ public class MailRequest extends HttpResponse {
         for (int i = 0; i < mails.size(); i++) {
             AuctionMail mail = mails.get(i);
             String[] itemConfig = GetItemConfig(mail.getItemStack());
+            
+            if(plugin.AllowMetaItem) {
+                itemConfig[0] = ChangeItemToItemMeta(mail, itemConfig[0]);
+            }
+            
             json = new JSONObject();
             json.put("Id",mail.getId());
             json.put("Item Name",itemConfig[0]);
             json.put("Quantity",mail.getItemStack().getAmount());
             json.put("Image",itemConfig[1]);
-            json.put("Item Category",itemConfig[2]);
+            json.put("Item Category",GetSearchType(mail.getItemStack()));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
@@ -68,7 +73,6 @@ public class MailRequest extends HttpResponse {
         }else if(_Auction.getItemStack().getAmount() > quantity) {
             plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
             String SearchType = GetSearchType(_Auction.getItemStack());
-            //TODO: FIX ITEM META
             plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType() , SearchType );
         }
         Print("Mailt send","text/plain");

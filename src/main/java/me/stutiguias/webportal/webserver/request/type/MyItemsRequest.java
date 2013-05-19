@@ -127,6 +127,10 @@ public class MyItemsRequest extends HttpResponse {
         for(Auction item:auctions){
             String[] itemConfig = GetItemConfig(item.getItemStack());
             
+            if(plugin.AllowMetaItem) {
+                itemConfig[0] = ChangeItemToItemMeta(item, itemConfig[0]);
+            }
+            
             JSONObject jsonNameImg = new JSONObject();
             jsonNameImg.put(itemConfig[0],itemConfig[1]);
             jsonNameImg.put("enchant",GetEnchant(item));

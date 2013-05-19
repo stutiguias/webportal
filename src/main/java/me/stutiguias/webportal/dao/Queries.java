@@ -211,7 +211,7 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public List<Auction> getSearchAuctions(int to, int from, String search, String type) {
+    public List<Auction> getSearchAuctions(int to, int from, String type) {
         throw new UnsupportedOperationException("Implement On Children.");
     }
 
@@ -658,20 +658,19 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public List<Auction> getItemByName(String player, String itemName, boolean reverseOrder, int tableid) {
+    public List<Auction> getItemByName(String player, boolean reverseOrder, int tableid) {
         List<Auction> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-                String sql = "SELECT id,name,damage,player,quantity,price,itemname,ench FROM WA_Auctions WHERE player = ? AND itemname = ? AND tableid = ?";
+                String sql = "SELECT id,name,damage,player,quantity,price,itemname,ench FROM WA_Auctions WHERE player = ? AND tableid = ?";
                 if (reverseOrder) {
                         sql += " ORDER BY id DESC";
                 }
                 st = conn.prepareStatement(sql);
                 st.setString(1, player);
-                st.setString(2, itemName);
                 st.setInt(3, tableid);
                 rs = st.executeQuery();
                 while (rs.next()) {

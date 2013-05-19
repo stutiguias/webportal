@@ -25,10 +25,8 @@ public interface IDataQueries {
         
         // Auction
         Auction getAuction(int id); // Get One Auction
-        //int getTotalAuctionCount(); // Get Total Auction
-        //Auction getAuctionForOffset(int offset); // Get Auction Start in
         List<Auction> getAuctions(int to,int from); // 
-        List<Auction> getSearchAuctions(int to,int from,String search,String type);
+        List<Auction> getSearchAuctions(int to,int from,String type);
         List<Auction> getAuctionsLimitbyPlayer(String player,int to,int from,int table);
         void UpdateItemAuctionQuantity(Integer numberleft, Integer id);
         void DeleteAuction(Integer id);
@@ -58,7 +56,7 @@ public interface IDataQueries {
         //Items
         Auction getItemById(int ID,int tableid);
         List<Auction> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid);
-        List<Auction> getItemByName(String player, String itemName, boolean reverseOrder, int tableid);
+        List<Auction> getItemByName(String player, boolean reverseOrder, int tableid);
         void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
 	//void CreateAuction(int quantity, int id);

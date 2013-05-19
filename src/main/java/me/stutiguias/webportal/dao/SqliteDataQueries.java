@@ -158,7 +158,7 @@ public class SqliteDataQueries extends Queries {
     }
 
     @Override
-    public List<Auction> getSearchAuctions(int to, int from, String search, String searchtype) {
+    public List<Auction> getSearchAuctions(int to, int from, String searchtype) {
                 Auction auction;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -166,12 +166,11 @@ public class SqliteDataQueries extends Queries {
                 List<Auction> la = new ArrayList<>();
                 
 		try {
-			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and ( itemname like ? and searchtype = ? ) LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and searchtype = ? LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, "%" + search + "%");
-                        st.setString(3, searchtype);
-                        st.setInt(4, to);
-                        st.setInt(5, from);
+                        st.setString(2, searchtype);
+                        st.setInt(3, to);
+                        st.setInt(4, from);
 			rs = st.executeQuery();
 			while (rs.next()) {
 				auction = new Auction();
@@ -185,9 +184,9 @@ public class SqliteDataQueries extends Queries {
 				auction.setCreated(rs.getInt("created"));
                                 la.add(auction);
 			}
-  			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? and ( itemname like ? ) LIMIT ? , ?");
+  			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? and searchtype = ? LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, "%" + search + "%");
+                        st.setString(2, searchtype);
                         st.setInt(3, to);
                         st.setInt(4, from);
 			rs = st.executeQuery();
@@ -195,7 +194,7 @@ public class SqliteDataQueries extends Queries {
 		              found = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			WebPortal.logger.warning(plugin.logPrefix + "Unable to get auction ");
+			WebPortal.logger.log(Level.WARNING, "{0}Unable to get auction ", plugin.logPrefix);
 			WebPortal.logger.warning(e.getMessage());
 		} finally {
 			closeResources(conn, st, rs);

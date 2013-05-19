@@ -143,7 +143,7 @@ public class MySQLDataQueries extends Queries {
 	}
 
         @Override
-        public List<Auction> getSearchAuctions(int to,int from,String search,String searchtype) {
+        public List<Auction> getSearchAuctions(int to,int from,String searchtype) {
 		Auction auction;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -151,12 +151,11 @@ public class MySQLDataQueries extends Queries {
                 List<Auction> la = new ArrayList<>();
                 
 		try {
-			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and ( itemname like ? and searchtype = ? ) LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and searchtype = ? LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, "%" + search + "%");
-                        st.setString(3, searchtype);
-                        st.setInt(4, to);
-                        st.setInt(5, from);
+                        st.setString(2, searchtype);
+                        st.setInt(3, to);
+                        st.setInt(4, from);
 			rs = st.executeQuery();
 			while (rs.next()) {
 				auction = new Auction();

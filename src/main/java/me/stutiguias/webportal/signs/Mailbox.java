@@ -6,6 +6,7 @@ package me.stutiguias.webportal.signs;
 
 import java.util.HashMap;
 import java.util.List;
+import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuctionMail;
 import me.stutiguias.webportal.settings.TradeSystem;
@@ -59,6 +60,11 @@ public class Mailbox {
                         for (AuctionMail mail : auctionMail) {
                                 if (player.getInventory().firstEmpty() != -1) {
                                         ItemStack stack = mail.getItemStack();
+                                        if(plugin.AllowMetaItem) {
+                                            String MetaCSV = plugin.dataQueries.GetItemInfo(mail.getId(),"meta");
+                                            if(!MetaCSV.isEmpty())
+                                            mail.setItemStack(new Info(plugin).SetItemMeta(stack, MetaCSV));
+                                        }
                                         plugin.dataQueries.deleteMail(mail.getId());
                                         if(stack.getMaxStackSize() == 1)
                                         {
