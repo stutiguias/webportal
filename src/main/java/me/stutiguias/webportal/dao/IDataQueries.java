@@ -34,6 +34,7 @@ public interface IDataQueries {
         void setPriceAndTable(int id,Double price);
         
         //Player
+        List<AuctionPlayer> FindAllPlayersWith(String partialName);
 	void updatePlayerPassword(String player, String newPass); 
         void updatePlayerPermissions(String player, int canBuy, int canSell, int isAdmin);
         void createPlayer(String player, String pass, double money, int canBuy, int canSell, int isAdmin);

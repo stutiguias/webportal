@@ -4,7 +4,6 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONArray;
@@ -273,21 +271,28 @@ public class AdminRequest extends HttpResponse {
         Print(console.toJSONString(),"text/plain");
     }
     
-    private void playerinfo(String Hostadress,String name) {
-        _authPlayer = plugin.dataQueries.getPlayer(name);
-        if(_authPlayer == null) {
+    private void playerinfo(String SessionId,String partialName) {
+        if(!isAdmin(SessionId)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        List<AuctionPlayer> players = plugin.dataQueries.FindAllPlayersWith(partialName);
+        if(players == null) {
             Print("Player Not Found","text/html");
         }else{
             JSONArray jsonarray = new JSONArray();
-            JSONObject json = new JSONObject();
-            json.put("IP",_authPlayer.getIp());
-            json.put("Name",_authPlayer.getName());
-            json.put("Can Buy ?",_authPlayer.getCanBuy());
-            json.put("Can Sell ?",_authPlayer.getCanSell());
-            json.put("is Admin ?",_authPlayer.getIsAdmin());
-            json.put("Banned ?","");
-            json.put("WebSite Ban", new Html(plugin).HTMLBan(Hostadress,_authPlayer.getId()) );
-            jsonarray.add(json);
+            JSONObject json;
+            for (int i = 0; i < players.size(); i++) {
+                json = new JSONObject();
+                json.put("IP",players.get(i).getIp());
+                json.put("Name",players.get(i).getName());
+                json.put("Can Buy ?",players.get(i).getCanBuy());
+                json.put("Can Sell ?",players.get(i).getCanSell());
+                json.put("is Admin ?",players.get(i).getIsAdmin());
+                json.put("Banned ?","");
+                json.put("WebSite Ban", new Html(plugin).HTMLBan(SessionId,players.get(i).getId()) );
+                jsonarray.add(json);
+            }
             Print(jsonarray.toJSONString(),"application/json");
         }
     }

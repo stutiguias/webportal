@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -342,6 +343,37 @@ public class Queries implements IDataQueries {
         throw new UnsupportedOperationException("Implement On Children.");
     }
 
+    @Override 
+    public List<AuctionPlayer> FindAllPlayersWith(String partialName) {
+        List<AuctionPlayer> players = new ArrayList<>();
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("SELECT id,name,pass,money,canBuy,canSell,isAdmin FROM WA_Players WHERE name like ?");
+                st.setString(1,"%"+partialName+"%");
+                rs = st.executeQuery();
+                while (rs.next()) {
+                        AuctionPlayer player = new AuctionPlayer();
+                        player.setId(rs.getInt("id"));
+                        player.setName(rs.getString("name"));
+                        player.setPass(rs.getString("pass"));
+                        player.setMoney(rs.getDouble("money"));
+                        player.setCanBuy(rs.getInt("canBuy"));
+                        player.setCanSell(rs.getInt("canSell"));
+                        player.setIsAdmin(rs.getInt("isAdmin"));
+                        players.add(player);
+                }
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable to get player {1}", new Object[]{plugin.logPrefix, partialName});
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return players;
+    }
+    
     @Override
     public AuctionPlayer getPlayer(String player) {
         AuctionPlayer waPlayer = null;
@@ -350,7 +382,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT * FROM WA_Players WHERE name = ?");
+                st = conn.prepareStatement("SELECT id,name,pass,money,canBuy,canSell,isAdmin FROM WA_Players WHERE name = ?");
                 st.setString(1, player);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -374,7 +406,7 @@ public class Queries implements IDataQueries {
 
     @Override
     public List<Auction> getPlayerItems(String player) {
-        List<Auction> auctions = new ArrayList<Auction>();
+        List<Auction> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
