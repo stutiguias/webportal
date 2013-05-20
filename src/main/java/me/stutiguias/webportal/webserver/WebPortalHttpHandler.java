@@ -125,6 +125,10 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.AdmBanList(SessionId);
         }else if(url.startsWith("/adm/ban")) {
                 Fill.AdmBan(SessionId, params);
+        }else if(url.startsWith("/adm/webban")) {
+                Fill.AdmWebBan(SessionId, params);
+        }else if(url.startsWith("/adm/webunban")) {
+                Fill.AdmWebUnBan(SessionId, params);
         }else if(url.startsWith("/adm/unban")) {
                 Fill.AdmUnBan(SessionId, params);
         }else if(url.startsWith("/adm/kick")) {

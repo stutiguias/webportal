@@ -155,7 +155,7 @@ public class WebPortalCommands implements CommandExecutor {
                         sender.sendMessage(ChatColor.YELLOW + " Password changed");
                 } else {
                         sender.sendMessage(ChatColor.YELLOW + " Player not found, creating account");
-                        plugin.dataQueries.createPlayer(sender.getName(), newPass, 0.0d, canBuy, canSell, isAdmin);
+                        plugin.dataQueries.createPlayer(sender.getName(), newPass, canBuy, canSell, isAdmin);
                         sender.sendMessage(ChatColor.YELLOW + " Can Buy ?" + ( (canBuy == 1) ? "YES" : "NO" ) );
                         sender.sendMessage(ChatColor.YELLOW + " Can Sell ?" + ( (canSell == 1) ? "YES" : "NO" ) );
                         sender.sendMessage(ChatColor.YELLOW + " Is Admin ?" + ( (isAdmin == 1) ? "YES" : "NO" ) );

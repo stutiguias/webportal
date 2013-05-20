@@ -35,9 +35,10 @@ public interface IDataQueries {
         
         //Player
         List<AuctionPlayer> FindAllPlayersWith(String partialName);
+        boolean WebSiteBan(String player,String option);
 	void updatePlayerPassword(String player, String newPass); 
         void updatePlayerPermissions(String player, int canBuy, int canSell, int isAdmin);
-        void createPlayer(String player, String pass, double money, int canBuy, int canSell, int isAdmin);
+        void createPlayer(String player, String pass, int canBuy, int canSell, int isAdmin);
         String getPassword(String player);
 	AuctionPlayer getPlayer(String player);	
         List<Auction> getPlayerItems(String player);

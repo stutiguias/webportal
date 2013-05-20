@@ -192,6 +192,38 @@ function shutdown(form) {
     return false;
 }
 
+function websiteban(form) {
+    hideall();
+    $.ajax({
+        url: "/adm/webban",
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        success: function (data) {
+            $('#resultado').html(data);
+        },
+        error: function (error, data) {
+            $('#resultado').html(error);
+        },
+        dataType: "text"
+    });
+    return false;
+}
+
+function websiteunban(form) {
+    hideall();
+    $.ajax({
+        url: "/adm/webunban",
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        success: function (data) {
+            $('#resultado').html(data);
+        },
+        error: function (error, data) {
+            $('#resultado').html(error);
+        },
+        dataType: "text"
+    });
+    return false;
+}
+
 function kick(player) {
     hideall();
     $.ajax({
@@ -287,7 +319,7 @@ function adm(form) {
                 $('#resultado').html(err);
             };
         },
-        error: function (error) {
+        error: function (error,msg) {
             $('#resultado').html(error);
         },
         dataType: "json"

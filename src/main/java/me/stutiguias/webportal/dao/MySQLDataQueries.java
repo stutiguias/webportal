@@ -20,7 +20,7 @@ public class MySQLDataQueries extends Queries {
                 try {
                         WebPortal.logger.log(Level.INFO, "{0} Starting pool....", plugin.logPrefix);
                         pool = new WALConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://"+ dbHost +":"+ dbPort +"/"+ dbName, dbUser, dbPass);
-                }catch(Exception e) {
+                }catch(InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
                         WebPortal.logger.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
 			WebPortal.logger.warning(e.getMessage());
                 }
@@ -100,6 +100,12 @@ public class MySQLDataQueries extends Queries {
                         executeRawSQL("ALTER TABLE WA_Auctions DROP COLUMN `Itemname`, DROP COLUMN `allowBids`, DROP COLUMN `currentBid`, DROP COLUMN `currentWinner`;");
                         executeRawSQL("CREATE TABLE WA_ItemExtraInfo (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), auctionId INT, type VARCHAR(45), value TEXT );");
                         executeRawSQL("UPDATE WA_DbVersion SET dbversion = 3 where id = 1");
+                }
+                if (tableVersion() == 3) {
+                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 4", plugin.logPrefix);
+                        executeRawSQL("ALTER TABLE WA_Players DROP COLUMN `money`;");
+                        executeRawSQL("ALTER TABLE WA_Players ADD COLUMN `webban` VARCHAR(1) Default 'N' AFTER `lock` ;");
+                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 4 where id = 1");
                 }
 	}
 
@@ -255,6 +261,7 @@ public class MySQLDataQueries extends Queries {
                 return pass;
         }
 
+        @Override
         public ProfileMcMMO getMcMMOProfileMySql(String tableprefix,String player){ 
                 ProfileMcMMO pf = null;
             

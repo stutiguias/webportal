@@ -173,6 +173,14 @@ public class Request {
         Admin.UnBan(Hostaddress, param);
     }
     
+    public void AdmWebBan(String SessionId,Map param) {
+        Admin.WebBan(SessionId, param);
+    }
+    
+    public void AdmWebUnBan(String SessionId,Map param) {
+        Admin.WebUnBan(SessionId, param);
+    }
+
     public void TryLogin(String HostAddress,Map param) {
         Login.TryToLogin(HostAddress, param);
     }

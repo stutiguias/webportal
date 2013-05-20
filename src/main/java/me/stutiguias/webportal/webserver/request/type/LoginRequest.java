@@ -33,13 +33,18 @@ public class LoginRequest extends HttpResponse {
         String sessionid = (String)param.get("Sessionid");
         String username = (String)param.get("Username");
         String pass = (String)param.get("Password");
+
         if(AS.Auth(username, pass))
         {
             AuthPlayer _AuthPlayer = new AuthPlayer();
             AuctionPlayer _AuctionPlayer = plugin.dataQueries.getPlayer(username);
             if(_AuctionPlayer == null) {
-                plugin.dataQueries.createPlayer(username,pass,0.0, 1, 1, 0);
+                plugin.dataQueries.createPlayer(username,pass, 1, 1, 0);
                 _AuctionPlayer = plugin.dataQueries.getPlayer(username);
+            }
+            if(_AuctionPlayer.getWebban().equalsIgnoreCase("Y")){
+                Print("no","text/plain");
+                return;
             }
             _AuthPlayer.AuctionPlayer = _AuctionPlayer;
             _AuthPlayer.AuctionPlayer.setIp(HostAddress);

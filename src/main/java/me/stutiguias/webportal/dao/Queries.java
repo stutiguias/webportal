@@ -316,16 +316,15 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public void createPlayer(String player, String pass, double money, int canBuy, int canSell, int isAdmin) {
+    public void createPlayer(String player, String pass, int canBuy, int canSell, int isAdmin) {
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("INSERT INTO WA_Players (name, pass, money, canBuy, canSell, isAdmin) VALUES (?, ?, ?, ?, ?, ?)");
+                st = conn.prepareStatement("INSERT INTO WA_Players (name, pass, canBuy, canSell, isAdmin) VALUES (?, ?, ?, ?, ?, ?)");
                 st.setString(1, player);
                 st.setString(2, pass);
-                st.setDouble(3, money);
                 st.setInt(4, canBuy);
                 st.setInt(5, canSell);
                 st.setInt(6, isAdmin);
@@ -351,7 +350,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT id,name,pass,money,canBuy,canSell,isAdmin FROM WA_Players WHERE name like ?");
+                st = conn.prepareStatement("SELECT id,name,pass,canBuy,canSell,isAdmin,webban FROM WA_Players WHERE name like ?");
                 st.setString(1,"%"+partialName+"%");
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -359,10 +358,10 @@ public class Queries implements IDataQueries {
                         player.setId(rs.getInt("id"));
                         player.setName(rs.getString("name"));
                         player.setPass(rs.getString("pass"));
-                        player.setMoney(rs.getDouble("money"));
                         player.setCanBuy(rs.getInt("canBuy"));
                         player.setCanSell(rs.getInt("canSell"));
                         player.setIsAdmin(rs.getInt("isAdmin"));
+                        player.setWebban(rs.getString("webban"));
                         players.add(player);
                 }
         } catch (SQLException e) {
@@ -382,7 +381,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT id,name,pass,money,canBuy,canSell,isAdmin FROM WA_Players WHERE name = ?");
+                st = conn.prepareStatement("SELECT id,name,pass,canBuy,canSell,isAdmin,webban FROM WA_Players WHERE name = ?");
                 st.setString(1, player);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -390,10 +389,10 @@ public class Queries implements IDataQueries {
                         waPlayer.setId(rs.getInt("id"));
                         waPlayer.setName(rs.getString("name"));
                         waPlayer.setPass(rs.getString("pass"));
-                        waPlayer.setMoney(rs.getDouble("money"));
                         waPlayer.setCanBuy(rs.getInt("canBuy"));
                         waPlayer.setCanSell(rs.getInt("canSell"));
                         waPlayer.setIsAdmin(rs.getInt("isAdmin"));
+                        waPlayer.setWebban(rs.getString("webban"));
                 }
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to get player {1}", new Object[]{plugin.logPrefix, player});
@@ -916,6 +915,26 @@ public class Queries implements IDataQueries {
         } finally {
                 closeResources(conn, st, rs);
         }
+    }
+
+    @Override
+    public boolean WebSiteBan(String player,String option) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("UPDATE WA_Players SET WA_Players.webban = ? WHERE id = ?");
+                st.setString(1, option);
+                st.setString(2, player);
+                st.executeUpdate();
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable setWebBan", plugin.logPrefix);
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return true;
     }
     
 }

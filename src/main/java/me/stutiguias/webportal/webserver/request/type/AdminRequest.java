@@ -124,6 +124,34 @@ public class AdminRequest extends HttpResponse {
         player.kickPlayer("Kick by Admin " + name);
         Print("Player kicked","text/plain");
     }
+        
+    public void WebBan(String SessionId,Map param) {
+        if(!isAdmin(SessionId)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String setplayer = (String)param.get("ID");
+        boolean success = plugin.dataQueries.WebSiteBan(setplayer,"Y");
+        if(success) {
+            Print("Player Banned","text/plain");
+        }else{
+            Print("Player NOT Banned","text/plain");
+        }
+    }
+        
+    public void WebUnBan(String SessionId,Map param) {
+        if(!isAdmin(SessionId)) {
+            Print("Your r not admin","text/html");
+            return;
+        }
+        String setplayer = (String)param.get("ID");
+        boolean success = plugin.dataQueries.WebSiteBan(setplayer,"N");
+        if(success) {
+            Print("Player DesBanned","text/plain");
+        }else{
+            Print("Player NOT DesBanned","text/plain");
+        }
+    }
     
     public void Ban(String Hostaddress,Map param) {
         if(!isAdmin(Hostaddress)) {
@@ -289,7 +317,7 @@ public class AdminRequest extends HttpResponse {
                 json.put("Can Buy ?",players.get(i).getCanBuy());
                 json.put("Can Sell ?",players.get(i).getCanSell());
                 json.put("is Admin ?",players.get(i).getIsAdmin());
-                json.put("Banned ?","");
+                json.put("Banned ?",players.get(i).getWebban());
                 json.put("WebSite Ban", new Html(plugin).HTMLBan(SessionId,players.get(i).getId()) );
                 jsonarray.add(json);
             }
