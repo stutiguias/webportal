@@ -4,8 +4,11 @@
  */
 package me.stutiguias.webportal.webserver.authentication;
 
+import com.cypherx.xauth.password.PasswordHandler;
+import com.cypherx.xauth.xAuth;
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import uk.org.whoami.authme.security.PasswordSecurity;
 /**
  *
@@ -27,6 +30,7 @@ public final class AuthSystem {
         if(plugin.authplugin.equalsIgnoreCase("AuthMe") && AuthMeReloadedisLogged(name,pass)) return true;
         if(plugin.authplugin.equalsIgnoreCase("WebPortal") && WebPortalisLogged(name,pass)) return true;
         if(plugin.authplugin.equalsIgnoreCase("AuthDb") && AuthDbisLogged(name,pass)) return true;
+        if(plugin.authplugin.equalsIgnoreCase("xAuth") && xAuthisLogged(name,pass)) return true;
         return false;
     }
     
@@ -52,14 +56,23 @@ public final class AuthSystem {
     
     public boolean AuthDbisLogged(String player,String password) {
          try {
-            String hash = plugin.dataQueries.getPassword(player);
-            String hashpassword = Algorithm.stringHexa(Algorithm.gerarHash(password,plugin.algorithm));
-            if(hash.equals(hashpassword)) return true;
+            String pass = Algorithm.stringHexa(Algorithm.gerarHash(password,plugin.algorithm));
+            String pass_db = plugin.dataQueries.getPassword(player);
+            if(pass_db.equals(pass)) return true;
             return false;
          }catch(Exception e) {
             return false; 
          }
     }
-    
+        
+    public boolean xAuthisLogged(String player,String password) {
+         try {
+            String id = plugin.dataQueries.getPassword(player);
+            PasswordHandler ph = new PasswordHandler(xAuth.getPlugin());
+            return ph.checkPassword(Integer.parseInt(id), password);
+         }catch(Exception e) {
+            return false; 
+         }
+    }
     
 }

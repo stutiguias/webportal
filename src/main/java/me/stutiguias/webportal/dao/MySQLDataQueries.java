@@ -240,7 +240,9 @@ public class MySQLDataQueries extends Queries {
 		try {
                         if(plugin.authplugin.equalsIgnoreCase("WebPortal")) {
                             st = conn.prepareStatement("SELECT pass FROM WA_Players WHERE name = ?");
-                        }else{
+                        }else if(plugin.authplugin.equalsIgnoreCase("xAuth")){
+                            st = conn.prepareStatement("SELECT id FROM " + plugin.Table + " WHERE " + plugin.Username + " = ?");
+                        } else {
                             st = conn.prepareStatement("SELECT " + plugin.ColumnPassword + " FROM " + plugin.Table + " WHERE " + plugin.Username + " = ?");
                         }
 			st.setString(1, player);
@@ -248,6 +250,8 @@ public class MySQLDataQueries extends Queries {
                         while (rs.next()) {
                             if(plugin.authplugin.equalsIgnoreCase("WebPortal")) {
                                 pass = rs.getString("pass");
+                            }else if(plugin.authplugin.equalsIgnoreCase("xAuth")) {
+                                pass = rs.getString("id");
                             }else{
                                 pass = rs.getString(plugin.ColumnPassword);   
                             }         
