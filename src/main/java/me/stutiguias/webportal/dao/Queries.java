@@ -322,12 +322,12 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("INSERT INTO WA_Players (name, pass, canBuy, canSell, isAdmin) VALUES (?, ?, ?, ?, ?, ?)");
+                st = conn.prepareStatement("INSERT INTO WA_Players (name, pass, canBuy, canSell, isAdmin) VALUES (?, ?, ?, ?, ?)");
                 st.setString(1, player);
                 st.setString(2, pass);
-                st.setInt(4, canBuy);
-                st.setInt(5, canSell);
-                st.setInt(6, isAdmin);
+                st.setInt(3, canBuy);
+                st.setInt(4, canSell);
+                st.setInt(5, isAdmin);
                 st.executeUpdate();
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to update player permissions in DB", plugin.logPrefix);
