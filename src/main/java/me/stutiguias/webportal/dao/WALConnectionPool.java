@@ -36,7 +36,7 @@ public class WALConnectionPool {
         this.url = url;
         this.username = username;
         this.password = password;
-        connections = new ArrayList<WALConnection>(poolsize);
+        connections = new ArrayList<>(poolsize);
         reaper = new ConnectionReaper();
         StartReaper();
         instance = this;

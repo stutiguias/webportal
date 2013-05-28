@@ -37,7 +37,7 @@ $(document).ready(function () {
                 var adm = " <a href='admin.html'>Admin Panel</a>";
                 var isAdmin = (data["Admin"].toString().indexOf("1") != -1) ? adm : "";
                 $('#user').html(data["Name"] + " " + isAdmin);
-                $('#money').html(data["Money"].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."));
+                $('#money').html(data["Money"].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                 $('#mail').html(data["Mail"]);
                 $('#avatarimg').attr('src', data["Avatarurl"]);
             } catch (err) {

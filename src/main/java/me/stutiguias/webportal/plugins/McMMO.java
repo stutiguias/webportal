@@ -31,7 +31,7 @@ public class McMMO {
     public McMMO(WebPortal instance) {
         plugin = instance;
         profile = new ProfileMcMMO();
-        Config = new HashMap<String, Object>();
+        Config = new HashMap<>();
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("mcMMO");
         if(pl != null) {
             WebPortal.logger.log(Level.INFO, "{0} mcMMO set to true and Mcmmo found !!!", plugin.logPrefix);

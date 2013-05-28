@@ -6,7 +6,6 @@ package me.stutiguias.webportal.webserver.request.type;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.AuctionPlayer;
