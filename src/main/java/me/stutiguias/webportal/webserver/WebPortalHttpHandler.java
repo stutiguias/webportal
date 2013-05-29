@@ -21,7 +21,8 @@ public class WebPortalHttpHandler implements HttpHandler {
     Socket WebServerSocket;
     String Lang;
     int Port;
-
+    String SessionId;
+    
     String htmlDir = "./plugins/WebPortal/html";
     String url;
     Map params;
@@ -49,30 +50,30 @@ public class WebPortalHttpHandler implements HttpHandler {
             return;
         }
 
-        String Sessionid = (String)params.get("sessionid");
+        SessionId = (String)params.get("sessionid");
  
-        if(!WebPortal.AuthPlayers.containsKey(Sessionid))
+        if(!WebPortal.AuthPlayers.containsKey(SessionId))
         {
-            RequestWithoutLogin(Sessionid);
+            RequestWithoutLogin();
         }else {
-            RequestWithLogin(Sessionid);
+            RequestWithLogin();
         }
     }
 
-    public void RequestWithoutLogin(String SessionId) throws IOException {
+    public void RequestWithoutLogin() throws IOException {
         if(url.startsWith("/web/login")){
             Fill.TryLogin(SessionId,params);
         }else if(url.startsWith("/get/auction")) {
             Fill.GetAuction(params);
-        }else if(isAllowed(url)) {
+        }else if(isAllowed()) {
             Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
         }else{
             Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
         } 
     }
 
-    public void RequestWithLogin(String SessionId) throws IOException {
-           if(isAllowed(url)) {
+    public void RequestWithLogin() throws IOException {
+           if(isAllowed()) {
                 Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
             }else if(url.startsWith("/server/username/info")) {
                 Fill.GetInfo(SessionId);
@@ -80,23 +81,33 @@ public class WebPortalHttpHandler implements HttpHandler {
                 WebPortal.AuthPlayers.remove(SessionId);
                 Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else if(url.startsWith("/myitems")) {
-                MyItemsHandler(SessionId);
+                MyItemsHandler();
             }else if(url.startsWith("/mail")) {
-                MailHandler(SessionId);
+                MailHandler();
             }else if(url.startsWith("/myauctions")) {
-                MyAuctionHandler(SessionId);
+                MyAuctionHandler();
             }else if(url.startsWith("/box")) {
-                BoxHandler(SessionId);
+                BoxHandler();
             }else if(url.startsWith("/adm")) {
-                AdmHandler(SessionId);
+                AdmHandler();
             }else if(url.startsWith("/auction")) {
-                AuctionHandler(SessionId);
+                AuctionHandler();
+            }else if(url.startsWith("/withlist")) {
+                WithListHandler();
             }else if(url.equalsIgnoreCase("/")) {
                 Fill.Response().ReadFile(htmlDir+"/index.html","text/html");
             }
     }
     
-    public void AdmHandler(String SessionId) {
+    public void WithListHandler() {
+        if(url.startsWith("/withlist/additem")) {
+            Fill.WithListAddItem(SessionId, params);
+        }else if(url.startsWith("/withlist/getitem")) {
+            Fill.WithListGetItems(SessionId, params);
+        }
+    }
+    
+    public void AdmHandler() {
         if(url.startsWith("/adm/search")) {
                 Fill.AdmGetInfo(SessionId,params);
         }else if(url.startsWith("/adm/deleteshop")){     
@@ -136,15 +147,15 @@ public class WebPortalHttpHandler implements HttpHandler {
         }
     }
     
-    public void MailHandler(String SessionId) {
+    public void MailHandler() {
         if(url.startsWith("/mail/get")) {
                 Fill.GetMails(SessionId,params);
-        }else if(url.startsWith("/mail/send") && !isLocked(SessionId)) {
+        }else if(url.startsWith("/mail/send") && !isLocked()) {
                 Fill.SendMail(SessionId, url, params);
         }
     }
     
-    public void BoxHandler(String SessionId) {
+    public void BoxHandler() {
         if(url.startsWith("/box/1")) {
                 Fill.Box1(SessionId);
         }else if(url.startsWith("/box/2")) {
@@ -152,19 +163,19 @@ public class WebPortalHttpHandler implements HttpHandler {
         }
     }
     
-    public void MyItemsHandler(String SessionId) {
+    public void MyItemsHandler() {
         if(url.startsWith("/myitems/get")) {
                 Fill.GetMyItems(SessionId);
         }else if(url.startsWith("/myitems/dataTable")) {
                 Fill.GetMyItems(SessionId, url, params);
-        }else if(url.startsWith("/myitems/postauction") && !isLocked(SessionId)) {
+        }else if(url.startsWith("/myitems/postauction") && !isLocked()) {
                 Fill.CreateAuction(SessionId, url, params);
         }else if(url.startsWith("/myitems/lore")) {
                 Fill.ItemLore(SessionId, params);
         }
     }
     
-    public void MyAuctionHandler(String SessionId) {
+    public void MyAuctionHandler() {
          if(url.startsWith("/myauctions/cancel")) {
                 Fill.Cancel(SessionId, url, params);
         }else if(url.startsWith("/myauctions/get")) {
@@ -172,15 +183,17 @@ public class WebPortalHttpHandler implements HttpHandler {
         }
     }
     
-    public void AuctionHandler(String SessionId) {
+    public void AuctionHandler() {
         if(url.startsWith("/auction/get")) {
                 Fill.RequestAuctionBy(SessionId,url,params);
         }else if(url.startsWith("/auction/buy")) {
-                Fill.Buy(SessionId,url,params);
+                Fill.Buy(SessionId,params);
+        }else if(url.startsWith("/auction/sell")) {
+                Fill.AuctionSell(SessionId, params);
         }
     }
     
-    public Boolean isLocked(String SessionId) {
+    public Boolean isLocked() {
         if(WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(SessionId).AuctionPlayer.getName()) != null) {
             return WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(SessionId).AuctionPlayer.getName());
         }else{
@@ -200,7 +213,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         return "text/plain";
     }
     
-    public Boolean isAllowed(String url) {
+    public Boolean isAllowed() {
         if(url.contains("./") || url.contains("..")) return false;
         
         if(url.startsWith("/css") || 
@@ -219,6 +232,7 @@ public class WebPortalHttpHandler implements HttpHandler {
            url.startsWith("/about.html") || 
            url.startsWith("/auction.html") ||
            url.startsWith("/mail.html") ||
+           url.startsWith("/withlist.html") ||
            url.startsWith("/signs.html")
                 )
             return true;

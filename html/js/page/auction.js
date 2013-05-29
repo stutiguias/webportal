@@ -23,6 +23,31 @@ function buy(form) {
     return false;
 };
 
+function sell(form) {
+    var ar = $(form).serializeArray();
+    $.ajax({
+        url: "/auction/sell",
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        success: function (data) {
+            if (data == "ok") {
+                $(form).hide();
+                $('#' + ar[1].value).html("Done");
+            } else if (data == "no") {
+                $('#error').html('Invalid');
+            } else {
+                $(form).hide();
+                $('#' + ar[1].value).html(data);
+            }
+        },
+        error: function (error) {
+
+        },
+        dataType: "text"
+    });
+
+    return false;
+};
+
 var table = function (by) {
     oTable = $('#mainTable').dataTable({
         "sDom": "<'row'<'span4'l><'span4'f>r>t<'row'<'span4'i><'span4'p>>",

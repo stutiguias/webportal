@@ -5,8 +5,6 @@
 package me.stutiguias.webportal.settings;
 
 import java.math.BigDecimal;
-import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
@@ -92,6 +90,94 @@ public class TradeSystem {
         int time = (int) ((System.currentTimeMillis() / 1000));
         plugin.dataQueries.LogSellPrice(sellerauction.getItemStack().getTypeId(),sellerauction.getItemStack().getDurability(),time, BuyPlayerName, sellerauction.getPlayerName(), qtd, sellerauction.getPrice(), sellerauction.getEnchantments());
         return "You purchased "+ qtd +" " + item_name + " from "+ sellerauction.getPlayerName() +" for " + sellerauction.getPrice();
+    }
+    
+    public String Sell(String sellerPlayerName,Auction buyauction,int qtd,String item_name,Boolean ingame) {
+        boolean found = false;
+        int StackId = 0;
+        int Stackqtd = 0;
+        plugin.economy.withdrawPlayer(buyauction.getPlayerName(), buyauction.getPrice() * qtd);
+        plugin.economy.depositPlayer(sellerPlayerName, buyauction.getPrice() * qtd);
+        
+        // TODO: Alert to Withlist
+        //plugin.dataQueries.setAlert(sellerauction.getPlayerName(), qtd, sellerauction.getPrice(), sellerPlayerName, item_name);
+        
+        boolean playerHasThatItem = false;    
+        List<Auction> auctions = plugin.dataQueries.getPlayerItems(sellerPlayerName);
+        for (Auction auction:auctions) {
+
+            String playeritemname =  info.GetItemConfig(auction.getItemStack())[0];
+            if(item_name.equals(playeritemname) && auction.getDamage() == buyauction.getItemStack().getDurability())
+            {
+                if(buyauction.getEnchantments().equals(auction.getEnchantments()) && auction.getQuantity() >= buyauction.getQuantity())
+                {
+                    playerHasThatItem = true;
+                    StackId = auction.getId();
+                    Stackqtd = auction.getQuantity();
+                    if(Stackqtd - qtd > 0)
+                        plugin.dataQueries.updateItemQuantity(Stackqtd - qtd, StackId);
+                    else
+                        plugin.dataQueries.DeleteAuction(StackId);
+                }
+            }
+        }
+        if(!playerHasThatItem)
+            return "You don't have that item or quantity";
+        
+        // wrong player get items
+        auctions = plugin.dataQueries.getPlayerItems(buyauction.getPlayerName());
+        for (Auction auction:auctions) {
+
+            String playeritemname =  info.GetItemConfig(auction.getItemStack())[0];
+            if(item_name.equals(playeritemname) && auction.getDamage() == buyauction.getItemStack().getDurability())
+            {
+                if(buyauction.getEnchantments().equals(auction.getEnchantments()))
+                {
+                    found = true;
+                    StackId = auction.getId();
+                    Stackqtd = auction.getQuantity();
+                }
+            }
+        }
+        
+        if(ingame) {
+            Player _player = plugin.getServer().getPlayer(buyauction.getPlayerName());
+            ItemStack itemstack = new ItemStack(buyauction.getItemStack());
+            itemstack.setAmount(qtd);
+            if(itemstack.getMaxStackSize() == 1) {
+                ItemStack NewStack = new ItemStack(itemstack);
+                NewStack.setAmount(1);
+                for (int i = 0; i < itemstack.getAmount(); i++) {
+                   _player.getInventory().addItem(NewStack);
+                }
+            }else{
+                _player.getInventory().addItem(itemstack);  
+            }
+            _player.updateInventory();
+        }else if(found && !ingame) {
+            plugin.dataQueries.updateItemQuantity(Stackqtd + qtd, StackId);
+        }else if(!ingame) {
+            String Type = buyauction.getItemStack().getType().toString();
+            String searchtype = info.GetSearchType(buyauction.getItemStack());
+            plugin.dataQueries.createItem(buyauction.getItemStack().getTypeId(), buyauction.getItemStack().getDurability() , buyauction.getPlayerName(), qtd, 0.0, buyauction.getEnchantments(), plugin.Myitems,Type,searchtype);
+        }
+        
+        if(buyauction.getPlayerName().equalsIgnoreCase("Server") && buyauction.getItemStack().getAmount() == 9999 ){
+            return "You sell "+ qtd +" " + item_name + " to "+ buyauction.getPlayerName() +" for " + buyauction.getPrice();
+        }
+        
+        if(buyauction.getItemStack().getAmount() > 0) {
+            if((buyauction.getItemStack().getAmount() - qtd) > 0)
+            {
+                plugin.dataQueries.UpdateItemAuctionQuantity(buyauction.getItemStack().getAmount() - qtd, buyauction.getId());
+            }else{
+                plugin.dataQueries.DeleteAuction(buyauction.getId());
+            }
+        }
+
+        //int time = (int) ((System.currentTimeMillis() / 1000));
+        //plugin.dataQueries.LogSellPrice(buyauction.getItemStack().getTypeId(),buyauction.getItemStack().getDurability(),time, sellerPlayerName, buyauction.getPlayerName(), qtd, buyauction.getPrice(), buyauction.getEnchantments());
+        return "You sell "+ qtd +" " + item_name + " to "+ buyauction.getPlayerName() +" for " + buyauction.getPrice();
     }
     
     public static double round(double unrounded, int precision, int roundingMode) {

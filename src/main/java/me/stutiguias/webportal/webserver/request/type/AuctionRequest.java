@@ -74,7 +74,7 @@ public class AuctionRequest extends HttpResponse {
         }
     }
     
-    public void GetAuctionBy(String ip,String url,Map param,String searchtype) {
+    public void GetAuctionBy(String sessionId,String url,Map param,String searchtype) {
         
         int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
         int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
@@ -106,7 +106,7 @@ public class AuctionRequest extends HttpResponse {
         if(iTotalRecords > 0) {
             for(Auction item:auctions){
                 if(item.getPlayerName().equalsIgnoreCase("Server")){
-                    Data.add(ServerAuction(item,searchtype,ip));
+                    Data.add(ServerAuction(item,searchtype,sessionId));
                     continue;
                 }
            
@@ -122,7 +122,11 @@ public class AuctionRequest extends HttpResponse {
                 tmp_Data.put("5", GetEnchant(item));
                 tmp_Data.put("6", GetDurability(item));
                 tmp_Data.put("7", Format(MakertPercent) + "%");
-                tmp_Data.put("8", html.HTMLBuy(ip,item.getId()));
+                if(item.getTableId() == plugin.Auction)
+                    tmp_Data.put("8", html.HTMLBuy(sessionId,item.getId()));
+                else
+                    tmp_Data.put("8", html.HTMLSell(sessionId,item.getId()));
+                
                 Data.add(tmp_Data);
             }
         }else{
@@ -221,7 +225,7 @@ public class AuctionRequest extends HttpResponse {
         return ServerAuction;
     }
     
-    public void Buy(String ip,String url,Map param) {
+    public void Buy(String ip,Map param) {
        try { 
            int qtd =  Integer.parseInt((String)param.get("Quantity"));
            int id =  Integer.parseInt((String)param.get("ID"));
@@ -243,6 +247,35 @@ public class AuctionRequest extends HttpResponse {
            } else {
                tr = new TradeSystem(plugin);
                Print(tr.Buy(ap.getName(),au, qtd, item_name, false),"text/plain");
+           }
+       }catch(Exception ex){
+           WebPortal.logger.warning(ex.getMessage());
+       }
+        
+    }
+    
+    public void Sell(String sessionId,Map param) {
+       try { 
+           int qtd =  Integer.parseInt((String)param.get("Quantity"));
+           int id =  Integer.parseInt((String)param.get("ID"));
+           
+           AuctionPlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
+           Auction au = plugin.dataQueries.getAuction(id);
+           String item_name = GetItemConfig(au.getItemStack())[0];
+           if(qtd <= 0)
+           {
+              Print("Quantity greater then 0","text/plain");
+           } else if(qtd > au.getItemStack().getAmount())
+           {
+              Print("You are attempting to purchase more than the maximum available","text/plain");
+           } else if(!plugin.economy.has(au.getPlayerName(),au.getPrice() * qtd))
+           {
+              Print("The Owner don't have money to buy this.","text/plain");
+           } else if(ap.getName().equals(au.getPlayerName())) {
+              Print("You cannnot sell your own items.","text/plain");
+           } else {
+               tr = new TradeSystem(plugin);
+               Print(tr.Sell(ap.getName(),au, qtd, item_name, false),"text/plain");
            }
        }catch(Exception ex){
            WebPortal.logger.warning(ex.getMessage());

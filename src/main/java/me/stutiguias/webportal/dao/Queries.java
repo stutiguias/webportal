@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -935,6 +934,11 @@ public class Queries implements IDataQueries {
                 closeResources(conn, st, rs);
         }
         return true;
+    }
+
+    @Override
+    public List<Auction> GetWithList(String player, int to, int from) {
+        throw new UnsupportedOperationException("Implement On Children.");
     }
     
 }

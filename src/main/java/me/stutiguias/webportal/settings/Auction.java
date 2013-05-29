@@ -14,7 +14,8 @@ public class Auction {
     private double price;
     private int created;
     private String Enchantments;
-
+    private int tableId;
+    
     public String getType() {
         return type;
     }
@@ -111,6 +112,20 @@ public class Auction {
      */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    /**
+     * @return the tableId
+     */
+    public int getTableId() {
+        return tableId;
+    }
+
+    /**
+     * @param tableId the tableId to set
+     */
+    public void setTableId(int tableId) {
+        this.tableId = tableId;
     }
     
 }

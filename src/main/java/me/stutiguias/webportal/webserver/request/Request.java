@@ -17,6 +17,7 @@ import me.stutiguias.webportal.webserver.request.type.MyItemsRequest;
 import me.stutiguias.webportal.webserver.request.type.UserRequest;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import me.stutiguias.webportal.webserver.request.type.MailRequest;
+import me.stutiguias.webportal.webserver.request.type.WithListRequest;
 
 /**
  *
@@ -34,6 +35,7 @@ public class Request {
     UserRequest UserInfo;
     HttpResponse Response;
     MailRequest Mail;
+    WithListRequest Withlist;
     
     public Request(WebPortal plugin) {
         Auction = new AuctionRequest(plugin);
@@ -46,6 +48,7 @@ public class Request {
         UserInfo = new UserRequest(plugin);
         Response = new HttpResponse(plugin);
         Mail = new MailRequest(plugin);
+        Withlist = new WithListRequest(plugin);
     }
     
     public void SetHttpExchange(HttpExchange t) {
@@ -59,6 +62,7 @@ public class Request {
         UserInfo.setHttpExchange(t);
         Response.setHttpExchange(t);
         Mail.setHttpExchange(t);
+        Withlist.setHttpExchange(t);
     }
     
     public void GetAuction(Map param) {
@@ -77,8 +81,8 @@ public class Request {
         MyItems.GetMyItems(HostAddress, url, param);
     }
     
-    public void Buy(String HostAddress,String url,Map param){
-        Auction.Buy(HostAddress,url,param);
+    public void Buy(String HostAddress,Map param){
+        Auction.Buy(HostAddress,param);
     }
     
     public void CreateAuction(String HostAddress,String url,Map param){
@@ -191,6 +195,18 @@ public class Request {
     
     public void GetMails(String HostAddress,Map param) {
         Mail.GetMails(HostAddress,param);
+    }
+    
+    public void WithListAddItem(String SessionId,Map param) {
+        Withlist.AddItem(SessionId,param);
+    }
+    
+    public void WithListGetItems(String SessionId,Map param) {
+        Withlist.GetItems(SessionId, param);
+    }
+    
+    public void AuctionSell(String SessionId,Map param) {
+        Auction.Sell(SessionId, param);
     }
     
     public HttpResponse Response() {

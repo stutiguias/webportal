@@ -68,6 +68,9 @@ public interface IDataQueries {
         String GetItemInfo(int auctionId,String type);
         ItemStack Chant(String ench,ItemStack stack);
         
+        //WithList
+        List<Auction> GetWithList(String player,int to,int from);
+        
         //Plugins
         ProfileMcMMO getMcMMOProfileMySql(String tableprefix,String player);
 }

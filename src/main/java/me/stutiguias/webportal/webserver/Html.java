@@ -42,6 +42,17 @@ public class Html {
       }
     }
     
+    public String HTMLSell(String ip,int ID){
+      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getCanBuy() == 1) {
+        return "<form class='js-buyItems' onsubmit='return sell(this)'>"+
+                "<input type='text' name='Quantity' onKeyPress='return numbersonly(this, event);' class='input' />"+
+                "<input type='hidden' name='ID' value='"+ID+"' />"+
+                "<input type='submit' value='Sell' class='btn btn-primary' /></form><span id='"+ID+"'></span>";
+      }else{
+        return "Can't Sell";
+      }
+    }
+    
     public String HTMLCancel(String ip,int ID){
         return "<form class='js-cancelAuction' onsubmit='return cancel(this)'>"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+

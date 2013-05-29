@@ -118,10 +118,11 @@ public class MySQLDataQueries extends Queries {
                 List<Auction> la = new ArrayList<>();
                 
 		try {
-			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench FROM WA_Auctions where tableid = ? LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,tableid FROM WA_Auctions where tableid = ? or tableid = ? LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setInt(2, to);
-                        st.setInt(3, from);
+                        st.setInt(2, plugin.WithList);
+                        st.setInt(3, to);
+                        st.setInt(4, from);
 			rs = st.executeQuery();
 			while (rs.next()) {
 				auction = new Auction();
@@ -132,6 +133,7 @@ public class MySQLDataQueries extends Queries {
 				auction.setPlayerName(rs.getString("player"));
 				auction.setPrice(rs.getDouble("price"));
 				auction.setCreated(rs.getInt("created"));
+                                auction.setTableId(rs.getInt("tableid"));
                                 la.add(auction);
 			}
                         st = conn.prepareStatement("SELECT FOUND_ROWS()");
@@ -157,11 +159,12 @@ public class MySQLDataQueries extends Queries {
                 List<Auction> la = new ArrayList<>();
                 
 		try {
-			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and searchtype = ? LIMIT ? , ?");
+			st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS name,damage,player,quantity,price,id,created,ench,type,tableid FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ? LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setString(2, searchtype);
-                        st.setInt(3, to);
-                        st.setInt(4, from);
+                        st.setInt(2, plugin.WithList);
+                        st.setString(3, searchtype);
+                        st.setInt(4, to);
+                        st.setInt(5, from);
 			rs = st.executeQuery();
 			while (rs.next()) {
 				auction = new Auction();
@@ -173,6 +176,7 @@ public class MySQLDataQueries extends Queries {
 				auction.setPlayerName(rs.getString("player"));
 				auction.setPrice(rs.getDouble("price"));
 				auction.setCreated(rs.getInt("created"));
+                                auction.setTableId(rs.getInt("tableid"));
                                 la.add(auction);
 			}
                         st = conn.prepareStatement("SELECT FOUND_ROWS()");
@@ -338,5 +342,43 @@ public class MySQLDataQueries extends Queries {
             return auctionMails;
         }
         
+        @Override
+        public List<Auction> GetWithList(String player, int to, int from) {
+            List<Auction> auctions = new ArrayList<>();
 
+            WALConnection conn = getConnection();
+            PreparedStatement st = null;
+            ResultSet rs = null;
+
+            try {
+                    st = conn.prepareStatement("SELECT SQL_CALC_FOUND_ROWS id,name,quantity,damage,player,ench,price FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
+                    st.setString(1, player);
+                    st.setInt(2, plugin.WithList);
+                    st.setInt(3, to);
+                    st.setInt(4, from);
+                    rs = st.executeQuery();
+                    while (rs.next()) {
+                            Auction auction = new Auction();
+                            auction.setId(rs.getInt("id"));
+                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                            stack = Chant(rs.getString("ench"),stack);
+                            auction.setItemStack(stack);
+                            auction.setPlayerName(rs.getString("player"));
+                            auction.setPrice(rs.getDouble("price"));
+                            auctions.add(auction);
+                    }
+                    st = conn.prepareStatement("SELECT FOUND_ROWS()");
+                    rs = st.executeQuery();
+                    while (rs.next()) {
+                          found = rs.getInt(1);
+                    }
+            } catch (SQLException e) {
+                    WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
+                    WebPortal.logger.warning(e.getMessage());
+            } finally {
+                    closeResources(conn, st, rs);
+            }
+            return auctions;
+        }
+        
 }

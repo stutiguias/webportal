@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -22,12 +21,10 @@ import org.json.simple.JSONObject;
 public class MyItemsRequest extends HttpResponse {
     
     private WebPortal plugin;
-    private Html html;
     
     public MyItemsRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
-        html = new Html(plugin);
     }
         
     public void CreateAuction(String ip,String url,Map param) {

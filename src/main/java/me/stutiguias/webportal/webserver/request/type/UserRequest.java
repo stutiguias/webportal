@@ -4,8 +4,6 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
