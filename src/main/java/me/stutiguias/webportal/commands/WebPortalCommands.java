@@ -41,7 +41,7 @@ public class WebPortalCommands implements CommandExecutor {
                     case "mailbox":
                         return inv(sender);
                     case "password":
-                        if(params != 2) {
+                        if(params != 2 && !sender.getName().equalsIgnoreCase("CONSOLE")) {
                             sender.sendMessage(ChatColor.RED + " You need to inform your password");
                             break;
                         }
