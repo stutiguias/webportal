@@ -113,6 +113,11 @@ public class SqliteDataQueries extends Queries {
                         executeRawSQL("CREATE TABLE WA_ItemExtraInfo (id INTEGER PRIMARY KEY, auctionId INTEGER, type VARCHAR(45), value TEXT );");
                         executeRawSQL("UPDATE WA_DbVersion SET dbversion = 3 where id = 1");
                 }
+                if (tableVersion() == 3) {
+                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 4", plugin.logPrefix);
+                        executeRawSQL("ALTER TABLE WA_Players ADD COLUMN webban VARCHAR(1) Default 'N';");
+                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 4 where id = 1");
+                }
     }
 
     @Override
