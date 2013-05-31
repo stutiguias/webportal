@@ -8,7 +8,6 @@ import com.cypherx.xauth.password.PasswordHandler;
 import com.cypherx.xauth.xAuth;
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import uk.org.whoami.authme.security.PasswordSecurity;
 /**
  *
@@ -48,7 +47,7 @@ public final class AuthSystem {
     public boolean AuthMeReloadedisLogged(String player,String password) {
          try {
             String hash = plugin.dataQueries.getPassword(player);
-            return PasswordSecurity.comparePasswordWithHash(password,hash);
+            return PasswordSecurity.comparePasswordWithHash(password,hash,player);
          }catch(Exception e) {
             return false; 
          }
