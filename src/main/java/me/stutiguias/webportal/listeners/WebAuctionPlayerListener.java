@@ -91,9 +91,8 @@ public class WebAuctionPlayerListener implements Listener {
                     return;
                 }
                 
-		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]") && lines[0].equals(ChatColor.GREEN + "[wSell]")) {
+		if ( lines[0].equals(ChatColor.GREEN + "[wSell]")) {
                     plugin.wsell.ClickSign(event,sign,lines);
-                }else{
                     return;
                 }
                 
