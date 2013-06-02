@@ -308,4 +308,23 @@ public class SqliteDataQueries extends Queries {
         return auctionMails;
     }
     
+    @Override
+    public boolean setLock(String player, String lock) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("UPDATE WA_Players SET lock = ? WHERE name = ?");
+                st.setString(1, lock);
+                st.setString(2, player);
+                st.executeUpdate();
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable setLock", plugin.logPrefix);
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return true;
+    }
 }
