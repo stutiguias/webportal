@@ -52,10 +52,12 @@ public class wSell {
             event.setLine(2,"1-" + auction.getQuantity() + "-" + auction.getPrice());
         }else{
             int qtd = Integer.parseInt(lines[2]);
-            if(qtd <= auction.getQuantity()) {
+            if(qtd <= auction.getQuantity() && qtd > 0) {
                 event.setLine(2,lines[2] + "-" + auction.getQuantity() + "-" + auction.getPrice());
             }else{
                 event.setLine(2, ChatColor.RED + "Invalid Qtd");
+                event.setCancelled(true);
+                return;
             }
         }
         event.setLine(3, "" + auction.getId());
