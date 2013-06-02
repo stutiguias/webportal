@@ -82,8 +82,7 @@ public class WebAuctionPlayerListener implements Listener {
                   return;  
                 }
 		if (null == block || (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN)) 	return;
-                
-		// it's a sign
+
 		Sign sign = (Sign) block.getState();
 		String[] lines = sign.getLines();
                 
@@ -92,13 +91,12 @@ public class WebAuctionPlayerListener implements Listener {
                     return;
                 }
                 
-		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]")) {
-                    if(lines[0].equals(ChatColor.GREEN + "[wSell]")) { 
-                        plugin.wsell.ClickSign(event,sign,lines);
-                    }else{
-			return;
-                    }
-		}
+		if (!lines[0].equals(ChatColor.GREEN + "[WebAuction]") && lines[0].equals(ChatColor.GREEN + "[wSell]")) {
+                    plugin.wsell.ClickSign(event,sign,lines);
+                }else{
+                    return;
+                }
+                
                 if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
 		String player = event.getPlayer().getName();
 		event.setCancelled(true);

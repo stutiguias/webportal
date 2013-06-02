@@ -243,12 +243,13 @@ public class AdminRequest extends HttpResponse {
         plugin.getServer().reload();
     }
     
-    public void Command(String Hostaddress,Map params) {
-        if(!isAdmin(Hostaddress)) {
-            Print("Your r not admin","text/html");
+    public void Command(String SessionId,Map params) {
+        String name = WebPortal.AuthPlayers.get(SessionId).AuctionPlayer.getName();
+        if(!isAdmin(SessionId) || !plugin.permission.has(plugin.getServer().getWorlds().get(0),name,"wa.console")) {
+            Print("Your r not admin or don't have permission","text/html");
             return;
         }
-        String line = "";
+        String line;
         JSONArray console = new JSONArray();
         try
         { 
@@ -272,9 +273,10 @@ public class AdminRequest extends HttpResponse {
         Print(console.toJSONString(),"text/plain");
     }
     
-    public void SeeConsole(String Hostaddress) {
-        if(!isAdmin(Hostaddress)) {
-            Print("Your r not admin","text/html");
+    public void SeeConsole(String SessionId) {
+        String name = WebPortal.AuthPlayers.get(SessionId).AuctionPlayer.getName();
+        if(!isAdmin(SessionId) || !plugin.permission.has(plugin.getServer().getWorlds().get(0),name,"wa.console")) {
+            Print("Your r not admin or don't have permission","text/html");
             return;
         }
         String line;
