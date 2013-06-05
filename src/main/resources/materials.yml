@@ -229,12 +229,12 @@ Redstone:
   29:   Sticky Piston,Blocks/Sticky_Piston.png
   33:   Piston,Blocks/Piston.png
   46:   TNT,Blocks/TNT.png
-  69:   Lever,Blocks/Leaves.png
+  69:   Lever,Blocks/leav.png
   70:   Stone Pressure Plate,Blocks/Stone_Pressure_Plate.png
-  70-1: Wooden Pressure Plate,Blocks/Wooden_Pressure_Plate
+  72:   Wooden Pressure Plate,Blocks/Wooden_Pressure_Plate.png
   76:   Redstone Torch,Blocks/Redstone_(Torch,_Inactive).png
   77:   Stone Button,Blocks/Stone_Button.png
-  77-1: Wooden Button,Blocks/Wooden_Button.png
+  143:  Wooden Button,Blocks/Wooden_Button.png
   96:   Trapdoor,Blocks/Trapdoor.png
   107:  Fence Gate,Blocks/Fence_Gate_(Closed).png
   123:  Redstone Lamp,Blocks/Redstone_Lamp.png
