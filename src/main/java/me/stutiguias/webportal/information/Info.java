@@ -117,7 +117,7 @@ public class Info {
         
         String itemId;
         Short dmg = item.getDurability();
-        if( ( item.getType().isBlock() || isPotion(item)  ) && !dmg.equals(Short.valueOf("0")) ) 
+        if( ( item.getType().isBlock() || isPotion(item) || item.getTypeId() == 322 ) && !dmg.equals(Short.valueOf("0")) ) 
             itemId = item.getTypeId() + "-" + item.getDurability();
         else
             itemId = String.valueOf(item.getTypeId());
