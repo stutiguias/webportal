@@ -84,7 +84,7 @@ public class MyAuctionsRequest extends HttpResponse {
         Print(json.toJSONString(),"text/plain");
     }
     
-        public void Cancel(String ip,String url,Map param) {
+    public void Cancel(String ip,String url,Map param) {
         int id = Integer.parseInt((String)param.get("ID"));
         
         Auction auction = plugin.dataQueries.getAuction(id);
