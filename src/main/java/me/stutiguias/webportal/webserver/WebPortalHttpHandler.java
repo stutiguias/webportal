@@ -177,7 +177,7 @@ public class WebPortalHttpHandler implements HttpHandler {
     
     public void MyAuctionHandler() {
          if(url.startsWith("/myauctions/cancel")) {
-                Fill.Cancel(SessionId, url, params);
+                Fill.Cancel(url, params);
         }else if(url.startsWith("/myauctions/get")) {
                 Fill.GetMyAuctions(SessionId, url, params);
         }

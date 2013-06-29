@@ -101,8 +101,8 @@ public class Request {
         UserInfo.ItemLore(SessionId, param);
     }
     
-    public void Cancel(String HostAddress,String url,Map param){
-       MyAuctions.Cancel(HostAddress, url, param);
+    public void Cancel(String url,Map param){
+       MyAuctions.Cancel(url, param);
     }
     
     public void Box1(String HostAddress) {

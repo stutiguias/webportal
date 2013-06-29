@@ -84,7 +84,7 @@ public class MyAuctionsRequest extends HttpResponse {
         Print(json.toJSONString(),"text/plain");
     }
     
-    public void Cancel(String ip,String url,Map param) {
+    public void Cancel(String url,Map param) {
         int id = Integer.parseInt((String)param.get("ID"));
         
         Auction auction = plugin.dataQueries.getAuction(id);
@@ -95,7 +95,7 @@ public class MyAuctionsRequest extends HttpResponse {
         
         List<Auction> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
         
-        if(!auctions.isEmpty()) {
+        if(!auctions.isEmpty() && cancelItemId != 403) {
             
             Integer newAmount = auction.getItemStack().getAmount() + auctions.get(0).getItemStack().getAmount();
             Integer itemId = auctions.get(0).getId();
