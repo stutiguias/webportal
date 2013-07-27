@@ -29,7 +29,6 @@ public class AdminShopRequest extends HttpResponse {
     public void AddShop(String ip,String url,Map param){
         
         if(isAdmin(ip)){
-            
             String itemId = (String)param.get("itemId");
             String price = (String)param.get("price");
             String quantity = (String)param.get("quantity");
@@ -43,7 +42,6 @@ public class AdminShopRequest extends HttpResponse {
             String searchtype = GetSearchType(Item);
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, searchtype);
             Print("ok","text/html");
-            
         }else{
             Print("You r not admin","text/html");
         }
