@@ -77,7 +77,7 @@ public class WebAuctionPlayerListener implements Listener {
 		if (!event.hasItem() && !event.hasBlock()) return;
                 Block block;
                 try{
-                  block = event.getPlayer().getTargetBlock(null, 3);
+                  block = event.getPlayer().getTargetBlock(null, 1);
                 }catch(IllegalStateException ex){
                   return;  
                 }
