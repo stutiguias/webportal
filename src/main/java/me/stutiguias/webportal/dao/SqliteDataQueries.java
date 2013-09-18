@@ -121,138 +121,6 @@ public class SqliteDataQueries extends Queries {
     }
 
     @Override
-    public List<Auction> getAuctions(int to, int from) {
-                Auction auction;
-		WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
-                List<Auction> la = new ArrayList<Auction>();
-                
-		try {
-			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench FROM WA_Auctions where tableid = ? LIMIT ? , ?");
-                        st.setInt(1, plugin.Auction);
-                        st.setInt(2, to);
-                        st.setInt(3, from);
-			rs = st.executeQuery();
-			while (rs.next()) {
-				auction = new Auction();
-				auction.setId(rs.getInt("id"));
-                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
-                                stack = Chant(rs.getString("ench"), stack);
-				auction.setItemStack(stack);
-				auction.setPlayerName(rs.getString("player"));
-				auction.setPrice(rs.getDouble("price"));
-				auction.setCreated(rs.getInt("created"));
-                                la.add(auction);
-			}
-                        st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? LIMIT ? , ?");
-                        st.setInt(1, plugin.Auction);
-                        st.setInt(2, to);
-                        st.setInt(3, from);
-			rs = st.executeQuery();
-			while (rs.next()) {
-		              found = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			WebPortal.logger.log(Level.WARNING, "{0} Unable to get auction ", plugin.logPrefix);
-			WebPortal.logger.warning(e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-		return la;
-    }
-
-    @Override
-    public List<Auction> getSearchAuctions(int to, int from, String searchtype) {
-                Auction auction;
-		WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
-                List<Auction> la = new ArrayList<>();
-                
-		try {
-			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type FROM WA_Auctions where tableid = ? and searchtype = ? LIMIT ? , ?");
-                        st.setInt(1, plugin.Auction);
-                        st.setString(2, searchtype);
-                        st.setInt(3, to);
-                        st.setInt(4, from);
-			rs = st.executeQuery();
-			while (rs.next()) {
-				auction = new Auction();
-				auction.setId(rs.getInt("id"));
-                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
-                                stack = Chant(rs.getString("ench"), stack);
-                                auction.setType(rs.getString("type"));
-				auction.setItemStack(stack);
-				auction.setPlayerName(rs.getString("player"));
-				auction.setPrice(rs.getDouble("price"));
-				auction.setCreated(rs.getInt("created"));
-                                la.add(auction);
-			}
-  			st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? and searchtype = ? LIMIT ? , ?");
-                        st.setInt(1, plugin.Auction);
-                        st.setString(2, searchtype);
-                        st.setInt(3, to);
-                        st.setInt(4, from);
-			rs = st.executeQuery();
-			while (rs.next()) {
-		              found = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			WebPortal.logger.log(Level.WARNING, "{0}Unable to get auction ", plugin.logPrefix);
-			WebPortal.logger.warning(e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-		return la;
-    }
-
-    @Override
-    public List<Auction> getAuctionsLimitbyPlayer(String player,int to,int from,int table) {
-            Auction auction;
-            WALConnection conn = getConnection();
-            PreparedStatement st = null;
-            ResultSet rs = null;
-            List<Auction> la = new ArrayList<Auction>();
-
-            try {
-                    st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,searchtype FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
-                    st.setString(1, player);
-                    st.setInt(2, table);
-                    st.setInt(3, to);
-                    st.setInt(4, from);
-                    rs = st.executeQuery();
-                    while (rs.next()) {
-                            auction = new Auction();
-                            auction.setId(rs.getInt("id"));
-                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
-                            stack = Chant(rs.getString("ench"), stack);
-                            auction.setItemStack(stack);
-                            auction.setPlayerName(rs.getString("player"));
-                            auction.setType(rs.getString("searchtype"));
-                            auction.setPrice(rs.getDouble("price"));
-                            auction.setCreated(rs.getInt("created"));
-                            la.add(auction);
-                    }
-                    st = conn.prepareStatement("SELECT count(*) FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
-                    st.setString(1, player);
-                    st.setInt(2, table);
-                    st.setInt(3, to);
-                    st.setInt(4, from);
-                    rs = st.executeQuery();
-                    while (rs.next()) {
-                            found = rs.getInt(1);
-                    }
-            } catch (SQLException e) {
-                    WebPortal.logger.log(Level.WARNING, "{0}Unable to get auction ", plugin.logPrefix);
-                    WebPortal.logger.warning(e.getMessage());
-            } finally {
-                    closeResources(conn, st, rs);
-            }
-            return la;
-    }
-
-    @Override
     public String getPassword(String player) {
             WALConnection conn = getConnection();
             PreparedStatement st = null;
@@ -274,39 +142,6 @@ public class SqliteDataQueries extends Queries {
             }
             return pass;
     }
-
-    @Override
-    public List<AuctionMail> getMail(String player, int to, int from) {
-        List<AuctionMail> auctionMails = new ArrayList<AuctionMail>();
-
-        WALConnection conn = getConnection();
-        PreparedStatement st = null;
-        ResultSet rs = null;
-
-        try {
-                st = conn.prepareStatement("SELECT id,name,quantity,damage,player,ench FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
-                st.setString(1, player);
-                st.setInt(2, plugin.Mail);
-                st.setInt(3, to);
-                st.setInt(4, from);
-                rs = st.executeQuery();
-                while (rs.next()) {
-                        AuctionMail auctionMail = new AuctionMail();
-                        auctionMail.setId(rs.getInt("id"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
-                        stack = Chant(rs.getString("ench"),stack);
-                        auctionMail.setItemStack(stack);
-                        auctionMail.setPlayerName(rs.getString("player"));
-                        auctionMails.add(auctionMail);
-                }
-        } catch (SQLException e) {
-                WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
-                WebPortal.logger.warning(e.getMessage());
-        } finally {
-                closeResources(conn, st, rs);
-        }
-        return auctionMails;
-    }
     
     @Override
     public boolean setLock(String player, String lock) {
@@ -327,4 +162,5 @@ public class SqliteDataQueries extends Queries {
         }
         return true;
     }
+    
 }
