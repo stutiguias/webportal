@@ -227,12 +227,12 @@ public class WebPortalHttpHandler implements HttpHandler {
            url.startsWith("/myitems.html") ||
            url.startsWith("/login.html") || 
            url.startsWith("/admin.html") || 
-           url.startsWith("/myauctions.html") || 
+           url.startsWith("/sell.html") || 
            url.startsWith("/index.html") || 
            url.startsWith("/about.html") || 
-           url.startsWith("/auction.html") ||
+           url.startsWith("/shop.html") ||
            url.startsWith("/mail.html") ||
-           url.startsWith("/withlist.html") ||
+           url.startsWith("/buy.html") ||
            url.startsWith("/signs.html")
                 )
             return true;
