@@ -129,54 +129,6 @@ public class Request {
         AdminShop.List(HostAddress, url, param);
     }
     
-    public void AdmGetServerInfo(String HostAddress) {
-        Admin.AdmGetServerInfo(HostAddress);
-    }
-    
-    public void AdmViewPlugins(String HostAddress) {
-        Admin.AdmViewPlugins(HostAddress);
-    }
-    
-    public void AdmMsg(String HostAddress,Map param) {
-        Admin.SendMsg(HostAddress, param);
-    }
-    
-    public void AdmShutDown(String HostAddress) {
-        Admin.ShutDown(HostAddress);
-    }
-
-    public void AdmRestart(String HostAddress) {
-        Admin.Reload(HostAddress);
-    }
-        
-    public void AdmCmdSend(String HostAddress,Map param) {
-        Admin.Command(HostAddress,param);
-    }
-    
-    public void AdmSeeConsole(String HostAddress) {
-        Admin.SeeConsole(HostAddress);
-    }
-    
-    public void AdmPlayerList(String HostAddress) {
-        Admin.PlayersOnline(HostAddress);
-    }
-    
-    public void AdmKickPlayer(String HostAddress,Map param) {
-        Admin.Kick(HostAddress, param);
-    }
-    
-    public void AdmBanList(String Hostaddress) {
-        Admin.BanList(Hostaddress);
-    }
-    
-    public void AdmBan(String Hostaddress,Map param) {
-        Admin.Ban(Hostaddress, param);
-    }
-    
-    public void AdmUnBan(String Hostaddress,Map param) {
-        Admin.UnBan(Hostaddress, param);
-    }
-    
     public void AdmWebBan(String SessionId,Map param) {
         Admin.WebBan(SessionId, param);
     }

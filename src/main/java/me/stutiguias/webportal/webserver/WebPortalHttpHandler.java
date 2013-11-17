@@ -116,34 +116,10 @@ public class WebPortalHttpHandler implements HttpHandler {
                 Fill.AdmAddShop(SessionId, url, params);
         }else if(url.startsWith("/adm/shoplist")){ 
                 Fill.AdmListShop(SessionId, url, params);
-        }else if(url.startsWith("/adm/getinfo")) {
-                Fill.AdmGetServerInfo(SessionId);
-        }else if(url.startsWith("/adm/viewplugins")) {
-                Fill.AdmViewPlugins(SessionId);
-        }else if(url.startsWith("/adm/sendmsg")) {
-                Fill.AdmMsg(SessionId, params);
-        }else if(url.startsWith("/adm/sendcmd")) {
-                Fill.AdmCmdSend(SessionId, params);
-        }else if(url.startsWith("/adm/shutdown")) {
-                Fill.AdmShutDown(SessionId);
-        }else if(url.startsWith("/adm/reload")) {
-                Fill.AdmRestart(SessionId);
-        }else if(url.startsWith("/adm/seeconsole")) {
-                Fill.AdmSeeConsole(SessionId);
-        }else if(url.startsWith("/adm/playerlist")) {
-                Fill.AdmPlayerList(SessionId);
-        }else if(url.startsWith("/adm/banlist")) {
-                Fill.AdmBanList(SessionId);
-        }else if(url.startsWith("/adm/ban")) {
-                Fill.AdmBan(SessionId, params);
         }else if(url.startsWith("/adm/webban")) {
                 Fill.AdmWebBan(SessionId, params);
         }else if(url.startsWith("/adm/webunban")) {
                 Fill.AdmWebUnBan(SessionId, params);
-        }else if(url.startsWith("/adm/unban")) {
-                Fill.AdmUnBan(SessionId, params);
-        }else if(url.startsWith("/adm/kick")) {
-                Fill.AdmKickPlayer(SessionId, params);
         }
     }
     
@@ -219,6 +195,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         if(url.startsWith("/css") || 
            url.startsWith("/styles") || 
            url.contains("/image") || 
+           url.contains("/favicon.ico") ||
            url.contains("/Images") || 
            url.startsWith("/img") ||
            url.startsWith("/js") || 
