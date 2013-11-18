@@ -3,7 +3,7 @@ package me.stutiguias.webportal.listeners;
 import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.settings.SaleAlert;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -37,7 +37,7 @@ public class WebAuctionPlayerListener implements Listener {
         @EventHandler(priority = EventPriority.NORMAL)
 	public void PlayerJoin(PlayerJoinEvent event) {
 		String player = event.getPlayer().getName();
-                AuctionPlayer auplayer = plugin.dataQueries.getPlayer(player);
+                WebSitePlayer auplayer = plugin.dataQueries.getPlayer(player);
                 if (auplayer != null) {
                     
                     // Alert player of any new sale alerts

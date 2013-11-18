@@ -1,7 +1,7 @@
 package me.stutiguias.webportal.commands;
 
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.settings.InventoryHandler;
 import me.stutiguias.webportal.webserver.authentication.Algorithm;
 import org.bukkit.ChatColor;
@@ -74,7 +74,7 @@ public class WebPortalCommands implements CommandExecutor {
                 sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
                 return false;
             }
-            AuctionPlayer player = plugin.dataQueries.getPlayer(name);
+            WebSitePlayer player = plugin.dataQueries.getPlayer(name);
             sender.sendMessage("-----------------------------------------------------");
             if(player == null) {
                 sender.sendMessage(ChatColor.YELLOW + " Player Not Found");
@@ -112,7 +112,7 @@ public class WebPortalCommands implements CommandExecutor {
                 sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
                 return false;
             }
-            AuctionPlayer player = plugin.dataQueries.getPlayer(name);
+            WebSitePlayer player = plugin.dataQueries.getPlayer(name);
             sender.sendMessage("-----------------------------------------------------");
             if(player == null) {
                 sender.sendMessage(ChatColor.YELLOW + " Player Not Found");

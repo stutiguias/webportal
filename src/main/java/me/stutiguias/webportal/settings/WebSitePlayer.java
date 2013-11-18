@@ -1,6 +1,6 @@
 package me.stutiguias.webportal.settings;
 
-public class AuctionPlayer {
+public class WebSitePlayer {
 
     private int id;
     private String name;

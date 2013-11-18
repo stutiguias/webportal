@@ -2,7 +2,7 @@ package me.stutiguias.webportal.settings;
 
 import org.bukkit.inventory.ItemStack;
 
-public class AuctionMail {
+public class WebSiteMail {
 
 	private int id;
 	private ItemStack itemStack;

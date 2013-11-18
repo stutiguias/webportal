@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.AuctionMail;
+import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebSiteMail;
 import me.stutiguias.webportal.settings.Enchant;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -43,7 +43,7 @@ public class Info {
         return String.format("%.2f", x);  
     } 
     
-    public String ConvertItemToResult(Auction item,String type) {
+    public String ConvertItemToResult(Shop item,String type) {
        
         String[] nameAndImg = GetItemConfig(item.getItemStack());
         String item_name = nameAndImg[0];
@@ -60,7 +60,7 @@ public class Info {
         
     }
 
-    public String GetEnchant(Auction item) {
+    public String GetEnchant(Shop item) {
         StringBuilder enchant = new StringBuilder();
         for (Map.Entry<Enchantment, Integer> entry : item.getItemStack().getEnchantments().entrySet()) {
             int enchId = entry.getKey().getId();
@@ -78,7 +78,7 @@ public class Info {
         return enchant.toString();
     }
     
-    public String GetDurability(Auction item) {
+    public String GetDurability(Shop item) {
         Short dmg = item.getItemStack().getDurability();
         Short maxdur = item.getItemStack().getType().getMaxDurability();
         String Durability = "";
@@ -173,7 +173,7 @@ public class Info {
             return Itemname;
     }
     
-    public double MarketPrice(Auction item,Double price) {
+    public double MarketPrice(Shop item,Double price) {
            double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
            if(mprice == 0.0) {
              return 0.0;
@@ -181,14 +181,14 @@ public class Info {
            return (( price * 100 ) / mprice);
     }
     
-    public String ChangeItemToItemMeta(AuctionMail mail,String item_name) {
-        Auction auction = new Auction();
+    public String ChangeItemToItemMeta(WebSiteMail mail,String item_name) {
+        Shop auction = new Shop();
         auction.setItemStack(mail.getItemStack());
         auction.setId(mail.getId());
         return ChangeItemToItemMeta(auction, item_name);
     }
     
-    public String ChangeItemToItemMeta(Auction item, String item_name) {
+    public String ChangeItemToItemMeta(Shop item, String item_name) {
         String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
         if(!meta.isEmpty()) {
             String[] metas = meta.split(",");

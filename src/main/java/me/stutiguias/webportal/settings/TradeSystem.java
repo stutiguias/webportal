@@ -30,7 +30,7 @@ public class TradeSystem {
         info = new Info(plugin);
     }
     
-    public String Buy(String BuyPlayerName,Auction sellerauction,int qtd,String item_name,Boolean ingame) {
+    public String Buy(String BuyPlayerName,Shop sellerauction,int qtd,String item_name,Boolean ingame) {
         boolean found = false;
         int StackId = 0;
         int Stackqtd = 0;
@@ -38,8 +38,8 @@ public class TradeSystem {
         plugin.economy.depositPlayer(sellerauction.getPlayerName(), sellerauction.getPrice() * qtd);
         plugin.dataQueries.setAlert(sellerauction.getPlayerName(), qtd, sellerauction.getPrice(), BuyPlayerName, item_name);
         // wrong player get items
-        List<Auction> auctions = plugin.dataQueries.getPlayerItems(BuyPlayerName);
-        for (Auction auction:auctions) {
+        List<Shop> auctions = plugin.dataQueries.getPlayerItems(BuyPlayerName);
+        for (Shop auction:auctions) {
 
             String playeritemname =  info.GetItemConfig(auction.getItemStack())[0];
             if(item_name.equals(playeritemname) && auction.getDamage() == sellerauction.getItemStack().getDurability())
@@ -92,7 +92,7 @@ public class TradeSystem {
         return "You purchased "+ qtd +" " + item_name + " from "+ sellerauction.getPlayerName() +" for " + sellerauction.getPrice();
     }
     
-    public String Sell(String sellerPlayerName,Auction buyauction,int qtd,String item_name,Boolean ingame) {
+    public String Sell(String sellerPlayerName,Shop buyauction,int qtd,String item_name,Boolean ingame) {
         boolean found = false;
         int StackId = 0;
         int Stackqtd = 0;
@@ -103,8 +103,8 @@ public class TradeSystem {
         //plugin.dataQueries.setAlert(sellerauction.getPlayerName(), qtd, sellerauction.getPrice(), sellerPlayerName, item_name);
         
         boolean playerHasThatItem = false;    
-        List<Auction> auctions = plugin.dataQueries.getPlayerItems(sellerPlayerName);
-        for (Auction auction:auctions) {
+        List<Shop> auctions = plugin.dataQueries.getPlayerItems(sellerPlayerName);
+        for (Shop auction:auctions) {
 
             String playeritemname =  info.GetItemConfig(auction.getItemStack())[0];
             if(item_name.equals(playeritemname) && auction.getDamage() == buyauction.getItemStack().getDurability())
@@ -126,7 +126,7 @@ public class TradeSystem {
         
         // wrong player get items
         auctions = plugin.dataQueries.getPlayerItems(buyauction.getPlayerName());
-        for (Auction auction:auctions) {
+        for (Shop auction:auctions) {
 
             String playeritemname =  info.GetItemConfig(auction.getItemStack())[0];
             if(item_name.equals(playeritemname) && auction.getDamage() == buyauction.getItemStack().getDurability())
@@ -192,11 +192,11 @@ public class TradeSystem {
         String enchants = ConvertEnchantsToStringCSV(stack);
         int quantityInt = stack.getAmount();
                 
-        List<Auction> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
+        List<Shop> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
         
         Boolean foundMatch = false;
 
-        for (Auction auction : auctions) {
+        for (Shop auction : auctions) {
 
             int itemTableIdNumber = auction.getId();
             
@@ -225,7 +225,7 @@ public class TradeSystem {
     }
     
     
-    public boolean isMetaEqual(ItemStack item,Auction auction) {
+    public boolean isMetaEqual(ItemStack item,Shop auction) {
         String auctionMeta = plugin.dataQueries.GetItemInfo(auction.getId(),"meta");
         String itemMeta = ConvertItemMetaToStringCSV(item);
         return auctionMeta.equalsIgnoreCase(itemMeta);
@@ -276,7 +276,7 @@ public class TradeSystem {
         return enchants;
     }
     
-    public boolean isEnchantsEqual(String enchants,Auction auction) {
+    public boolean isEnchantsEqual(String enchants,Shop auction) {
         if( enchants.equals(auction.getEnchantments()) || 
           ( enchants.isEmpty() && auction.getEnchantments().isEmpty() )) {
            return true;

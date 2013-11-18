@@ -7,7 +7,7 @@ package me.stutiguias.webportal.webserver.request.type;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -54,7 +54,7 @@ public class AdminShopRequest extends HttpResponse {
             int iDisplayStart = Integer.parseInt((String)param.get("DisplayStart"));
             int iDisplayLength = Integer.parseInt((String)param.get("DisplayLength"));
             
-            List<Auction> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Auction);
+            List<Shop> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Auction);
             
             int TotalRecords = plugin.dataQueries.getFound();
             
@@ -64,7 +64,7 @@ public class AdminShopRequest extends HttpResponse {
 
             for (int i = 0; i < Auctions.size(); i++) {
                 
-                    Auction auction = Auctions.get(i);
+                    Shop auction = Auctions.get(i);
                     jsonObjectArray = new JSONObject();
                     jsonObjectArray.put("Item Name", ConvertItemToResult(auction,auction.getType()) );
                     jsonObjectArray.put("Quantity", auction.getItemStack().getAmount());

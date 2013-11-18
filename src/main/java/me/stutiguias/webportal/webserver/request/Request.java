@@ -9,15 +9,15 @@ import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.request.type.AdminRequest;
 import me.stutiguias.webportal.webserver.request.type.AdminShopRequest;
-import me.stutiguias.webportal.webserver.request.type.AuctionRequest;
+import me.stutiguias.webportal.webserver.request.type.ShopRequest;
 import me.stutiguias.webportal.webserver.request.type.BoxRequest;
 import me.stutiguias.webportal.webserver.request.type.LoginRequest;
-import me.stutiguias.webportal.webserver.request.type.MyAuctionsRequest;
+import me.stutiguias.webportal.webserver.request.type.SellRequest;
 import me.stutiguias.webportal.webserver.request.type.MyItemsRequest;
 import me.stutiguias.webportal.webserver.request.type.UserRequest;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import me.stutiguias.webportal.webserver.request.type.MailRequest;
-import me.stutiguias.webportal.webserver.request.type.WithListRequest;
+import me.stutiguias.webportal.webserver.request.type.BuyRequest;
 
 /**
  *
@@ -25,52 +25,52 @@ import me.stutiguias.webportal.webserver.request.type.WithListRequest;
  */
 public class Request {
     
-    AuctionRequest Auction;
+    ShopRequest Shop;
     AdminRequest Admin;
     AdminShopRequest AdminShop;
     BoxRequest Box;
-    MyAuctionsRequest MyAuctions;
+    SellRequest Sell;
     MyItemsRequest MyItems;
     LoginRequest Login;
     UserRequest UserInfo;
     HttpResponse Response;
     MailRequest Mail;
-    WithListRequest Withlist;
+    BuyRequest Buy;
     
     public Request(WebPortal plugin) {
-        Auction = new AuctionRequest(plugin);
+        Shop = new ShopRequest(plugin);
         Admin = new AdminRequest(plugin);
         AdminShop = new AdminShopRequest(plugin);
         Box = new BoxRequest(plugin);
-        MyAuctions = new MyAuctionsRequest(plugin);
+        Sell = new SellRequest(plugin);
         MyItems = new MyItemsRequest(plugin);
         Login = new LoginRequest(plugin);
         UserInfo = new UserRequest(plugin);
         Response = new HttpResponse(plugin);
         Mail = new MailRequest(plugin);
-        Withlist = new WithListRequest(plugin);
+        Buy = new BuyRequest(plugin);
     }
     
     public void SetHttpExchange(HttpExchange t) {
-        Auction.setHttpExchange(t);
+        Shop.setHttpExchange(t);
         Admin.setHttpExchange(t);
         AdminShop.setHttpExchange(t);
         Box.setHttpExchange(t);
-        MyAuctions.setHttpExchange(t);
+        Sell.setHttpExchange(t);
         MyItems.setHttpExchange(t);
         Login.setHttpExchange(t);
         UserInfo.setHttpExchange(t);
         Response.setHttpExchange(t);
         Mail.setHttpExchange(t);
-        Withlist.setHttpExchange(t);
+        Buy.setHttpExchange(t);
     }
     
-    public void GetAuction(Map param) {
-        Auction.GetAuction(param);
+    public void GetShop(Map param) {
+        Shop.GetShop(param);
     }
     
-    public void RequestAuctionBy(String ip,String url,Map param) {
-        Auction.RequestAuctionBy(ip, url, param);
+    public void RequestShopBy(String ip,String url,Map param) {
+        Shop.RequestShopBy(ip, url, param);
     }
     
     public void GetMyItems(String HostAddress) {
@@ -82,7 +82,7 @@ public class Request {
     }
     
     public void Buy(String HostAddress,Map param){
-        Auction.Buy(HostAddress,param);
+        Shop.Buy(HostAddress,param);
     }
     
     public void CreateAuction(String HostAddress,String url,Map param){
@@ -93,16 +93,16 @@ public class Request {
         Mail.SendMail(HostAddress,url,param);   
     }
     
-    public void GetMyAuctions(String HostAddress,String url,Map param){
-        MyAuctions.GetMyAuctions(HostAddress,url,param);
+    public void GetSell(String HostAddress,String url,Map param){
+        Sell.GetSell(HostAddress,url,param);
     }
     
     public void ItemLore(String SessionId,Map param){
         UserInfo.ItemLore(SessionId, param);
     }
     
-    public void Cancel(String url,Map param){
-       MyAuctions.Cancel(url, param);
+    public void CancelSell(String url,Map param){
+       Sell.Cancel(url, param);
     }
     
     public void Box1(String HostAddress) {
@@ -149,16 +149,16 @@ public class Request {
         Mail.GetMails(HostAddress,param);
     }
     
-    public void WithListAddItem(String SessionId,Map param) {
-        Withlist.AddItem(SessionId,param);
+    public void BuyAddItem(String SessionId,Map param) {
+        Buy.AddItem(SessionId,param);
     }
     
-    public void WithListGetItems(String SessionId,Map param) {
-        Withlist.GetItems(SessionId, param);
+    public void BuyGetItems(String SessionId,Map param) {
+        Buy.GetItems(SessionId, param);
     }
     
-    public void AuctionSell(String SessionId,Map param) {
-        Auction.Sell(SessionId, param);
+    public void ShopSell(String SessionId,Map param) {
+        Shop.Sell(SessionId, param);
     }
     
     public HttpResponse Response() {

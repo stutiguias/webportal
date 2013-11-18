@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
 import me.stutiguias.webportal.webserver.authentication.AuthSystem;
 import me.stutiguias.webportal.webserver.HttpResponse;
@@ -36,7 +36,7 @@ public class LoginRequest extends HttpResponse {
         if(AS.Auth(username, pass))
         {
             AuthPlayer _AuthPlayer = new AuthPlayer();
-            AuctionPlayer _AuctionPlayer = plugin.dataQueries.getPlayer(username);
+            WebSitePlayer _AuctionPlayer = plugin.dataQueries.getPlayer(username);
             if(_AuctionPlayer == null) {
                 plugin.dataQueries.createPlayer(username,pass, 1, 1, 0);
                 _AuctionPlayer = plugin.dataQueries.getPlayer(username);

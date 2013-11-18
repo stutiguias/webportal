@@ -7,8 +7,8 @@ package me.stutiguias.webportal.webserver.request.type;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.settings.TradeSystem;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
@@ -19,13 +19,13 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class AuctionRequest extends HttpResponse {
+public class ShopRequest extends HttpResponse {
     
     private WebPortal plugin;
     private Html html;
     TradeSystem tr;
     
-    public AuctionRequest(WebPortal plugin) {
+    public ShopRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
@@ -34,47 +34,47 @@ public class AuctionRequest extends HttpResponse {
         
 
         
-    public void RequestAuctionBy(String ip,String url,Map param)
+    public void RequestShopBy(String ip,String url,Map param)
     {
         if(url.contains("byall")) {
-            GetAuctionBy(ip, url, param,"nothing");
+            GetShopBy(ip, url, param,"nothing");
         }
         if(url.contains("byblock")) {
-            GetAuctionBy(ip, url, param,"Block");
+            GetShopBy(ip, url, param,"Block");
         }
         if(url.contains("byfood")) {
-            GetAuctionBy(ip, url, param,"Food");
+            GetShopBy(ip, url, param,"Food");
         }
         if(url.contains("bytools")) {
-            GetAuctionBy(ip, url, param,"Tools");
+            GetShopBy(ip, url, param,"Tools");
         }
         if(url.contains("bycombat")) {
-            GetAuctionBy(ip, url, param,"Combat");
+            GetShopBy(ip, url, param,"Combat");
         }
         if(url.contains("byredstone")) {
-            GetAuctionBy(ip, url, param,"Redstone");
+            GetShopBy(ip, url, param,"Redstone");
         }
         if(url.contains("bydecoration")) {
-            GetAuctionBy(ip, url, param,"Decoration");
+            GetShopBy(ip, url, param,"Decoration");
         }
         if(url.contains("bytransportation")) {
-            GetAuctionBy(ip, url, param,"Transportation");
+            GetShopBy(ip, url, param,"Transportation");
         }
         if(url.contains("bymicellaneous")) {
-            GetAuctionBy(ip, url, param,"Micellaneous");
+            GetShopBy(ip, url, param,"Micellaneous");
         }
         if(url.contains("bymaterials")) {
-            GetAuctionBy(ip, url, param,"Materials");
+            GetShopBy(ip, url, param,"Materials");
         }
         if(url.contains("bybrewing")) {
-            GetAuctionBy(ip, url, param,"Brewing");
+            GetShopBy(ip, url, param,"Brewing");
         }
         if(url.contains("byothers")) {
-            GetAuctionBy(ip, url, param,"Others");
+            GetShopBy(ip, url, param,"Others");
         }
     }
     
-    public void GetAuctionBy(String sessionId,String url,Map param,String searchtype) {
+    public void GetShopBy(String sessionId,String url,Map param,String searchtype) {
         
         int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
         int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
@@ -82,7 +82,7 @@ public class AuctionRequest extends HttpResponse {
         int sEcho =  Integer.parseInt((String)param.get("sEcho"));
         
         search = GetConfigKey(search, searchtype);
-        List<Auction> auctions;
+        List<Shop> auctions;
  
         if(search == null) search = "%";
         
@@ -104,9 +104,9 @@ public class AuctionRequest extends HttpResponse {
         Response.put("iTotalDisplayRecords", iTotalDisplayRecords);
         
         if(iTotalRecords > 0) {
-            for(Auction item:auctions){
+            for(Shop item:auctions){
                 if(item.getPlayerName().equalsIgnoreCase("Server")){
-                    Data.add(ServerAuction(item,searchtype,sessionId));
+                    Data.add(ServerShop(item,searchtype,sessionId));
                     continue;
                 }
            
@@ -130,14 +130,14 @@ public class AuctionRequest extends HttpResponse {
                 Data.add(tmp_Data);
             }
         }else{
-           Data.add(NoAuction());
+           Data.add(NoShop());
         }
         Response.put("aaData",Data);
         
         Print(Response.toJSONString(),"text/plain");
     }
     
-    public void GetAuction(Map param) {
+    public void GetShop(Map param) {
         int to;
         int from;
         
@@ -154,10 +154,10 @@ public class AuctionRequest extends HttpResponse {
             return;
         }
         
-        List<Auction> auctions = plugin.dataQueries.getAuctions(to,from);
+        List<Shop> auctions = plugin.dataQueries.getAuctions(to,from);
         JSONObject json = new JSONObject();
         int count = 0;
-        for(Auction item:auctions){
+        for(Shop item:auctions){
             String seatchtype = GetSearchType(item.getItemStack());
             JSONObject jsonNameImg = new JSONObject();
             jsonNameImg.put("0", ConvertItemToResult(item,seatchtype));
@@ -174,7 +174,7 @@ public class AuctionRequest extends HttpResponse {
         Print(json.toJSONString(), "text/plain");
     }
     
-    public JSONObject NoAuction() {
+    public JSONObject NoShop() {
             JSONObject jsonTwo = new JSONObject();
             jsonTwo.put("DT_RowId","row_0" );
             jsonTwo.put("DT_RowClass", "gradeU");
@@ -205,7 +205,7 @@ public class AuctionRequest extends HttpResponse {
         return "gradeB";
     }
     
-    public JSONObject ServerAuction(Auction item,String searchtype,String ip){
+    public JSONObject ServerShop(Shop item,String searchtype,String ip){
         JSONObject ServerAuction = new JSONObject();
         ServerAuction.put("DT_RowId","row_" + item.getId() );
         ServerAuction.put("DT_RowClass", "0");
@@ -230,8 +230,8 @@ public class AuctionRequest extends HttpResponse {
            int qtd =  Integer.parseInt((String)param.get("Quantity"));
            int id =  Integer.parseInt((String)param.get("ID"));
            
-           AuctionPlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
-           Auction au = plugin.dataQueries.getAuction(id);
+           WebSitePlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
+           Shop au = plugin.dataQueries.getAuction(id);
            String item_name = GetItemConfig(au.getItemStack())[0];
            if(qtd <= 0)
            {
@@ -259,8 +259,8 @@ public class AuctionRequest extends HttpResponse {
            int qtd =  Integer.parseInt((String)param.get("Quantity"));
            int id =  Integer.parseInt((String)param.get("ID"));
            
-           AuctionPlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
-           Auction au = plugin.dataQueries.getAuction(id);
+           WebSitePlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
+           Shop au = plugin.dataQueries.getAuction(id);
            String item_name = GetItemConfig(au.getItemStack())[0];
            if(qtd <= 0)
            {

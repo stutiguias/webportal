@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.AuctionMail;
+import me.stutiguias.webportal.settings.WebSiteMail;
 import me.stutiguias.webportal.settings.TradeSystem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -54,10 +54,10 @@ public class Mailbox {
     private void MailBoxWithdraw(Player player) {
         if (plugin.permission.has(player.getWorld(),player.getName(), "wa.use.withdraw.items")) {
                 try {
-                        List<AuctionMail> auctionMail = plugin.dataQueries.getMail(player.getName());
+                        List<WebSiteMail> auctionMail = plugin.dataQueries.getMail(player.getName());
                         boolean invFull = true;
                         boolean gotMail = false;
-                        for (AuctionMail mail : auctionMail) {
+                        for (WebSiteMail mail : auctionMail) {
                                 if (player.getInventory().firstEmpty() != -1) {
                                         ItemStack stack = mail.getItemStack();
                                         if(plugin.AllowMetaItem) {

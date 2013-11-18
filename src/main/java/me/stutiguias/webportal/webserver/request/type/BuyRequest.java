@@ -7,7 +7,7 @@ package me.stutiguias.webportal.webserver.request.type;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -17,11 +17,11 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class WithListRequest extends HttpResponse {
+public class BuyRequest extends HttpResponse {
     
     private WebPortal plugin;
     
-    public WithListRequest(WebPortal plugin) {
+    public BuyRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         
@@ -54,12 +54,12 @@ public class WithListRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         
         String player = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer.getName();
-        List<Auction> auctions = plugin.dataQueries.GetWithList(player,to,from);
+        List<Shop> auctions = plugin.dataQueries.GetWithList(player,to,from);
         int founds = plugin.dataQueries.getFound();
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < auctions.size(); i++) {
-            Auction auction = auctions.get(i);
+            Shop auction = auctions.get(i);
             String[] itemConfig = GetItemConfig(auction.getItemStack());
             
             if(plugin.AllowMetaItem) {

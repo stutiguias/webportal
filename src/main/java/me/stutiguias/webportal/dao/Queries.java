@@ -13,16 +13,15 @@ import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
-import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.AuctionMail;
-import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebSiteMail;
+import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.settings.SaleAlert;
 import me.stutiguias.webportal.settings.Transact;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.material.MaterialData;
 
 /**
  *
@@ -127,12 +126,12 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-     public List<Auction> getSearchAuctions(int to,int from,String searchtype) {
-             Auction auction;
+     public List<Shop> getSearchAuctions(int to,int from,String searchtype) {
+             Shop auction;
              WALConnection conn = getConnection();
              PreparedStatement st = null;
              ResultSet rs = null;
-             List<Auction> la = new ArrayList<>();
+             List<Shop> la = new ArrayList<>();
 
              try {
                      st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,tableid FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ? LIMIT ? , ?");
@@ -143,7 +142,7 @@ public class Queries implements IDataQueries {
                      st.setInt(5, from);
                      rs = st.executeQuery();
                      while (rs.next()) {
-                             auction = new Auction();
+                             auction = new Shop();
                              auction.setId(rs.getInt("id"));
                              ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                              stack = Chant(rs.getString("ench"), stack);
@@ -223,9 +222,9 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public Auction getAuction(int id) {
+    public Shop getAuction(int id) {
         
-        Auction auction = null;
+        Shop auction = null;
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -235,7 +234,7 @@ public class Queries implements IDataQueries {
                 st.setInt(1, id);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        auction = new Auction();
+                        auction = new Shop();
                         auction.setId(id);
                         ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = Chant(rs.getString("ench"),stack);
@@ -255,12 +254,12 @@ public class Queries implements IDataQueries {
     }
 
         @Override
-        public List<Auction> getAuctions(int to,int from) {
-		Auction auction;
+        public List<Shop> getAuctions(int to,int from) {
+		Shop auction;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-                List<Auction> la = new ArrayList<>();
+                List<Shop> la = new ArrayList<>();
                 
 		try {
 			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,tableid FROM WA_Auctions where tableid = ? or tableid = ? LIMIT ? , ?");
@@ -270,7 +269,7 @@ public class Queries implements IDataQueries {
                         st.setInt(4, from);
 			rs = st.executeQuery();
 			while (rs.next()) {
-				auction = new Auction();
+				auction = new Shop();
 				auction.setId(rs.getInt("id"));
                                 ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                                 stack = Chant(rs.getString("ench"), stack);
@@ -299,12 +298,12 @@ public class Queries implements IDataQueries {
 	}
 
     @Override
-    public List<Auction> getAuctionsLimitbyPlayer(String player,int to,int from,int table) {
-            Auction auction;
+    public List<Shop> getAuctionsLimitbyPlayer(String player,int to,int from,int table) {
+            Shop auction;
             WALConnection conn = getConnection();
             PreparedStatement st = null;
             ResultSet rs = null;
-            List<Auction> la = new ArrayList<>();
+            List<Shop> la = new ArrayList<>();
 
             try {
                     st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,searchtype FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
@@ -314,7 +313,7 @@ public class Queries implements IDataQueries {
                     st.setInt(4, from);
                     rs = st.executeQuery();
                     while (rs.next()) {
-                            auction = new Auction();
+                            auction = new Shop();
                             auction.setId(rs.getInt("id"));
                             ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                             stack = Chant(rs.getString("ench"), stack);
@@ -465,8 +464,8 @@ public class Queries implements IDataQueries {
     }
 
     @Override 
-    public List<AuctionPlayer> FindAllPlayersWith(String partialName) {
-        List<AuctionPlayer> players = new ArrayList<>();
+    public List<WebSitePlayer> FindAllPlayersWith(String partialName) {
+        List<WebSitePlayer> players = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -476,7 +475,7 @@ public class Queries implements IDataQueries {
                 st.setString(1,"%"+partialName+"%");
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        AuctionPlayer player = new AuctionPlayer();
+                        WebSitePlayer player = new WebSitePlayer();
                         player.setId(rs.getInt("id"));
                         player.setName(rs.getString("name"));
                         player.setPass(rs.getString("pass"));
@@ -496,8 +495,8 @@ public class Queries implements IDataQueries {
     }
     
     @Override
-    public AuctionPlayer getPlayer(String player) {
-        AuctionPlayer waPlayer = null;
+    public WebSitePlayer getPlayer(String player) {
+        WebSitePlayer waPlayer = null;
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -507,7 +506,7 @@ public class Queries implements IDataQueries {
                 st.setString(1, player);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        waPlayer = new AuctionPlayer();
+                        waPlayer = new WebSitePlayer();
                         waPlayer.setId(rs.getInt("id"));
                         waPlayer.setName(rs.getString("name"));
                         waPlayer.setPass(rs.getString("pass"));
@@ -526,8 +525,8 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public List<Auction> getPlayerItems(String player) {
-        List<Auction> auctions = new ArrayList<>();
+    public List<Shop> getPlayerItems(String player) {
+        List<Shop> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -538,7 +537,7 @@ public class Queries implements IDataQueries {
                 st.setInt(2,plugin.Myitems);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        Auction auction = new Auction();
+                        Shop auction = new Shop();
                         auction.setId(rs.getInt("id"));
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
@@ -644,8 +643,8 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public List<AuctionMail> getMail(String player) {
-        List<AuctionMail> auctionMails = new ArrayList<>();
+    public List<WebSiteMail> getMail(String player) {
+        List<WebSiteMail> auctionMails = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -656,7 +655,7 @@ public class Queries implements IDataQueries {
                 st.setInt(2, plugin.Mail);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        AuctionMail auctionMail = new AuctionMail();
+                        WebSiteMail auctionMail = new WebSiteMail();
                         auctionMail.setId(rs.getInt("id"));
                         ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = Chant(rs.getString("ench"),stack);
@@ -675,8 +674,8 @@ public class Queries implements IDataQueries {
 
 
     @Override
-    public List<AuctionMail> getMail(String player, int to, int from) {
-        List<AuctionMail> auctionMails = new ArrayList<>();
+    public List<WebSiteMail> getMail(String player, int to, int from) {
+        List<WebSiteMail> auctionMails = new ArrayList<>();
 
         WALConnection conn = getConnection();
         PreparedStatement st = null;
@@ -690,13 +689,23 @@ public class Queries implements IDataQueries {
                 st.setInt(4, from);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        AuctionMail auctionMail = new AuctionMail();
+                        WebSiteMail auctionMail = new WebSiteMail();
                         auctionMail.setId(rs.getInt("id"));
                         ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = Chant(rs.getString("ench"),stack);
                         auctionMail.setItemStack(stack);
                         auctionMail.setPlayerName(rs.getString("player"));
                         auctionMails.add(auctionMail);
+                }
+                
+                st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
+                st.setString(1, player);
+                st.setInt(2, plugin.Mail);
+                st.setInt(3, to);
+                st.setInt(4, from);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                      found = rs.getInt(1);
                 }
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to get mail for player {1}", new Object[]{plugin.logPrefix, player});
@@ -765,8 +774,8 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public Auction getItemById(int ID, int tableid) {
-        Auction auction = null;
+    public Shop getItemById(int ID, int tableid) {
+        Shop auction = null;
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -778,7 +787,7 @@ public class Queries implements IDataQueries {
                 st.setInt(2, tableid);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        auction = new Auction();
+                        auction = new Shop();
                         auction.setId(rs.getInt("id"));
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
@@ -800,8 +809,8 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public List<Auction> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
-        List<Auction> auctions = new ArrayList<>();
+    public List<Shop> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid) {
+        List<Shop> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -818,7 +827,7 @@ public class Queries implements IDataQueries {
                 st.setInt(4, tableid);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        Auction auction = new Auction();
+                        Shop auction = new Shop();
                         auction.setId(rs.getInt("id"));
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
@@ -840,8 +849,8 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public List<Auction> getItemByName(String player, boolean reverseOrder, int tableid) {
-        List<Auction> auctions = new ArrayList<>();
+    public List<Shop> getItemByName(String player, boolean reverseOrder, int tableid) {
+        List<Shop> auctions = new ArrayList<>();
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -856,7 +865,7 @@ public class Queries implements IDataQueries {
                 st.setInt(3, tableid);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        Auction auction = new Auction();
+                        Shop auction = new Shop();
                         auction.setId(rs.getInt("id"));
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
@@ -1090,8 +1099,8 @@ public class Queries implements IDataQueries {
 
         
     @Override
-    public List<Auction> GetWithList(String player, int to, int from) {
-        List<Auction> auctions = new ArrayList<>();
+    public List<Shop> GetWithList(String player, int to, int from) {
+        List<Shop> auctions = new ArrayList<>();
 
         WALConnection conn = getConnection();
         PreparedStatement st = null;
@@ -1105,7 +1114,7 @@ public class Queries implements IDataQueries {
                 st.setInt(4, from);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        Auction auction = new Auction();
+                        Shop auction = new Shop();
                         auction.setId(rs.getInt("id"));
                         ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = Chant(rs.getString("ench"),stack);

@@ -6,7 +6,7 @@ package me.stutiguias.webportal.signs;
 
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.settings.InventoryHandler;
 import me.stutiguias.webportal.settings.TradeSystem;
 import org.bukkit.entity.Player;
@@ -46,8 +46,8 @@ public class vBox {
         
     public void Delete(InventoryClickEvent event,Player pl) {
         // Delete Item
-        List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(pl.getName(), 0, 44, plugin.Myitems);
-        for(Auction auction:auctions) {
+        List<Shop> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(pl.getName(), 0, 44, plugin.Myitems);
+        for(Shop auction:auctions) {
             if(event.getCurrentItem().getTypeId() == auction.getItemStack().getTypeId() && auction.getItemStack().getDurability() == event.getCurrentItem().getDurability()) {
                 if(event.isLeftClick()) {
                     if(auction.getItemStack().getAmount() == event.getCurrentItem().getAmount()) {

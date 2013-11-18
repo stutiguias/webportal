@@ -6,7 +6,7 @@ package me.stutiguias.webportal.signs;
 
 import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.settings.TradeSystem;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -40,7 +40,7 @@ public class wSell {
             return;
         }
 
-        Auction auction = plugin.dataQueries.getItemById(id, plugin.Auction);
+        Shop auction = plugin.dataQueries.getItemById(id, plugin.Auction);
         if(auction == null) {
             player.sendMessage("Invalid ID");
             event.setCancelled(true);
@@ -78,7 +78,7 @@ public class wSell {
         if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
         }else{
-            Auction au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
+            Shop au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
 
             if(au == null) {
                 event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");

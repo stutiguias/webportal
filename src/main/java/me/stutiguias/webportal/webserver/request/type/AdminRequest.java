@@ -4,21 +4,12 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
-import java.io.File;
-import java.io.RandomAccessFile;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.*;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -29,10 +20,10 @@ import org.json.simple.JSONObject;
 public class AdminRequest extends HttpResponse {
     
     WebPortal plugin;
-    AuctionPlayer _authPlayer;
-    List<Auction> _playerItems;
-    List<AuctionMail> _playerMail;
-    List<Auction> _PlayerAuction;
+    WebSitePlayer _authPlayer;
+    List<Shop> _playerItems;
+    List<WebSiteMail> _playerMail;
+    List<Shop> _PlayerAuction;
     
     public AdminRequest(WebPortal plugin) {
         super(plugin);
@@ -86,7 +77,7 @@ public class AdminRequest extends HttpResponse {
             Print("Your r not admin","text/html");
             return;
         }
-        List<AuctionPlayer> players = plugin.dataQueries.FindAllPlayersWith(partialName);
+        List<WebSitePlayer> players = plugin.dataQueries.FindAllPlayersWith(partialName);
         if(players == null) {
             Print("Player Not Found","text/html");
         }else{
@@ -134,7 +125,7 @@ public class AdminRequest extends HttpResponse {
         JSONArray jsonarray = new JSONArray();
         JSONObject jsonObjectArray;
         for (int i = 0; i < _playerItems.size(); i++) {
-            Auction _Auction = _playerItems.get(i);
+            Shop _Auction = _playerItems.get(i);
             String itemname = GetItemConfig(_Auction.getItemStack())[0];
             jsonObjectArray = new JSONObject();
             jsonObjectArray.put("Nick",_Auction.getPlayerName());
@@ -152,7 +143,7 @@ public class AdminRequest extends HttpResponse {
         JSONObject jsonObjectArray;
   
         for (int i = 0; i < _playerMail.size(); i++) {
-            AuctionMail auctionMail = _playerMail.get(i);
+            WebSiteMail auctionMail = _playerMail.get(i);
             String itemname = GetItemConfig(auctionMail.getItemStack())[0];
             jsonObjectArray = new JSONObject();
             jsonObjectArray.put("Nick",auctionMail.getPlayerName());
@@ -170,7 +161,7 @@ public class AdminRequest extends HttpResponse {
         JSONObject jsonObjectArray;
 
         for (int i = 0; i < _PlayerAuction.size(); i++) {
-            Auction auction = _PlayerAuction.get(i);
+            Shop auction = _PlayerAuction.get(i);
             String itemname = GetItemConfig(auction.getItemStack())[0];
             jsonObjectArray = new JSONObject();
             jsonObjectArray.put("Nick",auction.getPlayerName() );

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -43,7 +43,7 @@ public class MyItemsRequest extends HttpResponse {
             Print("Invalid Number","text/plain");
             return;
         }
-        Auction auction = plugin.dataQueries.getItemById(id,plugin.Myitems);
+        Shop auction = plugin.dataQueries.getItemById(id,plugin.Myitems);
         if(auction.getQuantity() == qtd) {
             plugin.dataQueries.setPriceAndTable(id,price);
             Print("You have sucess create Auction","text/plain");
@@ -70,7 +70,7 @@ public class MyItemsRequest extends HttpResponse {
         String search = (String)param.get("sSearch");
         int sEcho =  Integer.parseInt((String)param.get("sEcho"));
         
-        List<Auction> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
+        List<Shop> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
         
         if(CheckError(ip, auctions)) return;
         
@@ -86,7 +86,7 @@ public class MyItemsRequest extends HttpResponse {
         json.put("iTotalDisplayRecords", iTotalDisplayRecords);
         
         if(iTotalRecords > 0) {
-            for(Auction item:auctions){
+            for(Shop item:auctions){
                 double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
                 jsonTwo = new JSONObject();
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
@@ -119,9 +119,9 @@ public class MyItemsRequest extends HttpResponse {
     }
     
     public void GetMyItems(String ip) {
-        List<Auction> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName());
+        List<Shop> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName());
         JSONObject json = new JSONObject();
-        for(Auction item:auctions){
+        for(Shop item:auctions){
             String[] itemConfig = GetItemConfig(item.getItemStack());
             
             if(plugin.AllowMetaItem) {
@@ -137,7 +137,7 @@ public class MyItemsRequest extends HttpResponse {
         Print(json.toJSONString(), "text/plain");
     }
     
-    public Boolean CheckError(String ip,List<Auction> auctions) {
+    public Boolean CheckError(String ip,List<Shop> auctions) {
         if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName() == null) {
             WebPortal.logger.log(Level.WARNING,"Cant determine player name");
             return true;

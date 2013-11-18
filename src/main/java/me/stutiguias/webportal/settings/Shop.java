@@ -2,7 +2,7 @@ package me.stutiguias.webportal.settings;
 
 import org.bukkit.inventory.ItemStack;
 
-public class Auction {
+public class Shop {
 
     private int id;
     private int name;

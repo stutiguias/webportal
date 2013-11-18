@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.webserver.authentication;
 
 import java.util.Date;
-import me.stutiguias.webportal.settings.AuctionPlayer;
+import me.stutiguias.webportal.settings.WebSitePlayer;
 
 /**
  *
@@ -13,11 +13,11 @@ import me.stutiguias.webportal.settings.AuctionPlayer;
  */
 public class AuthPlayer {
     
-    public  AuctionPlayer AuctionPlayer;
+    public  WebSitePlayer AuctionPlayer;
     private  Date date;
     
     public AuthPlayer() {
-        AuctionPlayer = new AuctionPlayer();
+        AuctionPlayer = new WebSitePlayer();
     }
     
     public boolean Login(String name){

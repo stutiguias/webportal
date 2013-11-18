@@ -32,9 +32,9 @@ public class InventoryHandler implements InventoryHolder {
     
     @Override
     public Inventory getInventory() {
-        List<Auction> items = plugin.dataQueries.getAuctionsLimitbyPlayer(player.getName(), 0, 20,plugin.Myitems);
+        List<Shop> items = plugin.dataQueries.getAuctionsLimitbyPlayer(player.getName(), 0, 20,plugin.Myitems);
         
-        for(Auction item:items) {
+        for(Shop item:items) {
             
             if(plugin.AllowMetaItem){
                 String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");

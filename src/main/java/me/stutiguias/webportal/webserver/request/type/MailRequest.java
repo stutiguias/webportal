@@ -7,8 +7,8 @@ package me.stutiguias.webportal.webserver.request.type;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
-import me.stutiguias.webportal.settings.AuctionMail;
+import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebSiteMail;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,12 +31,12 @@ public class MailRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         
         String player = WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName();
-        List<AuctionMail> mails = plugin.dataQueries.getMail(player,to,from);
+        List<WebSiteMail> mails = plugin.dataQueries.getMail(player,to,from);
         int founds = plugin.dataQueries.getFound();
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < mails.size(); i++) {
-            AuctionMail mail = mails.get(i);
+            WebSiteMail mail = mails.get(i);
             String[] itemConfig = GetItemConfig(mail.getItemStack());
             
             if(plugin.AllowMetaItem) {
@@ -64,7 +64,7 @@ public class MailRequest extends HttpResponse {
             Print("Invalid Number","text/plain");
             return;
         }
-        Auction _Auction = plugin.dataQueries.getAuction(id);
+        Shop _Auction = plugin.dataQueries.getAuction(id);
         if(_Auction.getItemStack().getAmount() == quantity) {
             plugin.dataQueries.updateTable(id, plugin.Mail);
         }else if(_Auction.getItemStack().getAmount() < quantity) {

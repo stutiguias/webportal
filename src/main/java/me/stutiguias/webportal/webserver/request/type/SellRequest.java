@@ -7,7 +7,7 @@ package me.stutiguias.webportal.webserver.request.type;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Auction;
+import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
@@ -17,25 +17,25 @@ import org.json.simple.JSONObject;
  *
  * @author Daniel
  */
-public class MyAuctionsRequest extends HttpResponse {
+public class SellRequest extends HttpResponse {
     
     private WebPortal plugin;
     private Html html;
     
-    public MyAuctionsRequest(WebPortal plugin) {
+    public SellRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
         html = new Html(plugin);
     }
     
-    public void GetMyAuctions(String ip,String url,Map param) {
+    public void GetSell(String ip,String url,Map param) {
         
         int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
         int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
         String search = (String)param.get("sSearch");
         int sEcho =  Integer.parseInt((String)param.get("sEcho"));
         
-        List<Auction> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Auction);
+        List<Shop> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Auction);
 
         int iTotalRecords = plugin.dataQueries.getFound();
         int iTotalDisplayRecords = iTotalRecords;
@@ -48,7 +48,7 @@ public class MyAuctionsRequest extends HttpResponse {
         json.put("iTotalDisplayRecords", iTotalDisplayRecords);
         
         if(iTotalRecords > 0) {
-            for(Auction item:la){
+            for(Shop item:la){
                 jsonTwo = new JSONObject();
                 jsonTwo.put("DT_RowId","row_" + item.getId() );
                 jsonTwo.put("DT_RowClass", "gradeA");
@@ -87,13 +87,13 @@ public class MyAuctionsRequest extends HttpResponse {
     public void Cancel(String url,Map param) {
         int id = Integer.parseInt((String)param.get("ID"));
         
-        Auction auction = plugin.dataQueries.getAuction(id);
+        Shop auction = plugin.dataQueries.getAuction(id);
         
         String player = auction.getPlayerName();
         Integer cancelItemId = auction.getItemStack().getTypeId();
         Short cancelItemDamage = auction.getItemStack().getDurability();
         
-        List<Auction> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
+        List<Shop> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
         
         if(!auctions.isEmpty() && cancelItemId != 403) {
             

@@ -64,7 +64,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         if(url.startsWith("/web/login")){
             Fill.TryLogin(SessionId,params);
         }else if(url.startsWith("/get/auction")) {
-            Fill.GetAuction(params);
+            Fill.GetShop(params);
         }else if(isAllowed()) {
             Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
         }else{
@@ -101,9 +101,9 @@ public class WebPortalHttpHandler implements HttpHandler {
     
     public void WithListHandler() {
         if(url.startsWith("/withlist/additem")) {
-            Fill.WithListAddItem(SessionId, params);
+            Fill.BuyAddItem(SessionId, params);
         }else if(url.startsWith("/withlist/getitem")) {
-            Fill.WithListGetItems(SessionId, params);
+            Fill.BuyGetItems(SessionId, params);
         }
     }
     
@@ -153,19 +153,19 @@ public class WebPortalHttpHandler implements HttpHandler {
     
     public void MyAuctionHandler() {
          if(url.startsWith("/myauctions/cancel")) {
-                Fill.Cancel(url, params);
+                Fill.CancelSell(url, params);
         }else if(url.startsWith("/myauctions/get")) {
-                Fill.GetMyAuctions(SessionId, url, params);
+                Fill.GetSell(SessionId, url, params);
         }
     }
     
     public void AuctionHandler() {
         if(url.startsWith("/auction/get")) {
-                Fill.RequestAuctionBy(SessionId,url,params);
+                Fill.RequestShopBy(SessionId,url,params);
         }else if(url.startsWith("/auction/buy")) {
                 Fill.Buy(SessionId,params);
         }else if(url.startsWith("/auction/sell")) {
-                Fill.AuctionSell(SessionId, params);
+                Fill.ShopSell(SessionId, params);
         }
     }
     
