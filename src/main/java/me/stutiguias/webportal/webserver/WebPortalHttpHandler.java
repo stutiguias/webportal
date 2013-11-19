@@ -145,7 +145,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         }else if(url.startsWith("/myitems/dataTable")) {
                 Fill.GetMyItems(SessionId, url, params);
         }else if(url.startsWith("/myitems/postauction") && !isLocked()) {
-                Fill.CreateAuction(SessionId, url, params);
+                Fill.CreateSell(SessionId, url, params);
         }else if(url.startsWith("/myitems/lore")) {
                 Fill.ItemLore(SessionId, params);
         }

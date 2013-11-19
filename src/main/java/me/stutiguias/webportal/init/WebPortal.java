@@ -54,7 +54,7 @@ public class WebPortal extends JavaPlugin {
         public ConfigAccessor config;
         public ConfigAccessor web;
         
-        public HashMap<String,String> Messages;
+        public static Messages Messages;
         
         // Plugins Settings
         public McMMO mcmmo;
@@ -220,15 +220,7 @@ public class WebPortal extends JavaPlugin {
                 }
                 
                 FileConfiguration c = config.getConfig();
-                Messages = new HashMap<>();
-                Messages.put("StackStored", c.getString("Sign.Message.StackStored"));
-                Messages.put("HoldHelp", c.getString("Sign.Message.HoldHelp"));
-                Messages.put("InventoryFull", c.getString("Sign.Message.InventoryFull"));
-                Messages.put("InventoryFullNot", c.getString("Sign.Message.InventoryFullNot"));
-                Messages.put("MailRetrieved", c.getString("Sign.Message.MailRetrieved"));
-                Messages.put("NoMailRetrieved",c.getString("Sign.Message.NoMailRetrieved"));
-                Messages.put("NoPermission",c.getString("Sign.NoPermission"));
-                
+
                 blockcreative =         c.getBoolean("Misc.BlockCreative");
 		showSalesOnJoin =       c.getBoolean("Misc.ShowSalesOnJoin");
                 allowlogifonline =      c.getBoolean("Misc.AllowLogOnlyIfOnline");
@@ -236,6 +228,13 @@ public class WebPortal extends JavaPlugin {
                 port =                  c.getInt("Misc.WebServicePort");
                 OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
                 AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");
+                                
+                try {
+                    Messages = new Messages(this,c.getString("Misc.Language"));
+                }catch(IOException ex){
+                    logger.warning("error parse language file yml");
+                    onDisable();
+                }
                 
                 long saleAlertFrequency = c.getLong("Updates.SaleAlertFrequency");
 		boolean getMessages = c.getBoolean("Misc.ReportSales");
@@ -294,11 +293,6 @@ public class WebPortal extends JavaPlugin {
                 SessionTime =    w.getInt("Setting.SessionTime");
                 Avatarurl=       w.getString("Setting.Avatarurl");
                 
-                Messages.put("Buy",w.getString("Message.Buy"));
-                Messages.put("Cancel",w.getString("Message.Cancel"));
-                Messages.put("Mailit",w.getString("Message.Mailit"));
-                Messages.put("CreateAuction",w.getString("Message.CreateAuction"));
-
                 if(w.getBoolean("Index.McMMO.Active")) {
                     ConfigurationSection s = w.getConfigurationSection("Index.McMMO");
                     mcmmo = new McMMO(this);

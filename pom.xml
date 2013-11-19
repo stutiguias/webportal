@@ -70,6 +70,7 @@
           <include>materials.yml</include>
           <include>web.yml</include>
           <include>config.yml</include>
+          <include>eng.yml</include>
         </includes>
       </resource>
       

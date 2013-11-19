@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.information.Info;
+import me.stutiguias.webportal.init.Messages;
 
 /**
  *
@@ -21,11 +22,13 @@ public class HttpResponse extends Info {
     
     private WebPortal plugin;
     private HttpExchange httpExchange;
+    public Messages message;
     
     public HttpResponse(WebPortal plugin)
     {
         super(plugin);
         this.plugin = plugin;
+        message = WebPortal.Messages;
     }
 
     public void Print(String data, String MimeType)

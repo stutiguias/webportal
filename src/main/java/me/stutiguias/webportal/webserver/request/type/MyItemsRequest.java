@@ -27,7 +27,7 @@ public class MyItemsRequest extends HttpResponse {
         this.plugin = plugin;
     }
         
-    public void CreateAuction(String ip,String url,Map param) {
+    public void CreateSell(String ip,String url,Map param) {
         int qtd;
         Double price;
         int id;
@@ -36,17 +36,17 @@ public class MyItemsRequest extends HttpResponse {
             id = Integer.parseInt((String)param.get("ID"));
             qtd = Integer.parseInt((String)param.get("Quantity"));
             if(qtd < 0) {
-                Print("Invalid Number","text/plain");
+                Print(message.WebInvalidNumber,"text/plain");
                 return;
             }
         }catch(NumberFormatException ex) {
-            Print("Invalid Number","text/plain");
+            Print(message.WebInvalidNumber,"text/plain");
             return;
         }
         Shop auction = plugin.dataQueries.getItemById(id,plugin.Myitems);
         if(auction.getQuantity() == qtd) {
             plugin.dataQueries.setPriceAndTable(id,price);
-            Print("You have sucess create Auction","text/plain");
+            Print(message.WebSucessCreateSale,"text/plain");
         }else{
             if(auction.getQuantity() > qtd)
             {
@@ -56,9 +56,9 @@ public class MyItemsRequest extends HttpResponse {
               String type =  stack.getType().toString();
               String searchtype = GetSearchType(stack);
               plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,searchtype);
-              Print("You have successfully created an Auction","text/plain");
+              Print(message.WebSucessCreateSale,"text/plain");
             }else{
-              Print("You not permit to sell more then you have","text/plain");
+              Print(message.WebFailSellMore,"text/plain");
             }
         }
     }
@@ -107,7 +107,7 @@ public class MyItemsRequest extends HttpResponse {
                 jsonTwo.put("0", "");
                 jsonTwo.put("1", "");
                 jsonTwo.put("2", "");
-                jsonTwo.put("3", "No Items");
+                jsonTwo.put("3", message.WebNoItem);
                 jsonTwo.put("4", "");
                 jsonTwo.put("5", "");
                     
@@ -143,7 +143,7 @@ public class MyItemsRequest extends HttpResponse {
             return true;
         }
         if(auctions == null) {
-            WebPortal.logger.log(Level.WARNING,"Cant get auctions");
+            WebPortal.logger.log(Level.WARNING,"Cant get shop sales/buys");
             return true;
         }
         return false;

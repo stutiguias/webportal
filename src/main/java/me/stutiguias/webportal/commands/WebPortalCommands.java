@@ -48,13 +48,13 @@ public class WebPortalCommands implements CommandExecutor {
                         return Password(sender,args[1]);
                     case "view":
                         if(params != 2){
-                            sender.sendMessage(ChatColor.RED + " Need to infor the player name");
+                            sender.sendMessage(ChatColor.RED + " Need to inform the player name");
                             break;
                         }
                         return View(sender, args[1]);
                     case "set":
                         if(params != 4){
-                            sender.sendMessage(ChatColor.RED + " Need to infor the player name, option ( buy,sell,admin ) and yes or no");
+                            sender.sendMessage(ChatColor.RED + " Need to inform the player name, option ( buy,sell,admin ) and yes or no");
                             break;
                         }
                         return SetPerm(sender,args[1],args[2],args[3]);
@@ -77,7 +77,7 @@ public class WebPortalCommands implements CommandExecutor {
             WebSitePlayer player = plugin.dataQueries.getPlayer(name);
             sender.sendMessage("-----------------------------------------------------");
             if(player == null) {
-                sender.sendMessage(ChatColor.YELLOW + " Player Not Found");
+                sender.sendMessage(ChatColor.YELLOW + WebPortal.Messages.WebPlayerNotFound);
                 sender.sendMessage("-----------------------------------------------------");
                 return false;
             }
@@ -193,6 +193,9 @@ public class WebPortalCommands implements CommandExecutor {
     private boolean help(CommandSender sender) {
         sender.sendMessage("-----------------"+ChatColor.GOLD+"Help"+ChatColor.WHITE+"---------------------------");
         sender.sendMessage(ChatColor.YELLOW + "All /wa commands");
+        if (sender.hasPermission("wa.command.vbox")) {
+            sender.sendMessage(ChatColor.YELLOW + "mailbox: Use Mailbox Inventory");
+        }
         if (sender.hasPermission("wa.save")){
             sender.sendMessage(ChatColor.RED + "save: Save the All Config File");
         }
@@ -204,9 +207,6 @@ public class WebPortalCommands implements CommandExecutor {
         }
         if (sender.hasPermission("wa.set")) {
             sender.sendMessage(ChatColor.RED + "set <player> <option(buy,sell,admin)> <yes/no>: Set Player Perm");
-        }
-        if (sender.hasPermission("wa.command.vbox")) {
-            sender.sendMessage(ChatColor.YELLOW + "mailbox: Use Mailbox Inventory");
         }
         sender.sendMessage(ChatColor.YELLOW + "password <password>: Change/Create Your Password");
         sender.sendMessage("-----------------------------------------------------");

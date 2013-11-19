@@ -34,7 +34,7 @@ public class AdminShopRequest extends HttpResponse {
             String quantity = (String)param.get("quantity");
             
             ItemStack Item = ConvertToItemStack(itemId);
-            if(Item == null) Print("Item ID not found","text/html");
+            if(Item == null) Print(message.WebIdNotFound,"text/html");
             Double Price = Double.parseDouble(price);
             Integer Quantity = Integer.parseInt(quantity);
             
@@ -43,7 +43,7 @@ public class AdminShopRequest extends HttpResponse {
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, searchtype);
             Print("ok","text/html");
         }else{
-            Print("You r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
         }
     }
     
@@ -66,10 +66,10 @@ public class AdminShopRequest extends HttpResponse {
                 
                     Shop auction = Auctions.get(i);
                     jsonObjectArray = new JSONObject();
-                    jsonObjectArray.put("Item Name", ConvertItemToResult(auction,auction.getType()) );
-                    jsonObjectArray.put("Quantity", auction.getItemStack().getAmount());
-                    jsonObjectArray.put("Price", auction.getPrice());
-                    jsonObjectArray.put("Delete", HTMLDelete(ip,auction.getId()));
+                    jsonObjectArray.put(message.WebItemName, ConvertItemToResult(auction,auction.getType()) );
+                    jsonObjectArray.put(message.WebQuantity, auction.getItemStack().getAmount());
+                    jsonObjectArray.put(message.WebPrice, auction.getPrice());
+                    jsonObjectArray.put(message.WebDelete, HTMLDelete(ip,auction.getId()));
                     jsonarray.add(jsonObjectArray);
                  
             }
@@ -77,7 +77,7 @@ public class AdminShopRequest extends HttpResponse {
             Print(jsonresult.toJSONString(),"application/json");
             
         }else{
-            Print("You r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
         }
     }
     
@@ -85,9 +85,9 @@ public class AdminShopRequest extends HttpResponse {
          if(isAdmin(ip)) {
             Integer id =  Integer.parseInt((String)param.get("ID"));
             plugin.dataQueries.DeleteAuction(id);
-            Print("Deleted","text/html");
+            Print(message.WebDeleted,"text/html");
          }else{
-            Print("You r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
          }
     }
     
@@ -95,9 +95,9 @@ public class AdminShopRequest extends HttpResponse {
       if(isAdmin(ip)) {
         return "<form class='js-adminShopDelete' onsubmit='return del(this)'>"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
-                "<input type='submit' value='Delete' class='btn' /></form><span id='"+ID+"'></span>";
+                "<input type='submit' value='"+ message.WebDelete +"' class='btn' /></form><span id='"+ID+"'></span>";
       }else{
-        return "Your r not admin";
+        return message.WebNotAdmin;
       }
     }
     
@@ -108,7 +108,7 @@ public class AdminShopRequest extends HttpResponse {
             jsonTwo.put("0", "");
             jsonTwo.put("1", "");
             jsonTwo.put("2", "");
-            jsonTwo.put("3", "No Auction");
+            jsonTwo.put("3", message.WebNoShop);
             jsonTwo.put("4", "");
             jsonTwo.put("5", "");
             jsonTwo.put("6", "");

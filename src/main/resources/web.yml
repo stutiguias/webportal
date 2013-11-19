@@ -5,12 +5,6 @@ Setting:
   SessionTime: 20
   # Url for avatar img
   Avatarurl: 'http://minotar.net/avatar/'
-## Setup for Some Text on the Site
-Message:
-  Buy: Buy
-  Cancel: Cancel
-  Mailit: Mail it
-  CreateAuction: Create Auction
 ## This is the list what you can 
 ## Show on Index Page
 ## Set this Active if you have the 

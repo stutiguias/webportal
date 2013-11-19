@@ -41,17 +41,10 @@ Misc:
   # need it to make and search the item
   # Use with caution
   AllowMetaItem: false
+  # Setup your language file xxx.yml on plugins/Webportal folder
+  Language: 'eng'
+  
 Updates:
   # Frequency alert will be send 
   # Only if you Set  ReportSales to true
   SaleAlertFrequency: 30  
-
-Sign:
-  Message:
-    StackStored: Item stack stored.
-    HoldHelp: Please hold a stack of item in your hand and right click to deposit them.
-    InventoryFull: Inventory full, Store again not fit itens
-    InventoryFullNot: Inventory full, cannot get mail
-    MailRetrieved: Mail retrieved
-    NoMailRetrieved: No mail to retrieve
-    NoPermission: You do not have permission to use the mailbox

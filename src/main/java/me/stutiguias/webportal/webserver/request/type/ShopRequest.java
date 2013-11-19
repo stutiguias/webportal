@@ -24,7 +24,7 @@ public class ShopRequest extends HttpResponse {
     private WebPortal plugin;
     private Html html;
     TradeSystem tr;
-    
+
     public ShopRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
@@ -116,7 +116,7 @@ public class ShopRequest extends HttpResponse {
                 tmp_Data.put("DT_RowClass", Grade(MakertPercent));
                 tmp_Data.put("0", ConvertItemToResult(item,searchtype));
                 tmp_Data.put("1", "<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + item.getPlayerName() +"' /><br />"+ item.getPlayerName());
-                tmp_Data.put("2", "Never");
+                tmp_Data.put("2", message.WebNever);
                 tmp_Data.put("3", item.getItemStack().getAmount());
                 tmp_Data.put("4", item.getPrice());
                 tmp_Data.put("5", GetEnchant(item));
@@ -162,7 +162,7 @@ public class ShopRequest extends HttpResponse {
             JSONObject jsonNameImg = new JSONObject();
             jsonNameImg.put("0", ConvertItemToResult(item,seatchtype));
             jsonNameImg.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
-            jsonNameImg.put("2", "Never");
+            jsonNameImg.put("2", message.WebNever);
             jsonNameImg.put("3", item.getItemStack().getAmount());
             jsonNameImg.put("4", item.getPrice());
             jsonNameImg.put("5", GetEnchant(item));
@@ -181,7 +181,7 @@ public class ShopRequest extends HttpResponse {
             jsonTwo.put("0", "");
             jsonTwo.put("1", "");
             jsonTwo.put("2", "");
-            jsonTwo.put("3", "No Auction");
+            jsonTwo.put("3", message.WebNoShop);
             jsonTwo.put("4", "");
             jsonTwo.put("5", "");
             jsonTwo.put("6", "");
@@ -235,15 +235,15 @@ public class ShopRequest extends HttpResponse {
            String item_name = GetItemConfig(au.getItemStack())[0];
            if(qtd <= 0)
            {
-              Print("Quantity greater then 0","text/plain");
+              Print(message.WebFailQtdGreaterThen,"text/plain");
            } else if(qtd > au.getItemStack().getAmount())
            {
-              Print("You are attempting to purchase more than the maximum available","text/plain");
+              Print(message.WebFailPurchaseMoreThen,"text/plain");
            } else if(!plugin.economy.has(ap.getName(),au.getPrice() * qtd))
            {
-              Print("You do not have enough money.","text/plain");
+              Print(message.WebFailBuyMoney,"text/plain");
            } else if(ap.getName().equals(au.getPlayerName())) {
-              Print("You cannnot buy your own items.","text/plain");
+              Print(message.WebFailBuyYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
                Print(tr.Buy(ap.getName(),au, qtd, item_name, false),"text/plain");
@@ -264,15 +264,15 @@ public class ShopRequest extends HttpResponse {
            String item_name = GetItemConfig(au.getItemStack())[0];
            if(qtd <= 0)
            {
-              Print("Quantity greater then 0","text/plain");
+              Print(message.WebFailQtdGreaterThen,"text/plain");
            } else if(qtd > au.getItemStack().getAmount())
            {
-              Print("You are attempting to purchase more than the maximum available","text/plain");
+              Print(message.WebFailSaleMoreThen,"text/plain");
            } else if(!plugin.economy.has(au.getPlayerName(),au.getPrice() * qtd))
            {
-              Print("The Owner don't have money to buy this.","text/plain");
+              Print(message.WebFailSaleMoney,"text/plain");
            } else if(ap.getName().equals(au.getPlayerName())) {
-              Print("You cannnot sell your own items.","text/plain");
+              Print(message.WebFailSellYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
                Print(tr.Sell(ap.getName(),au, qtd, item_name, false),"text/plain");

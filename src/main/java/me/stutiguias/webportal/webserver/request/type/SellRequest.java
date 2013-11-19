@@ -71,7 +71,7 @@ public class SellRequest extends HttpResponse {
                 jsonTwo.put("0", "");
                 jsonTwo.put("1", "");
                 jsonTwo.put("2", "");
-                jsonTwo.put("3", "No Auction");
+                jsonTwo.put("3", message.WebNoShop);
                 jsonTwo.put("4", "");
                 jsonTwo.put("5", "");
                 jsonTwo.put("6", "");
@@ -106,6 +106,6 @@ public class SellRequest extends HttpResponse {
         }else{
             plugin.dataQueries.updateTable(id, plugin.Myitems);
         }
-        Print("Cancel Done.","text/plain");
+        Print(message.WebCancelDone,"text/plain");
     }
 }

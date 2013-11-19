@@ -7,6 +7,7 @@ package me.stutiguias.webportal.signs;
 import java.util.HashMap;
 import java.util.List;
 import me.stutiguias.webportal.information.Info;
+import me.stutiguias.webportal.init.Messages;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.WebSiteMail;
 import me.stutiguias.webportal.settings.TradeSystem;
@@ -21,11 +22,13 @@ public class Mailbox {
     
     private WebPortal plugin;
     private TradeSystem TradeSystem;
+    private Messages message;
     
     public Mailbox(WebPortal plugin)
     {
        this.plugin = plugin;
        TradeSystem = new TradeSystem(plugin);
+       this.message = WebPortal.Messages;
     }
  
     public void MailBoxOperationType(Player player,String Operation){
@@ -42,9 +45,9 @@ public class Mailbox {
                 if (stack != null) {
                         if (stack.getTypeId() != 0) {
                                 TradeSystem.ItemtoStore(stack,player);
-                                player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("StackStored")));
+                                player.sendMessage(Format(message.SignStackStored));
                         }else{
-                                player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("HoldHelp")));						
+                                player.sendMessage(Format(message.SignHoldHelp));						
                         }
                 }
                player.setItemInHand(null);
@@ -78,7 +81,7 @@ public class Mailbox {
                                            HashMap<Integer,ItemStack> notfit = player.getInventory().addItem(stack);
                                            if(!notfit.isEmpty()) {
                                                for (ItemStack notfitstack : notfit.values()) {
-                                                 player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("InventoryFull")));
+                                                 player.sendMessage(Format(message.SignInventoryFull));
                                                  TradeSystem.ItemtoStore(notfitstack, player);
                                                }
                                            }
@@ -87,7 +90,7 @@ public class Mailbox {
                                         gotMail = true;
                                         invFull = false;
                                 } else {
-                                        player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("InventoryFull")));
+                                        player.sendMessage(Format(message.SignInventoryFull));
                                         invFull = true;
                                 }
                                 if (invFull == true) {
@@ -95,22 +98,23 @@ public class Mailbox {
                                 }
                         }
                         if (gotMail){
-                                player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("MailRetrieved")));
-                        }else{
-                            if (!invFull) {
-                                player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoMailRetrieved")));
-                            }
+                           player.sendMessage(Format(message.SignMailRetrieved));
+                        }else if (!invFull) {
+                           player.sendMessage(Format(message.SignNoMailRetrieved));
                         }
                         if (auctionMail.isEmpty()){	
-                                player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoMailRetrieved")));
+                           player.sendMessage(Format(message.SignNoMailRetrieved));
                         }
                 } catch (Exception e) {
                        WebPortal.logger.info("Erro on Withdraw");
                        WebPortal.logger.info(e.getMessage());
                 }
         } else {
-                player.sendMessage(plugin.logPrefix + plugin.parseColor(plugin.Messages.get("NoPermission")));
+                player.sendMessage(Format(message.SignNoPermission));
         }
     }
    
+    public String Format(String msg) {
+        return plugin.logPrefix + plugin.parseColor(msg);
+    }
 }

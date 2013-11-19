@@ -45,10 +45,10 @@ public class MailRequest extends HttpResponse {
             
             json = new JSONObject();
             json.put("Id",mail.getId());
-            json.put("Item Name",itemConfig[0]);
-            json.put("Quantity",mail.getItemStack().getAmount());
-            json.put("Image",itemConfig[1]);
-            json.put("Item Category",GetSearchType(mail.getItemStack()));
+            json.put(message.WebItemName,itemConfig[0]);
+            json.put(message.WebQuantity,mail.getItemStack().getAmount());
+            json.put(message.WebImage,itemConfig[1]);
+            json.put(message.WebItemCategory,GetSearchType(mail.getItemStack()));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
@@ -61,21 +61,21 @@ public class MailRequest extends HttpResponse {
         int id = Integer.parseInt((String)param.get("ID"));
         int quantity = Integer.parseInt((String)param.get("Quantity"));
         if(quantity < 0) {
-            Print("Invalid Number","text/plain");
+            Print(message.WebInvalidNumber,"text/plain");
             return;
         }
         Shop _Auction = plugin.dataQueries.getAuction(id);
         if(_Auction.getItemStack().getAmount() == quantity) {
             plugin.dataQueries.updateTable(id, plugin.Mail);
         }else if(_Auction.getItemStack().getAmount() < quantity) {
-            Print("Not enought items","text/plain");
+            Print(message.WebNotEnought,"text/plain");
             return;
         }else if(_Auction.getItemStack().getAmount() > quantity) {
             plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
             String SearchType = GetSearchType(_Auction.getItemStack());
             plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType() , SearchType );
         }
-        Print("Mailt send","text/plain");
+        Print(message.WebMailSend,"text/plain");
     }
         
 }

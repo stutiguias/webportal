@@ -85,8 +85,8 @@ public class Request {
         Shop.Buy(HostAddress,param);
     }
     
-    public void CreateAuction(String HostAddress,String url,Map param){
-        MyItems.CreateAuction(HostAddress, url, param);
+    public void CreateSell(String HostAddress,String url,Map param){
+        MyItems.CreateSell(HostAddress, url, param);
     }
             
     public void SendMail(String HostAddress,String url,Map param){

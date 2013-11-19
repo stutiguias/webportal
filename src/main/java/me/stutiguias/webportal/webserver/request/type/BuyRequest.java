@@ -34,7 +34,7 @@ public class BuyRequest extends HttpResponse {
             String quantity = (String)param.get("quantity");
 
             ItemStack Item = ConvertToItemStack(itemId);
-            if(Item == null) Print("Item ID not found","text/html");
+            if(Item == null) Print(message.WebIdNotFound,"text/html");
             Double Price = Double.parseDouble(price);
             Integer Quantity = Integer.parseInt(quantity);
 
@@ -68,11 +68,11 @@ public class BuyRequest extends HttpResponse {
             
             json = new JSONObject();
             json.put("Id",auction.getId());
-            json.put("Item Name",itemConfig[0]);
-            json.put("Quantity",auction.getItemStack().getAmount());
-            json.put("Image",itemConfig[1]);
-            json.put("Item Category",GetSearchType(auction.getItemStack()));
-            json.put("Price",auction.getPrice());
+            json.put(message.WebItemName,itemConfig[0]);
+            json.put(message.WebQuantity,auction.getItemStack().getAmount());
+            json.put(message.WebImage,itemConfig[1]);
+            json.put(message.WebItemCategory,GetSearchType(auction.getItemStack()));
+            json.put(message.WebPrice,auction.getPrice());
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();

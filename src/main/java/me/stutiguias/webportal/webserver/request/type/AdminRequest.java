@@ -40,58 +40,58 @@ public class AdminRequest extends HttpResponse {
             if(info.equalsIgnoreCase("playerauctions")) playerauction(name);
             if(info.equalsIgnoreCase("playertransaction")) playertransaction(name);
         }else{
-            Print("Your r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
         }
     }
 
     public void WebBan(String SessionId,Map param) {
         if(!isAdmin(SessionId)) {
-            Print("Your r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
             return;
         }
         String setplayer = (String)param.get("ID");
         boolean success = plugin.dataQueries.WebSiteBan(setplayer,"Y");
         if(success) {
-            Print("Player Banned","text/plain");
+            Print(message.WebPlayerBanned,"text/plain");
         }else{
-            Print("Player NOT Banned","text/plain");
+            Print(message.WebPlayerNotBanned,"text/plain");
         }
     }
         
     public void WebUnBan(String SessionId,Map param) {
         if(!isAdmin(SessionId)) {
-            Print("Your r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
             return;
         }
         String setplayer = (String)param.get("ID");
         boolean success = plugin.dataQueries.WebSiteBan(setplayer,"N");
         if(success) {
-            Print("Player DesBanned","text/plain");
+            Print(message.WebPlayerDesBanned,"text/plain");
         }else{
-            Print("Player NOT DesBanned","text/plain");
+            Print(message.WebPlayerNotDesBanned,"text/plain");
         }
     }
     
     private void playerinfo(String SessionId,String partialName) {
         if(!isAdmin(SessionId)) {
-            Print("Your r not admin","text/html");
+            Print(message.WebNotAdmin,"text/html");
             return;
         }
         List<WebSitePlayer> players = plugin.dataQueries.FindAllPlayersWith(partialName);
         if(players == null) {
-            Print("Player Not Found","text/html");
+            Print(message.WebPlayerNotFound,"text/html");
         }else{
             JSONArray jsonarray = new JSONArray();
             JSONObject json;
             for (int i = 0; i < players.size(); i++) {
                 json = new JSONObject();
-                json.put("IP",players.get(i).getIp());
-                json.put("Name",players.get(i).getName());
-                json.put("Can Buy ?",players.get(i).getCanBuy());
-                json.put("Can Sell ?",players.get(i).getCanSell());
-                json.put("is Admin ?",players.get(i).getIsAdmin());
-                json.put("Banned ?",players.get(i).getWebban());
-                json.put("WebSite Ban", new Html(plugin).HTMLBan(SessionId,players.get(i).getId()) );
+                json.put("Ip",players.get(i).getIp());
+                json.put(message.WebName,players.get(i).getName());
+                json.put(message.WebCanBuy,players.get(i).getCanBuy());
+                json.put(message.WebCanSell,players.get(i).getCanSell());
+                json.put(message.WebisAdmin,players.get(i).getIsAdmin());
+                json.put(message.WebBanned,players.get(i).getWebban());
+                json.put(message.WebWebSiteBan, new Html(plugin).HTMLBan(SessionId,players.get(i).getId()) );
                 jsonarray.add(json);
             }
             Print(jsonarray.toJSONString(),"application/json");
@@ -108,11 +108,11 @@ public class AdminRequest extends HttpResponse {
             String itemname = GetItemConfig(transact.getItemStack())[0];
    
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put("Buyer",transact.getBuyer());
-            jsonObjectArray.put("Item Name",itemname);
-            jsonObjectArray.put("Price",transact.getPrice());
-            jsonObjectArray.put("Quantity",transact.getQuantity());
-            jsonObjectArray.put("Seller", transact.getSeller());
+            jsonObjectArray.put(message.WebBuyer,transact.getBuyer());
+            jsonObjectArray.put(message.WebItemName,itemname);
+            jsonObjectArray.put(message.WebPrice,transact.getPrice());
+            jsonObjectArray.put(message.WebQuantity,transact.getQuantity());
+            jsonObjectArray.put(message.WebSeller, transact.getSeller());
             jsonarray.add(jsonObjectArray);
             
         }
@@ -128,9 +128,9 @@ public class AdminRequest extends HttpResponse {
             Shop _Auction = _playerItems.get(i);
             String itemname = GetItemConfig(_Auction.getItemStack())[0];
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put("Nick",_Auction.getPlayerName());
-            jsonObjectArray.put("Item Name",itemname);
-            jsonObjectArray.put("Quantity",_Auction.getItemStack().getAmount());
+            jsonObjectArray.put(message.WebName,_Auction.getPlayerName());
+            jsonObjectArray.put(message.WebItemName,itemname);
+            jsonObjectArray.put(message.WebQuantity,_Auction.getItemStack().getAmount());
             jsonarray.add(jsonObjectArray);
         }
         Print(jsonarray.toJSONString(),"application/json");
@@ -146,9 +146,9 @@ public class AdminRequest extends HttpResponse {
             WebSiteMail auctionMail = _playerMail.get(i);
             String itemname = GetItemConfig(auctionMail.getItemStack())[0];
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put("Nick",auctionMail.getPlayerName());
-            jsonObjectArray.put("Item Name",itemname );
-            jsonObjectArray.put("Quantity", auctionMail.getItemStack().getAmount());
+            jsonObjectArray.put(message.WebName,auctionMail.getPlayerName());
+            jsonObjectArray.put(message.WebItemName,itemname );
+            jsonObjectArray.put(message.WebQuantity, auctionMail.getItemStack().getAmount());
             jsonarray.add(jsonObjectArray);
         }
 
@@ -164,9 +164,9 @@ public class AdminRequest extends HttpResponse {
             Shop auction = _PlayerAuction.get(i);
             String itemname = GetItemConfig(auction.getItemStack())[0];
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put("Nick",auction.getPlayerName() );
-            jsonObjectArray.put("Item Name", itemname );
-            jsonObjectArray.put("Quantity", auction.getItemStack().getAmount());
+            jsonObjectArray.put(message.WebName,auction.getPlayerName() );
+            jsonObjectArray.put(message.WebItemName, itemname );
+            jsonObjectArray.put(message.WebQuantity, auction.getItemStack().getAmount());
             jsonarray.add(jsonObjectArray);
         }
         
