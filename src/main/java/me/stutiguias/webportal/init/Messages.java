@@ -29,6 +29,7 @@ public class Messages {
         SignNoPermission        =  c.getString("Sign.NoPermission");
                 
         WebBuy                  =  c.getString("Web.Buy");
+        WebSell                 =  c.getString("Web.Sell");
         WebCancel               =  c.getString("Web.Cancel");
         WebMailit               =  c.getString("Web.Mailit");
         WebCreateSell           =  c.getString("Web.CreateSell");
@@ -40,6 +41,7 @@ public class Messages {
         WebFailSellMore         =  c.getString("Web.Fail.SellMore");
         WebFailBuyYours         =  c.getString("Web.Fail.BuyYours");
         WebFailSellYours        =  c.getString("Web.Fail.SellYours");
+        WebFailDontHave         =  c.getString("Web.Fail.DontHave");
         WebNoShop               =  c.getString("Web.NoShop");
         WebNever                =  c.getString("Web.Never");
         WebCancelDone           =  c.getString("Web.CancelDone");
@@ -71,6 +73,7 @@ public class Messages {
         WebBuyer                =  c.getString("Web.Buyer");
         WebSeller               =  c.getString("Web.Seller");
         WebYouPurchase          =  c.getString("Web.YouPurchase");
+        WebYouSell              =  c.getString("Web.YouSell");
     }
     
     public String SignStackStored;
@@ -81,6 +84,7 @@ public class Messages {
     public String SignNoMailRetrieved;
     public String SignNoPermission;
     public String WebBuy;
+    public String WebSell;
     public String WebCancel;
     public String WebMailit;
     public String WebCreateSell;
@@ -123,4 +127,7 @@ public class Messages {
     public String WebBuyer;
     public String WebSeller;
     public String WebYouPurchase;
+    public String WebFailDontHave;
+    public String WebYouSell;
+    
 }

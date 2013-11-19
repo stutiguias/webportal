@@ -50,7 +50,7 @@ public class Html {
         return "<form class='js-buyItems' onsubmit='return sell(this)'>"+
                 "<input type='text' name='Quantity' onKeyPress='return numbersonly(this, event);' class='input' />"+
                 "<input type='hidden' name='ID' value='"+ID+"' />"+
-                "<input type='submit' value='Sell' class='btn btn-primary' /></form><span id='"+ID+"'></span>";
+                "<input type='submit' value='"+ message.WebSell +"' class='btn btn-primary' /></form><span id='"+ID+"'></span>";
       }else{
         return "Can't Sell";
       }

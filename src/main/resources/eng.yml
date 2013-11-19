@@ -2,6 +2,7 @@
 ## Do NOT CHANGE anything with % %
 Web:
   Buy: Buy
+  Sell: Sell
   Fail:
     QtdGreaterThen: Need quantity greater then 0
     PurchaseMoreThen: You are attempting to purchase more than the maximum available
@@ -11,6 +12,7 @@ Web:
     BuyYours: You can not buy your items.
     SellYours: You can not sell your items for yourself.
     SellMore: You not permit to sell more then you have
+    DontHave: You don't have that item or quantity
   NoShop: No Shop to display
   NoItem: No Items
   ItemName: Item Name
@@ -46,6 +48,7 @@ Web:
   CreateSell: Create Sale
   StackStored: Item stack stored.
   YouPurchase: You purchased %qtd% %item_name% from %playerName% for %price%
+  YouSell: You sell %qtd% %item_name% to %playerName% for %price%
 # In Game - You can use minecraft color here  
 Sign:
   HoldHelp: Please hold a stack of item in your hand and right click to deposit them.

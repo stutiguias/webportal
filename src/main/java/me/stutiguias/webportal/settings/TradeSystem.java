@@ -131,7 +131,7 @@ public class TradeSystem {
             }
         }
         if(!playerHasThatItem)
-            return "You don't have that item or quantity";
+            return WebPortal.Messages.WebFailDontHave;
         
         // wrong player get items
         auctions = plugin.dataQueries.getPlayerItems(itemBuy.getPlayerName());
@@ -172,7 +172,11 @@ public class TradeSystem {
         }
         
         if(itemBuy.getPlayerName().equalsIgnoreCase("Server") && itemBuy.getItemStack().getAmount() == 9999 ){
-            return "You sell "+ qtd +" " + item_name + " to "+ itemBuy.getPlayerName() +" for " + itemBuy.getPrice();
+            return WebPortal.Messages.WebYouSell
+                    .replaceAll("%qtd%",String.valueOf(qtd))
+                    .replaceAll("%item_name%",item_name)
+                    .replaceAll("%playerName%",itemBuy.getPlayerName())
+                    .replaceAll("%price%",String.valueOf(itemBuy.getPrice()));
         }
         
         if(itemBuy.getItemStack().getAmount() > 0) {
@@ -186,7 +190,11 @@ public class TradeSystem {
 
         //int time = (int) ((System.currentTimeMillis() / 1000));
         //plugin.dataQueries.LogSellPrice(buyauction.getItemStack().getTypeId(),buyauction.getItemStack().getDurability(),time, sellerPlayerName, buyauction.getPlayerName(), qtd, buyauction.getPrice(), buyauction.getEnchantments());
-        return "You sell "+ qtd +" " + item_name + " to "+ itemBuy.getPlayerName() +" for " + itemBuy.getPrice();
+        return WebPortal.Messages.WebYouSell
+                    .replaceAll("%qtd%",String.valueOf(qtd))
+                    .replaceAll("%item_name%",item_name)
+                    .replaceAll("%playerName%",itemBuy.getPlayerName())
+                    .replaceAll("%price%",String.valueOf(itemBuy.getPrice()));
     }
     
     public static double round(double unrounded, int precision, int roundingMode) {
