@@ -64,58 +64,36 @@ public class MyItemsRequest extends HttpResponse {
     }
         
     public void GetMyItems(String ip,String url,Map param) {
+        
+        Integer to = Integer.parseInt((String)param.get("to"));
+        Integer from = Integer.parseInt((String)param.get("from"));
 
-        int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
-        int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
-        String search = (String)param.get("sSearch");
-        int sEcho =  Integer.parseInt((String)param.get("sEcho"));
+        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),to,from,plugin.Myitems);
         
-        List<Shop> auctions = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Myitems);
-        
-        if(CheckError(ip, auctions)) return;
-        
-        int iTotalRecords = plugin.dataQueries.getFound();
-        int iTotalDisplayRecords = iTotalRecords;
-        
-        JSONObject json = new JSONObject();
-        JSONArray jsonData = new JSONArray();
-        JSONObject jsonTwo;
-        
-        json.put("sEcho", sEcho);
-        json.put("iTotalRecords", iTotalRecords);
-        json.put("iTotalDisplayRecords", iTotalDisplayRecords);
-        
-        if(iTotalRecords > 0) {
-            for(Shop item:auctions){
-                double mprice = plugin.dataQueries.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
-                jsonTwo = new JSONObject();
-                jsonTwo.put("DT_RowId","row_" + item.getId() );
-                jsonTwo.put("DT_RowClass", "gradeA");
-                jsonTwo.put("0", ConvertItemToResult(item,item.getType()));
-                jsonTwo.put("1", item.getItemStack().getAmount());
-                jsonTwo.put("2", mprice);
-                jsonTwo.put("3", mprice * item.getItemStack().getAmount());
-                jsonTwo.put("4", GetEnchant(item));
-                jsonTwo.put("5", GetDurability(item));
-                
-                jsonData.add(jsonTwo);
-            }
-        }else{
-                jsonTwo = new JSONObject();
-                jsonTwo.put("DT_RowId","row_0" );
-                jsonTwo.put("DT_RowClass", "gradeU");
-                jsonTwo.put("0", "");
-                jsonTwo.put("1", "");
-                jsonTwo.put("2", "");
-                jsonTwo.put("3", message.WebNoItem);
-                jsonTwo.put("4", "");
-                jsonTwo.put("5", "");
-                    
-                jsonData.add(jsonTwo);
+        if(CheckError(ip, shops)) return;
+
+        JSONObject json;
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < shops.size(); i++) {
+            Shop shop = shops.get(i);          
+            json = new JSONObject();
+            
+            double mprice = plugin.dataQueries.GetMarketPriceofItem(shop.getItemStack().getTypeId(),shop.getItemStack().getDurability());
+
+            json.put("1",JSON("Id",shop.getId()));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
+            json.put("3",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
+            json.put("4",JSON("Market price (each)",mprice));
+            json.put("5",JSON("Market price (each)",mprice * shop.getItemStack().getAmount()));
+            json.put("6",JSON("Enchant",GetEnchant(shop)));
+            json.put("7",JSON("Durability",GetDurability(shop)));
+            
+            jsonArray.add(json);
         }
-        json.put("aaData",jsonData);
+        JSONObject jsonresult = new JSONObject();
+        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
         
-        Print(json.toJSONString(),"text/plain");
+        Print(jsonresult.toJSONString(),"application/json");
     }
     
     public void GetMyItems(String ip) {

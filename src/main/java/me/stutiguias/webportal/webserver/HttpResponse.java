@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.Messages;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -131,5 +132,13 @@ public class HttpResponse extends Info {
      */
     public void setHttpExchange(HttpExchange httpExchange) {
         this.httpExchange = httpExchange;
+    }
+    
+        
+    public JSONObject JSON (String title,Object value) {
+        JSONObject json = new JSONObject();
+        json.put("Title",title);
+        json.put("Val",value); 
+        return json;
     }
 }

@@ -80,16 +80,16 @@ public class BuyRequest extends HttpResponse {
             Shop shop = shops.get(i);
            
             json = new JSONObject();
-            json.put("Id",shop.getId());
-            json.put(message.WebItemName,ConvertItemToResult(shop,shop.getType()));
-            json.put(message.WebQuantity,shop.getItemStack().getAmount());
-            json.put(message.WebItemCategory,GetSearchType(shop.getItemStack()));
-            json.put(message.WebPrice,shop.getPrice());
+            json.put("1",JSON("Id",shop.getId()));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
+            json.put("3",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
+            json.put("4",JSON(message.WebItemCategory,GetSearchType(shop.getItemStack())));
+            json.put("5",JSON(message.WebPrice,shop.getPrice()));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
         
-        jsonresult.put(shops.size(),jsonArray);
+        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
         Print(jsonresult.toJSONString(),"application/json");
     }
     

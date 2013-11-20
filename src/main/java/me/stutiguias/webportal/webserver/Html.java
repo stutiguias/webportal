@@ -55,11 +55,4 @@ public class Html {
         return "Can't Sell";
       }
     }
-    
-    public String HTMLCancel(String ip,int ID){
-        return "<form class='js-cancelAuction' onsubmit='return cancel(this)'>"+
-                "<input type='hidden' name='ID' value='"+ID+"' />"+
-                "<input type='submit' value='" + message.WebCancel + "' class='btn btn-primary' /></form><span id='C"+ID+"'></span>";
-    }
-    
 }

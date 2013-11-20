@@ -41,22 +41,20 @@ public class SellRequest extends HttpResponse {
             Shop shop = shops.get(i);          
             json = new JSONObject();
             
-            json.put("Id",shop.getId());
-            //json.put(message.WebItemName,itemConfig[0]);
-            json.put(message.WebItemName,ConvertItemToResult(shop,shop.getType()));
-            json.put(message.WebPrice,shop.getPrice());
-            json.put("Price Each",shop.getPrice() * shop.getItemStack().getAmount());
-            json.put("Market Price",Format(MarketPrice(shop, shop.getPrice())) + "%");
-            json.put("Enchant",GetEnchant(shop));
-            json.put("Durability",GetDurability(shop));
-            json.put(message.WebQuantity,shop.getItemStack().getAmount());
-            //json.put(message.WebImage,itemConfig[1]);
-            json.put(message.WebItemCategory,GetSearchType(shop.getItemStack()));
+            json.put("1",JSON("Id",shop.getId()));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
+            json.put("3",JSON(message.WebPrice,shop.getPrice()));
+            json.put("4",JSON("Price Each",shop.getPrice() * shop.getItemStack().getAmount()));
+            json.put("5",JSON("Market Price",Format(MarketPrice(shop, shop.getPrice())) + "%"));
+            json.put("6",JSON("Enchant",GetEnchant(shop)));
+            json.put("7",JSON("Durability",GetDurability(shop)));
+            json.put("8",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
+            json.put("9",JSON(message.WebItemCategory,GetSearchType(shop.getItemStack())));
             
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(shops.size(),jsonArray);
+        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
         
         Print(jsonresult.toJSONString(),"application/json");
     }
@@ -85,4 +83,5 @@ public class SellRequest extends HttpResponse {
         }
         Print(message.WebCancelDone,"text/plain");
     }
+
 }
