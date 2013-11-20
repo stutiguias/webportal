@@ -56,7 +56,7 @@ public class Info {
         if(!img_name.contains("http") || !img_name.contains("www"))
             img_name = String.format("images/%s",img_name);
         
-        return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /><br />%s</div>",img_name,item_name);
+        return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /> %s</div>",img_name,item_name);
         
     }
 

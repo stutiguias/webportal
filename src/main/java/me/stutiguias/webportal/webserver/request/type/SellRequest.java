@@ -30,58 +30,35 @@ public class SellRequest extends HttpResponse {
     
     public void GetSell(String ip,String url,Map param) {
         
-        int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
-        int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
-        String search = (String)param.get("sSearch");
-        int sEcho =  Integer.parseInt((String)param.get("sEcho"));
+        Integer to = Integer.parseInt((String)param.get("to"));
+        Integer from = Integer.parseInt((String)param.get("from"));
         
-        List<Shop> la = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),iDisplayStart,iDisplayLength,plugin.Auction);
+        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),to,from,plugin.Auction);
 
-        int iTotalRecords = plugin.dataQueries.getFound();
-        int iTotalDisplayRecords = iTotalRecords;
-        JSONObject json = new JSONObject();
-        JSONArray jsonData = new JSONArray();
-        JSONObject jsonTwo;
-        
-        json.put("sEcho", sEcho);
-        json.put("iTotalRecords", iTotalRecords);
-        json.put("iTotalDisplayRecords", iTotalDisplayRecords);
-        
-        if(iTotalRecords > 0) {
-            for(Shop item:la){
-                jsonTwo = new JSONObject();
-                jsonTwo.put("DT_RowId","row_" + item.getId() );
-                jsonTwo.put("DT_RowClass", "gradeA");
-                jsonTwo.put("0", ConvertItemToResult(item,item.getType()));
-                jsonTwo.put("1", item.getId());
-                jsonTwo.put("2", item.getItemStack().getAmount());
-                jsonTwo.put("3", item.getPrice());
-                jsonTwo.put("4", item.getPrice() * item.getItemStack().getAmount());
-                jsonTwo.put("5", Format(MarketPrice(item, item.getPrice())) + "%" );
-                jsonTwo.put("6", GetEnchant(item));
-                jsonTwo.put("7", GetDurability(item));
-                jsonTwo.put("8", html.HTMLCancel(ip,item.getId()));
-
-                jsonData.add(jsonTwo);
-            }
-        }else{
-                jsonTwo = new JSONObject();
-                jsonTwo.put("DT_RowId","row_0" );
-                jsonTwo.put("DT_RowClass", "gradeU");
-                jsonTwo.put("0", "");
-                jsonTwo.put("1", "");
-                jsonTwo.put("2", "");
-                jsonTwo.put("3", message.WebNoShop);
-                jsonTwo.put("4", "");
-                jsonTwo.put("5", "");
-                jsonTwo.put("6", "");
-                jsonTwo.put("7", "");
-                jsonTwo.put("8", "");
-                jsonData.add(jsonTwo);
+        JSONObject json;
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < shops.size(); i++) {
+            Shop shop = shops.get(i);          
+            json = new JSONObject();
+            
+            json.put("Id",shop.getId());
+            //json.put(message.WebItemName,itemConfig[0]);
+            json.put(message.WebItemName,ConvertItemToResult(shop,shop.getType()));
+            json.put(message.WebPrice,shop.getPrice());
+            json.put("Price Each",shop.getPrice() * shop.getItemStack().getAmount());
+            json.put("Market Price",Format(MarketPrice(shop, shop.getPrice())) + "%");
+            json.put("Enchant",GetEnchant(shop));
+            json.put("Durability",GetDurability(shop));
+            json.put(message.WebQuantity,shop.getItemStack().getAmount());
+            //json.put(message.WebImage,itemConfig[1]);
+            json.put(message.WebItemCategory,GetSearchType(shop.getItemStack()));
+            
+            jsonArray.add(json);
         }
-        json.put("aaData",jsonData);
+        JSONObject jsonresult = new JSONObject();
+        jsonresult.put(shops.size(),jsonArray);
         
-        Print(json.toJSONString(),"text/plain");
+        Print(jsonresult.toJSONString(),"application/json");
     }
     
     public void Cancel(String url,Map param) {

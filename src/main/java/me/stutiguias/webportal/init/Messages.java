@@ -74,6 +74,7 @@ public class Messages {
         WebSeller               =  c.getString("Web.Seller");
         WebYouPurchase          =  c.getString("Web.YouPurchase");
         WebYouSell              =  c.getString("Web.YouSell");
+        WebSucessCreateBuy      =  c.getString("Web.SucessCreateBuy");
     }
     
     public String SignStackStored;
@@ -129,5 +130,5 @@ public class Messages {
     public String WebYouPurchase;
     public String WebFailDontHave;
     public String WebYouSell;
-    
+    public String WebSucessCreateBuy;
 }

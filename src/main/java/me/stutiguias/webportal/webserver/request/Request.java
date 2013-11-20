@@ -153,6 +153,10 @@ public class Request {
         Buy.AddItem(SessionId,param);
     }
     
+    public void BuyCancelItem(Map param) {
+        Buy.Cancel(param);
+    }
+    
     public void BuyGetItems(String SessionId,Map param) {
         Buy.GetItems(SessionId, param);
     }

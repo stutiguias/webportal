@@ -361,21 +361,24 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public void DeleteAuction(Integer id) {
+    public int DeleteAuction(Integer id) {
         WALConnection conn = getConnection();
         PreparedStatement st = null;
         ResultSet rs = null;
-
+        int result = 0;
+        
         try {
                 st = conn.prepareStatement("DELETE FROM WA_Auctions WHERE id = ?");
                 st.setInt(1, id);
-                st.executeUpdate();
+                result = st.executeUpdate();
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to delete Auction: {1}", new Object[]{plugin.logPrefix, id});
         } finally {
                 closeResources(conn, st, rs);
         }
         DeleteInfo(id);
+        
+        return result;
     }
 
     @Override

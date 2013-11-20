@@ -92,17 +92,19 @@ public class WebPortalHttpHandler implements HttpHandler {
                 AdmHandler();
             }else if(url.startsWith("/auction")) {
                 AuctionHandler();
-            }else if(url.startsWith("/withlist")) {
-                WithListHandler();
+            }else if(url.startsWith("/buy")) {
+                BuyHandler();
             }else if(url.equalsIgnoreCase("/")) {
                 Fill.Response().ReadFile(htmlDir+"/index.html","text/html");
             }
     }
     
-    public void WithListHandler() {
-        if(url.startsWith("/withlist/additem")) {
+    public void BuyHandler() {
+        if(url.startsWith("/buy/additem")) {
             Fill.BuyAddItem(SessionId, params);
-        }else if(url.startsWith("/withlist/getitem")) {
+        }else if(url.startsWith("/buy/remitem")) { 
+            Fill.BuyCancelItem(params);
+        }else if(url.startsWith("/buy/getitem")) {
             Fill.BuyGetItems(SessionId, params);
         }
     }

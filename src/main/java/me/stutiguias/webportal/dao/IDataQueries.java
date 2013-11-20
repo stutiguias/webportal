@@ -29,7 +29,7 @@ public interface IDataQueries {
         List<Shop> getSearchAuctions(int to,int from,String type);
         List<Shop> getAuctionsLimitbyPlayer(String player,int to,int from,int table);
         void UpdateItemAuctionQuantity(Integer numberleft, Integer id);
-        void DeleteAuction(Integer id);
+        int DeleteAuction(Integer id);
         void DeleteInfo(int auctionId);
         void setPriceAndTable(int id,Double price);
         

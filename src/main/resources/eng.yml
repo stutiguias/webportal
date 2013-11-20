@@ -43,6 +43,7 @@ Web:
   CancelDone: Cancel Done.
   InvalidNumber: Invalid Number
   SucessCreateSale: You have sucess create Sale
+  SucessCreateBuy: You have sucess create Buy
   Mailit: Mail it
   MailSend: Mail send
   CreateSell: Create Sale

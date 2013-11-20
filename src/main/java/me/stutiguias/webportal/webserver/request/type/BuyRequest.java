@@ -42,41 +42,54 @@ public class BuyRequest extends HttpResponse {
             String searchtype = GetSearchType(Item);
             String player = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer.getName();
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.WithList, type, searchtype);
-            Print("ok","text/html");
+            Print(message.WebSucessCreateBuy,"text/html");
           }catch(Exception ex) {
               ex.printStackTrace();
           }
 
     }
      
+    public void Cancel(Map param) {
+        try {
+            int id = Integer.parseInt((String)param.get("id"));
+            int result = plugin.dataQueries.DeleteAuction(id);
+            if(result == 0) {
+                 Print(message.WebInvalidNumber,"text/plain");
+                 return;
+            }
+        }catch(NumberFormatException ex) {
+            Print(message.WebInvalidNumber,"text/plain");
+            return;
+        }catch(Exception ex) {
+            Print(message.WebInvalidNumber,"text/plain");
+            return;
+        }
+        Print(message.WebCancelDone,"text/plain");
+    }
+    
     public void GetItems(String sessionId,Map param) {
         Integer to = Integer.parseInt((String)param.get("to"));
         Integer from = Integer.parseInt((String)param.get("from"));
         
         String player = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer.getName();
-        List<Shop> auctions = plugin.dataQueries.GetWithList(player,to,from);
-        int founds = plugin.dataQueries.getFound();
+        List<Shop> shops = plugin.dataQueries.GetWithList(player,to,from);
+        
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < auctions.size(); i++) {
-            Shop auction = auctions.get(i);
-            String[] itemConfig = GetItemConfig(auction.getItemStack());
-            
-            if(plugin.AllowMetaItem) {
-                itemConfig[0] = ChangeItemToItemMeta(auction, itemConfig[0]);
-            }
-            
+        for (int i = 0; i < shops.size(); i++) {
+            Shop shop = shops.get(i);
+           
             json = new JSONObject();
-            json.put("Id",auction.getId());
-            json.put(message.WebItemName,itemConfig[0]);
-            json.put(message.WebQuantity,auction.getItemStack().getAmount());
-            json.put(message.WebImage,itemConfig[1]);
-            json.put(message.WebItemCategory,GetSearchType(auction.getItemStack()));
-            json.put(message.WebPrice,auction.getPrice());
+            json.put("Id",shop.getId());
+            json.put(message.WebItemName,ConvertItemToResult(shop,shop.getType()));
+            json.put(message.WebQuantity,shop.getItemStack().getAmount());
+            json.put(message.WebItemCategory,GetSearchType(shop.getItemStack()));
+            json.put(message.WebPrice,shop.getPrice());
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(founds,jsonArray);
+        
+        jsonresult.put(shops.size(),jsonArray);
         Print(jsonresult.toJSONString(),"application/json");
     }
     
