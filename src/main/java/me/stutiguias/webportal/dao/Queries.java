@@ -228,7 +228,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT name,quantity,damage,player,price,created,ench FROM WA_Auctions WHERE id = ?");
+                st = conn.prepareStatement("SELECT name,tableid,quantity,damage,player,price,created,ench FROM WA_Auctions WHERE id = ?");
                 st.setInt(1, id);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -241,6 +241,7 @@ public class Queries implements IDataQueries {
                         auction.setPrice(rs.getDouble("price"));
                         auction.setCreated(rs.getInt("created"));
                         auction.setEnchantments(rs.getString("ench"));
+                        auction.setTableId(rs.getInt("tableid"));
                 }
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to get auction {1}", new Object[]{plugin.logPrefix, id});

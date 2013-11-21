@@ -191,9 +191,9 @@ public class ShopRequest extends HttpResponse {
         Shop shop = plugin.dataQueries.getAuction(id);
         
         if(shop.getTableId() == plugin.Auction)
-            Sell(ip,param,shop);
-        else
             Buy(ip,param,shop);
+        else
+            Sell(ip,param,shop);
     }
     
     
