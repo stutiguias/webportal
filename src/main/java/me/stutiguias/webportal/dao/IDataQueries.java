@@ -25,9 +25,9 @@ public interface IDataQueries {
         
         // Auction
         Shop getAuction(int id); // Get One Auction
-        List<Shop> getAuctions(int to,int from); // 
-        List<Shop> getSearchAuctions(int to,int from,String type);
-        List<Shop> getAuctionsLimitbyPlayer(String player,int to,int from,int table);
+        List<Shop> getAuctions(int from,int qtd); // 
+        List<Shop> getSearchAuctions(int from,int qtd,String type);
+        List<Shop> getAuctionsLimitbyPlayer(String player,int from,int qtd,int table);
         void UpdateItemAuctionQuantity(Integer numberleft, Integer id);
         int DeleteAuction(Integer id);
         void DeleteInfo(int auctionId);
@@ -69,7 +69,7 @@ public interface IDataQueries {
         ItemStack Chant(String ench,ItemStack stack);
         
         //WithList
-        List<Shop> GetWithList(String player,int to,int from);
+        List<Shop> GetBuyList(String player,int from,int qtd);
         
         //Plugins
         ProfileMcMMO getMcMMOProfileMySql(String tableprefix,String player);

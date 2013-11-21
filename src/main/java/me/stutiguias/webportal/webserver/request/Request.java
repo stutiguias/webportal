@@ -81,10 +81,6 @@ public class Request {
         MyItems.GetMyItems(HostAddress, url, param);
     }
     
-    public void Buy(String HostAddress,Map param){
-        Shop.Buy(HostAddress,param);
-    }
-    
     public void CreateSell(String HostAddress,String url,Map param){
         MyItems.CreateSell(HostAddress, url, param);
     }
@@ -161,8 +157,8 @@ public class Request {
         Buy.GetItems(SessionId, param);
     }
     
-    public void ShopSell(String SessionId,Map param) {
-        Shop.Sell(SessionId, param);
+    public void ShopSellBuy(String SessionId,Map param) {
+        Shop.BuySellShop(SessionId, param);
     }
     
     public HttpResponse Response() {

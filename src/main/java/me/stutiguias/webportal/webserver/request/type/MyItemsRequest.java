@@ -65,10 +65,10 @@ public class MyItemsRequest extends HttpResponse {
         
     public void GetMyItems(String ip,String url,Map param) {
         
-        Integer to = Integer.parseInt((String)param.get("to"));
         Integer from = Integer.parseInt((String)param.get("from"));
+        Integer qtd = Integer.parseInt((String)param.get("qtd"));
 
-        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),to,from,plugin.Myitems);
+        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),from,qtd,plugin.Myitems);
         
         if(CheckError(ip, shops)) return;
 

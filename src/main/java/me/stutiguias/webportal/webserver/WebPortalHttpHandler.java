@@ -164,10 +164,8 @@ public class WebPortalHttpHandler implements HttpHandler {
     public void AuctionHandler() {
         if(url.startsWith("/auction/get")) {
                 Fill.RequestShopBy(SessionId,url,params);
-        }else if(url.startsWith("/auction/buy")) {
-                Fill.Buy(SessionId,params);
-        }else if(url.startsWith("/auction/sell")) {
-                Fill.ShopSell(SessionId, params);
+        }else if(url.startsWith("/auction/shop")) {
+                Fill.ShopSellBuy(SessionId,params);
         }
     }
     

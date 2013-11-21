@@ -41,7 +41,7 @@ public class BuyRequest extends HttpResponse {
             String type = Item.getType().toString();
             String searchtype = GetSearchType(Item);
             String player = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer.getName();
-            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.WithList, type, searchtype);
+            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.Buy, type, searchtype);
             Print(message.WebSucessCreateBuy,"text/html");
           }catch(Exception ex) {
               ex.printStackTrace();
@@ -68,11 +68,11 @@ public class BuyRequest extends HttpResponse {
     }
     
     public void GetItems(String sessionId,Map param) {
-        Integer to = Integer.parseInt((String)param.get("to"));
         Integer from = Integer.parseInt((String)param.get("from"));
+        Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
         String player = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer.getName();
-        List<Shop> shops = plugin.dataQueries.GetWithList(player,to,from);
+        List<Shop> shops = plugin.dataQueries.GetBuyList(player,from,qtd);
         
         JSONObject json;
         JSONArray jsonArray = new JSONArray();

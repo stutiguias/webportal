@@ -78,7 +78,7 @@ public class WebPortal extends JavaPlugin {
 	public Permission permission = null;
 	public Economy economy = null;
 
-        public int WithList = 4;
+        public int Buy = 4;
         public int Mail = 3;
         public int Auction = 2;
         public int Myitems = 1;

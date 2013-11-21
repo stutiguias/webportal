@@ -126,7 +126,7 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-     public List<Shop> getSearchAuctions(int to,int from,String searchtype) {
+     public List<Shop> getSearchAuctions(int from,int qtd,String searchtype) {
              Shop auction;
              WALConnection conn = getConnection();
              PreparedStatement st = null;
@@ -136,10 +136,10 @@ public class Queries implements IDataQueries {
              try {
                      st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,tableid FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ? LIMIT ? , ?");
                      st.setInt(1, plugin.Auction);
-                     st.setInt(2, plugin.WithList);
+                     st.setInt(2, plugin.Buy);
                      st.setString(3, searchtype);
-                     st.setInt(4, to);
-                     st.setInt(5, from);
+                     st.setInt(4, from);
+                     st.setInt(5, qtd);
                      rs = st.executeQuery();
                      while (rs.next()) {
                              auction = new Shop();
@@ -154,12 +154,10 @@ public class Queries implements IDataQueries {
                              auction.setTableId(rs.getInt("tableid"));
                              la.add(auction);
                      }
-                    st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ? LIMIT ? , ?");
+                    st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ?");
                     st.setInt(1, plugin.Auction);
-                    st.setInt(2, plugin.WithList);
+                    st.setInt(2, plugin.Buy);
                     st.setString(3, searchtype);
-                    st.setInt(4, to);
-                    st.setInt(5, from);
                     rs = st.executeQuery();
                     while (rs.next()) {
                           found = rs.getInt(1);
@@ -254,7 +252,7 @@ public class Queries implements IDataQueries {
     }
 
         @Override
-        public List<Shop> getAuctions(int to,int from) {
+        public List<Shop> getAuctions(int from,int qtd) {
 		Shop auction;
 		WALConnection conn = getConnection();
 		PreparedStatement st = null;
@@ -264,9 +262,9 @@ public class Queries implements IDataQueries {
 		try {
 			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,tableid FROM WA_Auctions where tableid = ? or tableid = ? LIMIT ? , ?");
                         st.setInt(1, plugin.Auction);
-                        st.setInt(2, plugin.WithList);
-                        st.setInt(3, to);
-                        st.setInt(4, from);
+                        st.setInt(2, plugin.Buy);
+                        st.setInt(3, from);
+                        st.setInt(4, qtd);
 			rs = st.executeQuery();
 			while (rs.next()) {
 				auction = new Shop();
@@ -280,10 +278,9 @@ public class Queries implements IDataQueries {
                                 auction.setTableId(rs.getInt("tableid"));
                                 la.add(auction);
 			}
-                        st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? LIMIT ? , ?");
+                        st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? or tableid = ?");
                         st.setInt(1, plugin.Auction);
-                        st.setInt(2, to);
-                        st.setInt(3, from);
+                        st.setInt(2, plugin.Buy);
                         rs = st.executeQuery();
                         while (rs.next()) {
                               found = rs.getInt(1);
@@ -298,7 +295,7 @@ public class Queries implements IDataQueries {
 	}
 
     @Override
-    public List<Shop> getAuctionsLimitbyPlayer(String player,int to,int from,int table) {
+    public List<Shop> getAuctionsLimitbyPlayer(String player,int from,int qtd,int table) {
             Shop auction;
             WALConnection conn = getConnection();
             PreparedStatement st = null;
@@ -309,8 +306,8 @@ public class Queries implements IDataQueries {
                     st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,searchtype FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
                     st.setString(1, player);
                     st.setInt(2, table);
-                    st.setInt(3, to);
-                    st.setInt(4, from);
+                    st.setInt(3, from);
+                    st.setInt(4, qtd);
                     rs = st.executeQuery();
                     while (rs.next()) {
                             auction = new Shop();
@@ -324,11 +321,9 @@ public class Queries implements IDataQueries {
                             auction.setCreated(rs.getInt("created"));
                             la.add(auction);
                     }
-                    st = conn.prepareStatement("SELECT count(*) FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
+                    st = conn.prepareStatement("SELECT count(*) FROM WA_Auctions where player = ? and tableid = ?");
                     st.setString(1, player);
                     st.setInt(2, table);
-                    st.setInt(3, to);
-                    st.setInt(4, from);
                     rs = st.executeQuery();
                     while (rs.next()) {
                             found = rs.getInt(1);
@@ -1102,7 +1097,7 @@ public class Queries implements IDataQueries {
 
         
     @Override
-    public List<Shop> GetWithList(String player, int to, int from) {
+    public List<Shop> GetBuyList(String player, int from, int qtd) {
         List<Shop> auctions = new ArrayList<>();
 
         WALConnection conn = getConnection();
@@ -1112,9 +1107,9 @@ public class Queries implements IDataQueries {
         try {
                 st = conn.prepareStatement("SELECT id,name,quantity,damage,player,ench,price FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
                 st.setString(1, player);
-                st.setInt(2, plugin.WithList);
-                st.setInt(3, to);
-                st.setInt(4, from);
+                st.setInt(2, plugin.Buy);
+                st.setInt(3, from);
+                st.setInt(4, qtd);
                 rs = st.executeQuery();
                 while (rs.next()) {
                         Shop auction = new Shop();
@@ -1126,11 +1121,9 @@ public class Queries implements IDataQueries {
                         auction.setPrice(rs.getDouble("price"));
                         auctions.add(auction);
                 }
-                st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where player = ? and tableid = ? LIMIT ? , ?");
+                st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where player = ? and tableid = ?");
                 st.setString(1, player);
-                st.setInt(2, plugin.WithList);
-                st.setInt(3, to);
-                st.setInt(4, from);
+                st.setInt(2, plugin.Buy);
                 rs = st.executeQuery();
                 while (rs.next()) {
                       found = rs.getInt(1);

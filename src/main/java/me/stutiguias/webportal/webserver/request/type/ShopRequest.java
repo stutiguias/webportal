@@ -76,65 +76,54 @@ public class ShopRequest extends HttpResponse {
     
     public void GetShopBy(String sessionId,String url,Map param,String searchtype) {
         
-        int iDisplayStart = Integer.parseInt((String)param.get("iDisplayStart"));
-        int iDisplayLength = Integer.parseInt((String)param.get("iDisplayLength"));
-        String search = (String)param.get("sSearch");
-        int sEcho =  Integer.parseInt((String)param.get("sEcho"));
+        Integer qtd = Integer.parseInt((String)param.get("qtd"));
+        Integer from = Integer.parseInt((String)param.get("from"));
         
-        search = GetConfigKey(search, searchtype);
-        List<Shop> auctions;
+        // TODO : Implement search
+        //search = GetConfigKey(search, searchtype);
+        List<Shop> shops;
  
-        if(search == null) search = "%";
+        //if(search == null) search = "%";
         
         if(searchtype.equals("nothing")) {
-            auctions = plugin.dataQueries.getAuctions(iDisplayStart,iDisplayLength);
+            shops = plugin.dataQueries.getAuctions(from,qtd);
         }else{
-            auctions = plugin.dataQueries.getSearchAuctions(iDisplayStart,iDisplayLength,searchtype);
+            shops = plugin.dataQueries.getSearchAuctions(from,qtd,searchtype);
         }
-        
-        int iTotalRecords = plugin.dataQueries.getFound();
-        int iTotalDisplayRecords = plugin.dataQueries.getFound();
-        
-        JSONObject Response = new JSONObject();
-        JSONArray Data = new JSONArray();
-        JSONObject tmp_Data;
-        
-        Response.put("sEcho", sEcho);
-        Response.put("iTotalRecords", iTotalRecords);
-        Response.put("iTotalDisplayRecords", iTotalDisplayRecords);
-        
-        if(iTotalRecords > 0) {
-            for(Shop item:auctions){
-                if(item.getPlayerName().equalsIgnoreCase("Server")){
-                    Data.add(ServerShop(item,searchtype,sessionId));
+
+        JSONObject json;
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < shops.size(); i++) {
+            Shop shop = shops.get(i);          
+            json = new JSONObject();
+                            
+            if(shop.getPlayerName().equalsIgnoreCase("Server")){
+                    jsonArray.add(ServerShop(shop,searchtype,sessionId));
                     continue;
-                }
-           
-                tmp_Data = new JSONObject();
-                double MakertPercent = MarketPrice(item, item.getPrice());
-                tmp_Data.put("DT_RowId","row_" + item.getId() );
-                tmp_Data.put("DT_RowClass", Grade(MakertPercent));
-                tmp_Data.put("0", ConvertItemToResult(item,searchtype));
-                tmp_Data.put("1", "<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + item.getPlayerName() +"' /><br />"+ item.getPlayerName());
-                tmp_Data.put("2", message.WebNever);
-                tmp_Data.put("3", item.getItemStack().getAmount());
-                tmp_Data.put("4", item.getPrice());
-                tmp_Data.put("5", GetEnchant(item));
-                tmp_Data.put("6", GetDurability(item));
-                tmp_Data.put("7", Format(MakertPercent) + "%");
-                if(item.getTableId() == plugin.Auction)
-                    tmp_Data.put("8", html.HTMLBuy(sessionId,item.getId()));
-                else
-                    tmp_Data.put("8", html.HTMLSell(sessionId,item.getId()));
-                
-                Data.add(tmp_Data);
             }
-        }else{
-           Data.add(NoShop());
+            
+            double MakertPercent = MarketPrice(shop, shop.getPrice());
+            json.put("1",JSON("Id",shop.getId()));
+            
+            if(shop.getTableId() == plugin.Auction)
+                json.put("2",JSON("Type","Buy"));
+            else
+                json.put("2",JSON("Type","Sell"));
+            
+            json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop,searchtype)));
+            json.put("4",JSON("Owner","<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
+            json.put("5",JSON("Expire", message.WebNever));
+            json.put("6",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
+            json.put("7",JSON("Price Each",shop.getPrice()));
+            json.put("8",JSON("Enchant",GetEnchant(shop)));
+            json.put("9",JSON("Durability",GetDurability(shop)));
+            json.put("10",JSON("Market Price",Format(MakertPercent) + "%"));
+            jsonArray.add(json);
         }
-        Response.put("aaData",Data);
+        JSONObject jsonresult = new JSONObject();
+        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
         
-        Print(Response.toJSONString(),"text/plain");
+        Print(jsonresult.toJSONString(),"application/json");
     }
     
     public void GetShop(Map param) {
@@ -173,80 +162,60 @@ public class ShopRequest extends HttpResponse {
         }
         Print(json.toJSONString(), "text/plain");
     }
-    
-    public JSONObject NoShop() {
-            JSONObject jsonTwo = new JSONObject();
-            jsonTwo.put("DT_RowId","row_0" );
-            jsonTwo.put("DT_RowClass", "gradeU");
-            jsonTwo.put("0", "");
-            jsonTwo.put("1", "");
-            jsonTwo.put("2", "");
-            jsonTwo.put("3", message.WebNoShop);
-            jsonTwo.put("4", "");
-            jsonTwo.put("5", "");
-            jsonTwo.put("6", "");
-            jsonTwo.put("7", "");
-            jsonTwo.put("8", "");
-            return jsonTwo;
-    }
-    
 
-    
-    public String Grade(double percent) {
-        if(percent == 100) {
-            return "gradeU";
-        }
-        if(percent > 100) {
-            return "gradeX";
-        }
-        if(percent < 100) {
-            return "gradeA";
-        }
-        return "gradeB";
-    }
-    
     public JSONObject ServerShop(Shop item,String searchtype,String ip){
-        JSONObject ServerAuction = new JSONObject();
-        ServerAuction.put("DT_RowId","row_" + item.getId() );
-        ServerAuction.put("DT_RowClass", "0");
-        ServerAuction.put("0", ConvertItemToResult(item,searchtype));
-        ServerAuction.put("1", item.getPlayerName());
-        ServerAuction.put("2", "Never");
+        JSONObject json = new JSONObject();
+        json.put("1",JSON("Id",item.getId()));
+        if(item.getTableId() == plugin.Auction)
+            json.put("2",JSON("Type","Buy"));
+        else
+            json.put("2",JSON("Type","Sell"));
+        json.put("3",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
+        json.put("4",JSON("Owner",item.getPlayerName()));
+        json.put("5",JSON("Expire", message.WebNever));
         if(item.getItemStack().getAmount() == 9999) {
-            ServerAuction.put("3", "Infinit");
+            json.put("6",JSON(message.WebQuantity,"Infinit"));
         }else{
-            ServerAuction.put("3", item.getItemStack().getAmount());
+            json.put("6",JSON(message.WebQuantity,item.getItemStack().getAmount()));
         }
-        ServerAuction.put("4", item.getPrice());
-        ServerAuction.put("5", GetEnchant(item));
-        ServerAuction.put("6", GetDurability(item));
-        ServerAuction.put("7", "");
-        ServerAuction.put("8", html.HTMLBuy(ip,item.getId()));
-        return ServerAuction;
+        json.put("7",JSON("Price Each",item.getPrice()));
+        json.put("8",JSON("Enchant",GetEnchant(item)));
+        json.put("9",JSON("Durability",GetDurability(item)));
+        json.put("10",JSON("Market Price",""));
+        return json;
     }
     
-    public void Buy(String ip,Map param) {
+    public void BuySellShop(String ip,Map param) {
+        int id =  Integer.parseInt((String)param.get("ID"));
+        
+        Shop shop = plugin.dataQueries.getAuction(id);
+        
+        if(shop.getTableId() == plugin.Auction)
+            Sell(ip,param,shop);
+        else
+            Buy(ip,param,shop);
+    }
+    
+    
+    private void Buy(String ip,Map param,Shop shop) {
        try { 
-           int qtd =  Integer.parseInt((String)param.get("Quantity"));
-           int id =  Integer.parseInt((String)param.get("ID"));
-           
+           int qtd =  Integer.parseInt((String)param.get("quantity"));
            WebSitePlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
-           Shop au = plugin.dataQueries.getAuction(id);
-           String item_name = GetItemConfig(au.getItemStack())[0];
+           String item_name = GetItemConfig(shop.getItemStack())[0];
            if(qtd <= 0)
            {
               Print(message.WebFailQtdGreaterThen,"text/plain");
-           } else if(qtd > au.getItemStack().getAmount())
+           } else if(qtd > shop.getItemStack().getAmount())
            {
               Print(message.WebFailPurchaseMoreThen,"text/plain");
-           } else if(!plugin.economy.has(ap.getName(),au.getPrice() * qtd))
+           } else if(!plugin.economy.has(ap.getName(),shop.getPrice() * qtd))
            {
               Print(message.WebFailBuyMoney,"text/plain");
-           } else if(ap.getName().equals(au.getPlayerName())) {
+           } else if(ap.getName().equals(shop.getPlayerName())) {
               Print(message.WebFailBuyYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
-               Print(tr.Buy(ap.getName(),au, qtd, item_name, false),"text/plain");
+               Print(tr.Buy(ap.getName(),shop, qtd, item_name, false),"text/plain");
            }
        }catch(Exception ex){
            WebPortal.logger.warning(ex.getMessage());
@@ -254,28 +223,27 @@ public class ShopRequest extends HttpResponse {
         
     }
     
-    public void Sell(String sessionId,Map param) {
+    private void Sell(String sessionId,Map param,Shop shop) {
        try { 
-           int qtd =  Integer.parseInt((String)param.get("Quantity"));
-           int id =  Integer.parseInt((String)param.get("ID"));
+           int qtd =  Integer.parseInt((String)param.get("quantity"));
            
            WebSitePlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
-           Shop au = plugin.dataQueries.getAuction(id);
-           String item_name = GetItemConfig(au.getItemStack())[0];
+           
+           String item_name = GetItemConfig(shop.getItemStack())[0];
            if(qtd <= 0)
            {
               Print(message.WebFailQtdGreaterThen,"text/plain");
-           } else if(qtd > au.getItemStack().getAmount())
+           } else if(qtd > shop.getItemStack().getAmount())
            {
               Print(message.WebFailSaleMoreThen,"text/plain");
-           } else if(!plugin.economy.has(au.getPlayerName(),au.getPrice() * qtd))
+           } else if(!plugin.economy.has(shop.getPlayerName(),shop.getPrice() * qtd))
            {
               Print(message.WebFailSaleMoney,"text/plain");
-           } else if(ap.getName().equals(au.getPlayerName())) {
+           } else if(ap.getName().equals(shop.getPlayerName())) {
               Print(message.WebFailSellYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
-               Print(tr.Sell(ap.getName(),au, qtd, item_name, false),"text/plain");
+               Print(tr.Sell(ap.getName(),shop, qtd, item_name, false),"text/plain");
            }
        }catch(Exception ex){
            WebPortal.logger.warning(ex.getMessage());
