@@ -27,32 +27,25 @@ public class MailRequest extends HttpResponse {
     }
     
     public void GetMails(String ip,Map param) {
-        Integer to = Integer.parseInt((String)param.get("to"));
         Integer from = Integer.parseInt((String)param.get("from"));
+        Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
         String player = WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName();
-        List<WebSiteMail> mails = plugin.dataQueries.getMail(player,to,from);
-        int founds = plugin.dataQueries.getFound();
+        List<WebSiteMail> mails = plugin.dataQueries.getMail(player,from,qtd);
+        
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < mails.size(); i++) {
             WebSiteMail mail = mails.get(i);
-            String[] itemConfig = GetItemConfig(mail.getItemStack());
-            
-            if(plugin.AllowMetaItem) {
-                itemConfig[0] = ChangeItemToItemMeta(mail, itemConfig[0]);
-            }
-            
-            json = new JSONObject();
-            json.put("Id",mail.getId());
-            json.put(message.WebItemName,itemConfig[0]);
-            json.put(message.WebQuantity,mail.getItemStack().getAmount());
-            json.put(message.WebImage,itemConfig[1]);
-            json.put(message.WebItemCategory,GetSearchType(mail.getItemStack()));
+            json = new JSONObject();           
+            json.put("1",JSON("Id",mail.getId()));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(mail.getId(),mail.getItemStack(),mail.getItemStack().getType().toString())));
+            json.put("3",JSON(message.WebQuantity,mail.getItemStack().getAmount()));
+            json.put("4",JSON(message.WebItemCategory,GetSearchType(mail.getItemStack())));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(founds,jsonArray);
+        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
         Print(jsonresult.toJSONString(),"application/json");
     }
     

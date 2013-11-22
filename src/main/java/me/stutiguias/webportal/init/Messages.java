@@ -75,6 +75,18 @@ public class Messages {
         WebYouPurchase          =  c.getString("Web.YouPurchase");
         WebYouSell              =  c.getString("Web.YouSell");
         WebSucessCreateBuy      =  c.getString("Web.SucessCreateBuy");
+        WebCantSell             =  c.getString("Web.CantSell");
+        WebCantBuy              =  c.getString("Web.CantBuy");
+        WebType                 =  c.getString("Web.Type");
+        WebOwner                =  c.getString("Web.Owner");
+        WebExpire               =  c.getString("Web.Expire");
+        WebPriceEach            =  c.getString("Web.PriceEach");
+        WebEnchant              =  c.getString("Web.Enchant");
+        WebDurability           =  c.getString("Web.Durability");
+        WebMarketPrice          =  c.getString("Web.MarketPrice");
+        WebInfinit              =  c.getString("Web.Infinit");
+        WebMarketPriceE         =  c.getString("Web.MarketPriceE");
+        WebMarketPriceT         =  c.getString("Web.MarketPriceT");
     }
     
     public String SignStackStored;
@@ -131,4 +143,16 @@ public class Messages {
     public String WebFailDontHave;
     public String WebYouSell;
     public String WebSucessCreateBuy;
+    public String WebCantSell;
+    public String WebCantBuy;
+    public String WebType;
+    public String WebOwner;
+    public String WebExpire;
+    public String WebPriceEach;
+    public String WebEnchant;
+    public String WebDurability;
+    public String WebMarketPrice;
+    public String WebInfinit;
+    public String WebMarketPriceE;
+    public String WebMarketPriceT;
 }

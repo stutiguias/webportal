@@ -43,14 +43,14 @@ public class Info {
         return String.format("%.2f", x);  
     } 
     
-    public String ConvertItemToResult(Shop item,String type) {
-       
-        String[] nameAndImg = GetItemConfig(item.getItemStack());
+    public String ConvertItemToResult(int itemId,ItemStack item,String type) {
+        
+        String[] nameAndImg = GetItemConfig(item);
         String item_name = nameAndImg[0];
         String img_name = nameAndImg[1];
         
         if(plugin.AllowMetaItem) {
-            item_name = ChangeItemToItemMeta(item, item_name);
+            item_name = ChangeItemToItemMeta(itemId, item_name);
         }
         
         if(!img_name.contains("http") || !img_name.contains("www"))
@@ -58,6 +58,10 @@ public class Info {
         
         return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /> %s</div>",img_name,item_name);
         
+    }
+    
+    public String ConvertItemToResult(Shop item,String type) {
+        return ConvertItemToResult(item.getId(),item.getItemStack(), type);
     }
 
     public String GetEnchant(Shop item) {
@@ -188,8 +192,8 @@ public class Info {
         return ChangeItemToItemMeta(auction, item_name);
     }
     
-    public String ChangeItemToItemMeta(Shop item, String item_name) {
-        String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
+    public String ChangeItemToItemMeta(int itemId, String item_name) {
+        String meta = plugin.dataQueries.GetItemInfo(itemId,"meta");
         if(!meta.isEmpty()) {
             String[] metas = meta.split(",");
             for (int i = 0; i < metas.length; i++) {
@@ -203,6 +207,10 @@ public class Info {
             }
         }
         return item_name;
+    }
+    
+    public String ChangeItemToItemMeta(Shop item, String item_name) {
+        return ChangeItemToItemMeta(item.getId(), item_name);
     }
 
 }

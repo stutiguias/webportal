@@ -101,21 +101,6 @@ public class AdminShopRequest extends HttpResponse {
       }
     }
     
-    public JSONObject NoAuction() {
-            JSONObject jsonTwo = new JSONObject();
-            jsonTwo.put("DT_RowId","row_0" );
-            jsonTwo.put("DT_RowClass", "gradeU");
-            jsonTwo.put("0", "");
-            jsonTwo.put("1", "");
-            jsonTwo.put("2", "");
-            jsonTwo.put("3", message.WebNoShop);
-            jsonTwo.put("4", "");
-            jsonTwo.put("5", "");
-            jsonTwo.put("6", "");
-            jsonTwo.put("7", "");
-            return jsonTwo;
-    }
-    
     public ItemStack ConvertToItemStack(String ItemId) {
         Integer Name;
         Short Damage;

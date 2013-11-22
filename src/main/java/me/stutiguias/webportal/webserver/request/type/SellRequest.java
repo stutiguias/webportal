@@ -20,12 +20,10 @@ import org.json.simple.JSONObject;
 public class SellRequest extends HttpResponse {
     
     private WebPortal plugin;
-    private Html html;
     
     public SellRequest(WebPortal plugin) {
         super(plugin);
         this.plugin = plugin;
-        html = new Html(plugin);
     }
     
     public void GetSell(String ip,String url,Map param) {
@@ -44,10 +42,10 @@ public class SellRequest extends HttpResponse {
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
             json.put("3",JSON(message.WebPrice,shop.getPrice()));
-            json.put("4",JSON("Price Each",shop.getPrice() * shop.getItemStack().getAmount()));
-            json.put("5",JSON("Market Price",Format(MarketPrice(shop, shop.getPrice())) + "%"));
-            json.put("6",JSON("Enchant",GetEnchant(shop)));
-            json.put("7",JSON("Durability",GetDurability(shop)));
+            json.put("4",JSON(message.WebPriceEach,shop.getPrice() * shop.getItemStack().getAmount()));
+            json.put("5",JSON(message.WebMarketPrice,Format(MarketPrice(shop, shop.getPrice())) + "%"));
+            json.put("6",JSON(message.WebEnchant,GetEnchant(shop)));
+            json.put("7",JSON(message.WebDurability,GetDurability(shop)));
             json.put("8",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
             json.put("9",JSON(message.WebItemCategory,GetSearchType(shop.getItemStack())));
             

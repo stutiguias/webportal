@@ -83,10 +83,10 @@ public class MyItemsRequest extends HttpResponse {
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
             json.put("3",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
-            json.put("4",JSON("Market price (each)",mprice));
-            json.put("5",JSON("Market price (each)",mprice * shop.getItemStack().getAmount()));
-            json.put("6",JSON("Enchant",GetEnchant(shop)));
-            json.put("7",JSON("Durability",GetDurability(shop)));
+            json.put("4",JSON(message.WebMarketPriceE,mprice));
+            json.put("5",JSON(message.WebMarketPriceT,mprice * shop.getItemStack().getAmount()));
+            json.put("6",JSON(message.WebEnchant,GetEnchant(shop)));
+            json.put("7",JSON(message.WebDurability,GetDurability(shop)));
             
             jsonArray.add(json);
         }

@@ -13,6 +13,18 @@ Web:
     SellYours: You can not sell your items for yourself.
     SellMore: You not permit to sell more then you have
     DontHave: You don't have that item or quantity
+  CantSell: Can't Sell
+  Type: Type
+  Owner: Owner
+  Expire: Expire
+  PriceEach: Price Each
+  Enchant: Enchant
+  Durability: Durability
+  MarketPrice: Market Price
+  MarketPriceE: Market price (each)
+  MarketPriceT: Market price (total)
+  Infinit: Infinit
+  CantBuy: Can't Sell
   NoShop: No Shop to display
   NoItem: No Items
   ItemName: Item Name

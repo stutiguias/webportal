@@ -78,12 +78,8 @@ public class ShopRequest extends HttpResponse {
         
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         Integer from = Integer.parseInt((String)param.get("from"));
-        
-        // TODO : Implement search
-        //search = GetConfigKey(search, searchtype);
+
         List<Shop> shops;
- 
-        //if(search == null) search = "%";
         
         if(searchtype.equals("nothing")) {
             shops = plugin.dataQueries.getAuctions(from,qtd);
@@ -106,18 +102,18 @@ public class ShopRequest extends HttpResponse {
             json.put("1",JSON("Id",shop.getId()));
             
             if(shop.getTableId() == plugin.Auction)
-                json.put("2",JSON("Type","Buy"));
+                json.put("2",JSON(message.WebType,message.WebBuy));
             else
-                json.put("2",JSON("Type","Sell"));
+                json.put("2",JSON(message.WebType,message.WebSell));
             
             json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop,searchtype)));
-            json.put("4",JSON("Owner","<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
-            json.put("5",JSON("Expire", message.WebNever));
+            json.put("4",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
+            json.put("5",JSON(message.WebExpire, message.WebNever));
             json.put("6",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
-            json.put("7",JSON("Price Each",shop.getPrice()));
-            json.put("8",JSON("Enchant",GetEnchant(shop)));
-            json.put("9",JSON("Durability",GetDurability(shop)));
-            json.put("10",JSON("Market Price",Format(MakertPercent) + "%"));
+            json.put("7",JSON(message.WebPriceEach,shop.getPrice()));
+            json.put("8",JSON(message.WebEnchant,GetEnchant(shop)));
+            json.put("9",JSON(message.WebDurability,GetDurability(shop)));
+            json.put("10",JSON(message.WebMarketPrice,Format(MakertPercent) + "%"));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
@@ -148,20 +144,20 @@ public class ShopRequest extends HttpResponse {
             
             json = new JSONObject();
             if(item.getTableId() == plugin.Auction)
-                json.put("1",JSON("Type","Buy"));
+                json.put("1",JSON(message.WebType,message.WebBuy));
             else
-                json.put("1",JSON("Type","Sell"));
+                json.put("1",JSON(message.WebType,message.WebSell));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
-            json.put("3",JSON("Owner","<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName()));
-            json.put("4",JSON("Expire", message.WebNever));
+            json.put("3",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='"+ plugin.Avatarurl + item.getPlayerName() +"' /><br />"+ item.getPlayerName()));
+            json.put("4",JSON(message.WebExpire, message.WebNever));
             if(item.getItemStack().getAmount() == 9999) {
-                json.put("5",JSON(message.WebQuantity,"Infinit"));
+                json.put("5",JSON(message.WebQuantity,message.WebInfinit));
             }else{
                 json.put("5",JSON(message.WebQuantity,item.getItemStack().getAmount()));
             }
-            json.put("6",JSON("Price Each",item.getPrice()));
-            json.put("7",JSON("Enchant",GetEnchant(item)));
-            json.put("8",JSON("Durability",GetDurability(item)));
+            json.put("6",JSON(message.WebPriceEach,item.getPrice()));
+            json.put("7",JSON(message.WebEnchant,GetEnchant(item)));
+            json.put("8",JSON(message.WebDurability,GetDurability(item)));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
@@ -174,21 +170,21 @@ public class ShopRequest extends HttpResponse {
         JSONObject json = new JSONObject();
         json.put("1",JSON("Id",item.getId()));
         if(item.getTableId() == plugin.Auction)
-            json.put("2",JSON("Type","Buy"));
+            json.put("2",JSON(message.WebType,message.WebBuy));
         else
-            json.put("2",JSON("Type","Sell"));
+            json.put("2",JSON(message.WebType,message.WebSell));
         json.put("3",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
-        json.put("4",JSON("Owner",item.getPlayerName()));
-        json.put("5",JSON("Expire", message.WebNever));
+        json.put("4",JSON(message.WebOwner,item.getPlayerName()));
+        json.put("5",JSON(message.WebExpire, message.WebNever));
         if(item.getItemStack().getAmount() == 9999) {
-            json.put("6",JSON(message.WebQuantity,"Infinit"));
+            json.put("6",JSON(message.WebQuantity,message.WebInfinit));
         }else{
             json.put("6",JSON(message.WebQuantity,item.getItemStack().getAmount()));
         }
-        json.put("7",JSON("Price Each",item.getPrice()));
-        json.put("8",JSON("Enchant",GetEnchant(item)));
-        json.put("9",JSON("Durability",GetDurability(item)));
-        json.put("10",JSON("Market Price",""));
+        json.put("7",JSON(message.WebPriceEach,item.getPrice()));
+        json.put("8",JSON(message.WebEnchant,GetEnchant(item)));
+        json.put("9",JSON(message.WebDurability,GetDurability(item)));
+        json.put("10",JSON(message.WebMarketPrice,""));
         return json;
     }
     
@@ -210,7 +206,7 @@ public class ShopRequest extends HttpResponse {
            WebSitePlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
            
             if(ap.getCanBuy() != 1) {
-               Print("Can't Buy","text/plain");
+               Print(message.WebCantBuy,"text/plain");
            }
            
            String item_name = GetItemConfig(shop.getItemStack())[0];
@@ -242,7 +238,7 @@ public class ShopRequest extends HttpResponse {
            WebSitePlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
            
            if(ap.getCanBuy() != 1) {
-               Print("Can't Sell","text/plain");
+               Print(message.WebCantSell,"text/plain");
            }
            
            String item_name = GetItemConfig(shop.getItemStack())[0];
