@@ -76,6 +76,7 @@ public class WebPortal extends JavaPlugin {
         public String Table;
         public String ColumnPassword;
         public String Username;
+        public String Moneyformat;
         
 	public Permission permission = null;
 	public Economy economy = null;
@@ -294,6 +295,7 @@ public class WebPortal extends JavaPlugin {
                 Username =       w.getString("AuthSystem.ColumnUsername");
                 SessionTime =    w.getInt("Setting.SessionTime");
                 Avatarurl=       w.getString("Setting.Avatarurl");
+                Moneyformat=     w.getString("Setting.Moneyformat");
                 
                 if(w.getBoolean("Index.McMMO.Active")) {
                     ConfigurationSection s = w.getConfigurationSection("Index.McMMO");

@@ -5,6 +5,8 @@ Setting:
   SessionTime: 20
   # Url for avatar img
   Avatarurl: 'http://minotar.net/avatar/'
+  # Default Money format
+  Moneyformat: eng_US
 ## This is the list what you can 
 ## Show on Index Page
 ## Set this Active if you have the 

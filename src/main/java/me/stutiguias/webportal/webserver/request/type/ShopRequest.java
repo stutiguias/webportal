@@ -147,22 +147,21 @@ public class ShopRequest extends HttpResponse {
             String searchtype = GetSearchType(item.getItemStack());
             
             json = new JSONObject();
-            json.put("1",JSON("Id",item.getId()));
             if(item.getTableId() == plugin.Auction)
-                json.put("2",JSON("Type","Buy"));
+                json.put("1",JSON("Type","Buy"));
             else
-                json.put("2",JSON("Type","Sell"));
-            json.put("3",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
-            json.put("4",JSON("Owner","<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName()));
-            json.put("5",JSON("Expire", message.WebNever));
+                json.put("1",JSON("Type","Sell"));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
+            json.put("3",JSON("Owner","<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName()));
+            json.put("4",JSON("Expire", message.WebNever));
             if(item.getItemStack().getAmount() == 9999) {
-                json.put("6",JSON(message.WebQuantity,"Infinit"));
+                json.put("5",JSON(message.WebQuantity,"Infinit"));
             }else{
-                json.put("6",JSON(message.WebQuantity,item.getItemStack().getAmount()));
+                json.put("5",JSON(message.WebQuantity,item.getItemStack().getAmount()));
             }
-            json.put("7",JSON("Price Each",item.getPrice()));
-            json.put("8",JSON("Enchant",GetEnchant(item)));
-            json.put("9",JSON("Durability",GetDurability(item)));
+            json.put("6",JSON("Price Each",item.getPrice()));
+            json.put("7",JSON("Enchant",GetEnchant(item)));
+            json.put("8",JSON("Durability",GetDurability(item)));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
@@ -209,6 +208,11 @@ public class ShopRequest extends HttpResponse {
        try { 
            int qtd =  Integer.parseInt((String)param.get("quantity"));
            WebSitePlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
+           
+            if(ap.getCanBuy() != 1) {
+               Print("Can't Buy","text/plain");
+           }
+           
            String item_name = GetItemConfig(shop.getItemStack())[0];
            if(qtd <= 0)
            {
@@ -236,6 +240,10 @@ public class ShopRequest extends HttpResponse {
            int qtd =  Integer.parseInt((String)param.get("quantity"));
            
            WebSitePlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
+           
+           if(ap.getCanBuy() != 1) {
+               Print("Can't Sell","text/plain");
+           }
            
            String item_name = GetItemConfig(shop.getItemStack())[0];
            if(qtd <= 0)

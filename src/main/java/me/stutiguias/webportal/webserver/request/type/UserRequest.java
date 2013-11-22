@@ -4,6 +4,8 @@
  */
 package me.stutiguias.webportal.webserver.request.type;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
@@ -30,12 +32,19 @@ public class UserRequest extends HttpResponse {
         JSONObject json = new JSONObject();
             json.put("Name", authPlayer.AuctionPlayer.getName() );
             json.put("Admin", authPlayer.AuctionPlayer.getIsAdmin() );
-            json.put("Money", plugin.economy.getBalance( authPlayer.AuctionPlayer.getName() ) );
+            json.put("Money", FormatMoney(plugin.economy.getBalance( authPlayer.AuctionPlayer.getName() ) ) );
             json.put("Mail", plugin.dataQueries.getMail(authPlayer.AuctionPlayer.getName() ).size() );
             json.put("Avatarurl", plugin.Avatarurl + authPlayer.AuctionPlayer.getName() );
         Print(json.toJSONString(),"application/json");
     }
-   
+    
+    public String FormatMoney(double num) {
+        String[] format = plugin.Moneyformat.split("_");
+        Locale locale = new Locale(format[0],format[1]);
+        NumberFormat localeFormat = NumberFormat.getCurrencyInstance(locale);
+        return localeFormat.format(num);
+    }
+    
     public void ItemLore(String SessionId,Map param) {
         int id = Integer.parseInt((String)param.get("id"));
         String metaCSV = plugin.dataQueries.GetItemInfo(id,"meta");

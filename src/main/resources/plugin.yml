@@ -27,7 +27,6 @@ permissions:
             wa.vbox : true
             wa.view : true
             wa.set: true
-            wa.console: true
     wa.use.*:
         description: Gives access to all WebAuction commands
         children:
@@ -91,6 +90,3 @@ permissions:
     wa.set:
        description: Set Player Permission
        default: op
-    wa.console:
-      description: Permission to see the Console and Send Commands
-      default: op
