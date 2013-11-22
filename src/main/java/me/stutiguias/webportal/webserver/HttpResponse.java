@@ -35,9 +35,7 @@ public class HttpResponse extends Info {
     public void Print(String data, String MimeType)
     {
         try
-        {
-            OutputStream out = getHttpExchange().getResponseBody();
-                            
+        {       
             getHttpExchange().getResponseHeaders().set("Content-Type", MimeType);
             getHttpExchange().getResponseHeaders().set("Server","WebPortal Server");
             getHttpExchange().getResponseHeaders().set("Connection","Close");
@@ -45,10 +43,13 @@ public class HttpResponse extends Info {
             if(plugin.EnableExternalSource) {
                 getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
             }
-            getHttpExchange().sendResponseHeaders(200, data.length());
- 
-            out.write(data.getBytes());
-            out.close();
+            getHttpExchange().sendResponseHeaders(200,0);
+            
+            try (OutputStream out = getHttpExchange().getResponseBody()) {
+                out.write(data.getBytes());
+                out.flush();
+            }
+            
         }
         catch(Exception e)
         {
