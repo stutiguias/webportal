@@ -127,40 +127,48 @@ public class ShopRequest extends HttpResponse {
     }
     
     public void GetShop(Map param) {
-        int to;
         int from;
+        int qtd;
         
         try {
-            to = Integer.parseInt((String)param.get("to"));
             from = Integer.parseInt((String)param.get("from"));
+            qtd = Integer.parseInt((String)param.get("qtd"));
         }catch(Exception ex) {
             Print("Invalid Call", "text/plain");
             return;
         }
+       
+        List<Shop> auctions = plugin.dataQueries.getAuctions(from,qtd);
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject json;
         
-        if(from < to || from - to > 50 ) {
-            Print("Invalid Call", "text/plain");
-            return;
-        }
-        
-        List<Shop> auctions = plugin.dataQueries.getAuctions(to,from);
-        JSONObject json = new JSONObject();
-        int count = 0;
         for(Shop item:auctions){
-            String seatchtype = GetSearchType(item.getItemStack());
-            JSONObject jsonNameImg = new JSONObject();
-            jsonNameImg.put("0", ConvertItemToResult(item,seatchtype));
-            jsonNameImg.put("1", "<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName());
-            jsonNameImg.put("2", message.WebNever);
-            jsonNameImg.put("3", item.getItemStack().getAmount());
-            jsonNameImg.put("4", item.getPrice());
-            jsonNameImg.put("5", GetEnchant(item));
-            jsonNameImg.put("6", GetDurability(item));
+            String searchtype = GetSearchType(item.getItemStack());
             
-            json.put(count,jsonNameImg);
-            count++;
+            json = new JSONObject();
+            json.put("1",JSON("Id",item.getId()));
+            if(item.getTableId() == plugin.Auction)
+                json.put("2",JSON("Type","Buy"));
+            else
+                json.put("2",JSON("Type","Sell"));
+            json.put("3",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
+            json.put("4",JSON("Owner","<img width='32' style='max-width:32px' src='http://minotar.net/avatar/"+ item.getPlayerName() +"' /><br />"+ item.getPlayerName()));
+            json.put("5",JSON("Expire", message.WebNever));
+            if(item.getItemStack().getAmount() == 9999) {
+                json.put("6",JSON(message.WebQuantity,"Infinit"));
+            }else{
+                json.put("6",JSON(message.WebQuantity,item.getItemStack().getAmount()));
+            }
+            json.put("7",JSON("Price Each",item.getPrice()));
+            json.put("8",JSON("Enchant",GetEnchant(item)));
+            json.put("9",JSON("Durability",GetDurability(item)));
+            jsonArray.add(json);
         }
-        Print(json.toJSONString(), "text/plain");
+        JSONObject jsonresult = new JSONObject();
+        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        
+        Print(jsonresult.toJSONString(),"application/json");
     }
 
     public JSONObject ServerShop(Shop item,String searchtype,String ip){

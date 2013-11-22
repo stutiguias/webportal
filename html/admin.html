@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+<body>
+    <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="menu"></div>
+
+     <div class="container replace">
+            <div class="row">
+                <div class="span12 text-center">
+                    <div class="btn-group">
+                        <button type="button" onclick="return listshop(this)" class="btn replace">langAdmListItem</button>
+                        <button type="button" onclick="return admshop()"  class="btn replace">langAdmAddItem</button>
+                        <button type="button" onclick="return infoplayer()" class="btn replace" >langPlayerInfo</button>
+                    </div>
+                </div>
+
+                <div class="GetInfoPlayer hide span6 offset3">
+                    <br />
+                    <form onsubmit="return adm(this)" class="form-horizontal" >
+
+                        <div class="control-group">
+                            <label class="control-label" for="nick replace">lang1Name</label>
+                            <div class="controls">
+                                <input type="text" id="nick" name="nick" value="" placeholder="Insert Name Here" />
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="information replace">langInfo</label>
+                            <div class="controls">
+                                <select id="information" name="information">
+                                    <option selected="selected" value="playerinfo" class="replace">langInfo</option>
+                                    <option value="playeritems" class="replace">langItem</option>
+                                    <option value="playermail" class="replace">lang1Mail</option>
+                                    <option value="playerauctions" class="replace">lang1Shop</option>
+                                    <option value="playertransaction" class="replace">langTransaction</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" name="enviar" class="btn" />
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+
+                <div class="addItemShop hide span3 offset3">
+                        <br />
+                        <form onsubmit="return additem(this)" class="form-horizontal">
+                                <div class="control-group">
+                                    <label class="control-label replace" for="itemId">langItemId</label>
+                                    <div class="controls">
+                                        <div class="input-append">
+                                          <input id="itemId" name="itemId" type="text" title="x or x:x" class='input' value="" required />
+                                          <span class="add-on replace"><a href="http://www.minecraftinfo.com/IDList.htm" target="_blank">langHelp</a></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label replace" for="quantity" >langQuantity</label>
+                                    <div class="controls">
+                                        <div class="input-append">
+                                            <input id="quantity" name="quantity" type="number" onKeyPress="return numbersonly(this, event);" class="input" value="" max="99999" required />
+                                            <span class="add-on replace">langQtdInfo</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label replace" for="price">langPrice</label>
+                                    <div class="controls">
+                                        <input id="price" name="price" type="number" onKeyPress='return numbersonly(this, event);' class='input' max="99999" required />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input type="submit" name="enviar" class="btn" />
+                                    </div>
+                                </div>
+                        </form>
+                </div>
+
+                <hr />
+                <div class="span6 offset3 text-center">
+                    <div id="resultado" class="alert replace">langCare</div>
+                </div>
+
+                <div class="listadmshop table hide span12 text-center">                   
+                    <div class="pagination"></div>
+                    <table class="auction replace table table-striped table-bordered">
+                        <thead>
+                            <tr class="theadInput"></tr>
+                        </thead>
+                        <tbody class="tbodyInput"></tbody>
+                    </table>
+                </div>
+            </div>
+        <footer>
+            <p>
+                &copy; Made by Stutiguias.
+                Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
+            </p>
+        </footer>
+     </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.1/jquery.dataTables.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    
+    <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+    <script src="js/templates.js"></script>
+
+    <script src="js/inputfunc.js"></script>
+    <script src="js/translate.js"></script>
+    <script src="js/page/admin.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

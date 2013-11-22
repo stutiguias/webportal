@@ -1,0 +1,16 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+.itemTableName {
+    text-align:center;
+}
+
+.linkColor li > a:focus,
+.linkColor li > a:hover {
+    color: black !important;
+}
