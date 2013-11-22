@@ -50,6 +50,13 @@ $(document).ready(function () {
         dataType: "json"
     });
 
+    $('a[href$="logout"]').click(function(e) {
+        e.preventDefault();
+        window.document.cookie = encodeURIComponent("sessionid") + "=deleted; expires=" + new Date(0).toUTCString();
+        window.location = "login.html";
+
+    });
+
 });
 
 var sessionid = getCookie("sessionid");

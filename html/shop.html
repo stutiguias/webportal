@@ -44,15 +44,15 @@
         <br />
         
         <form onsubmit="return shop(this)" class=".form-inline text-center">
-                        
+            
             <div class="input-prepend">
-                <span class="add-on">langQuantity</span>
-                <input name='quantity' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
-            </div>
-
-            <div class="input-prepend input-append">
                 <span class="add-on replace">langbuy / langSell</span>
                 <input name='ID' type="text" placeholder="Id" class='input' value="" required />
+            </div> 
+                         
+            <div class="input-prepend  input-append">
+                <span class="add-on">langQuantity</span>
+                <input name='quantity' type="number" onKeyPress='return numbersonly(this, event);' class='input' value=" " max="99999" required />
                 <input type="submit" name="enviar" class="btn" />
             </div>
 
