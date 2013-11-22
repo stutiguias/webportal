@@ -17,8 +17,11 @@ Misc:
   ShowSalesOnJoin: false
   #If the player not Online on the Server the login will fail
   AllowLogOnlyIfOnline: false
-  # Always let this true
-  UseInsideServer: true
+  # if you want to use External WebServer
+  EnableExternalSource: false
+  # Put the ip/url address of your host ( external source ) where you put the html folder 
+  # ( or * to allow all sources NOT RECOMMENDED )
+  Allow: http://yourwebsite.com
   # Port number for webserver 
   # Check if your host not will block that port
   # Check if your server is not behind firewall

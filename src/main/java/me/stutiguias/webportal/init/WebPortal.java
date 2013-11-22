@@ -69,6 +69,8 @@ public class WebPortal extends JavaPlugin {
         public String Avatarurl;
         public int signDelay;
         
+        public String allowexternal;
+        public Boolean EnableExternalSource;
         public String authplugin;
         public String algorithm;
         public String Table;
@@ -228,7 +230,9 @@ public class WebPortal extends JavaPlugin {
                 port =                  c.getInt("Misc.WebServicePort");
                 OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
                 AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");
-                                
+                allowexternal=          c.getString("Misc.Allow");
+                EnableExternalSource=   c.getBoolean("Misc.EnableExternalSource");
+                
                 try {
                     Messages = new Messages(this,c.getString("Misc.Language"));
                 }catch(IOException ex){
@@ -266,11 +270,9 @@ public class WebPortal extends JavaPlugin {
                 
                 int NUM_CONN_MAX = c.getInt("Misc.MaxSimultaneousConnection");
                 logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
-                if(getConfig().getBoolean("Misc.UseInsideServer")) {
-                    server = new WebPortalHttpServer(this, NUM_CONN_MAX);
-                    server.start();
-                }
                 
+                server = new WebPortalHttpServer(this, NUM_CONN_MAX);
+                server.start();               
 	}
                 
         public void WebConfig(){

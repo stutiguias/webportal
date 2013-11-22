@@ -42,6 +42,9 @@ public class HttpResponse extends Info {
             getHttpExchange().getResponseHeaders().set("Server","WebPortal Server");
             getHttpExchange().getResponseHeaders().set("Connection","Close");
             getHttpExchange().getResponseHeaders().set("Cache-Control","no-cache, must-revalidate");
+            if(plugin.EnableExternalSource) {
+                getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+            }
             getHttpExchange().sendResponseHeaders(200, data.length());
  
             out.write(data.getBytes());

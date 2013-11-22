@@ -22,7 +22,7 @@ public class WebPortalHttpHandler implements HttpHandler {
     String Lang;
     int Port;
     String SessionId;
-    
+    private WebPortal plugin;
     String htmlDir = "./plugins/WebPortal/html";
     String url;
     Map params;
@@ -33,6 +33,7 @@ public class WebPortalHttpHandler implements HttpHandler {
 
     public WebPortalHttpHandler(WebPortal plugin)
     {
+        this.plugin = plugin;
         Fill = new Request(plugin);
     }
 
@@ -52,8 +53,7 @@ public class WebPortalHttpHandler implements HttpHandler {
 
         SessionId = (String)params.get("sessionid");
  
-        if(!WebPortal.AuthPlayers.containsKey(SessionId))
-        {
+        if(!WebPortal.AuthPlayers.containsKey(SessionId)) {
             RequestWithoutLogin();
         }else {
             RequestWithLogin();
@@ -67,6 +67,8 @@ public class WebPortalHttpHandler implements HttpHandler {
             Fill.GetShop(params);
         }else if(isAllowed()) {
             Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
+        }else if(plugin.EnableExternalSource) {
+            Fill.Response().ReadFile(htmlDir+"/external.html","text/html");
         }else{
             Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
         } 
@@ -190,6 +192,8 @@ public class WebPortalHttpHandler implements HttpHandler {
     }
     
     public Boolean isAllowed() {
+        if(plugin.EnableExternalSource) return false;
+        
         if(url.contains("./") || url.contains("..")) return false;
         
         if(url.startsWith("/css") || 
