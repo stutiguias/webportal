@@ -39,30 +39,38 @@ public class WebPortalHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange t) throws IOException {
-        Fill.SetHttpExchange(t);
-        String request = t.getRequestURI().toString();
-        
-        params = (Map)t.getAttribute("parameters");
-        url = t.getRequestURI().toString();
+        try {
+            Fill.SetHttpExchange(t);
+            String request = t.getRequestURI().toString();
 
-        if(request.contains("..") || request.contains("./"))
-        {
-            Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
-            return;
-        }
+            params = (Map)t.getAttribute("parameters");
+            url = t.getRequestURI().toString();
 
-        SessionId = (String)params.get("sessionid");
- 
-        if(!WebPortal.AuthPlayers.containsKey(SessionId)) {
-            RequestWithoutLogin();
-        }else {
-            RequestWithLogin();
+            if(request.contains("..") || request.contains("./"))
+            {
+                Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
+                return;
+            }
+
+            SessionId = (String)params.get("sessionid");
+          
+            if(!WebPortal.AuthPlayers.containsKey(SessionId)) {
+                RequestWithoutLogin();
+            }else { 
+                RequestWithLogin();
+            }
+        }catch(Exception ex) {
+            Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
         }
     }
 
     public void RequestWithoutLogin() throws IOException {
         if(url.startsWith("/web/login")){
-            Fill.TryLogin(SessionId,params);
+            if(SessionId.length() < 3) {
+               Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
+               return;
+           }
+           Fill.TryLogin(SessionId,params);
         }else if(url.startsWith("/get/auction")) {
             Fill.GetShop(params);
         }else if(isAllowed()) {
@@ -75,6 +83,10 @@ public class WebPortalHttpHandler implements HttpHandler {
     }
 
     public void RequestWithLogin() throws IOException {
+           if(SessionId.length() < 1) {
+               Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
+               return;
+           }
            if(isAllowed()) {
                 Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
             }else if(url.startsWith("/server/username/info")) {

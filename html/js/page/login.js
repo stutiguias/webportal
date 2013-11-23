@@ -27,8 +27,23 @@ function setCookie(szName, szValue, szExpires, szPath, szDomain, bSecure) {
     return text;
 }
 
+function are_cookies_enabled()
+{
+	var cookieEnabled = (navigator.cookieEnabled) ? true : false;
+
+	if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled)
+	{ 
+		document.cookie="testcookie";
+		cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
+	}
+	return (cookieEnabled);
+}
 
 function loginform(form) {
+	if(!are_cookies_enabled()) {
+	 alert("ENABLE COOKIE");
+	 return;
+	}
     setCookie("sessionid", makeid());
     $("#Sessionid").val(getCookie("sessionid"));
     

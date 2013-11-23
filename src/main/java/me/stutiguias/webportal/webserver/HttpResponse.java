@@ -43,13 +43,10 @@ public class HttpResponse extends Info {
             if(plugin.EnableExternalSource) {
                 getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
             }
-            getHttpExchange().sendResponseHeaders(200,0);
-            
-            try (OutputStream out = getHttpExchange().getResponseBody()) {
-                out.write(data.getBytes());
-                out.flush();
-            }
-            
+            getHttpExchange().sendResponseHeaders(200,data.getBytes().length);
+            getHttpExchange().getResponseBody().write(data.getBytes());
+            getHttpExchange().getResponseBody().flush();
+            getHttpExchange().getResponseBody().close();
         }
         catch(Exception e)
         {
@@ -62,12 +59,17 @@ public class HttpResponse extends Info {
     {
         try
         {
-            OutputStream out = getHttpExchange().getResponseBody();
+            getHttpExchange().getResponseHeaders().set("Content-Type", "text/html");
             getHttpExchange().getResponseHeaders().set("Server","WebPortal Server");
             getHttpExchange().getResponseHeaders().set("Connection","Close");
-            getHttpExchange().sendResponseHeaders(200, error.length());
-            out.write(error.getBytes());
-            out.close();
+            if(plugin.EnableExternalSource) {
+               getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+            }
+            getHttpExchange().sendResponseHeaders(400, error.getBytes().length);
+            getHttpExchange().sendResponseHeaders(400,error.getBytes().length);
+            getHttpExchange().getResponseBody().write(error.getBytes());
+            getHttpExchange().getResponseBody().flush();
+            getHttpExchange().getResponseBody().close();
         }
         catch(Exception e)
         {
