@@ -52,7 +52,7 @@ public class WebPortalHttpHandler implements HttpHandler {
                 return;
             }
 
-            SessionId = (String)params.get("sessionid");
+            SessionId = (String)params.get("Sessionid");
           
             if(!WebPortal.AuthPlayers.containsKey(SessionId)) {
                 RequestWithoutLogin();
@@ -60,13 +60,14 @@ public class WebPortalHttpHandler implements HttpHandler {
                 RequestWithLogin();
             }
         }catch(Exception ex) {
+            ex.printStackTrace();
             Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
         }
     }
 
     public void RequestWithoutLogin() throws IOException {
         if(url.startsWith("/web/login")){
-            if(SessionId.length() < 3) {
+            if(SessionId.length() == 0) {
                Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
                return;
            }

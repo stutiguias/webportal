@@ -1,6 +1,6 @@
 name: WebPortal
 main: me.stutiguias.webportal.init.WebPortal
-version: 0.9.5
+version: 0.9.1
 author: Stutiguias
 depend: [Vault]
 commands:
