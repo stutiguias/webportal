@@ -215,7 +215,13 @@ public class WebPortal extends JavaPlugin {
 
         public void onLoadConfig() {
             
-            	initConfig();
+                try{
+                    initConfig();
+                }catch(IOException ex) {
+                    logger.warning("unable to setup config.yml");
+                    onDisable();
+                }
+                
                 WebConfig();
                 
                 materials = new ConfigAccessor(this, "materials.yml");
@@ -231,18 +237,19 @@ public class WebPortal extends JavaPlugin {
                 pm.registerEvents(blockListener, this);
         }
         
-        private void initConfig() {
+        private void initConfig() throws IOException {
             
                 config = new ConfigAccessor(this,"config.yml");
-                try {
+                config.setupConfig();
+
+                FileConfiguration c = config.getConfig();
+                    
+                if(!c.isSet("configversion") || c.getInt("configversion") != 1){ 
+                    config.MakeOld();
                     config.setupConfig();
-                }catch(IOException ex) {
-                    logger.warning("unable to setup config.yml");
-                    onDisable();
+                    c = config.getConfig();
                 }
                 
-                FileConfiguration c = config.getConfig();
-
                 blockcreative =         c.getBoolean("Misc.BlockCreative");
 		showSalesOnJoin =       c.getBoolean("Misc.ShowSalesOnJoin");
                 allowlogifonline =      c.getBoolean("Misc.AllowLogOnlyIfOnline");
@@ -292,7 +299,7 @@ public class WebPortal extends JavaPlugin {
                 logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
                 
                 server = new WebPortalHttpServer(this, NUM_CONN_MAX);
-                server.start();               
+                server.start();  
 	}
                 
         public void WebConfig(){

@@ -1,3 +1,4 @@
+configversion: 1
 #Use SQLite or MYSQL
 DataBase:
   # You need to choose if you will use SQLite or Mysql ( default is SQLite )
