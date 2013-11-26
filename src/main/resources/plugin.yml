@@ -1,6 +1,6 @@
 name: WebPortal
 main: me.stutiguias.webportal.init.WebPortal
-version: 0.9
+version: 0.9.5
 author: Stutiguias
 depend: [Vault]
 commands:
@@ -89,4 +89,7 @@ permissions:
        default: op
     wa.set:
        description: Set Player Permission
+       default: op
+    wa.update:
+       description: See Updater Notify
        default: op

@@ -37,6 +37,12 @@ public class WebAuctionPlayerListener implements Listener {
         @EventHandler(priority = EventPriority.NORMAL)
 	public void PlayerJoin(PlayerJoinEvent event) {
 		String player = event.getPlayer().getName();
+                
+                if(plugin.UpdaterNotify && plugin.hasPermission( event.getPlayer(),"wa.update") && WebPortal.update)
+                {
+                    event.getPlayer().sendMessage(plugin.parseColor("&6An update is available: " + WebPortal.name + ", a " + WebPortal.type + " for " + WebPortal.version + " available at " + WebPortal.link));
+                }
+
                 WebSitePlayer auplayer = plugin.dataQueries.getPlayer(player);
                 if (auplayer != null) {
                     

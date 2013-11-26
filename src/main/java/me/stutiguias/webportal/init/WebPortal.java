@@ -24,11 +24,13 @@ import me.stutiguias.webportal.signs.wSell;
 import me.stutiguias.webportal.signs.wShop;
 import me.stutiguias.webportal.tasks.SaleAlertTask;
 import me.stutiguias.webportal.tasks.WebPortalHttpServer;
+import me.stutiguias.webportal.updater.Updater;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -68,6 +70,7 @@ public class WebPortal extends JavaPlugin {
         public Integer SessionTime;
         public String Avatarurl;
         public int signDelay;
+        public Boolean UpdaterNotify;
         
         public String allowexternal;
         public Boolean EnableExternalSource;
@@ -77,7 +80,7 @@ public class WebPortal extends JavaPlugin {
         public String ColumnPassword;
         public String Username;
         public String Moneyformat;
-        
+ 
 	public Permission permission = null;
 	public Economy economy = null;
 
@@ -92,6 +95,12 @@ public class WebPortal extends JavaPlugin {
         public Mailbox mailbox;
         public vBox vbox;
         public wShop wshop;
+        
+        public static boolean update = false;
+        public static String name = "";
+        public static String type = "";
+        public static String version = "";
+        public static String link = "";
         
 	public long getCurrentMilli() {
 		return System.currentTimeMillis();
@@ -146,6 +155,16 @@ public class WebPortal extends JavaPlugin {
                     metrics.start();
                 } catch (IOException e) {
                     logger.log(Level.INFO, "{0} Failed to submit Metrics", logPrefix);
+                }
+   
+                if(UpdaterNotify){
+                    Updater updater = new Updater(this, 38246, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, false); // Start Updater but just do a version check
+
+                    update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE; // Determine if there is an update ready for us
+                    name = updater.getLatestName(); // Get the latest name
+                    version = updater.getLatestGameVersion(); // Get the latest game version
+                    type = updater.getLatestType(); // Get the latest game version
+                    link = updater.getLatestFileLink(); // Get the latest link
                 }
 	}
 
@@ -233,7 +252,7 @@ public class WebPortal extends JavaPlugin {
                 AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");
                 allowexternal=          c.getString("Misc.Allow");
                 EnableExternalSource=   c.getBoolean("Misc.EnableExternalSource");
-                
+                UpdaterNotify=          c.getBoolean("Misc.UpdaterNotify");
                 try {
                     Messages = new Messages(this,c.getString("Misc.Language"));
                 }catch(IOException ex){
@@ -353,5 +372,8 @@ public class WebPortal extends JavaPlugin {
                 return message;
             }
         }
-
+        
+        public boolean hasPermission(Player player, String Permission) {
+            return permission.has(player.getWorld(), player.getName(), Permission.toLowerCase());
+        }
 }

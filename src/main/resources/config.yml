@@ -11,6 +11,8 @@ MySQL:
   Database: minecraft
   
 Misc:
+  # Notify about any  update
+  UpdaterNotify: true
   # Report the sale in game if web sell something
   ReportSales: false
   # Show the sales that player have on player join
