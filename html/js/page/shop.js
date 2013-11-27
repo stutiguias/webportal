@@ -1,7 +1,7 @@
 function shop(form) {
     $.ajax({
         url: window.qualifyURL("/auction/shop"),
-        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        data: $(form).serialize(),
         success: function (data) {
             $("#formresult").html(data);
         },
@@ -26,7 +26,7 @@ var thisby = "";
 var AjaxTable = function (from, qtd) {
     $.ajax({
         url: window.qualifyURL(window.thisby),
-        data: "from=" + from + "&qtd=" + qtd + "&sessionid=" + getCookie("sessionid"),
+        data: "from=" + from + "&qtd=" + qtd,
         success: function (data) {
             try {
                 window.LoadTable(data,from,qtd);

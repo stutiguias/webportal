@@ -8,7 +8,7 @@ $(function () {
 var AjaxTable = function (from, qtd) {
     $.ajax({
         url: window.qualifyURL("/mail/get"),
-        data: "from=" + from + "&qtd=" + qtd + "&sessionid=" + getCookie("sessionid"),
+        data: "from=" + from + "&qtd=" + qtd,
         success: function (data) {
             try {
                 window.LoadTable(data, from, qtd);

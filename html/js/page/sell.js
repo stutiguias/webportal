@@ -7,7 +7,7 @@ var qtd = 10;
 var AjaxTable = function (from, qtd) {
     $.ajax({
         url: window.qualifyURL("/myauctions/get"),
-        data: "from=" + from + "&qtd=" + qtd + "&sessionid=" + getCookie("sessionid"),
+        data: "from=" + from + "&qtd=" + qtd,
         success: function (data) {
             try {
                 window.LoadTable(data,from,qtd);
@@ -25,7 +25,7 @@ var AjaxTable = function (from, qtd) {
 function remitem(form) {
     $.ajax({
         url: window.qualifyURL("/myauctions/cancel"),
-        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        data: $(form).serialize(),
         success: function (data) {
             $('#formresult').html(data);
             qtd = 10;

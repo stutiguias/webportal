@@ -61,7 +61,7 @@ $(function () {
 var AjaxTable = function (from, qtd) {
     $.ajax({
         url: window.qualifyURL("/myitems/dataTable"),
-        data: "from=" + from + "&qtd=" + qtd + "&sessionid=" + getCookie("sessionid"),
+        data: "from=" + from + "&qtd=" + qtd,
         success: function (data) {
             try {
                 window.LoadTable(data,from,qtd);
@@ -80,7 +80,7 @@ function postauction(form) {
     var ar = $(form).serializeArray();
     $.ajax({
         url: window.qualifyURL("/myitems/postauction"),
-        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        data: $(form).serialize(),
         success: function (data) {
             if (data == "no") {
                 $('#error').html('Invalid');
@@ -102,7 +102,7 @@ function mail(form) {
     var ar = $(form).serializeArray();
     $.ajax({
         url: window.qualifyURL("/mail/send"),
-        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
+        data: $(form).serialize(),
         success: function (data) {
             $(".hideform").hide();
             $('.result').html(data);
