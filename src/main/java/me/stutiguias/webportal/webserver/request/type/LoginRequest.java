@@ -29,7 +29,7 @@ public class LoginRequest extends HttpResponse {
     }
     
     public void TryToLogin(String HostAddress,Map param) {
-        String sessionid = (String)param.get("Sessionid");
+        String sessionid = (String)param.get("sessionid");
         String username = (String)param.get("Username");
         String pass = (String)param.get("Password");
 
