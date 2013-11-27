@@ -20,6 +20,7 @@ function getCookie(szName) {
     return szValue;
 }
 $.ajaxSetup({
+    data: "sessionid=" + getCookie("sessionid"),
     type: "POST"
 });
 
@@ -50,8 +51,7 @@ $(document).ready(function () {
     });
 
     $('a[href$="logout"]').click(function(e) {
-	    e.preventDefault();
-		$.ajax({ url: window.qualifyURL("/logout") });
+        e.preventDefault();
         window.document.cookie = encodeURIComponent("sessionid") + "=deleted; expires=" + new Date(0).toUTCString();
         window.location = "login.html";
 

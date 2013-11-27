@@ -3,7 +3,7 @@ var qtd = 10;
 function additem(form) {
     $.ajax({
         url: window.qualifyURL("/buy/additem"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#formresult').html(data);
             qtd = 10;
@@ -20,7 +20,7 @@ function additem(form) {
 function remitem(form) {
     $.ajax({
         url: window.qualifyURL("/buy/remitem"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#formresult').html(data);
             qtd = 10;
@@ -41,7 +41,7 @@ $(function () {
 var AjaxTable = function (from, qtd) {
     $.ajax({
         url: window.qualifyURL("/buy/getitem"),
-        data: "from=" + from + "&qtd=" + qtd,
+        data: "from=" + from + "&qtd=" + qtd + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             try {
                 window.LoadTable(data,from,qtd);

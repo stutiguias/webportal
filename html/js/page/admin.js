@@ -67,7 +67,7 @@ function websiteban(form) {
     hideall();
     $.ajax({
         url: window.qualifyURL("/adm/webban"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -83,7 +83,7 @@ function websiteunban(form) {
     hideall();
     $.ajax({
         url: window.qualifyURL("/adm/webunban"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -101,7 +101,7 @@ function adm(form) {
     $(".pagination").html("");
     $.ajax({
         url: window.qualifyURL("/adm/search"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             try {
                 var result = "";
@@ -139,7 +139,7 @@ function additem(form) {
     $(".table").show();
     $.ajax({
         url: window.qualifyURL("/adm/addshop"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             if (data.indexOf("ok") == -1) {
                 $('#resultado').html(data);
@@ -160,7 +160,7 @@ function del(form) {
     $(form).hide();
     $.ajax({
         url: window.qualifyURL("/adm/deleteshop"),
-        data: $(form).serialize(),
+        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             $('#resultado').html(data);
         },
@@ -187,7 +187,7 @@ function list(to, from) {
     $(".pagination").html("");
     $.ajax({
         url: window.qualifyURL("/adm/shoplist"),
-        data: "DisplayStart=" + to + "&DisplayLength=" + from,
+        data: "DisplayStart=" + to + "&DisplayLength=" + from + "&sessionid=" + getCookie("sessionid"),
         success: function (data) {
             try {
                 LoadTable(data);

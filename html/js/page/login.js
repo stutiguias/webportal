@@ -45,7 +45,7 @@ function loginform(form) {
 	 return;
 	}
     setCookie("sessionid", makeid());
-    $("#sessionid").val(getCookie("sessionid"));
+    $("#Sessionid").val(getCookie("sessionid"));
     
     $.ajax({
         url: window.qualifyURL("/web/login"),
