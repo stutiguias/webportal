@@ -66,7 +66,6 @@ public class HttpResponse extends Info {
                getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
             }
             getHttpExchange().sendResponseHeaders(400, error.getBytes().length);
-            getHttpExchange().sendResponseHeaders(400,error.getBytes().length);
             getHttpExchange().getResponseBody().write(error.getBytes());
             getHttpExchange().getResponseBody().flush();
             getHttpExchange().getResponseBody().close();
@@ -88,6 +87,10 @@ public class HttpResponse extends Info {
                 byte[] buffer = new byte[0x10000];
                 long length = archivo.length();
                 int leng;
+                
+                if(plugin.EnableExternalSource) {
+                    getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+                }
                 
                 getHttpExchange().getResponseHeaders().set("Content-Type", Mime);
                 getHttpExchange().sendResponseHeaders(200, length);
