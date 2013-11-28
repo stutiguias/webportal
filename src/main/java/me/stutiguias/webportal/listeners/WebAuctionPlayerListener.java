@@ -31,7 +31,7 @@ public class WebAuctionPlayerListener implements Listener {
         
         @EventHandler(priority = EventPriority.NORMAL)
 	public void PlayerQuit(PlayerQuitEvent event){
-		plugin.lastSignUse.remove(event.getPlayer().getName());
+		plugin.lastUse.remove(event.getPlayer().getName());
 	}
 
         @EventHandler(priority = EventPriority.NORMAL)
@@ -103,18 +103,15 @@ public class WebAuctionPlayerListener implements Listener {
                 }
                 
                 if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
-		String player = event.getPlayer().getName();
+		Player player = event.getPlayer();
 		event.setCancelled(true);
 
-		// Make sure we can use the sign
-		if (plugin.lastSignUse.containsKey(player)) {
-			long lastSignUse = plugin.lastSignUse.get(player);
-			if (lastSignUse + plugin.signDelay > plugin.getCurrentMilli()) {
-				event.getPlayer().sendMessage(plugin.logPrefix + "Please wait a bit before using that again");
-				return;
-			}
-		}
-		plugin.lastSignUse.put(player, plugin.getCurrentMilli());
+                if(!isDelayExpire(player, plugin.signDelay)) {
+                     event.setCancelled(true);
+                     return;
+                } 
+                
+		plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
                 
                 if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
                 {
@@ -137,15 +134,27 @@ public class WebAuctionPlayerListener implements Listener {
             if(event.isShiftClick()) {
                 event.setCancelled(true);
                 return;
-            }
-            Player pl = (Player)event.getWhoClicked();
+            }		
+
+            Player player = (Player)event.getWhoClicked();
+            
             if(event.getRawSlot() <= 44) {
                 if(event.getCurrentItem().getType() != Material.AIR && event.getCursor().getType() == Material.AIR) {
-                   plugin.vbox.Delete(event, pl);
+                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
+                        event.setCancelled(true);
+                        return;
+                   } 
+                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
+                   plugin.vbox.Delete(event, player);
                 }
                 if(event.getCursor().getType() != Material.AIR) {
-                   plugin.vbox.AddItem(event.getCursor(), pl,event);
-                }
+                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
+                        event.setCancelled(true);
+                        return;
+                   } 
+                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
+                   plugin.vbox.AddItem(event.getCursor(), player,event);
+                } 
             }
         }
         
@@ -163,5 +172,15 @@ public class WebAuctionPlayerListener implements Listener {
             }else{
                 return false;
             }
+        }
+        
+        private boolean isDelayExpire(Player player,int Delay) {
+            if (!plugin.lastUse.containsKey(player.getName())) return true;
+            long lastUse = plugin.lastUse.get(player.getName());
+            if (lastUse + Delay > plugin.getCurrentMilli()) {
+                    player.sendMessage(plugin.logPrefix + "Please wait a bit before using that again");
+                    return false;
+            }
+            return true;
         }
 }

@@ -209,21 +209,22 @@ public class TradeSystem {
         String enchants = ConvertEnchantsToStringCSV(stack);
         int quantityInt = stack.getAmount();
                 
-        List<Shop> auctions = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
+        List<Shop> shops = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
         
         Boolean foundMatch = false;
 
-        for (Shop auction : auctions) {
+        for (Shop shop : shops) {
 
-            int itemTableIdNumber = auction.getId();
+            int itemId = shop.getId();
             
-            if( stack.hasItemMeta() && !isMetaEqual(stack, auction) ) continue;
+            if( stack.hasItemMeta() && !isMetaEqual(stack, shop) ) continue;
                 
-            if (isEnchantsEqual(enchants, auction) && !foundMatch) {
-                int currentQuantity = auction.getQuantity();
+            if (isEnchantsEqual(enchants, shop)) {
+                int currentQuantity = shop.getQuantity();
                 currentQuantity += quantityInt;
-                plugin.dataQueries.updateItemQuantity(currentQuantity, itemTableIdNumber);
+                plugin.dataQueries.updateItemQuantity(currentQuantity, itemId);
                 foundMatch = true;
+                break;
             }
         }
 
@@ -242,10 +243,10 @@ public class TradeSystem {
     }
     
     
-    public boolean isMetaEqual(ItemStack item,Shop auction) {
-        String auctionMeta = plugin.dataQueries.GetItemInfo(auction.getId(),"meta");
+    public boolean isMetaEqual(ItemStack item,Shop shop) {
+        String shopMeta = plugin.dataQueries.GetItemInfo(shop.getId(),"meta");
         String itemMeta = ConvertItemMetaToStringCSV(item);
-        return auctionMeta.equalsIgnoreCase(itemMeta);
+        return shopMeta.equalsIgnoreCase(itemMeta);
     }
     
     public String ConvertItemMetaToStringCSV(ItemStack item) {

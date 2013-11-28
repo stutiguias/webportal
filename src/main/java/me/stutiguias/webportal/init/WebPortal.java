@@ -45,7 +45,7 @@ public class WebPortal extends JavaPlugin {
 
 	public IDataQueries dataQueries;
 
-	public Map<String, Long> lastSignUse = new HashMap<>();
+	public Map<String, Long> lastUse = new HashMap<>();
         
         public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<>();
@@ -71,6 +71,7 @@ public class WebPortal extends JavaPlugin {
         public String Avatarurl;
         public int signDelay;
         public Boolean UpdaterNotify;
+        public int mailboxDelay;
         
         public String allowexternal;
         public Boolean EnableExternalSource;
@@ -244,7 +245,7 @@ public class WebPortal extends JavaPlugin {
 
                 FileConfiguration c = config.getConfig();
                     
-                if(!c.isSet("configversion") || c.getInt("configversion") != 1){ 
+                if(!c.isSet("configversion") || c.getInt("configversion") != 2){ 
                     config.MakeOld();
                     config.setupConfig();
                     c = config.getConfig();
@@ -254,6 +255,7 @@ public class WebPortal extends JavaPlugin {
 		showSalesOnJoin =       c.getBoolean("Misc.ShowSalesOnJoin");
                 allowlogifonline =      c.getBoolean("Misc.AllowLogOnlyIfOnline");
 		signDelay =             c.getInt("Misc.SignDelay");
+                mailboxDelay =             c.getInt("Misc.MailboxDelay");
                 port =                  c.getInt("Misc.WebServicePort");
                 OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
                 AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");

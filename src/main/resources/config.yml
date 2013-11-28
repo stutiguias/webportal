@@ -1,4 +1,4 @@
-configversion: 1
+configversion: 2
 #Use SQLite or MYSQL
 DataBase:
   # You need to choose if you will use SQLite or Mysql ( default is SQLite )
@@ -31,6 +31,8 @@ Misc:
   WebServicePort: 25900
   # Delay for don't allow spam on sign
   SignDelay: 1000
+  # Mailbox delay for spam on mailbox and item don't disappear
+  MailboxDelay: 10000
   # Max Simultaneous Connection the Server Can Hold !
   # This base on WebSite Request
   MaxSimultaneousConnection: 500
