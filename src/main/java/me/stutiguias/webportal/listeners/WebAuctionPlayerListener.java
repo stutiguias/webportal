@@ -36,45 +36,39 @@ public class WebAuctionPlayerListener implements Listener {
 
         @EventHandler(priority = EventPriority.NORMAL)
 	public void PlayerJoin(PlayerJoinEvent event) {
-		String player = event.getPlayer().getName();
+		Player player = event.getPlayer();
                 
                 if(plugin.UpdaterNotify && plugin.hasPermission( event.getPlayer(),"wa.update") && WebPortal.update)
                 {
-                    event.getPlayer().sendMessage(plugin.parseColor("&6An update is available: " + WebPortal.name + ", a " + WebPortal.type + " for " + WebPortal.version + " available at " + WebPortal.link));
+                    player.sendMessage(plugin.parseColor("&6An update is available: " + WebPortal.name + ", a " + WebPortal.type + " for " + WebPortal.version + " available at " + WebPortal.link));
                 }
 
-                WebSitePlayer auplayer = plugin.dataQueries.getPlayer(player);
-                if (auplayer != null) {
-                    
-                    // Alert player of any new sale alerts
-                    if (plugin.showSalesOnJoin == true){
-                            List<SaleAlert> saleAlerts = plugin.dataQueries.getNewSaleAlertsForSeller(player);
-                            for (SaleAlert saleAlert : saleAlerts) {
-                                    event.getPlayer().sendMessage("You sold " + saleAlert.getQuantity() + " " + saleAlert.getItem() + " to " + saleAlert.getBuyer() + " for "+ saleAlert.getPriceEach() + " each.");
-                                    plugin.dataQueries.markSaleAlertSeen(saleAlert.getId());
-                            }
-                    }
+                WebSitePlayer auplayer = plugin.dataQueries.getPlayer(player.getName());
+           
+                if (auplayer == null) return;
+ 
+                if (plugin.showSalesOnJoin == true){
+                        List<SaleAlert> saleAlerts = plugin.dataQueries.getNewSaleAlertsForSeller(player.getName());
+                        for (SaleAlert saleAlert : saleAlerts) {
+                                player.sendMessage("You sold " + saleAlert.getQuantity() + " " + saleAlert.getItem() + " to " + saleAlert.getBuyer() + " for "+ saleAlert.getPriceEach() + " each.");
+                                plugin.dataQueries.markSaleAlertSeen(saleAlert.getId());
+                        }
+                }
 
-                    if (plugin.dataQueries.hasMail(player)) {
-                            event.getPlayer().sendMessage("You have new mail!");
-                    }
-                    
-                    if(plugin.OnJoinCheckPermission){
-                        int canBuy = 0;
-                        int canSell = 0;
-                        int isAdmin = 0;
-                        if (plugin.permission.has(event.getPlayer(), "wa.canbuy"))
-                                canBuy = 1;
-                        if (plugin.permission.has(event.getPlayer(), "wa.cansell"))
-                                canSell = 1;
-                        if (plugin.permission.has(event.getPlayer(), "wa.webadmin"))
-                                isAdmin = 1;
-                        plugin.dataQueries.updatePlayerPermissions(player, canBuy, canSell, isAdmin);
-                    }
-                    
-                    WebPortal.logger.log(Level.INFO, "{0} Player Logged - {1} ", new Object[]{plugin.logPrefix, auplayer.getName()});
+                if (plugin.dataQueries.hasMail(player.getName())) player.sendMessage("You have new mail!");
 
-		}
+                if(plugin.OnJoinCheckPermission){
+                    int canBuy = 0;
+                    int canSell = 0;
+                    int isAdmin = 0;
+                    if (plugin.permission.has(event.getPlayer(), "wa.canbuy"))
+                            canBuy = 1;
+                    if (plugin.permission.has(event.getPlayer(), "wa.cansell"))
+                            canSell = 1;
+                    if (plugin.permission.has(event.getPlayer(), "wa.webadmin"))
+                            isAdmin = 1;
+                    plugin.dataQueries.updatePlayerPermissions(player.getName(), canBuy, canSell, isAdmin);
+                }
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
@@ -87,7 +81,7 @@ public class WebAuctionPlayerListener implements Listener {
                 }catch(IllegalStateException ex){
                   return;  
                 }
-		if (null == block || (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN)) 	return;
+		if (block == null || (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN)) 	return;
 
 		Sign sign = (Sign) block.getState();
 		String[] lines = sign.getLines();

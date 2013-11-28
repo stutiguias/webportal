@@ -134,7 +134,7 @@ var langLogin = {
     'langLast': 'Last 10 auctions.'
 };
 
-// if you enable External Web put the IP of your SERVER ( minecraft )
+// NEED TO CHANGE THIS TO YOUR IP
 // DO NOT remove http://
 // Ex : http://123.123.123.123:25900
 var qualifyURL = function (url) {
