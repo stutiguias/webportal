@@ -17,10 +17,12 @@
   
   <dependencies>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>${bukkit.version}</version>
-  </dependency>
+        <groupId>org.bukkit</groupId>
+        <artifactId>bukkit</artifactId>
+        <version>LATEST</version>
+        <type>jar</type>
+        <scope>compile</scope>
+    </dependency>
 	
   <dependency>
       <groupId>com.gmail.nossr50.mcMMO</groupId>
