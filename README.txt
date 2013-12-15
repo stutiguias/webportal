@@ -1,2 +1,2 @@
-WebPortal for minecraft v 0.8.6
+WebPortal for minecraft 
 
