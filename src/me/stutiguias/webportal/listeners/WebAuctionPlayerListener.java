@@ -86,6 +86,8 @@ public class WebAuctionPlayerListener implements Listener {
 		Sign sign = (Sign) block.getState();
 		String[] lines = sign.getLines();
                 
+                if(!lines[0].contains("[WebAuction]")) return;
+                
             	if ( ( lines[0].equals(ChatColor.GREEN + "[WebAuction]") || lines[0].equals(ChatColor.GREEN + "[wSell]") ) && isCreative(event)) {
                     event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
                     return;
@@ -99,7 +101,7 @@ public class WebAuctionPlayerListener implements Listener {
                 if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
 		Player player = event.getPlayer();
 		event.setCancelled(true);
-
+ 
                 if(!isDelayExpire(player, plugin.signDelay)) {
                      event.setCancelled(true);
                      return;
