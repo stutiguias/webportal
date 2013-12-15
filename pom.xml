@@ -60,7 +60,7 @@
   
   <build>
     <finalName>${project.name}</finalName>
-    <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
+    <sourceDirectory>${basedir}/src/</sourceDirectory>
     
     <resources>
       <resource>
