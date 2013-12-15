@@ -1,4 +1,4 @@
-package me.stutiguias.webportal.dao;
+package me.stutiguias.webportal.dao.connection;
 
 import java.sql.*;
 import java.util.Map;
@@ -11,7 +11,7 @@ public class WALConnection implements Connection {
 	private boolean inuse;
 	private long timestamp;
 
-	WALConnection(Connection connection) {
+	public WALConnection(Connection connection) {
 		this.conn = connection;
 		inuse = false;
 		timestamp = 0;
@@ -286,8 +286,7 @@ public class WALConnection implements Connection {
 	}
 
 	synchronized boolean lease() {
-		if (inuse)
-			return false;
+		if (inuse) return false;
 		inuse = true;
 		timestamp = System.currentTimeMillis();
 		return true;

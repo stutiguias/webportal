@@ -1,4 +1,4 @@
-package me.stutiguias.webportal.dao;
+package me.stutiguias.webportal.dao.connection;
 
 import java.sql.*;
 import java.util.Properties;

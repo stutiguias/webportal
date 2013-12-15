@@ -4,6 +4,8 @@
  */
 package me.stutiguias.webportal.dao;
 
+import me.stutiguias.webportal.dao.connection.WALConnection;
+import me.stutiguias.webportal.dao.connection.WALDriver;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -28,7 +30,7 @@ public class SqliteDataQueries extends Queries {
                     DriverManager.registerDriver(jDriver);
                     connection = new WALConnection(DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + File.separator + "data.db"));
                     return connection;
-            } catch (Exception e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
                     WebPortal.logger.log(Level.SEVERE, "{0} Exception getting SQLite WALConnection", plugin.logPrefix);
                     WebPortal.logger.warning(e.getMessage());
             }

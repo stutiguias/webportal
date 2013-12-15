@@ -1,5 +1,7 @@
 package me.stutiguias.webportal.dao;
 
+import me.stutiguias.webportal.dao.connection.WALConnection;
+import me.stutiguias.webportal.dao.connection.WALConnectionPool;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
