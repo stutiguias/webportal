@@ -1,0 +1,96 @@
+name: WebPortal
+main: me.stutiguias.webportal.init.WebPortal
+version: ${project.version}
+author: Stutiguias
+depend: [Vault]
+commands:
+  wa:
+   description: Command
+permissions:
+    wa.*:
+        description: Gives access to all WebAuction commands
+        children:
+            wa.use.withdraw.items: true
+            wa.use.deposit.items: true
+            wa.create.sign.deposit: true
+            wa.create.sign.withdraw: true
+            wa.create.sign.mailbox.deposit: true
+            wa.create.sign.mailbox.withdraw: true
+            wa.create.sign.vbox: true
+            wa.canbuy: true
+            wa.cansell: true
+            wa.remove: true
+            wa.webadmin: true
+            wa.reload: true
+            wa.save: true
+            wa.command.vbox : true
+            wa.vbox : true
+            wa.view : true
+            wa.set: true
+            wa.update: true
+    wa.use.*:
+        description: Gives access to all WebAuction commands
+        children:
+            wa.use.withdraw.items: true
+            wa.use.deposit.items: true
+            wa.canbuy: true
+            wa.cansell: true
+            wa.remove: false
+            wa.webadmin: false
+            wa.command.vbox : true
+            wa.vbox: true
+            wa.view: false
+    wa.use.withdraw.items:
+        description: Lets you use the mailbox
+        default: true
+    wa.use.deposit.items:
+        description: Lets you deposit items and send them to web account
+        default: true
+    wa.canbuy:
+        description: Lets you buy items on the website
+        default: true
+    wa.cansell:
+        description: Lets sell items on the website
+        default: true
+    wa.create.sign.deposit:
+        description: Lets you create money deposit points
+        default: op
+    wa.create.sign.withdraw:
+        description: Lets you create money withdraw points
+        default: op
+    wa.create.sign.mailbox.deposit:
+        description: Lets you create deposit mailboxes
+        default: op
+    wa.create.sign.mailbox.withdraw:
+        description: Lets you create withdraw mailboxes
+        default: op
+    wa.create.sign.vbox:
+        description: Lets you create virtual inventory
+        default: op
+    wa.vbox:
+        description: Use Virtual Inventory
+        default: true
+    wa.command.vbox:
+        description: Use Virtual Inventory Command
+        default: op
+    wa.remove:
+        description: Lets you remove signs
+        default: op
+    wa.webadmin:
+        description: Lets you change other peoples data via website
+        default: op
+    wa.reload:
+       description: Reloads WebAuctions config.yml
+       default: op
+    wa.save:
+       description: Saves the WebAuctionPlus config.yml
+       default: op
+    wa.view:
+       description: View Player Permission
+       default: op
+    wa.set:
+       description: Set Player Permission
+       default: op
+    wa.update:
+       description: See Updater Notify
+       default: op

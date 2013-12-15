@@ -3,13 +3,9 @@ package me.stutiguias.webportal.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
-import me.stutiguias.webportal.settings.*;
-import org.bukkit.inventory.ItemStack;
 
 public class MySQLDataQueries extends Queries {
 
@@ -30,7 +26,7 @@ public class MySQLDataQueries extends Queries {
 	public WALConnection getConnection() {
 		try {
 			return pool.getConnection();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			WebPortal.logger.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
 			WebPortal.logger.warning(e.getMessage());
 		}
