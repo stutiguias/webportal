@@ -4,29 +4,24 @@
  */
 package me.stutiguias.webportal.settings;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.information.Info;
+import me.stutiguias.webportal.information.Util;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
  * @author Daniel
  */
-public class TradeSystem {
-    
-    private WebPortal plugin;
-    private Info info;
+public class TradeSystem extends Util {
+  
+    private final Info info;
     
     public TradeSystem(WebPortal plugin){
-        this.plugin = plugin;
+        super(plugin);
         info = new Info(plugin);
     }
     
@@ -197,16 +192,10 @@ public class TradeSystem {
                     .replaceAll("%price%",String.valueOf(itemBuy.getPrice()));
     }
     
-    public static double round(double unrounded, int precision, int roundingMode) {
-            BigDecimal bd = new BigDecimal(unrounded);
-            BigDecimal rounded = bd.setScale(precision, roundingMode);
-            return rounded.doubleValue();
-    }
-    
     public void ItemtoStore(ItemStack stack,Player player){
         
         int itemDamage = getDurability(stack);
-        String enchants = ConvertEnchantsToStringCSV(stack);
+        String enchants = EnchantsToString(stack);
         int quantityInt = stack.getAmount();
                 
         List<Shop> shops = plugin.dataQueries.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
@@ -235,38 +224,19 @@ public class TradeSystem {
                 int createdId = plugin.dataQueries.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
                 
                 if( plugin.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
-                   String ItemMeta = ConvertItemMetaToStringCSV(stack);
+                   String ItemMeta = ItemMetaToString(stack);
                    plugin.dataQueries.InsertItemInfo(createdId,"meta", ItemMeta);
                 }
         }
         
     }
-    
-    
+       
     public boolean isMetaEqual(ItemStack item,Shop shop) {
         String shopMeta = plugin.dataQueries.GetItemInfo(shop.getId(),"meta");
-        String itemMeta = ConvertItemMetaToStringCSV(item);
+        String itemMeta = ItemMetaToString(item);
         return shopMeta.equalsIgnoreCase(itemMeta);
     }
-    
-    public String ConvertItemMetaToStringCSV(ItemStack item) {
-        
-        ItemMeta meta = item.getItemMeta();
-        StringBuilder ItemName = new StringBuilder();
-        if( meta.hasDisplayName() )  {
-            ItemName.append("N[#$]").append(meta.getDisplayName());
-        }
-        
-        if( meta.hasLore() ) {
-            for (int i = 0; i < meta.getLore().size(); i++) {
-                ItemName.append(",").append("L[#$]").append(meta.getLore().get(i));
-            }
-        }
-        
-        return ItemName.toString();
-    }
 
-    
     public int getDurability(ItemStack itemstack) {
         if (itemstack.getDurability() >= 0) {
             return itemstack.getDurability();
@@ -274,33 +244,9 @@ public class TradeSystem {
             return 0;
         }
     }
-    
-    public String ConvertEnchantsToStringCSV(ItemStack itemstack) {
-        Map<Enchantment, Integer> itemEnchantments;
-        String enchants = "";
-        
-        if(itemstack.getType() == Material.ENCHANTED_BOOK) {
-            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)itemstack.getItemMeta();
-            itemEnchantments = bookmeta.getStoredEnchants();
-        }else{
-            itemEnchantments = itemstack.getEnchantments();
-        }
-        
-        for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
-            int enchId = entry.getKey().getId();
-            int level = entry.getValue();
-            enchants += enchId + "," + level + ":";
-        }
-        return enchants;
-    }
-    
+
     public boolean isEnchantsEqual(String enchants,Shop auction) {
-        if( enchants.equals(auction.getEnchantments()) || 
-          ( enchants.isEmpty() && auction.getEnchantments().isEmpty() )) {
-           return true;
-        }else{
-           return false;
-        }
+        return enchants.equals(auction.getEnchantments()) || ( enchants.isEmpty() && auction.getEnchantments().isEmpty() );
     }
 
 }

@@ -27,7 +27,7 @@ public class SellRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
-        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),from,qtd,plugin.Sell);
+        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName(),from,qtd,plugin.Sell);
 
         JSONObject json;
         JSONArray jsonArray = new JSONArray();

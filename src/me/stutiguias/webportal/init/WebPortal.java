@@ -17,7 +17,7 @@ import me.stutiguias.webportal.listeners.WebAuctionPlayerListener;
 import me.stutiguias.webportal.metrics.Metrics;
 import me.stutiguias.webportal.plugins.Essentials;
 import me.stutiguias.webportal.plugins.McMMO;
-import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.signs.Mailbox;
 import me.stutiguias.webportal.signs.vBox;
 import me.stutiguias.webportal.signs.wSell;
@@ -47,7 +47,7 @@ public class WebPortal extends JavaPlugin {
 
 	public Map<String, Long> lastUse = new HashMap<>();
         
-        public static final HashMap<String, AuthPlayer> AuthPlayers = new HashMap<>();
+        public static final HashMap<String, LoggedPlayer> AuthPlayers = new HashMap<>();
         public static final HashMap<String, Boolean> LockTransact = new HashMap<>();
         
         public WebPortalHttpServer server;

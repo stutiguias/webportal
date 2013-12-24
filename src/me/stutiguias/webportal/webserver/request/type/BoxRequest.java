@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.webserver.request.type;
 
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.OfflinePlayer;
 
@@ -26,8 +26,8 @@ public class BoxRequest extends HttpResponse {
         }
         
         StringBuilder sb = new StringBuilder();
-        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
-        String Name = authPlayer.AuctionPlayer.getName();
+        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
+        String Name = authPlayer.WebSitePlayer.getName();
 
         if(!(Boolean)plugin.mcmmo.Config.get("McMMOMYSql")) {
             OfflinePlayer player = plugin.getServer().getOfflinePlayer(Name);
@@ -45,8 +45,8 @@ public class BoxRequest extends HttpResponse {
         }
         
         StringBuilder sb = new StringBuilder();
-        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
-        String Name = authPlayer.AuctionPlayer.getName();
+        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
+        String Name = authPlayer.WebSitePlayer.getName();
         sb.append(plugin.essentials.getBox(Name));
         Print(sb.toString(),"text/plain");
     }

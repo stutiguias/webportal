@@ -8,7 +8,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,13 +24,13 @@ public class UserRequest extends HttpResponse {
     }
     
     public void GetInfo(String HostAddress)  {
-        AuthPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
+        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
         JSONObject json = new JSONObject();
-            json.put("Name", authPlayer.AuctionPlayer.getName() );
-            json.put("Admin", authPlayer.AuctionPlayer.getIsAdmin() );
-            json.put("Money", FormatMoney(plugin.economy.getBalance( authPlayer.AuctionPlayer.getName() ) ) );
-            json.put("Mail", plugin.dataQueries.getMail(authPlayer.AuctionPlayer.getName() ).size() );
-            json.put("Avatarurl", plugin.Avatarurl + authPlayer.AuctionPlayer.getName() );
+            json.put("Name", authPlayer.WebSitePlayer.getName() );
+            json.put("Admin", authPlayer.WebSitePlayer.getIsAdmin() );
+            json.put("Money", FormatMoney(plugin.economy.getBalance( authPlayer.WebSitePlayer.getName() ) ) );
+            json.put("Mail", plugin.dataQueries.getMail(authPlayer.WebSitePlayer.getName() ).size() );
+            json.put("Avatarurl", plugin.Avatarurl + authPlayer.WebSitePlayer.getName() );
         Print(json.toJSONString(),"application/json");
     }
     

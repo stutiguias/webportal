@@ -189,7 +189,7 @@ public class ShopRequest extends HttpResponse {
     private void Buy(String ip,Map param,Shop shop) {
        try { 
            int qtd =  Integer.parseInt((String)param.get("quantity"));
-           WebSitePlayer ap = WebPortal.AuthPlayers.get(ip).AuctionPlayer;
+           WebSitePlayer ap = WebPortal.AuthPlayers.get(ip).WebSitePlayer;
            
             if(ap.getCanBuy() != 1) {
                Print(message.WebCantBuy,"text/plain");
@@ -221,7 +221,7 @@ public class ShopRequest extends HttpResponse {
        try { 
            int qtd =  Integer.parseInt((String)param.get("quantity"));
            
-           WebSitePlayer ap = WebPortal.AuthPlayers.get(sessionId).AuctionPlayer;
+           WebSitePlayer ap = WebPortal.AuthPlayers.get(sessionId).WebSitePlayer;
            
            if(ap.getCanBuy() != 1) {
                Print(message.WebCantSell,"text/plain");

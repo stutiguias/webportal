@@ -68,7 +68,7 @@ public class MyItemsRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
 
-        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),from,qtd,plugin.Myitems);
+        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName(),from,qtd,plugin.Myitems);
         
         if(CheckError(ip, shops)) return;
 
@@ -97,7 +97,7 @@ public class MyItemsRequest extends HttpResponse {
     }
     
     public void GetMyItems(String ip) {
-        List<Shop> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName());
+        List<Shop> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName());
         JSONObject json = new JSONObject();
         for(Shop item:auctions){
             String[] itemConfig = GetItemConfig(item.getItemStack());
@@ -116,7 +116,7 @@ public class MyItemsRequest extends HttpResponse {
     }
     
     public Boolean CheckError(String ip,List<Shop> auctions) {
-        if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName() == null) {
+        if(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName() == null) {
             WebPortal.logger.log(Level.WARNING,"Cant determine player name");
             return true;
         }

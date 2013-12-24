@@ -27,7 +27,7 @@ public class MailRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
-        String player = WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName();
+        String player = WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName();
         List<WebSiteMail> mails = plugin.dataQueries.getMail(player,from,qtd);
         
         JSONObject json;

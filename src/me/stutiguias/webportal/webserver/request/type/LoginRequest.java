@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.WebSitePlayer;
-import me.stutiguias.webportal.webserver.authentication.AuthPlayer;
+import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.webserver.authentication.AuthSystem;
 import me.stutiguias.webportal.webserver.HttpResponse;
 
@@ -33,7 +33,7 @@ public class LoginRequest extends HttpResponse {
 
         if(AS.Auth(username, pass))
         {
-            AuthPlayer _AuthPlayer = new AuthPlayer();
+            LoggedPlayer _AuthPlayer = new LoggedPlayer();
             WebSitePlayer _AuctionPlayer = plugin.dataQueries.getPlayer(username);
             if(_AuctionPlayer == null) {
                 plugin.dataQueries.createPlayer(username,pass, 1, 1, 0);
@@ -43,8 +43,8 @@ public class LoginRequest extends HttpResponse {
                 Print("no","text/plain");
                 return;
             }
-            _AuthPlayer.AuctionPlayer = _AuctionPlayer;
-            _AuthPlayer.AuctionPlayer.setIp(HostAddress);
+            _AuthPlayer.WebSitePlayer = _AuctionPlayer;
+            _AuthPlayer.WebSitePlayer.setIp(HostAddress);
             
             Calendar cal = Calendar.getInstance(); 
             cal.setTime(new Date()); 
@@ -54,8 +54,8 @@ public class LoginRequest extends HttpResponse {
 
             Date d = new Date();
             
-            for (Map.Entry<String,AuthPlayer> pairs : WebPortal.AuthPlayers.entrySet()) {
-                AuthPlayer authplayer = pairs.getValue();
+            for (Map.Entry<String,LoggedPlayer> pairs : WebPortal.AuthPlayers.entrySet()) {
+                LoggedPlayer authplayer = pairs.getValue();
                 if(authplayer.GetLogin().equalsIgnoreCase(username) || authplayer.getDate().before(d))
                     WebPortal.AuthPlayers.remove(pairs.getKey());
             }

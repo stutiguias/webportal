@@ -19,7 +19,7 @@ public class Html {
     }
     
     public String HTMLBan(String ip,int id) {
-      if(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getIsAdmin() == 1) {
+      if(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getIsAdmin() == 1) {
         return "<form onsubmit='return websiteban(this)'>"+
                 "<input type='hidden' name='ID' value='"+id+"' />"+
                 "<input type='submit' value='Ban' class='button' /></form><span id='"+id+"'></span>"+

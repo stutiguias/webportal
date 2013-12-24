@@ -32,7 +32,7 @@ public class Info {
     }
     
     public Boolean isAdmin(String Hostadress) {
-        return WebPortal.AuthPlayers.get(Hostadress).AuctionPlayer.getIsAdmin() == 1;
+        return WebPortal.AuthPlayers.get(Hostadress).WebSitePlayer.getIsAdmin() == 1;
     }
     
     public String Format(double x) {  
