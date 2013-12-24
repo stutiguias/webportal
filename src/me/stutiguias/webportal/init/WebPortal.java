@@ -52,9 +52,9 @@ public class WebPortal extends JavaPlugin {
         
         public WebPortalHttpServer server;
 
-        public ConfigAccessor materials;
-        public ConfigAccessor config;
-        public ConfigAccessor web;
+        public static ConfigAccessor materials;
+        public static ConfigAccessor config;
+        public static ConfigAccessor web;
         
         public static Messages Messages;
         
@@ -355,18 +355,14 @@ public class WebPortal extends JavaPlugin {
             for (ConfigurationSection configurationSection : Configs) {
 
                 Set<String> keys = configurationSection.getKeys(false);
-
-                for (Iterator<String> it = keys.iterator(); it.hasNext();) {
-                    String key = it.next();
-                    
-                    if (key.equals(itemId)) {
-                        return configurationSection.getName();
-                    }
+                
+                for (String key : keys) {
+                    if (key.equals(itemId)) return configurationSection.getName();
                 }
 
             }
             
-            logger.warning(String.format("[WebPortal] Unable to search Item id %s , please add on materials.yml and post comment about that with this id",itemId));
+            logger.warning(String.format("[WebPortal] Unable to search Item id %s \n please add on materials.yml and post comment about that with this id",itemId));
             return "Others";
             
         }

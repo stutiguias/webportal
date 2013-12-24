@@ -28,19 +28,19 @@ public class WebPortalHttpHandler implements HttpHandler {
     Map params;
     
     // Response type
-    Request Fill;
+    Request Response;
 
 
     public WebPortalHttpHandler(WebPortal plugin)
     {
         this.plugin = plugin;
-        Fill = new Request(plugin);
+        Response = new Request(plugin);
     }
 
     @Override
     public void handle(HttpExchange t) throws IOException {
         try {
-            Fill.SetHttpExchange(t);
+            Response.SetHttpExchange(t);
             String request = t.getRequestURI().toString();
 
             params = (Map)t.getAttribute("parameters");
@@ -48,7 +48,7 @@ public class WebPortalHttpHandler implements HttpHandler {
 
             if(request.contains("..") || request.contains("./"))
             {
-                Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
+                Response.Response().ReadFile(htmlDir+"/login.html","text/html");
                 return;
             }
 
@@ -60,36 +60,36 @@ public class WebPortalHttpHandler implements HttpHandler {
                 RequestWithLogin();
             }
         }catch(IOException ex) {
-            Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
+            Response.Response().Print("Cookie Disable, please enable cookie","text/plain");
         }
     }
 
     public void RequestWithoutLogin() throws IOException {
         if(url.startsWith("/web/login")){
             if(SessionId.length() == 0) {
-               Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
+               Response.Response().Print("Cookie Disable, please enable cookie","text/plain");
                return;
            }
-           Fill.TryLogin(SessionId,params);
+           Response.TryLogin(SessionId,params);
         }else if(url.startsWith("/get/auction")) {
-            Fill.GetShopWithoutLogin(params);
+            Response.GetShopWithoutLogin(params);
         }else if(isAllowed()) {
-            Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
+            Response.Response().ReadFile(htmlDir+url,GetMimeType(url));
         }else if(plugin.EnableExternalSource) {
-            Fill.Response().ReadFile(htmlDir+"/external.html","text/html");
+            Response.Response().ReadFile(htmlDir+"/external.html","text/html");
         }else{
-            Fill.Response().ReadFile(htmlDir+"/login.html","text/html");
+            Response.Response().ReadFile(htmlDir+"/login.html","text/html");
         } 
     }
 
     public void RequestWithLogin() throws IOException {
            if(isAllowed()) {
-                Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
+                Response.Response().ReadFile(htmlDir+url,GetMimeType(url));
             }else if(url.startsWith("/server/username/info")) {
-                Fill.GetInfo(SessionId);
+                Response.GetInfo(SessionId);
             }else if(url.startsWith("/logout")) {
                 WebPortal.AuthPlayers.remove(SessionId);
-                Fill.Response().ReadFile(htmlDir + "/login.html","text/html");
+                Response.Response().ReadFile(htmlDir + "/login.html","text/html");
             }else if(url.startsWith("/myitems")) {
                 MyItemsHandler();
             }else if(url.startsWith("/mail")) {
@@ -105,77 +105,77 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else if(url.startsWith("/buy")) {
                 BuyHandler();
             }else if(url.equalsIgnoreCase("/")) {
-                Fill.Response().ReadFile(htmlDir+"/index.html","text/html");
+                Response.Response().ReadFile(htmlDir+"/index.html","text/html");
             }
     }
     
     public void BuyHandler() {
         if(url.startsWith("/buy/additem")) {
-            Fill.BuyAddItem(SessionId, params);
+            Response.BuyAddItem(SessionId, params);
         }else if(url.startsWith("/buy/remitem")) { 
-            Fill.BuyCancelItem(params);
+            Response.BuyCancelItem(params);
         }else if(url.startsWith("/buy/getitem")) {
-            Fill.BuyGetItems(SessionId, params);
+            Response.BuyGetItems(SessionId, params);
         }
     }
     
     public void AdmHandler() {
         if(url.startsWith("/adm/search")) {
-                Fill.AdmGetInfo(SessionId,params);
+                Response.AdmGetInfo(SessionId,params);
         }else if(url.startsWith("/adm/deleteshop")){     
-                Fill.AdmDeleteShop(SessionId, url, params);
+                Response.AdmDeleteShop(SessionId, url, params);
         }else if(url.startsWith("/adm/addshop")){ 
-                Fill.AdmAddShop(SessionId, url, params);
+                Response.AdmAddShop(SessionId, url, params);
         }else if(url.startsWith("/adm/shoplist")){ 
-                Fill.AdmListShop(SessionId, url, params);
+                Response.AdmListShop(SessionId, url, params);
         }else if(url.startsWith("/adm/webban")) {
-                Fill.AdmWebBan(SessionId, params);
+                Response.AdmWebBan(SessionId, params);
         }else if(url.startsWith("/adm/webunban")) {
-                Fill.AdmWebUnBan(SessionId, params);
+                Response.AdmWebUnBan(SessionId, params);
         }
     }
     
     public void MailHandler() {
         if(url.startsWith("/mail/get")) {
-                Fill.GetMails(SessionId,params);
+                Response.GetMails(SessionId,params);
         }else if(url.startsWith("/mail/send") && !isLocked()) {
-                Fill.SendMail(SessionId, url, params);
+                Response.SendMail(SessionId, url, params);
         }
     }
     
     public void BoxHandler() {
         if(url.startsWith("/box/1")) {
-                Fill.Box1(SessionId);
+                Response.Box1(SessionId);
         }else if(url.startsWith("/box/2")) {
-                Fill.Box2(SessionId);
+                Response.Box2(SessionId);
         }
     }
     
     public void MyItemsHandler() {
         if(url.startsWith("/myitems/get")) {
-                Fill.GetMyItems(SessionId);
+                Response.GetMyItems(SessionId);
         }else if(url.startsWith("/myitems/dataTable")) {
-                Fill.GetMyItems(SessionId, url, params);
+                Response.GetMyItems(SessionId, url, params);
         }else if(url.startsWith("/myitems/postauction") && !isLocked()) {
-                Fill.CreateSell(SessionId, url, params);
+                Response.CreateSell(SessionId, url, params);
         }else if(url.startsWith("/myitems/lore")) {
-                Fill.ItemLore(SessionId, params);
+                Response.ItemLore(SessionId, params);
         }
     }
     
     public void MyAuctionHandler() {
          if(url.startsWith("/myauctions/cancel")) {
-                Fill.CancelSell(url, params);
+                Response.CancelSell(url, params);
         }else if(url.startsWith("/myauctions/get")) {
-                Fill.GetSell(SessionId, url, params);
+                Response.GetSell(SessionId, url, params);
         }
     }
     
     public void AuctionHandler() {
         if(url.startsWith("/auction/get")) {
-                Fill.RequestShopBy(SessionId,url,params);
+                Response.RequestShopBy(SessionId,url,params);
         }else if(url.startsWith("/auction/shop")) {
-                Fill.ShopSellBuy(SessionId,params);
+                Response.ShopSellBuy(SessionId,params);
         }
     }
     

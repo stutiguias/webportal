@@ -24,7 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class Info {
     
-    private WebPortal plugin;
+    private final WebPortal plugin;
     
     public Info(WebPortal plugin)
     {
@@ -32,11 +32,7 @@ public class Info {
     }
     
     public Boolean isAdmin(String Hostadress) {
-        if (WebPortal.AuthPlayers.get(Hostadress).AuctionPlayer.getIsAdmin() == 1) {
-          return true;
-        }else{
-          return false;
-        }
+        return WebPortal.AuthPlayers.get(Hostadress).AuctionPlayer.getIsAdmin() == 1;
     }
     
     public String Format(double x) {  

@@ -1,73 +1,24 @@
 Enchant:
- arrow_dmg_1:      Arrow Damage I
- arrow_dmg_2:      Arrow Damage II
- arrow_dmg_3:      Arrow Damage III
- arrow_dmg_4:      Arrow Damage IV
- arrow_dmg_5:      Arrow Damage V
- arrow_fire:       Flame Arrows
- arrow_inf:        Infinite Arrows
- arrow_knock_1:    Arrow Knockback I
- arrow_knock_2:    Arrow Knockback II
- sharp_1:          Sharpness I
- sharp_2:          Sharpness II
- sharp_3:          Sharpness III
- sharp_4:          Sharpness IV
- sharp_5:          Sharpness V
- boa_1:            Bane of Anthropods I
- boa_2:            Bane of Anthropods II
- boa_3:            Bane of Anthropods III
- boa_4:            Bane of Anthropods IV
- boa_5:            Bane of Anthropods V
- dmg_undead_1:     Smite I
- dmg_undead_2:     Smite II
- dmg_undead_3:     Smite III
- dmg_undead_4:     Smite IV
- dmg_undead_5:     Smite V
- efficiency_1:     Efficiency I
- efficiency_2:     Efficiency II
- efficiency_3:     Efficiency III
- efficiency_4:     Efficiency IV
- efficiency_5:     Efficiency V
- unbreaking_1:     Durability I
- unbreaking_2:     Durability II
- unbreaking_3:     Durability III
- unbreaking_4:     Durability IV
- unbreaking_5:     Durability V
- fire_aspect_1:    Fire Aspect I
- fire_aspect_2:    Fire Aspect II
- knockback_1:      Knockback I
- knockback_2:      Knockback II
- fortune_1:        Fortune I
- fortune_2:        Fortune II
- fortune_3:        Fortune III
- looting_1:        Looting I
- looting_2:        Looting II
- looting_3:        Looting III
- respiration_1:    Respiration I
- respiration_2:    Respiration II
- respiration_3:    Respiration III
- protection_1:     Protection I
- protection_2:     Protection II
- protection_3:     Protection III
- protection_4:     Protection IV
- blast_prot_1:     Blast Protection I
- blast_prot_2:     Blast Protection II
- blast_prot_3:     Blast Protection III
- blast_prot_4:     Blast Protection IV
- feather_fall_1:   Feather Fall I
- feather_fall_2:   Feather Fall II
- feather_fall_3:   Feather Fall III
- feather_fall_4:   Feather Fall IV
- fire_prot_1:      Fire Protection I
- fire_prot_2:      Fire Protection II
- fire_prot_3:      Fire Protection III
- fire_prot_4:      Fire Protection IV
- proj_prot_1:      Projectile Protection I
- proj_prot_2:      Projectile Protection II
- proj_prot_3:      Projectile Protection III
- proj_prot_4:      Projectile Protection IV
- silk_touch:       Silk Touch
- aqua_affinity:    Aqua Affinity
+   0: Protection
+   1: Fire Protecion
+   2: Feather Falling
+   3: Blast Protection
+   4: Projectile Protection
+   5: Respiration
+   6: Aqua Affinity
+   16: Sharpness
+   17: Smite
+   18: Bane of Arthropods
+   19: Knockback
+   20: Fire Aspect
+   21: Looting
+   32: Efficiency
+   33: SilkTouch
+   34: Unbreaking
+   35: Fortune
+   48: Power
+   49: Punch
+   50: Flame
 
 # Block images : http://www.minecraftwiki.net/wiki/Data_values
 # Item images : http://www.minecraftwiki.net/wiki/Items

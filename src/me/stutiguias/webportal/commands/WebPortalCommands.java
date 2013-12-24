@@ -14,7 +14,7 @@ import org.bukkit.event.EventPriority;
 
 public class WebPortalCommands implements CommandExecutor {
 
-	private WebPortal plugin;
+	private final WebPortal plugin;
 
 	public WebPortalCommands(WebPortal plugin) {
 		this.plugin = plugin;

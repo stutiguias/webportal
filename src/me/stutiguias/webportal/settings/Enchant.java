@@ -4,6 +4,8 @@
  */
 package me.stutiguias.webportal.settings;
 
+import me.stutiguias.webportal.init.WebPortal;
+
 /**
  *
  * @author Daniel
@@ -72,32 +74,7 @@ public class Enchant {
     }
     
     public String getEnchantName(int enchant,int level){
-         String result = "";
-         switch (enchant) {
-            case 0: result = "Protection"; break;
-            case 1: result = "Fire Protecion"; break;
-            case 2: result = "Feather Falling"; break;
-            case 3: result = "Blast Protection"; break;
-            case 4: result = "Projectile Protection"; break;
-            case 5: result = "Respiration"; break;
-            case 6: result = "Aqua Affinity"; break;
-            case 16: result = "Sharpness"; break;
-            case 17: result = "Smite"; break;
-            case 18: result = "Bane of Arthropods"; break;
-            case 19: result = "Knockback"; break;
-            case 20: result = "Fire Aspect"; break;
-            case 21: result = "Looting"; break;
-            case 32: result = "Efficiency"; break;
-            case 33: result = "SilkTouch"; break;
-            case 34: result = "Unbreaking"; break;
-            case 35: result = "Fortune"; break;
-            case 48: result = "Power"; break;
-            case 49: result = "Punch"; break;
-            case 50: result = "Flame"; break;
-            case -1: result = "Unknown"; break;                                  
-            default:
-                result = "Unknown";break;
-        }
+        String result = WebPortal.materials.getConfig().getString("Enchant." + enchant );
         result += " ";
         switch (level) {
             case 1: result += "I"; break;
@@ -121,7 +98,6 @@ public class Enchant {
             default:
                 break;
         }
-        
         return result;
     }
 }
