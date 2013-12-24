@@ -18,12 +18,9 @@ import org.json.simple.JSONObject;
  * @author Daniel
  */
 public class AdminShopRequest extends HttpResponse {
-    
-    WebPortal plugin;
-    
+  
     public AdminShopRequest(WebPortal instance) {
         super(instance);
-        plugin = instance;
     }
     
     public void AddShop(String ip,String url,Map param){
@@ -40,7 +37,7 @@ public class AdminShopRequest extends HttpResponse {
             
             String type = Item.getType().toString();
             String searchtype = GetSearchType(Item);
-            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Auction, type, searchtype);
+            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Sell, type, searchtype);
             Print("ok","text/html");
         }else{
             Print(message.WebNotAdmin,"text/html");
@@ -54,7 +51,7 @@ public class AdminShopRequest extends HttpResponse {
             int iDisplayStart = Integer.parseInt((String)param.get("DisplayStart"));
             int iDisplayLength = Integer.parseInt((String)param.get("DisplayLength"));
             
-            List<Shop> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Auction);
+            List<Shop> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Sell);
             
             int TotalRecords = plugin.dataQueries.getFound();
             

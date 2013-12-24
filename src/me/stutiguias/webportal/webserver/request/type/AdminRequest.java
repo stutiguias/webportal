@@ -18,8 +18,7 @@ import org.json.simple.JSONObject;
  * @author Daniel
  */
 public class AdminRequest extends HttpResponse {
-    
-    WebPortal plugin;
+
     WebSitePlayer _authPlayer;
     List<Shop> _playerItems;
     List<WebSiteMail> _playerMail;
@@ -27,7 +26,6 @@ public class AdminRequest extends HttpResponse {
     
     public AdminRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
     }
     
     public void AdmGetInfo(String Hostadress,Map param) {
@@ -156,7 +154,7 @@ public class AdminRequest extends HttpResponse {
     }
         
     private void playerauction(String name) {
-        _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Auction);
+        _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Sell);
         JSONArray jsonarray = new JSONArray();
         JSONObject jsonObjectArray;
 

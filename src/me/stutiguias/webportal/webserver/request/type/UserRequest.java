@@ -18,13 +18,9 @@ import org.json.simple.JSONObject;
  * @author Daniel
  */
 public class UserRequest extends HttpResponse {
-    
-    public WebPortal plugin;
 
-    
     public UserRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
     }
     
     public void GetInfo(String HostAddress)  {

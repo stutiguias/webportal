@@ -163,11 +163,7 @@ public class WebAuctionPlayerListener implements Listener {
         }
 
         private Boolean isCreative(PlayerInteractEvent event) {
-            if(event.getPlayer().getGameMode() == GameMode.CREATIVE && plugin.blockcreative) {
-                return true;
-            }else{
-                return false;
-            }
+            return event.getPlayer().getGameMode() == GameMode.CREATIVE && plugin.blockcreative;
         }
         
         private boolean isDelayExpire(Player player,int Delay) {

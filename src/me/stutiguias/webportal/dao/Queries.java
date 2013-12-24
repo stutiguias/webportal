@@ -136,7 +136,7 @@ public class Queries implements IDataQueries {
 
              try {
                      st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,type,tableid FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ? LIMIT ? , ?");
-                     st.setInt(1, plugin.Auction);
+                     st.setInt(1, plugin.Sell);
                      st.setInt(2, plugin.Buy);
                      st.setString(3, searchtype);
                      st.setInt(4, from);
@@ -156,7 +156,7 @@ public class Queries implements IDataQueries {
                              la.add(auction);
                      }
                     st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where ( tableid = ? or tableid = ? ) and searchtype = ?");
-                    st.setInt(1, plugin.Auction);
+                    st.setInt(1, plugin.Sell);
                     st.setInt(2, plugin.Buy);
                     st.setString(3, searchtype);
                     rs = st.executeQuery();
@@ -263,7 +263,7 @@ public class Queries implements IDataQueries {
                 
 		try {
 			st = conn.prepareStatement("SELECT name,damage,player,quantity,price,id,created,ench,tableid FROM WA_Auctions where tableid = ? or tableid = ? LIMIT ? , ?");
-                        st.setInt(1, plugin.Auction);
+                        st.setInt(1, plugin.Sell);
                         st.setInt(2, plugin.Buy);
                         st.setInt(3, from);
                         st.setInt(4, qtd);
@@ -281,7 +281,7 @@ public class Queries implements IDataQueries {
                                 la.add(auction);
 			}
                         st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? or tableid = ?");
-                        st.setInt(1, plugin.Auction);
+                        st.setInt(1, plugin.Sell);
                         st.setInt(2, plugin.Buy);
                         rs = st.executeQuery();
                         while (rs.next()) {
@@ -387,7 +387,7 @@ public class Queries implements IDataQueries {
         try {
                 st = conn.prepareStatement("UPDATE WA_Auctions SET price = ? , tableid = ? WHERE id = ?");
                 st.setDouble(1, price);
-                st.setInt(2, plugin.Auction);
+                st.setInt(2, plugin.Sell);
                 st.setInt(3, id);
                 st.executeUpdate();
         } catch (SQLException e) {

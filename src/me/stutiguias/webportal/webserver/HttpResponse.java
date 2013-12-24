@@ -21,7 +21,7 @@ import org.json.simple.JSONObject;
  */
 public class HttpResponse extends Info {
     
-    private WebPortal plugin;
+    public WebPortal plugin;
     private HttpExchange httpExchange;
     public Messages message;
     

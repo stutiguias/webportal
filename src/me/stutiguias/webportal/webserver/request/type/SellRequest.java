@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Shop;
-import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,12 +17,9 @@ import org.json.simple.JSONObject;
  * @author Daniel
  */
 public class SellRequest extends HttpResponse {
-    
-    private WebPortal plugin;
-    
+
     public SellRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
     }
     
     public void GetSell(String ip,String url,Map param) {
@@ -31,7 +27,7 @@ public class SellRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
-        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),from,qtd,plugin.Auction);
+        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).AuctionPlayer.getName(),from,qtd,plugin.Sell);
 
         JSONObject json;
         JSONArray jsonArray = new JSONArray();

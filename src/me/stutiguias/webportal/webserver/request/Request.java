@@ -65,8 +65,8 @@ public class Request {
         Buy.setHttpExchange(t);
     }
     
-    public void GetShop(Map param) {
-        Shop.GetShop(param);
+    public void GetShopWithoutLogin(Map param) {
+        Shop.GetShopWithoutLogin(param);
     }
     
     public void RequestShopBy(String ip,String url,Map param) {

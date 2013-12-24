@@ -55,7 +55,7 @@ public class MyItemsRequest extends HttpResponse {
               ItemStack stack = new ItemStack(auction.getName(),auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
               String searchtype = GetSearchType(stack);
-              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Auction,type,searchtype);
+              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Sell,type,searchtype);
               Print(message.WebSucessCreateSale,"text/plain");
             }else{
               Print(message.WebFailSellMore,"text/plain");

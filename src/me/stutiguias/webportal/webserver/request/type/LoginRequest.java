@@ -18,13 +18,11 @@ import me.stutiguias.webportal.webserver.HttpResponse;
  * @author Daniel
  */
 public class LoginRequest extends HttpResponse {
-    
-    public WebPortal plugin;
+
     public AuthSystem AS;
     
     public LoginRequest(WebPortal plugin){
         super(plugin);
-        this.plugin = plugin;
         AS = new AuthSystem(plugin);
     }
     

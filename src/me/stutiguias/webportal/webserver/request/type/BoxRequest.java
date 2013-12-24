@@ -14,12 +14,9 @@ import org.bukkit.OfflinePlayer;
  * @author Daniel
  */
 public class BoxRequest extends HttpResponse {
-    
-    private WebPortal plugin;
-    
+  
     public BoxRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
     }
     
     public void BOX1(String HostAddress) {

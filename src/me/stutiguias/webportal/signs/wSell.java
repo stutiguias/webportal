@@ -40,7 +40,7 @@ public class wSell {
             return;
         }
 
-        Shop auction = plugin.dataQueries.getItemById(id, plugin.Auction);
+        Shop auction = plugin.dataQueries.getItemById(id, plugin.Sell);
         if(auction == null) {
             player.sendMessage("Invalid ID");
             event.setCancelled(true);
@@ -68,7 +68,7 @@ public class wSell {
         String[] price = lines[2].split("-");
         int qtdnow,qtdsold;
         try {
-            qtdnow = plugin.dataQueries.getItemById(Integer.valueOf(lines[3]), plugin.Auction).getQuantity();
+            qtdnow = plugin.dataQueries.getItemById(Integer.valueOf(lines[3]), plugin.Sell).getQuantity();
             qtdsold = Integer.parseInt(price[0]);
         }catch(Exception ex) {
             event.getPlayer().sendMessage(plugin.logPrefix + "Error try get line of sign");

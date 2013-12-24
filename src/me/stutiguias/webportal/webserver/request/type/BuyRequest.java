@@ -19,12 +19,8 @@ import org.json.simple.JSONObject;
  */
 public class BuyRequest extends HttpResponse {
     
-    private WebPortal plugin;
-    
     public BuyRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
-        
     }
     
     public void AddItem(String sessionId,Map param) {

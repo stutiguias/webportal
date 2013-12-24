@@ -22,7 +22,7 @@ public class WebPortalHttpHandler implements HttpHandler {
     String Lang;
     int Port;
     String SessionId;
-    private WebPortal plugin;
+    private final WebPortal plugin;
     String htmlDir = "./plugins/WebPortal/html";
     String url;
     Map params;
@@ -59,7 +59,7 @@ public class WebPortalHttpHandler implements HttpHandler {
             }else { 
                 RequestWithLogin();
             }
-        }catch(Exception ex) {
+        }catch(IOException ex) {
             Fill.Response().Print("Cookie Disable, please enable cookie","text/plain");
         }
     }
@@ -72,7 +72,7 @@ public class WebPortalHttpHandler implements HttpHandler {
            }
            Fill.TryLogin(SessionId,params);
         }else if(url.startsWith("/get/auction")) {
-            Fill.GetShop(params);
+            Fill.GetShopWithoutLogin(params);
         }else if(isAllowed()) {
             Fill.Response().ReadFile(htmlDir+url,GetMimeType(url));
         }else if(plugin.EnableExternalSource) {
@@ -204,29 +204,25 @@ public class WebPortalHttpHandler implements HttpHandler {
         
         if(url.contains("./") || url.contains("..")) return false;
         
-        if(url.startsWith("/css") || 
-           url.startsWith("/styles") || 
-           url.contains("/image") || 
-           url.contains("/favicon.ico") ||
-           url.contains("/Images") || 
-           url.startsWith("/img") ||
-           url.startsWith("/js") || 
-           url.startsWith("/scripts") ||
-           url.startsWith("/about") ||
-           url.startsWith("/myitems.html") ||
-           url.startsWith("/login.html") || 
-           url.startsWith("/admin.html") || 
-           url.startsWith("/sell.html") || 
-           url.startsWith("/index.html") || 
-           url.startsWith("/about.html") || 
-           url.startsWith("/shop.html") ||
-           url.startsWith("/mail.html") ||
-           url.startsWith("/buy.html") ||
-           url.startsWith("/signs.html")
-                )
-            return true;
-        
-        return false;
+        return  url.startsWith("/css") || 
+                url.startsWith("/styles") ||
+                url.contains("/image") ||
+                url.contains("/favicon.ico") ||
+                url.contains("/Images") ||
+                url.startsWith("/img") ||
+                url.startsWith("/js") ||
+                url.startsWith("/scripts") ||
+                url.startsWith("/about") ||
+                url.startsWith("/myitems.html") ||
+                url.startsWith("/login.html") ||
+                url.startsWith("/admin.html") ||
+                url.startsWith("/sell.html") ||
+                url.startsWith("/index.html") ||
+                url.startsWith("/about.html") ||
+                url.startsWith("/shop.html") ||
+                url.startsWith("/mail.html") ||
+                url.startsWith("/buy.html") ||
+                url.startsWith("/signs.html");
     }
 
 }

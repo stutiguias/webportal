@@ -86,8 +86,8 @@ public class WebPortal extends JavaPlugin {
 	public Economy economy = null;
 
         public int Buy = 4;
+        public int Sell = 2;
         public int Mail = 3;
-        public int Auction = 2;
         public int Myitems = 1;
         
         public int port;

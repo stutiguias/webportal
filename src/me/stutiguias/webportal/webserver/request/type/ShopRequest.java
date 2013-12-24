@@ -10,7 +10,6 @@ import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.settings.TradeSystem;
-import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,14 +20,10 @@ import org.json.simple.JSONObject;
  */
 public class ShopRequest extends HttpResponse {
     
-    private WebPortal plugin;
-    private Html html;
     TradeSystem tr;
 
     public ShopRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
-        html = new Html(plugin);
         tr = new TradeSystem(plugin);
     }
         
@@ -100,12 +95,7 @@ public class ShopRequest extends HttpResponse {
             
             double MakertPercent = MarketPrice(shop, shop.getPrice());
             json.put("1",JSON("Id",shop.getId()));
-            
-            if(shop.getTableId() == plugin.Auction)
-                json.put("2",JSON(message.WebType,message.WebBuy));
-            else
-                json.put("2",JSON(message.WebType,message.WebSell));
-            
+            json.put("2",JSON(message.WebType,GetType(shop)));
             json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop,searchtype)));
             json.put("4",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
             json.put("5",JSON(message.WebExpire, message.WebNever));
@@ -122,14 +112,14 @@ public class ShopRequest extends HttpResponse {
         Print(jsonresult.toJSONString(),"application/json");
     }
     
-    public void GetShop(Map param) {
+    public void GetShopWithoutLogin(Map param) {
         int from;
         int qtd;
         
         try {
             from = Integer.parseInt((String)param.get("from"));
             qtd = Integer.parseInt((String)param.get("qtd"));
-        }catch(Exception ex) {
+        }catch(NumberFormatException ex) {
             Print("Invalid Call", "text/plain");
             return;
         }
@@ -143,12 +133,9 @@ public class ShopRequest extends HttpResponse {
             String searchtype = GetSearchType(item.getItemStack());
             
             json = new JSONObject();
-            if(item.getTableId() == plugin.Auction)
-                json.put("1",JSON(message.WebType,message.WebBuy));
-            else
-                json.put("1",JSON(message.WebType,message.WebSell));
+            json.put("1",JSON(message.WebType,GetType(item)));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
-            json.put("3",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='"+ plugin.Avatarurl + item.getPlayerName() +"' /><br />"+ item.getPlayerName()));
+            json.put("3",JSON(message.WebOwner,getName(item)));
             json.put("4",JSON(message.WebExpire, message.WebNever));
             if(item.getItemStack().getAmount() == 9999) {
                 json.put("5",JSON(message.WebQuantity,message.WebInfinit));
@@ -169,18 +156,17 @@ public class ShopRequest extends HttpResponse {
     public JSONObject ServerShop(Shop item,String searchtype,String ip){
         JSONObject json = new JSONObject();
         json.put("1",JSON("Id",item.getId()));
-        if(item.getTableId() == plugin.Auction)
-            json.put("2",JSON(message.WebType,message.WebBuy));
-        else
-            json.put("2",JSON(message.WebType,message.WebSell));
+        json.put("2",JSON(message.WebType,GetType(item) ));
         json.put("3",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
         json.put("4",JSON(message.WebOwner,item.getPlayerName()));
         json.put("5",JSON(message.WebExpire, message.WebNever));
+        
         if(item.getItemStack().getAmount() == 9999) {
             json.put("6",JSON(message.WebQuantity,message.WebInfinit));
         }else{
             json.put("6",JSON(message.WebQuantity,item.getItemStack().getAmount()));
         }
+        
         json.put("7",JSON(message.WebPriceEach,item.getPrice()));
         json.put("8",JSON(message.WebEnchant,GetEnchant(item)));
         json.put("9",JSON(message.WebDurability,GetDurability(item)));
@@ -193,7 +179,7 @@ public class ShopRequest extends HttpResponse {
         
         Shop shop = plugin.dataQueries.getAuction(id);
         
-        if(shop.getTableId() == plugin.Auction)
+        if(shop.getTableId() == plugin.Sell)
             Buy(ip,param,shop);
         else
             Sell(ip,param,shop);
@@ -225,7 +211,7 @@ public class ShopRequest extends HttpResponse {
                tr = new TradeSystem(plugin);
                Print(tr.Buy(ap.getName(),shop, qtd, item_name, false),"text/plain");
            }
-       }catch(Exception ex){
+       }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());
        }
         
@@ -257,9 +243,22 @@ public class ShopRequest extends HttpResponse {
                tr = new TradeSystem(plugin);
                Print(tr.Sell(ap.getName(),shop, qtd, item_name, false),"text/plain");
            }
-       }catch(Exception ex){
+       }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());
        }
-        
+    }
+    
+    private String GetType(Shop item) {
+        if(item.getTableId() == plugin.Sell)
+            return message.WebBuy;
+        else
+            return message.WebSell;
+    }
+    
+    public String getName(Shop item) {
+      if(!item.getPlayerName().contains("Server"))
+          return "<img width='32' style='max-width:32px' src='"+ plugin.Avatarurl + item.getPlayerName() +"' /><br />"+ item.getPlayerName();
+      else
+          return item.getPlayerName();
     }
 }

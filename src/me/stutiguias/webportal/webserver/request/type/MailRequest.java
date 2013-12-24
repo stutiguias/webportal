@@ -18,12 +18,9 @@ import org.json.simple.JSONObject;
  * @author Daniel
  */
 public class MailRequest extends HttpResponse {
-    
-    private WebPortal plugin;
-    
+
     public MailRequest(WebPortal plugin) {
         super(plugin);
-        this.plugin = plugin;
     }
     
     public void GetMails(String ip,Map param) {
