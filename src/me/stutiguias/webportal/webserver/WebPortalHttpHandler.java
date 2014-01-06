@@ -113,7 +113,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         if(url.startsWith("/buy/additem")) {
             Fill.BuyAddItem(SessionId, params);
         }else if(url.startsWith("/buy/remitem")) { 
-            Fill.BuyCancelItem(params);
+            Fill.BuyCancelItem(params,SessionId);
         }else if(url.startsWith("/buy/getitem")) {
             Fill.BuyGetItems(SessionId, params);
         }
@@ -165,7 +165,7 @@ public class WebPortalHttpHandler implements HttpHandler {
     
     public void MyAuctionHandler() {
          if(url.startsWith("/myauctions/cancel")) {
-                Fill.CancelSell(url, params);
+                Fill.CancelSell(url, params,SessionId);
         }else if(url.startsWith("/myauctions/get")) {
                 Fill.GetSell(SessionId, url, params);
         }

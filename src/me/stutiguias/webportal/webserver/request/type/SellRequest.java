@@ -53,7 +53,7 @@ public class SellRequest extends HttpResponse {
         Print(jsonresult.toJSONString(),"application/json");
     }
     
-    public void Cancel(String url,Map param) {
+    public void Cancel(String url,Map param,String sessionId) {
         int id = Integer.parseInt((String)param.get("ID"));
         
         Shop auction = plugin.dataQueries.getAuction(id);
@@ -62,6 +62,10 @@ public class SellRequest extends HttpResponse {
         Integer cancelItemId = auction.getItemStack().getTypeId();
         Short cancelItemDamage = auction.getItemStack().getDurability();
         
+        if(!WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName().equals(player)) {
+            Print(message.WebIdNotFound,"text/plain");
+        }
+
         List<Shop> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
         
         if(!auctions.isEmpty() && cancelItemId != 403) {

@@ -39,24 +39,31 @@ public class BuyRequest extends HttpResponse {
             String player = WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName();
             plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.Buy, type, searchtype);
             Print(message.WebSucessCreateBuy,"text/html");
-          }catch(Exception ex) {
+          }catch(NumberFormatException ex) {
               ex.printStackTrace();
           }
 
     }
      
-    public void Cancel(Map param) {
-        try {
-            int id = Integer.parseInt((String)param.get("id"));
+    public void Cancel(Map param,String sessionId) {         
+        try {  
+            
+            int id = Integer.parseInt((String)param.get("id")); 
+
+            Shop auction = plugin.dataQueries.getAuction(id);
+            String player = auction.getPlayerName();
+
+            if(!WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName().equals(player)) {
+                Print(message.WebIdNotFound,"text/plain");
+            }
+
             int result = plugin.dataQueries.DeleteAuction(id);
             if(result == 0) {
                  Print(message.WebInvalidNumber,"text/plain");
                  return;
             }
+            
         }catch(NumberFormatException ex) {
-            Print(message.WebInvalidNumber,"text/plain");
-            return;
-        }catch(Exception ex) {
             Print(message.WebInvalidNumber,"text/plain");
             return;
         }

@@ -97,8 +97,8 @@ public class Request {
         UserInfo.ItemLore(SessionId, param);
     }
     
-    public void CancelSell(String url,Map param){
-       Sell.Cancel(url, param);
+    public void CancelSell(String url,Map param,String sessionId){
+       Sell.Cancel(url, param, sessionId);
     }
     
     public void Box1(String HostAddress) {
@@ -149,8 +149,8 @@ public class Request {
         Buy.AddItem(SessionId,param);
     }
     
-    public void BuyCancelItem(Map param) {
-        Buy.Cancel(param);
+    public void BuyCancelItem(Map param,String sessionId) {
+        Buy.Cancel(param,sessionId);
     }
     
     public void BuyGetItems(String SessionId,Map param) {
