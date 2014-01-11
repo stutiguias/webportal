@@ -9,7 +9,7 @@ import com.cypherx.xauth.xAuth;
 import java.security.NoSuchAlgorithmException;
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;
-import uk.org.whoami.authme.security.PasswordSecurity;
+import fr.xephi.authme.security.PasswordSecurity;
 /**
  *
  * @author Daniel
