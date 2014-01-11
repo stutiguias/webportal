@@ -31,8 +31,8 @@ public class Info {
         this.plugin = plugin;
     }
     
-    public Boolean isAdmin(String Hostadress) {
-        return WebPortal.AuthPlayers.get(Hostadress).WebSitePlayer.getIsAdmin() == 1;
+    public Boolean isAdmin(String sessionId) {
+        return WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getIsAdmin() == 1;
     }
     
     public String Format(double x) {  

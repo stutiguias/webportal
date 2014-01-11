@@ -123,41 +123,44 @@ public class WebAuctionPlayerListener implements Listener {
                 
 	}
                 
-        @EventHandler(priority = EventPriority.NORMAL)
-        public void onWebAuctionLiteInventoryClick(InventoryClickEvent event) {
-            if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
-            if(event.getCurrentItem() == null) return;
-            if(event.isShiftClick()) {
-                event.setCancelled(true);
-                return;
-            }		
-
-            Player player = (Player)event.getWhoClicked();
-            
-            if(event.getRawSlot() <= 44) {
-                if(event.getCurrentItem().getType() != Material.AIR && event.getCursor().getType() == Material.AIR) {
-                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
-                        event.setCancelled(true);
-                        return;
-                   } 
-                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
-                   plugin.vbox.Delete(event, player);
-                }
-                if(event.getCursor().getType() != Material.AIR) {
-                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
-                        event.setCancelled(true);
-                        return;
-                   } 
-                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
-                   plugin.vbox.AddItem(event.getCursor(), player,event);
-                } 
-            }
-        }
+//        @EventHandler(priority = EventPriority.NORMAL)
+//        public void onWebAuctionLiteInventoryClick(InventoryClickEvent event) {
+//            if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
+//            if(event.getCurrentItem() == null) return;
+//            if(event.isShiftClick()) {
+//                event.setCancelled(true);
+//                return;
+//            }		
+//
+//            Player player = (Player)event.getWhoClicked();
+//            
+//            if(event.getRawSlot() <= 44) {
+//                if(event.getCurrentItem().getType() != Material.AIR && event.getCursor().getType() == Material.AIR) {
+//                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
+//                        event.setCancelled(true);
+//                        return;
+//                   } 
+//                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
+//                   plugin.vbox.Delete(event, player);
+//                }
+//                if(event.getCursor().getType() != Material.AIR) {
+//                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
+//                        event.setCancelled(true);
+//                        return;
+//                   } 
+//                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
+//                   plugin.vbox.AddItem(event.getCursor(), player,event);
+//                } 
+//            }
+//        }
         
         @EventHandler(priority = EventPriority.NORMAL)
         public void onWebAuctionLiteInventoryClose(InventoryCloseEvent event) {
             if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
             Player pl = (Player)event.getPlayer();
+            
+            plugin.vbox.Close(event.getInventory(),pl);
+            
             plugin.dataQueries.setLock(pl.getName(),"N");
             WebPortal.LockTransact.put(pl.getName(), Boolean.FALSE);
         }

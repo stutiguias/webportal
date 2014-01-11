@@ -12,6 +12,7 @@ import me.stutiguias.webportal.settings.TradeSystem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -21,15 +22,21 @@ import org.bukkit.inventory.ItemStack;
 public class vBox {
     
     WebPortal plugin;
+    InventoryHandler inventoryHandler;
     
     public vBox(WebPortal instance) {
         plugin = instance;
     }
     
     public void Open(PlayerInteractEvent event){
-        InventoryHandler inventory = new InventoryHandler(plugin,event.getPlayer());
-        event.getPlayer().openInventory(inventory.getInventory());
+        inventoryHandler = new InventoryHandler(plugin,event.getPlayer());
+        event.getPlayer().openInventory(inventoryHandler.getInventory());
         event.setCancelled(true);
+    }
+    
+    public void Close(Inventory inventory,Player player) {
+        inventoryHandler = new InventoryHandler(plugin,player);
+        inventoryHandler.InventoryClose(inventory);
     }
     
     public void AddItem(ItemStack item,Player pl,InventoryClickEvent event) {

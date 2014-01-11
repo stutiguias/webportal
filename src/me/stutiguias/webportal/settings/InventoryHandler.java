@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class InventoryHandler implements InventoryHolder {
 
-    final Inventory inventory;
+    Inventory inventory;
     WebPortal plugin;
     Player player;
     Info info;
@@ -26,8 +26,12 @@ public class InventoryHandler implements InventoryHolder {
     public InventoryHandler(WebPortal plugin,Player player) {
         this.plugin = plugin;
         this.player = player;
-        inventory = plugin.getServer().createInventory(this,45,"WebPortal");
+        StartInventory();
         info = new Info(plugin);
+    }
+    
+    private void StartInventory(){
+        inventory = plugin.getServer().createInventory(this,45,"WebPortal");
     }
     
     @Override
@@ -55,10 +59,20 @@ public class InventoryHandler implements InventoryHolder {
                 if(inventory.firstEmpty() ==  -1) break;
                 inventory.addItem(item.getItemStack());
             }
+            
+            plugin.dataQueries.DeleteAuction(item.getId());
         }
         plugin.dataQueries.setLock(player.getName(),"S");
         WebPortal.LockTransact.put(player.getName(), Boolean.TRUE);
         return inventory;
+    }
+    
+    public void InventoryClose(Inventory inventory) {
+        TradeSystem ts = new TradeSystem(plugin);
+        for(ItemStack item:inventory.getContents()) {
+            if(item == null) continue;
+            ts.ItemtoStore(item,player);
+        }
     }
     
 }
