@@ -48,7 +48,7 @@ public class HttpResponse extends Info {
             getHttpExchange().getResponseBody().flush();
             getHttpExchange().getResponseBody().close();
         }
-        catch(Exception e)
+        catch(IOException e)
         {
             WebPortal.logger.info((new StringBuilder()).append("ERROR in print(): ").append(e.getMessage()).toString());
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class HttpResponse extends Info {
             getHttpExchange().getResponseBody().flush();
             getHttpExchange().getResponseBody().close();
         }
-        catch(Exception e)
+        catch(IOException e)
         {
             WebPortal.logger.info((new StringBuilder()).append("ERROR in httperror(): ").append(e.getMessage()).toString());
         }
@@ -83,31 +83,32 @@ public class HttpResponse extends Info {
             File archivo = new File(path);
             if(archivo.exists())
             {
-                FileInputStream file = new FileInputStream(archivo);
-                byte[] buffer = new byte[0x10000];
-                long length = archivo.length();
-                int leng;
-                
-                if(plugin.EnableExternalSource) {
-                    getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+                try (FileInputStream file = new FileInputStream(archivo)) {
+                    byte[] buffer = new byte[0x10000];
+                    long length = archivo.length();
+                    int leng;
+                    
+                    if(plugin.EnableExternalSource) {
+                        getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+                    }
+                    
+                    getHttpExchange().getResponseHeaders().set("Content-Type", Mime);
+                    getHttpExchange().sendResponseHeaders(200, length);
+                    
+                    try (OutputStream out = getHttpExchange().getResponseBody()) {
+                        while ((leng = file.read(buffer)) >= 0) {
+                            out.write(buffer, 0, leng);
+                        }
+                    }
+                    
                 }
-                
-                getHttpExchange().getResponseHeaders().set("Content-Type", Mime);
-                getHttpExchange().sendResponseHeaders(200, length);
-                
-                OutputStream out = getHttpExchange().getResponseBody();
-                while ((leng = file.read(buffer)) >= 0) {
-                    out.write(buffer, 0, leng);
-                }
-                out.close();
-                file.close();
                 
             } else
             {
                 Error("404 Not Found");
             }
         }
-        catch(Exception e)
+        catch(IOException e)
         {
             WebPortal.logger.info((new StringBuilder()).append("ERROR in readFileAsBinary(): ").append(e.getMessage()).toString());
         }
