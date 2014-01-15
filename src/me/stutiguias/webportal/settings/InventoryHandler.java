@@ -5,7 +5,6 @@
 package me.stutiguias.webportal.settings;
 
 import java.util.List;
-import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -38,14 +37,10 @@ public class InventoryHandler implements InventoryHolder {
         
         for(Shop item:items) {
             
-            if(plugin.AllowMetaItem){
+            if(WebPortal.AllowMetaItem){
                 String meta = plugin.db.GetItemInfo(item.getId(),"meta");
                 if(!meta.isEmpty()) {
-                    
-                   WebItemStack webItemStack = ((WebItemStack)item.getItemStack());
-                   webItemStack.SetMeta(meta);
-                   item.setItemStack(webItemStack);
-                   
+                   item.getItemStack().SetMeta(meta);
                 }
             }
             
@@ -73,7 +68,7 @@ public class InventoryHandler implements InventoryHolder {
         TradeSystem ts = new TradeSystem(plugin);
         for(ItemStack item:inventory.getContents()) {
             if(item == null) continue;
-            ts.ItemtoStore((WebItemStack)item,player);
+            ts.ItemtoStore(item,player);
         }
     }
     

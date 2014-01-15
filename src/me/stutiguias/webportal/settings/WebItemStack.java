@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package me.stutiguias.webportal.settings;
 
 import java.util.ArrayList;
@@ -25,15 +20,21 @@ public class WebItemStack extends ItemStack {
     private String Image;
 
     public WebItemStack() {
-        GetConfig();
+        super();
     }
      
     public WebItemStack(Integer type,int amount,Short damage) {
         super(type, amount, damage);
         GetConfig();
     }
+        
+    public WebItemStack(Material type,int amount,Short damage) {
+        super(type, amount, damage);
+        GetConfig();
+    }
     
     public WebItemStack(String MetaCSV) {
+         super();
         GetConfig();
         if(WebPortal.AllowMetaItem) {
             AddMeta(MetaCSV, Name);

@@ -4,7 +4,7 @@
  */
 package me.stutiguias.webportal.signs;
 
-import me.stutiguias.webportal.information.Info;
+import me.stutiguias.webportal.init.Util;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Shop;
 import me.stutiguias.webportal.settings.TradeSystem;
@@ -20,32 +20,31 @@ import org.bukkit.event.player.PlayerInteractEvent;
  *
  * @author Daniel
  */
-public class wSell {
-    
-    WebPortal plugin;
-    Info info;
-    
+public class wSell extends Util {
+
+
     public wSell(WebPortal instance) {
-        plugin = instance;
-        info = new Info(plugin);
+        super(instance);
     }
     
     public void addwSell(String[] lines,Player player,Block sign,SignChangeEvent event) {
         Integer id;
         try {
             id = Integer.parseInt(lines[1]);
-        }catch(Exception ex) {
+        }catch(NumberFormatException ex) {
             player.sendMessage("Invalid ID.");
             event.setCancelled(true);
             return;
         }
 
         Shop auction = plugin.db.getItemById(id, plugin.Sell);
+        
         if(auction == null) {
             player.sendMessage("Invalid ID");
             event.setCancelled(true);
             return;
         }
+        
         event.setLine(0, ChatColor.GREEN + "[wSell]" );
         event.setLine(1, auction.getItemStack().getName());
         if(lines[2].isEmpty()) {
@@ -70,23 +69,23 @@ public class wSell {
         try {
             qtdnow = plugin.db.getItemById(Integer.valueOf(lines[3]), plugin.Sell).getQuantity();
             qtdsold = Integer.parseInt(price[0]);
-        }catch(Exception ex) {
-            event.getPlayer().sendMessage(plugin.logPrefix + "Error try get line of sign");
+        }catch(NumberFormatException ex) {
+            event.getPlayer().sendMessage(plugin.logPrefix + " Error try get line of sign");
             event.setCancelled(true);
             return;
         }
         if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
+            event.getPlayer().sendMessage(plugin.logPrefix + " You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
         }else{
             Shop au = plugin.db.getAuction(Integer.valueOf(lines[3]));
 
             if(au == null) {
-                event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");
+                event.getPlayer().sendMessage(plugin.logPrefix + " No more itens left here!");
                 setSignSold(sign);
             }else{
                 if(!plugin.economy.has(event.getPlayer().getName(),au.getPrice() * Integer.valueOf(price[0]))) {
                     event.setCancelled(true);
-                    event.getPlayer().sendMessage(plugin.logPrefix + "You don't have enough money");
+                    event.getPlayer().sendMessage(plugin.logPrefix + " You don't have enough money");
                     return;
                 }
                 TradeSystem ts = new TradeSystem(plugin);
@@ -99,7 +98,7 @@ public class wSell {
                         sign.update();
                     }
                 }else{
-                    event.getPlayer().sendMessage(plugin.logPrefix + "You can't buy from yourself");
+                    event.getPlayer().sendMessage(plugin.logPrefix + " You can't buy from yourself");
                 }
             }
             event.setCancelled(true);

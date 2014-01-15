@@ -6,8 +6,7 @@ package me.stutiguias.webportal.settings;
 
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.information.Info;
-import me.stutiguias.webportal.information.Util;
+import me.stutiguias.webportal.init.Util;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,12 +16,9 @@ import org.bukkit.inventory.ItemStack;
  * @author Daniel
  */
 public class TradeSystem extends Util {
-  
-    private final Info info;
-    
+
     public TradeSystem(WebPortal plugin){
         super(plugin);
-        info = new Info(plugin);
     }
     
     public String Buy(String BuyPlayerName,Shop itemSold,int qtd,String item_name,Boolean ingame) {
@@ -65,7 +61,7 @@ public class TradeSystem extends Util {
             plugin.db.updateItemQuantity(Stackqtd + qtd, StackId);
         }else if(!ingame) {
             String Type = itemSold.getItemStack().getType().toString();
-            String searchtype = ((WebItemStack)itemSold.getItemStack()).GetSearchType();
+            String searchtype = itemSold.getItemStack().GetSearchType();
             plugin.db.createItem(itemSold.getItemStack().getTypeId(), itemSold.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, itemSold.getEnchantments(), plugin.Myitems,Type,searchtype);
         }
         
@@ -191,6 +187,10 @@ public class TradeSystem extends Util {
                     .replaceAll("%playerName%",itemBuy.getPlayerName())
                     .replaceAll("%price%",String.valueOf(itemBuy.getPrice()));
     }
+        
+    public void ItemtoStore(ItemStack item, Player player) {
+        ItemtoStore( Convert(item) , player);
+    }
     
     public void ItemtoStore(WebItemStack stack,Player player){
         
@@ -223,7 +223,7 @@ public class TradeSystem extends Util {
                 String searchtype = stack.GetSearchType();
                 int createdId = plugin.db.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
                 
-                if( plugin.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
+                if( WebPortal.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
                    String ItemMeta = stack.GetMeta();
                    plugin.db.InsertItemInfo(createdId,"meta", ItemMeta);
                 }
@@ -248,5 +248,7 @@ public class TradeSystem extends Util {
     public boolean isEnchantsEqual(String enchants,Shop auction) {
         return enchants.equals(auction.getEnchantments()) || ( enchants.isEmpty() && auction.getEnchantments().isEmpty() );
     }
+
+
 
 }

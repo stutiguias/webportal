@@ -1,6 +1,6 @@
 package me.stutiguias.webportal.commands;
 
-import me.stutiguias.webportal.information.Util;
+import me.stutiguias.webportal.init.Util;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.WebSitePlayer;
 import me.stutiguias.webportal.settings.InventoryHandler;

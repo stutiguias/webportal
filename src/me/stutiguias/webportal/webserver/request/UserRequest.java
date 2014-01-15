@@ -47,12 +47,12 @@ public class UserRequest extends HttpResponse {
         String[] metas = metaCSV.split(",");
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < metas.length; i++) {
-            if(metas[i].startsWith("N[#$]")) {
-                String metad = metas[i].replace("N[#$]","").replaceAll("§\\w","");
+        for (String meta : metas) {
+            if (meta.startsWith("N[#$]")) {
+                String metad = meta.replace("N[#$]", "").replaceAll("§\\w", "");
                 json.put("Display Name",metad);
             } else {
-                String metal = metas[i].replace("L[#$]","").replaceAll("§\\w","");
+                String metal = meta.replace("L[#$]", "").replaceAll("§\\w", "");
                 jsonArray.add(metal);
             }
         }

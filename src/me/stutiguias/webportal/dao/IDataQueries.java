@@ -66,7 +66,7 @@ public interface IDataQueries {
         int GetMarketPriceofItem(int itemID, int itemDamage);
         int InsertItemInfo(int auctionId,String type,String value);
         String GetItemInfo(int auctionId,String type);
-        ItemStack EnchantItem(String ench,ItemStack stack);
+        WebItemStack EnchantItem(String ench,WebItemStack stack);
         
         //WithList
         List<Shop> GetBuyList(String player,int from,int qtd);

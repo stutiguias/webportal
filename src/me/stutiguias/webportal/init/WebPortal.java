@@ -21,7 +21,6 @@ import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.signs.Mailbox;
 import me.stutiguias.webportal.signs.vBox;
 import me.stutiguias.webportal.signs.wSell;
-import me.stutiguias.webportal.signs.wShop;
 import me.stutiguias.webportal.tasks.SaleAlertTask;
 import me.stutiguias.webportal.tasks.WebPortalHttpServer;
 import me.stutiguias.webportal.updater.Updater;
@@ -43,7 +42,7 @@ public class WebPortal extends JavaPlugin {
 	private final WebAuctionPlayerListener playerListener = new WebAuctionPlayerListener(this);
 	private final WebAuctionBlockListener blockListener = new WebAuctionBlockListener(this);
 
-	public static IDataQueries db;
+	public IDataQueries db;
 
 	public Map<String, Long> lastUse = new HashMap<>();
         
@@ -95,7 +94,6 @@ public class WebPortal extends JavaPlugin {
         public wSell wsell;
         public Mailbox mailbox;
         public vBox vbox;
-        public wShop wshop;
         
         public static boolean update = false;
         public static String name = "";
@@ -135,7 +133,6 @@ public class WebPortal extends JavaPlugin {
                 wsell   = new wSell(this);
                 mailbox = new Mailbox(this);
                 vbox    = new vBox(this);
-                wshop   = new wShop(this);
                 
                 // Setup Vault
 		setupEconomy();

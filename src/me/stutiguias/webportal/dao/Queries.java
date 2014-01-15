@@ -146,10 +146,10 @@ public class Queries implements IDataQueries {
                      while (rs.next()) {
                              auction = new Shop();
                              auction.setId(rs.getInt("id"));
-                             ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                             WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                              stack = EnchantItem(rs.getString("ench"), stack);
                              auction.setType(rs.getString("type"));
-                             auction.setItemStack((WebItemStack)stack);
+                             auction.setItemStack(stack);
                              auction.setPlayerName(rs.getString("player"));
                              auction.setPrice(rs.getDouble("price"));
                              auction.setCreated(rs.getInt("created"));
@@ -236,9 +236,9 @@ public class Queries implements IDataQueries {
                 while (rs.next()) {
                         auction = new Shop();
                         auction.setId(id);
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auction.setItemStack((WebItemStack)stack);
+                        auction.setItemStack(stack);
                         auction.setPlayerName(rs.getString("player"));
                         auction.setPrice(rs.getDouble("price"));
                         auction.setCreated(rs.getInt("created"));
@@ -272,9 +272,9 @@ public class Queries implements IDataQueries {
 			while (rs.next()) {
 				auction = new Shop();
 				auction.setId(rs.getInt("id"));
-                                ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                                WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                                 stack = EnchantItem(rs.getString("ench"), stack);
-				auction.setItemStack((WebItemStack)stack);
+				auction.setItemStack(stack);
 				auction.setPlayerName(rs.getString("player"));
 				auction.setPrice(rs.getDouble("price"));
 				auction.setCreated(rs.getInt("created"));
@@ -315,9 +315,9 @@ public class Queries implements IDataQueries {
                     while (rs.next()) {
                             auction = new Shop();
                             auction.setId(rs.getInt("id"));
-                            ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                            WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                             stack = EnchantItem(rs.getString("ench"), stack);
-                            auction.setItemStack((WebItemStack)stack);
+                            auction.setItemStack(stack);
                             auction.setPlayerName(rs.getString("player"));
                             auction.setPrice(rs.getDouble("price"));
                             auction.setType(rs.getString("searchtype"));
@@ -543,9 +543,9 @@ public class Queries implements IDataQueries {
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
                         auction.setQuantity(rs.getInt("quantity"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auction.setItemStack((WebItemStack)stack);
+                        auction.setItemStack(stack);
                         auction.setPlayerName(rs.getString("player"));
                         auction.setEnchantments(rs.getString("ench"));
                         auctions.add(auction);
@@ -658,9 +658,9 @@ public class Queries implements IDataQueries {
                 while (rs.next()) {
                         WebSiteMail auctionMail = new WebSiteMail();
                         auctionMail.setId(rs.getInt("id"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auctionMail.setItemStack((WebItemStack)stack);
+                        auctionMail.setItemStack(stack);
                         auctionMail.setPlayerName(rs.getString("player"));
                         auctionMails.add(auctionMail);
                 }
@@ -692,9 +692,9 @@ public class Queries implements IDataQueries {
                 while (rs.next()) {
                         WebSiteMail auctionMail = new WebSiteMail();
                         auctionMail.setId(rs.getInt("id"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auctionMail.setItemStack((WebItemStack)stack);
+                        auctionMail.setItemStack(stack);
                         auctionMail.setPlayerName(rs.getString("player"));
                         auctionMails.add(auctionMail);
                 }
@@ -758,9 +758,9 @@ public class Queries implements IDataQueries {
                         Transact _Transact = new Transact();
                         _Transact.setBuyer(rs.getString("buyer"));
                         _Transact.setSeller(rs.getString("seller"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        _Transact.setItemStack((WebItemStack)stack);
+                        _Transact.setItemStack(stack);
                         _Transact.setPrice(rs.getDouble("price"));
                         _Transact.setQuantity(rs.getInt("quantity"));
                         Transacts.add(_Transact);
@@ -794,9 +794,9 @@ public class Queries implements IDataQueries {
                         auction.setDamage(rs.getInt("damage"));
                         auction.setPlayerName(rs.getString("player"));
                         auction.setPrice(rs.getDouble("price"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auction.setItemStack((WebItemStack)stack);
+                        auction.setItemStack(stack);
                         auction.setQuantity(rs.getInt("quantity"));
                         auction.setEnchantments(rs.getString("ench"));
                 }
@@ -832,9 +832,9 @@ public class Queries implements IDataQueries {
                         auction.setId(rs.getInt("id"));
                         auction.setName(rs.getInt("name"));
                         auction.setDamage(rs.getInt("damage"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auction.setItemStack((WebItemStack)stack);
+                        auction.setItemStack(stack);
                         auction.setPlayerName(rs.getString("player"));
                         auction.setQuantity(rs.getInt("quantity"));
                         auction.setEnchantments(rs.getString("ench"));
@@ -872,9 +872,9 @@ public class Queries implements IDataQueries {
                         auction.setDamage(rs.getInt("damage"));
                         auction.setPlayerName(rs.getString("player"));
                         auction.setQuantity(rs.getInt("quantity"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auction.setItemStack((WebItemStack)stack);
+                        auction.setItemStack(stack);
                         auction.setPrice(rs.getDouble("price"));
                         auction.setEnchantments(rs.getString("ench"));
                         auctions.add(auction);
@@ -983,7 +983,7 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public ItemStack EnchantItem(String ench, ItemStack stack) {
+    public WebItemStack EnchantItem(String ench, WebItemStack stack) {
         if(ench.equals("")) return stack;
         String[] enchs = ench.split(":");
 
@@ -1115,9 +1115,9 @@ public class Queries implements IDataQueries {
                 while (rs.next()) {
                         Shop auction = new Shop();
                         auction.setId(rs.getInt("id"));
-                        ItemStack stack = new ItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(rs.getInt("name"), rs.getInt("quantity"), rs.getShort("damage"));
                         stack = EnchantItem(rs.getString("ench"),stack);
-                        auction.setItemStack((WebItemStack)stack);
+                        auction.setItemStack(stack);
                         auction.setPlayerName(rs.getString("player"));
                         auction.setPrice(rs.getDouble("price"));
                         auctions.add(auction);
