@@ -36,7 +36,7 @@ public class LoginRequest extends HttpResponse {
             LoggedPlayer _AuthPlayer = new LoggedPlayer();
             WebSitePlayer _AuctionPlayer = plugin.dataQueries.getPlayer(username);
             if(_AuctionPlayer == null) {
-                plugin.dataQueries.createPlayer(username,"", 1, 1, 0);
+                plugin.dataQueries.createPlayer(username,"noWebPortalLoginSystem", 1, 1, 0);
                 _AuctionPlayer = plugin.dataQueries.getPlayer(username);
             }
             if(_AuctionPlayer.getWebban().equalsIgnoreCase("Y")){
