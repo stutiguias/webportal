@@ -74,7 +74,7 @@ public class WebPortalCommands extends Util implements CommandExecutor {
         String param = args[2];
         String value = args[3];
         
-        WebSitePlayer player = plugin.dataQueries.getPlayer(name);
+        WebSitePlayer player = plugin.db.getPlayer(name);
         sender.sendMessage("-----------------------------------------------------");
         if(player == null) {
             sender.sendMessage(ChatColor.YELLOW + WebPortal.Messages.WebPlayerNotFound);
@@ -103,7 +103,7 @@ public class WebPortalCommands extends Util implements CommandExecutor {
 
         }
         sender.sendMessage("-----------------------------------------------------");
-        plugin.dataQueries.updatePlayerPermissions(player.getName(), canBuy, canSell, isAdmin);
+        plugin.db.updatePlayerPermissions(player.getName(), canBuy, canSell, isAdmin);
         return true;
     }
         
@@ -121,7 +121,7 @@ public class WebPortalCommands extends Util implements CommandExecutor {
         
         String name = args[1];
         
-        WebSitePlayer player = plugin.dataQueries.getPlayer(name);
+        WebSitePlayer player = plugin.db.getPlayer(name);
         sender.sendMessage("-----------------------------------------------------");
         if(player == null) {
             sender.sendMessage(ChatColor.YELLOW + " Player Not Found");
@@ -171,13 +171,13 @@ public class WebPortalCommands extends Util implements CommandExecutor {
 
             String newPass = Algorithm.stringHexa(Algorithm.gerarHash(pass,plugin.algorithm));
 
-            if (plugin.dataQueries.getPlayer(sender.getName()) != null) {
+            if (plugin.db.getPlayer(sender.getName()) != null) {
                     sender.sendMessage(ChatColor.YELLOW + " Exist account found.");
-                    plugin.dataQueries.updatePlayerPassword(sender.getName(), newPass);
+                    plugin.db.updatePlayerPassword(sender.getName(), newPass);
                     sender.sendMessage(ChatColor.YELLOW + " Password changed");
             } else {
                     sender.sendMessage(ChatColor.YELLOW + " Player not found, creating account");
-                    plugin.dataQueries.createPlayer(sender.getName(), newPass, canBuy, canSell, isAdmin);
+                    plugin.db.createPlayer(sender.getName(), newPass, canBuy, canSell, isAdmin);
                     sender.sendMessage(ChatColor.YELLOW + " Can Buy ?" + ( (canBuy == 1) ? "YES" : "NO" ) );
                     sender.sendMessage(ChatColor.YELLOW + " Can Sell ?" + ( (canSell == 1) ? "YES" : "NO" ) );
                     sender.sendMessage(ChatColor.YELLOW + " Is Admin ?" + ( (isAdmin == 1) ? "YES" : "NO" ) );

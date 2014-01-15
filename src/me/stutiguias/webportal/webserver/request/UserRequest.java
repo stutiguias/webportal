@@ -29,7 +29,7 @@ public class UserRequest extends HttpResponse {
             json.put("Name", authPlayer.WebSitePlayer.getName() );
             json.put("Admin", authPlayer.WebSitePlayer.getIsAdmin() );
             json.put("Money", FormatMoney(plugin.economy.getBalance( authPlayer.WebSitePlayer.getName() ) ) );
-            json.put("Mail", plugin.dataQueries.getMail(authPlayer.WebSitePlayer.getName() ).size() );
+            json.put("Mail", plugin.db.getMail(authPlayer.WebSitePlayer.getName() ).size() );
             json.put("Avatarurl", plugin.Avatarurl + authPlayer.WebSitePlayer.getName() );
         Print(json.toJSONString(),"application/json");
     }
@@ -43,7 +43,7 @@ public class UserRequest extends HttpResponse {
     
     public void ItemLore(String SessionId,Map param) {
         int id = Integer.parseInt((String)param.get("id"));
-        String metaCSV = plugin.dataQueries.GetItemInfo(id,"meta");
+        String metaCSV = plugin.db.GetItemInfo(id,"meta");
         String[] metas = metaCSV.split(",");
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();

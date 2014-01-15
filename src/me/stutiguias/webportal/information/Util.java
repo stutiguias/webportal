@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
  *
  * @author Daniel
  */
-public class Util extends Converters {
+public class Util {
     
     public final WebPortal plugin;
     public CommandSender sender;

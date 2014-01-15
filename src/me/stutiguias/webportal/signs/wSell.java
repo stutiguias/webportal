@@ -40,14 +40,14 @@ public class wSell {
             return;
         }
 
-        Shop auction = plugin.dataQueries.getItemById(id, plugin.Sell);
+        Shop auction = plugin.db.getItemById(id, plugin.Sell);
         if(auction == null) {
             player.sendMessage("Invalid ID");
             event.setCancelled(true);
             return;
         }
         event.setLine(0, ChatColor.GREEN + "[wSell]" );
-        event.setLine(1, info.GetItemConfig(auction.getItemStack())[0]);
+        event.setLine(1, auction.getItemStack().getName());
         if(lines[2].isEmpty()) {
             event.setLine(2,"1-" + auction.getQuantity() + "-" + auction.getPrice());
         }else{
@@ -68,7 +68,7 @@ public class wSell {
         String[] price = lines[2].split("-");
         int qtdnow,qtdsold;
         try {
-            qtdnow = plugin.dataQueries.getItemById(Integer.valueOf(lines[3]), plugin.Sell).getQuantity();
+            qtdnow = plugin.db.getItemById(Integer.valueOf(lines[3]), plugin.Sell).getQuantity();
             qtdsold = Integer.parseInt(price[0]);
         }catch(Exception ex) {
             event.getPlayer().sendMessage(plugin.logPrefix + "Error try get line of sign");
@@ -78,7 +78,7 @@ public class wSell {
         if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             event.getPlayer().sendMessage(plugin.logPrefix + "You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
         }else{
-            Shop au = plugin.dataQueries.getAuction(Integer.valueOf(lines[3]));
+            Shop au = plugin.db.getAuction(Integer.valueOf(lines[3]));
 
             if(au == null) {
                 event.getPlayer().sendMessage(plugin.logPrefix + "No more itens left here!");

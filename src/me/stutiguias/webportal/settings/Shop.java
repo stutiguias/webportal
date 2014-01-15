@@ -9,7 +9,7 @@ public class Shop {
     private int damage;
     private int quantity;
     private String type;
-    private ItemStack itemStack;
+    private WebItemStack itemStack;
     private String playerName;
     private double price;
     private int created;
@@ -32,11 +32,11 @@ public class Shop {
         this.id = id;
     }
 
-    public ItemStack getItemStack() {
+    public WebItemStack getItemStack() {
         return itemStack;
     }
 
-    public void setItemStack(ItemStack itemStack) {
+    public void setItemStack(WebItemStack itemStack) {
         this.itemStack = itemStack;
     }
 

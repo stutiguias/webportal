@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebItemStack;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -43,19 +44,19 @@ public class MyItemsRequest extends HttpResponse {
             Print(message.WebInvalidNumber,"text/plain");
             return;
         }
-        Shop auction = plugin.dataQueries.getItemById(id,plugin.Myitems);
+        Shop auction = plugin.db.getItemById(id,plugin.Myitems);
         if(auction.getQuantity() == qtd) {
-            plugin.dataQueries.setPriceAndTable(id,price);
+            plugin.db.setPriceAndTable(id,price);
             Print(message.WebSucessCreateSale,"text/plain");
         }else{
             if(auction.getQuantity() > qtd)
             {
-              plugin.dataQueries.UpdateItemAuctionQuantity(auction.getQuantity() - qtd, id);
+              plugin.db.UpdateItemAuctionQuantity(auction.getQuantity() - qtd, id);
               Short dmg = Short.valueOf(String.valueOf(auction.getDamage()));
-              ItemStack stack = new ItemStack(auction.getName(),auction.getQuantity(),dmg);  
+              WebItemStack stack = new WebItemStack(auction.getName(),auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
-              String searchtype = GetSearchType(stack);
-              plugin.dataQueries.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Sell,type,searchtype);
+              String searchtype = stack.GetSearchType();
+              plugin.db.createItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Sell,type,searchtype);
               Print(message.WebSucessCreateSale,"text/plain");
             }else{
               Print(message.WebFailSellMore,"text/plain");
@@ -68,7 +69,7 @@ public class MyItemsRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
 
-        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName(),from,qtd,plugin.Myitems);
+        List<Shop> shops = plugin.db.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName(),from,qtd,plugin.Myitems);
         
         if(CheckError(ip, shops)) return;
 
@@ -78,7 +79,7 @@ public class MyItemsRequest extends HttpResponse {
             Shop shop = shops.get(i);          
             json = new JSONObject();
             
-            double mprice = plugin.dataQueries.GetMarketPriceofItem(shop.getItemStack().getTypeId(),shop.getItemStack().getDurability());
+            double mprice = plugin.db.GetMarketPriceofItem(shop.getItemStack().getTypeId(),shop.getItemStack().getDurability());
 
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
@@ -91,23 +92,21 @@ public class MyItemsRequest extends HttpResponse {
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        jsonresult.put(plugin.db.getFound(),jsonArray);
         
         Print(jsonresult.toJSONString(),"application/json");
     }
     
     public void GetMyItems(String ip) {
-        List<Shop> auctions = plugin.dataQueries.getPlayerItems(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName());
+        List<Shop> auctions = plugin.db.getPlayerItems(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName());
         JSONObject json = new JSONObject();
         for(Shop item:auctions){
-            String[] itemConfig = GetItemConfig(item.getItemStack());
             
-            if(plugin.AllowMetaItem) {
-                itemConfig[0] = ChangeItemToItemMeta(item, itemConfig[0]);
-            }
+            String metaCSV = plugin.db.GetItemInfo(item.getId(),"meta");
+            item.getItemStack().SetMetaItemName(metaCSV);
             
             JSONObject jsonNameImg = new JSONObject();
-            jsonNameImg.put(itemConfig[0],itemConfig[1]);
+            jsonNameImg.put(item.getItemStack().getName(),item.getItemStack().getImage());
             jsonNameImg.put("enchant",GetEnchant(item));
             
             json.put(item.getId(),jsonNameImg);

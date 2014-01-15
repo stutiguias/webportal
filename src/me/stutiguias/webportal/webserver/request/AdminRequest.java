@@ -48,7 +48,7 @@ public class AdminRequest extends HttpResponse {
             return;
         }
         String setplayer = (String)param.get("ID");
-        boolean success = plugin.dataQueries.WebSiteBan(setplayer,"Y");
+        boolean success = plugin.db.WebSiteBan(setplayer,"Y");
         if(success) {
             Print(message.WebPlayerBanned,"text/plain");
         }else{
@@ -62,7 +62,7 @@ public class AdminRequest extends HttpResponse {
             return;
         }
         String setplayer = (String)param.get("ID");
-        boolean success = plugin.dataQueries.WebSiteBan(setplayer,"N");
+        boolean success = plugin.db.WebSiteBan(setplayer,"N");
         if(success) {
             Print(message.WebPlayerDesBanned,"text/plain");
         }else{
@@ -75,7 +75,7 @@ public class AdminRequest extends HttpResponse {
             Print(message.WebNotAdmin,"text/html");
             return;
         }
-        List<WebSitePlayer> players = plugin.dataQueries.FindAllPlayersWith(partialName);
+        List<WebSitePlayer> players = plugin.db.FindAllPlayersWith(partialName);
         if(players == null) {
             Print(message.WebPlayerNotFound,"text/html");
         }else{
@@ -97,17 +97,16 @@ public class AdminRequest extends HttpResponse {
     }
     
     private void playertransaction(String name) {
-        List<Transact> Transacts = plugin.dataQueries.GetTransactOfPlayer(name);
+        List<Transact> Transacts = plugin.db.GetTransactOfPlayer(name);
         JSONArray jsonarray = new JSONArray();
         JSONObject jsonObjectArray;
         for (int i = 0; i < Transacts.size(); i++) {
 
             Transact transact = Transacts.get(i);
-            String itemname = GetItemConfig(transact.getItemStack())[0];
    
             jsonObjectArray = new JSONObject();
             jsonObjectArray.put(message.WebBuyer,transact.getBuyer());
-            jsonObjectArray.put(message.WebItemName,itemname);
+            jsonObjectArray.put(message.WebItemName,transact.getItemStack().getName());
             jsonObjectArray.put(message.WebPrice,transact.getPrice());
             jsonObjectArray.put(message.WebQuantity,transact.getQuantity());
             jsonObjectArray.put(message.WebSeller, transact.getSeller());
@@ -118,35 +117,35 @@ public class AdminRequest extends HttpResponse {
     }
     
     private void playeritems(String name) {
-        _playerItems = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
+        _playerItems = plugin.db.getAuctionsLimitbyPlayer(name,0,2000,plugin.Myitems);
 
         JSONArray jsonarray = new JSONArray();
         JSONObject jsonObjectArray;
         for (int i = 0; i < _playerItems.size(); i++) {
-            Shop _Auction = _playerItems.get(i);
-            String itemname = GetItemConfig(_Auction.getItemStack())[0];
+            Shop shop = _playerItems.get(i);
+
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put(message.WebName,_Auction.getPlayerName());
-            jsonObjectArray.put(message.WebItemName,itemname);
-            jsonObjectArray.put(message.WebQuantity,_Auction.getItemStack().getAmount());
+            jsonObjectArray.put(message.WebName,shop.getPlayerName());
+            jsonObjectArray.put(message.WebItemName,shop.getItemStack().getName());
+            jsonObjectArray.put(message.WebQuantity,shop.getItemStack().getAmount());
             jsonarray.add(jsonObjectArray);
         }
         Print(jsonarray.toJSONString(),"application/json");
     }
     
     private void playermails(String name) {
-        _playerMail = plugin.dataQueries.getMail(name);
+        _playerMail = plugin.db.getMail(name);
         
         JSONArray jsonarray = new JSONArray();
         JSONObject jsonObjectArray;
   
         for (int i = 0; i < _playerMail.size(); i++) {
-            WebSiteMail auctionMail = _playerMail.get(i);
-            String itemname = GetItemConfig(auctionMail.getItemStack())[0];
+            WebSiteMail mail = _playerMail.get(i);
+
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put(message.WebName,auctionMail.getPlayerName());
-            jsonObjectArray.put(message.WebItemName,itemname );
-            jsonObjectArray.put(message.WebQuantity, auctionMail.getItemStack().getAmount());
+            jsonObjectArray.put(message.WebName,mail.getPlayerName());
+            jsonObjectArray.put(message.WebItemName,mail.getItemStack().getName() );
+            jsonObjectArray.put(message.WebQuantity, mail.getItemStack().getAmount());
             jsonarray.add(jsonObjectArray);
         }
 
@@ -154,17 +153,17 @@ public class AdminRequest extends HttpResponse {
     }
         
     private void playerauction(String name) {
-        _PlayerAuction = plugin.dataQueries.getAuctionsLimitbyPlayer(name,0,2000,plugin.Sell);
+        _PlayerAuction = plugin.db.getAuctionsLimitbyPlayer(name,0,2000,plugin.Sell);
         JSONArray jsonarray = new JSONArray();
         JSONObject jsonObjectArray;
 
         for (int i = 0; i < _PlayerAuction.size(); i++) {
-            Shop auction = _PlayerAuction.get(i);
-            String itemname = GetItemConfig(auction.getItemStack())[0];
+            Shop shop = _PlayerAuction.get(i);
+
             jsonObjectArray = new JSONObject();
-            jsonObjectArray.put(message.WebName,auction.getPlayerName() );
-            jsonObjectArray.put(message.WebItemName, itemname );
-            jsonObjectArray.put(message.WebQuantity, auction.getItemStack().getAmount());
+            jsonObjectArray.put(message.WebName,shop.getPlayerName() );
+            jsonObjectArray.put(message.WebItemName, shop.getItemStack().getName() );
+            jsonObjectArray.put(message.WebQuantity, shop.getItemStack().getAmount());
             jsonarray.add(jsonObjectArray);
         }
         

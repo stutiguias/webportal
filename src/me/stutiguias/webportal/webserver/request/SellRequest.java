@@ -27,7 +27,7 @@ public class SellRequest extends HttpResponse {
         Integer from = Integer.parseInt((String)param.get("from"));
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
-        List<Shop> shops = plugin.dataQueries.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName(),from,qtd,plugin.Sell);
+        List<Shop> shops = plugin.db.getAuctionsLimitbyPlayer(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName(),from,qtd,plugin.Sell);
 
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
@@ -43,12 +43,12 @@ public class SellRequest extends HttpResponse {
             json.put("6",JSON(message.WebEnchant,GetEnchant(shop)));
             json.put("7",JSON(message.WebDurability,GetDurability(shop)));
             json.put("8",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
-            json.put("9",JSON(message.WebItemCategory,GetSearchType(shop.getItemStack())));
+            json.put("9",JSON(message.WebItemCategory,shop.getItemStack().GetSearchType()));
             
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        jsonresult.put(plugin.db.getFound(),jsonArray);
         
         Print(jsonresult.toJSONString(),"application/json");
     }
@@ -56,7 +56,7 @@ public class SellRequest extends HttpResponse {
     public void Cancel(String url,Map param,String sessionId) {
         int id = Integer.parseInt((String)param.get("ID"));
         
-        Shop auction = plugin.dataQueries.getAuction(id);
+        Shop auction = plugin.db.getAuction(id);
         
         String player = auction.getPlayerName();
         Integer cancelItemId = auction.getItemStack().getTypeId();
@@ -66,18 +66,18 @@ public class SellRequest extends HttpResponse {
             Print(message.WebIdNotFound,"text/plain");
         }
 
-        List<Shop> auctions = plugin.dataQueries.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
+        List<Shop> auctions = plugin.db.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
         
         if(!auctions.isEmpty() && cancelItemId != 403) {
             
             Integer newAmount = auction.getItemStack().getAmount() + auctions.get(0).getItemStack().getAmount();
             Integer itemId = auctions.get(0).getId();
-            plugin.dataQueries.updateItemQuantity(newAmount,itemId);
-            plugin.dataQueries.DeleteAuction(id);
+            plugin.db.updateItemQuantity(newAmount,itemId);
+            plugin.db.DeleteAuction(id);
             
             
         }else{
-            plugin.dataQueries.updateTable(id, plugin.Myitems);
+            plugin.db.updateTable(id, plugin.Myitems);
         }
         Print(message.WebCancelDone,"text/plain");
     }

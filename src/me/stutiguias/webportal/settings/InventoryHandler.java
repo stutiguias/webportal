@@ -21,13 +21,11 @@ public class InventoryHandler implements InventoryHolder {
     Inventory inventory;
     WebPortal plugin;
     Player player;
-    Info info;
     
     public InventoryHandler(WebPortal plugin,Player player) {
         this.plugin = plugin;
         this.player = player;
         StartInventory();
-        info = new Info(plugin);
     }
     
     private void StartInventory(){
@@ -36,14 +34,18 @@ public class InventoryHandler implements InventoryHolder {
     
     @Override
     public Inventory getInventory() {
-        List<Shop> items = plugin.dataQueries.getAuctionsLimitbyPlayer(player.getName(), 0, 20,plugin.Myitems);
+        List<Shop> items = plugin.db.getAuctionsLimitbyPlayer(player.getName(), 0, 20,plugin.Myitems);
         
         for(Shop item:items) {
             
             if(plugin.AllowMetaItem){
-                String meta = plugin.dataQueries.GetItemInfo(item.getId(),"meta");
+                String meta = plugin.db.GetItemInfo(item.getId(),"meta");
                 if(!meta.isEmpty()) {
-                   item.setItemStack(info.SetItemMeta(item.getItemStack(), meta));
+                    
+                   WebItemStack webItemStack = ((WebItemStack)item.getItemStack());
+                   webItemStack.SetMeta(meta);
+                   item.setItemStack(webItemStack);
+                   
                 }
             }
             
@@ -60,9 +62,9 @@ public class InventoryHandler implements InventoryHolder {
                 inventory.addItem(item.getItemStack());
             }
             
-            plugin.dataQueries.DeleteAuction(item.getId());
+            plugin.db.DeleteAuction(item.getId());
         }
-        plugin.dataQueries.setLock(player.getName(),"S");
+        plugin.db.setLock(player.getName(),"S");
         WebPortal.LockTransact.put(player.getName(), Boolean.TRUE);
         return inventory;
     }
@@ -71,7 +73,7 @@ public class InventoryHandler implements InventoryHolder {
         TradeSystem ts = new TradeSystem(plugin);
         for(ItemStack item:inventory.getContents()) {
             if(item == null) continue;
-            ts.ItemtoStore(item,player);
+            ts.ItemtoStore((WebItemStack)item,player);
         }
     }
     

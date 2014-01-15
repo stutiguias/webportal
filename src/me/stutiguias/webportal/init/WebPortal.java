@@ -43,7 +43,7 @@ public class WebPortal extends JavaPlugin {
 	private final WebAuctionPlayerListener playerListener = new WebAuctionPlayerListener(this);
 	private final WebAuctionBlockListener blockListener = new WebAuctionBlockListener(this);
 
-	public IDataQueries dataQueries;
+	public static IDataQueries db;
 
 	public Map<String, Long> lastUse = new HashMap<>();
         
@@ -66,7 +66,7 @@ public class WebPortal extends JavaPlugin {
         public Boolean allowlogifonline = false;
         public Boolean blockcreative = true;
         public Boolean OnJoinCheckPermission = false;
-        public Boolean AllowMetaItem = false;
+        public static Boolean AllowMetaItem = false;
         public Integer SessionTime;
         public String Avatarurl;
         public int signDelay;
@@ -287,14 +287,14 @@ public class WebPortal extends JavaPlugin {
                     String dbPort = c.getString("MySQL.Port");
                     String dbDatabase = c.getString("MySQL.Database");
                     
-                    dataQueries = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
-                    dataQueries.initTables();
+                    db = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
+                    db.initTables();
                }else{ 
                     logger.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
                     logger.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
                     
-                    dataQueries = new SqliteDataQueries(this);
-                    dataQueries.initTables();
+                    db = new SqliteDataQueries(this);
+                    db.initTables();
                 }
                 
                 int NUM_CONN_MAX = c.getInt("Misc.MaxSimultaneousConnection");
@@ -337,7 +337,7 @@ public class WebPortal extends JavaPlugin {
                 }
         }
         
-        public String getSearchType(String itemId) {
+        public static String GetSearchType(String itemId) {
 
             ConfigurationSection[] Configs =  { 
                         materials.getConfig().getConfigurationSection("Block"),

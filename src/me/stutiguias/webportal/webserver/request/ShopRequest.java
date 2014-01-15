@@ -77,9 +77,9 @@ public class ShopRequest extends HttpResponse {
         List<Shop> shops;
         
         if(searchtype.equals("nothing")) {
-            shops = plugin.dataQueries.getAuctions(from,qtd);
+            shops = plugin.db.getAuctions(from,qtd);
         }else{
-            shops = plugin.dataQueries.getSearchAuctions(from,qtd,searchtype);
+            shops = plugin.db.getSearchAuctions(from,qtd,searchtype);
         }
 
         JSONObject json;
@@ -107,7 +107,7 @@ public class ShopRequest extends HttpResponse {
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        jsonresult.put(plugin.db.getFound(),jsonArray);
         
         Print(jsonresult.toJSONString(),"application/json");
     }
@@ -124,13 +124,13 @@ public class ShopRequest extends HttpResponse {
             return;
         }
        
-        List<Shop> auctions = plugin.dataQueries.getAuctions(from,qtd);
+        List<Shop> auctions = plugin.db.getAuctions(from,qtd);
 
         JSONArray jsonArray = new JSONArray();
         JSONObject json;
         
         for(Shop item:auctions){
-            String searchtype = GetSearchType(item.getItemStack());
+            String searchtype = item.getItemStack().GetSearchType();
             
             json = new JSONObject();
             json.put("1",JSON(message.WebType,GetType(item)));
@@ -148,7 +148,7 @@ public class ShopRequest extends HttpResponse {
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        jsonresult.put(plugin.db.getFound(),jsonArray);
         
         Print(jsonresult.toJSONString(),"application/json");
     }
@@ -177,7 +177,7 @@ public class ShopRequest extends HttpResponse {
     public void BuySellShop(String ip,Map param) {
         int id =  Integer.parseInt((String)param.get("ID"));
         
-        Shop shop = plugin.dataQueries.getAuction(id);
+        Shop shop = plugin.db.getAuction(id);
         
         if(shop.getTableId() == plugin.Sell)
             Buy(ip,param,shop);
@@ -195,7 +195,6 @@ public class ShopRequest extends HttpResponse {
                Print(message.WebCantBuy,"text/plain");
            }
            
-           String item_name = GetItemConfig(shop.getItemStack())[0];
            if(qtd <= 0)
            {
               Print(message.WebFailQtdGreaterThen,"text/plain");
@@ -209,7 +208,7 @@ public class ShopRequest extends HttpResponse {
               Print(message.WebFailBuyYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
-               Print(tr.Buy(ap.getName(),shop, qtd, item_name, false),"text/plain");
+               Print(tr.Buy(ap.getName(),shop, qtd, shop.getItemStack().getName(), false),"text/plain");
            }
        }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());
@@ -227,7 +226,6 @@ public class ShopRequest extends HttpResponse {
                Print(message.WebCantSell,"text/plain");
            }
            
-           String item_name = GetItemConfig(shop.getItemStack())[0];
            if(qtd <= 0)
            {
               Print(message.WebFailQtdGreaterThen,"text/plain");
@@ -241,7 +239,7 @@ public class ShopRequest extends HttpResponse {
               Print(message.WebFailSellYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
-               Print(tr.Sell(ap.getName(),shop, qtd, item_name, false),"text/plain");
+               Print(tr.Sell(ap.getName(),shop, qtd, shop.getItemStack().getName(), false),"text/plain");
            }
        }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());

@@ -43,19 +43,19 @@ public class WebAuctionPlayerListener implements Listener {
                     player.sendMessage(plugin.parseColor("&6An update is available: " + WebPortal.name + ", a " + WebPortal.type + " for " + WebPortal.version + " available at " + WebPortal.link));
                 }
 
-                WebSitePlayer auplayer = plugin.dataQueries.getPlayer(player.getName());
+                WebSitePlayer auplayer = plugin.db.getPlayer(player.getName());
            
                 if (auplayer == null) return;
  
                 if (plugin.showSalesOnJoin == true){
-                        List<SaleAlert> saleAlerts = plugin.dataQueries.getNewSaleAlertsForSeller(player.getName());
+                        List<SaleAlert> saleAlerts = plugin.db.getNewSaleAlertsForSeller(player.getName());
                         for (SaleAlert saleAlert : saleAlerts) {
                                 player.sendMessage("You sold " + saleAlert.getQuantity() + " " + saleAlert.getItem() + " to " + saleAlert.getBuyer() + " for "+ saleAlert.getPriceEach() + " each.");
-                                plugin.dataQueries.markSaleAlertSeen(saleAlert.getId());
+                                plugin.db.markSaleAlertSeen(saleAlert.getId());
                         }
                 }
 
-                if (plugin.dataQueries.hasMail(player.getName())) player.sendMessage("You have new mail!");
+                if (plugin.db.hasMail(player.getName()))player.sendMessage("You have new mail!");
 
                 if(plugin.OnJoinCheckPermission){
                     int canBuy = 0;
@@ -67,7 +67,7 @@ public class WebAuctionPlayerListener implements Listener {
                             canSell = 1;
                     if (plugin.permission.has(event.getPlayer(), "wa.webadmin"))
                             isAdmin = 1;
-                    plugin.dataQueries.updatePlayerPermissions(player.getName(), canBuy, canSell, isAdmin);
+                    plugin.db.updatePlayerPermissions(player.getName(), canBuy, canSell, isAdmin);
                 }
 	}
 
@@ -122,37 +122,6 @@ public class WebAuctionPlayerListener implements Listener {
                 }
                 
 	}
-                
-//        @EventHandler(priority = EventPriority.NORMAL)
-//        public void onWebAuctionLiteInventoryClick(InventoryClickEvent event) {
-//            if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
-//            if(event.getCurrentItem() == null) return;
-//            if(event.isShiftClick()) {
-//                event.setCancelled(true);
-//                return;
-//            }		
-//
-//            Player player = (Player)event.getWhoClicked();
-//            
-//            if(event.getRawSlot() <= 44) {
-//                if(event.getCurrentItem().getType() != Material.AIR && event.getCursor().getType() == Material.AIR) {
-//                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
-//                        event.setCancelled(true);
-//                        return;
-//                   } 
-//                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
-//                   plugin.vbox.Delete(event, player);
-//                }
-//                if(event.getCursor().getType() != Material.AIR) {
-//                   if(!isDelayExpire(player, plugin.mailboxDelay)) {
-//                        event.setCancelled(true);
-//                        return;
-//                   } 
-//                   plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
-//                   plugin.vbox.AddItem(event.getCursor(), player,event);
-//                } 
-//            }
-//        }
         
         @EventHandler(priority = EventPriority.NORMAL)
         public void onWebAuctionLiteInventoryClose(InventoryCloseEvent event) {
@@ -161,7 +130,7 @@ public class WebAuctionPlayerListener implements Listener {
             
             plugin.vbox.Close(event.getInventory(),pl);
             
-            plugin.dataQueries.setLock(pl.getName(),"N");
+            plugin.db.setLock(pl.getName(),"N");
             WebPortal.LockTransact.put(pl.getName(), Boolean.FALSE);
         }
 

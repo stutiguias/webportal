@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebItemStack;
 import me.stutiguias.webportal.webserver.HttpResponse;
-import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -30,14 +30,14 @@ public class AdminShopRequest extends HttpResponse {
             String price = (String)param.get("price");
             String quantity = (String)param.get("quantity");
             
-            ItemStack Item = ConvertToItemStack(itemId);
+            WebItemStack Item = ConvertToItemStack(itemId);
             if(Item == null) Print(message.WebIdNotFound,"text/html");
             Double Price = Double.parseDouble(price);
             Integer Quantity = Integer.parseInt(quantity);
             
             String type = Item.getType().toString();
-            String searchtype = GetSearchType(Item);
-            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Sell, type, searchtype);
+            String searchtype = Item.GetSearchType();
+            plugin.db.createItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Sell, type, searchtype);
             Print("ok","text/html");
         }else{
             Print(message.WebNotAdmin,"text/html");
@@ -51,9 +51,9 @@ public class AdminShopRequest extends HttpResponse {
             int iDisplayStart = Integer.parseInt((String)param.get("DisplayStart"));
             int iDisplayLength = Integer.parseInt((String)param.get("DisplayLength"));
             
-            List<Shop> Auctions = plugin.dataQueries.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Sell);
+            List<Shop> Auctions = plugin.db.getAuctionsLimitbyPlayer("Server", iDisplayStart, iDisplayLength, plugin.Sell);
             
-            int TotalRecords = plugin.dataQueries.getFound();
+            int TotalRecords = plugin.db.getFound();
             
             JSONArray jsonarray = new JSONArray();
             JSONObject jsonresult = new JSONObject();
@@ -81,7 +81,7 @@ public class AdminShopRequest extends HttpResponse {
     public void Delete(String ip,String url,Map param) {
          if(isAdmin(ip)) {
             Integer id =  Integer.parseInt((String)param.get("ID"));
-            plugin.dataQueries.DeleteAuction(id);
+            plugin.db.DeleteAuction(id);
             Print(message.WebDeleted,"text/html");
          }else{
             Print(message.WebNotAdmin,"text/html");
@@ -98,18 +98,4 @@ public class AdminShopRequest extends HttpResponse {
       }
     }
     
-    public ItemStack ConvertToItemStack(String ItemId) {
-        Integer Name;
-        Short Damage;
-        if(ItemId.contains(":")) {
-            String[] NameDamage = ItemId.split(":");
-            Name = Integer.parseInt(NameDamage[0]);
-            Damage = Short.parseShort(NameDamage[1]);
-        }else{
-            Name = Integer.parseInt(ItemId);
-            Damage = 0;
-        }
-        ItemStack item = new ItemStack(Name ,1,Damage);
-        return item; 
-    }
 }

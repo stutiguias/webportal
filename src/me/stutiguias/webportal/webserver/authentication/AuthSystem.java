@@ -35,13 +35,13 @@ public final class AuthSystem {
     
     public boolean WebPortalisLogged(String player,String pass) {
         pass = Algorithm.stringHexa(Algorithm.gerarHash(pass,plugin.algorithm));
-        String pass_db = plugin.dataQueries.getPassword(player);
+        String pass_db = plugin.db.getPassword(player);
         return pass.equals(pass_db);
     }
     
     public boolean AuthMeReloadedisLogged(String player,String password) {
          try {
-            String hash = plugin.dataQueries.getPassword(player);
+            String hash = plugin.db.getPassword(player);
             return PasswordSecurity.comparePasswordWithHash(password,hash,player);
          }catch(NoSuchAlgorithmException e) {
             return false; 
@@ -51,7 +51,7 @@ public final class AuthSystem {
     public boolean AuthDbisLogged(String player,String password) {
          try {
             String pass = Algorithm.stringHexa(Algorithm.gerarHash(password,plugin.algorithm));
-            String pass_db = plugin.dataQueries.getPassword(player);
+            String pass_db = plugin.db.getPassword(player);
             return pass_db.equals(pass);
          }catch(Exception e) {
             return false; 
@@ -60,7 +60,7 @@ public final class AuthSystem {
         
     public boolean xAuthisLogged(String player,String password) {
          try {
-            String id = plugin.dataQueries.getPassword(player);
+            String id = plugin.db.getPassword(player);
             PasswordHandler ph = new PasswordHandler(xAuth.getPlugin());
             return ph.checkPassword(Integer.parseInt(id), password);
          }catch(NumberFormatException e) {

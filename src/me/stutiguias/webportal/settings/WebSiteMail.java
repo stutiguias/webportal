@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 public class WebSiteMail {
 
 	private int id;
-	private ItemStack itemStack;
+	private WebItemStack itemStack;
 	private String playerName;
 
 	public int getId() {
@@ -16,11 +16,11 @@ public class WebSiteMail {
 		this.id = id;
 	}
 
-	public ItemStack getItemStack() {
+	public WebItemStack getItemStack() {
 		return itemStack;
 	}
 
-	public void setItemStack(ItemStack itemStack) {
+	public void setItemStack(WebItemStack itemStack) {
 		this.itemStack = itemStack;
 	}
 

@@ -34,10 +34,10 @@ public class LoginRequest extends HttpResponse {
         if(AS.Auth(username, pass))
         {
             LoggedPlayer _AuthPlayer = new LoggedPlayer();
-            WebSitePlayer _AuctionPlayer = plugin.dataQueries.getPlayer(username);
+            WebSitePlayer _AuctionPlayer = plugin.db.getPlayer(username);
             if(_AuctionPlayer == null) {
-                plugin.dataQueries.createPlayer(username,"noWebPortalLoginSystem", 1, 1, 0);
-                _AuctionPlayer = plugin.dataQueries.getPlayer(username);
+                plugin.db.createPlayer(username,"noWebPortalLoginSystem", 1, 1, 0);
+                _AuctionPlayer = plugin.db.getPlayer(username);
             }
             if(_AuctionPlayer.getWebban().equalsIgnoreCase("Y")){
                 Print("no","text/plain");

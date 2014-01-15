@@ -80,7 +80,7 @@ public class McMMO {
     }
     
     public void GetInfoOnMysql(String player) {
-        profile = plugin.dataQueries.getMcMMOProfileMySql((String)Config.get("McMMOTablePrefix"), player);
+        profile = plugin.db.getMcMMOProfileMySql((String)Config.get("McMMOTablePrefix"), player);
     }
     
     public int getPowerLevel(Player player) {

@@ -16,7 +16,7 @@ public class Transact {
         private String itemName;
         private String type;
         private String time;
-	private ItemStack itemStack;
+	private WebItemStack itemStack;
 	private String buyer;
         private String seller;
 	private double price;
@@ -47,11 +47,11 @@ public class Transact {
 		this.id = id;
 	}
 
-	public ItemStack getItemStack() {
+	public WebItemStack getItemStack() {
 		return itemStack;
 	}
 
-	public void setItemStack(ItemStack itemStack) {
+	public void setItemStack(WebItemStack itemStack) {
 		this.itemStack = itemStack;
 	}
 

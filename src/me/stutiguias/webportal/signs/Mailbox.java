@@ -6,11 +6,12 @@ package me.stutiguias.webportal.signs;
 
 import java.util.HashMap;
 import java.util.List;
-import me.stutiguias.webportal.information.Info;
+import me.stutiguias.webportal.information.Util;
 import me.stutiguias.webportal.init.Messages;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.WebSiteMail;
 import me.stutiguias.webportal.settings.TradeSystem;
+import me.stutiguias.webportal.settings.WebItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,15 +19,14 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Stutiguias
  */
-public class Mailbox {
+public class Mailbox extends Util {
     
-    private WebPortal plugin;
-    private TradeSystem TradeSystem;
-    private Messages message;
+    private final TradeSystem TradeSystem;
+    private final Messages message;
     
     public Mailbox(WebPortal plugin)
     {
-       this.plugin = plugin;
+        super(plugin);
        TradeSystem = new TradeSystem(plugin);
        this.message = WebPortal.Messages;
     }
@@ -44,7 +44,7 @@ public class Mailbox {
                 ItemStack stack = player.getItemInHand();
                 if (stack != null) {
                         if (stack.getTypeId() != 0) {
-                                TradeSystem.ItemtoStore(stack,player);
+                                TradeSystem.ItemtoStore((WebItemStack)stack,player);
                                 player.sendMessage(Format(message.SignStackStored));
                         }else{
                                 player.sendMessage(Format(message.SignHoldHelp));						
@@ -57,18 +57,20 @@ public class Mailbox {
     private void MailBoxWithdraw(Player player) {
         if (plugin.permission.has(player.getWorld(),player.getName(), "wa.use.withdraw.items")) {
                 try {
-                        List<WebSiteMail> auctionMail = plugin.dataQueries.getMail(player.getName());
+                        List<WebSiteMail> auctionMail = plugin.db.getMail(player.getName());
                         boolean invFull = true;
                         boolean gotMail = false;
                         for (WebSiteMail mail : auctionMail) {
                                 if (player.getInventory().firstEmpty() != -1) {
-                                        ItemStack stack = mail.getItemStack();
+                                        WebItemStack stack = (WebItemStack)mail.getItemStack();
                                         if(plugin.AllowMetaItem) {
-                                            String MetaCSV = plugin.dataQueries.GetItemInfo(mail.getId(),"meta");
-                                            if(!MetaCSV.isEmpty())
-                                            mail.setItemStack(new Info(plugin).SetItemMeta(stack, MetaCSV));
+                                            String MetaCSV = plugin.db.GetItemInfo(mail.getId(),"meta");
+                                            if(!MetaCSV.isEmpty()){
+                                                stack.SetMeta(MetaCSV);
+                                                mail.setItemStack(stack);
+                                            }
                                         }
-                                        plugin.dataQueries.deleteMail(mail.getId());
+                                        plugin.db.deleteMail(mail.getId());
                                         if(stack.getMaxStackSize() == 1)
                                         {
                                             ItemStack is = new ItemStack(stack);
@@ -82,7 +84,7 @@ public class Mailbox {
                                            if(!notfit.isEmpty()) {
                                                for (ItemStack notfitstack : notfit.values()) {
                                                  player.sendMessage(Format(message.SignInventoryFull));
-                                                 TradeSystem.ItemtoStore(notfitstack, player);
+                                                 TradeSystem.ItemtoStore((WebItemStack)notfitstack, player);
                                                }
                                            }
                                         }
@@ -105,7 +107,7 @@ public class Mailbox {
                         if (auctionMail.isEmpty()){	
                            player.sendMessage(Format(message.SignNoMailRetrieved));
                         }
-                } catch (Exception e) {
+                } catch (IllegalArgumentException e) {
                        WebPortal.logger.info("Erro on Withdraw");
                        WebPortal.logger.info(e.getMessage());
                 }

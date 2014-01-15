@@ -28,7 +28,7 @@ public class MailRequest extends HttpResponse {
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
         String player = WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName();
-        List<WebSiteMail> mails = plugin.dataQueries.getMail(player,from,qtd);
+        List<WebSiteMail> mails = plugin.db.getMail(player,from,qtd);
         
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
@@ -38,11 +38,11 @@ public class MailRequest extends HttpResponse {
             json.put("1",JSON("Id",mail.getId()));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(mail.getId(),mail.getItemStack(),mail.getItemStack().getType().toString())));
             json.put("3",JSON(message.WebQuantity,mail.getItemStack().getAmount()));
-            json.put("4",JSON(message.WebItemCategory,GetSearchType(mail.getItemStack())));
+            json.put("4",JSON(message.WebItemCategory,mail.getItemStack().GetSearchType()));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
-        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        jsonresult.put(plugin.db.getFound(),jsonArray);
         Print(jsonresult.toJSONString(),"application/json");
     }
     
@@ -54,16 +54,16 @@ public class MailRequest extends HttpResponse {
             Print(message.WebInvalidNumber,"text/plain");
             return;
         }
-        Shop _Auction = plugin.dataQueries.getAuction(id);
-        if(_Auction.getItemStack().getAmount() == quantity) {
-            plugin.dataQueries.updateTable(id, plugin.Mail);
-        }else if(_Auction.getItemStack().getAmount() < quantity) {
+        Shop shop = plugin.db.getAuction(id);
+        if(shop.getItemStack().getAmount() == quantity) {
+            plugin.db.updateTable(id, plugin.Mail);
+        }else if(shop.getItemStack().getAmount() < quantity) {
             Print(message.WebNotEnought,"text/plain");
             return;
-        }else if(_Auction.getItemStack().getAmount() > quantity) {
-            plugin.dataQueries.updateItemQuantity(_Auction.getItemStack().getAmount() - quantity, id);
-            String SearchType = GetSearchType(_Auction.getItemStack());
-            plugin.dataQueries.createItem(_Auction.getItemStack().getTypeId(),_Auction.getItemStack().getDurability(),_Auction.getPlayerName(),quantity, _Auction.getPrice(),_Auction.getEnchantments(),plugin.Mail,_Auction.getType() , SearchType );
+        }else if(shop.getItemStack().getAmount() > quantity) {
+            plugin.db.updateItemQuantity(shop.getItemStack().getAmount() - quantity, id);
+            String SearchType = shop.getItemStack().GetSearchType();
+            plugin.db.createItem(shop.getItemStack().getTypeId(),shop.getItemStack().getDurability(),shop.getPlayerName(),quantity, shop.getPrice(),shop.getEnchantments(),plugin.Mail,shop.getType() , SearchType );
         }
         Print(message.WebMailSend,"text/plain");
     }

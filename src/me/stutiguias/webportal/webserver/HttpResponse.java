@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.information.Info;
 import me.stutiguias.webportal.init.Messages;
+import me.stutiguias.webportal.settings.WebItemStack;
 import org.json.simple.JSONObject;
 
 /**
@@ -144,7 +145,21 @@ public class HttpResponse extends Info {
         this.httpExchange = httpExchange;
     }
     
-        
+    public WebItemStack ConvertToItemStack(String ItemId) {
+        Integer Name;
+        Short Damage;
+        if(ItemId.contains(":")) {
+            String[] NameDamage = ItemId.split(":");
+            Name = Integer.parseInt(NameDamage[0]);
+            Damage = Short.parseShort(NameDamage[1]);
+        }else{
+            Name = Integer.parseInt(ItemId);
+            Damage = 0;
+        }
+        WebItemStack item = new WebItemStack(Name ,1,Damage);
+        return item; 
+    }
+            
     public JSONObject JSON (String title,Object value) {
         JSONObject json = new JSONObject();
         json.put("Title",title);

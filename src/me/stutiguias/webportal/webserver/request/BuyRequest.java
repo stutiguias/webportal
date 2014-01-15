@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.settings.Shop;
+import me.stutiguias.webportal.settings.WebItemStack;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
@@ -29,15 +30,15 @@ public class BuyRequest extends HttpResponse {
             String price = (String)param.get("price");
             String quantity = (String)param.get("quantity");
 
-            ItemStack Item = ConvertToItemStack(itemId);
+            WebItemStack Item = ConvertToItemStack(itemId);
             if(Item == null) Print(message.WebIdNotFound,"text/html");
             Double Price = Double.parseDouble(price);
             Integer Quantity = Integer.parseInt(quantity);
 
             String type = Item.getType().toString();
-            String searchtype = GetSearchType(Item);
+            String searchtype = Item.GetSearchType();
             String player = WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName();
-            plugin.dataQueries.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.Buy, type, searchtype);
+            plugin.db.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.Buy, type, searchtype);
             Print(message.WebSucessCreateBuy,"text/html");
           }catch(NumberFormatException ex) {
               ex.printStackTrace();
@@ -50,14 +51,14 @@ public class BuyRequest extends HttpResponse {
             
             int id = Integer.parseInt((String)param.get("id")); 
 
-            Shop auction = plugin.dataQueries.getAuction(id);
+            Shop auction = plugin.db.getAuction(id);
             String player = auction.getPlayerName();
 
             if(!WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName().equals(player)) {
                 Print(message.WebIdNotFound,"text/plain");
             }
 
-            int result = plugin.dataQueries.DeleteAuction(id);
+            int result = plugin.db.DeleteAuction(id);
             if(result == 0) {
                  Print(message.WebInvalidNumber,"text/plain");
                  return;
@@ -75,7 +76,7 @@ public class BuyRequest extends HttpResponse {
         Integer qtd = Integer.parseInt((String)param.get("qtd"));
         
         String player = WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName();
-        List<Shop> shops = plugin.dataQueries.GetBuyList(player,from,qtd);
+        List<Shop> shops = plugin.db.GetBuyList(player,from,qtd);
         
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
@@ -86,28 +87,14 @@ public class BuyRequest extends HttpResponse {
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
             json.put("3",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
-            json.put("4",JSON(message.WebItemCategory,GetSearchType(shop.getItemStack())));
+            json.put("4",JSON(message.WebItemCategory,shop.getItemStack().GetSearchType()));
             json.put("5",JSON(message.WebPrice,shop.getPrice()));
             jsonArray.add(json);
         }
         JSONObject jsonresult = new JSONObject();
         
-        jsonresult.put(plugin.dataQueries.getFound(),jsonArray);
+        jsonresult.put(plugin.db.getFound(),jsonArray);
         Print(jsonresult.toJSONString(),"application/json");
     }
     
-    public ItemStack ConvertToItemStack(String ItemId) {
-        Integer Name;
-        Short Damage;
-        if(ItemId.contains(":")) {
-            String[] NameDamage = ItemId.split(":");
-            Name = Integer.parseInt(NameDamage[0]);
-            Damage = Short.parseShort(NameDamage[1]);
-        }else{
-            Name = Integer.parseInt(ItemId);
-            Damage = 0;
-        }
-        ItemStack item = new ItemStack(Name ,1,Damage);
-        return item; 
-    }
 }
