@@ -217,16 +217,15 @@ public class TradeSystem extends Util {
             }
         }
 
-        if (foundMatch == false) {
+        if (foundMatch == true) return;
             
-                String type = stack.getType().toString();
-                String searchtype = stack.GetSearchType();
-                int createdId = plugin.db.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
-                
-                if( WebPortal.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
-                   String ItemMeta = stack.GetMeta();
-                   plugin.db.InsertItemInfo(createdId,"meta", ItemMeta);
-                }
+        String type = stack.getType().toString();
+        String searchtype = stack.GetSearchType();
+        int createdId = plugin.db.createItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
+
+        if( WebPortal.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
+           String ItemMeta = stack.GetMeta();
+           plugin.db.InsertItemInfo(createdId,"meta", ItemMeta);
         }
         
     }
