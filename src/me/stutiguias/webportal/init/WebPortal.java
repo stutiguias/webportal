@@ -359,7 +359,7 @@ public class WebPortal extends JavaPlugin {
 
             }
             
-            logger.warning(String.format("[WebPortal] Unable to search Item id %s \n please add on materials.yml and post comment about that with this id",itemId));
+            logger.warning(String.format("[WebPortal] Item id %s Not FOUND \n[WebPortal] Add it on materials.yml and post comment on dev site",itemId));
             return "Others";
             
         }

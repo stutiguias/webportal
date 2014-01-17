@@ -248,6 +248,4 @@ public class TradeSystem extends Util {
         return enchants.equals(auction.getEnchantments()) || ( enchants.isEmpty() && auction.getEnchantments().isEmpty() );
     }
 
-
-
 }
