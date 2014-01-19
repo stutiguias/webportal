@@ -1,7 +1,5 @@
 package me.stutiguias.webportal.settings;
 
-import org.bukkit.inventory.ItemStack;
-
 public class Shop {
 
     private int id;

@@ -21,54 +21,21 @@ public class TradeSystem extends Util {
         super(plugin);
     }
     
-    public String Buy(String BuyPlayerName,Shop itemSold,int qtd,String item_name,Boolean ingame) {
-        boolean found = false;
-        int StackId = 0;
-        int Stackqtd = 0;
+    public String Buy(String BuyPlayerName,Shop itemSold,int qtd,Boolean ingame) {
+        
+        String soldItemName = itemSold.getItemStack().getName();
+        
         plugin.economy.withdrawPlayer(BuyPlayerName, itemSold.getPrice() * qtd);
         plugin.economy.depositPlayer(itemSold.getPlayerName(), itemSold.getPrice() * qtd);
-        plugin.db.setAlert(itemSold.getPlayerName(), qtd, itemSold.getPrice(), BuyPlayerName, item_name);
-        // wrong player get items
-        List<Shop> auctions = plugin.db.getPlayerItems(BuyPlayerName);
-        for (Shop auction:auctions) {
-
-            String playeritemname = auction.getItemStack().getName();
-            if(item_name.equals(playeritemname) && auction.getDamage() == itemSold.getItemStack().getDurability())
-            {
-                if(itemSold.getEnchantments().equals(auction.getEnchantments()))
-                {
-                    found = true;
-                    StackId = auction.getId();
-                    Stackqtd = auction.getQuantity();
-                }
-            }
-        }
-        if(ingame) {
-            Player _player = plugin.getServer().getPlayer(BuyPlayerName);
-            ItemStack itemstack = new ItemStack(itemSold.getItemStack());
-            itemstack.setAmount(qtd);
-            if(itemstack.getMaxStackSize() == 1) {
-                ItemStack NewStack = new ItemStack(itemstack);
-                NewStack.setAmount(1);
-                for (int i = 0; i < itemstack.getAmount(); i++) {
-                   _player.getInventory().addItem(NewStack);
-                }
-            }else{
-                _player.getInventory().addItem(itemstack);  
-            }
-            _player.updateInventory();
-        }else if(found && !ingame) {
-            plugin.db.updateItemQuantity(Stackqtd + qtd, StackId);
-        }else if(!ingame) {
-            String Type = itemSold.getItemStack().getType().toString();
-            String searchtype = itemSold.getItemStack().GetSearchType();
-            plugin.db.createItem(itemSold.getItemStack().getTypeId(), itemSold.getItemStack().getDurability() , BuyPlayerName, qtd, 0.0, itemSold.getEnchantments(), plugin.Myitems,Type,searchtype);
-        }
+        
+        plugin.db.setAlert(itemSold.getPlayerName(), qtd, itemSold.getPrice(), BuyPlayerName, soldItemName);
+        
+        GivePlayerItem(BuyPlayerName,itemSold,qtd);
         
         if(itemSold.getPlayerName().equalsIgnoreCase("Server") && itemSold.getItemStack().getAmount() == 9999 ){
             return WebPortal.Messages.WebYouPurchase
                     .replaceAll("%qtd%",String.valueOf(qtd))
-                    .replaceAll("%item_name%",item_name)
+                    .replaceAll("%item_name%",soldItemName)
                     .replaceAll("%playerName%",itemSold.getPlayerName())
                     .replaceAll("%price%",String.valueOf(itemSold.getPrice()));
         }
@@ -87,80 +54,41 @@ public class TradeSystem extends Util {
         
         return WebPortal.Messages.WebYouPurchase
                     .replaceAll("%qtd%",String.valueOf(qtd))
-                    .replaceAll("%item_name%",item_name)
+                    .replaceAll("%item_name%",soldItemName)
                     .replaceAll("%playerName%",itemSold.getPlayerName())
                     .replaceAll("%price%",String.valueOf(itemSold.getPrice()));
     }
     
-    public String Sell(String sellerPlayerName,Shop itemBuy,int qtd,String item_name,Boolean ingame) {
-        boolean found = false;
-        int StackId = 0;
-        int Stackqtd = 0;
+    public String Sell(String sellerPlayerName,Shop itemBuy,int qtd,Boolean ingame) {
+        
         plugin.economy.withdrawPlayer(itemBuy.getPlayerName(), itemBuy.getPrice() * qtd);
         plugin.economy.depositPlayer(sellerPlayerName, itemBuy.getPrice() * qtd);
+        String item_name = itemBuy.getItemStack().getName();
         
         // TODO: Alert to Withlist
         //plugin.db.setAlert(sellerauction.getPlayerName(), qtd, sellerauction.getPrice(), sellerPlayerName, item_name);
         
         boolean playerHasThatItem = false;    
-        List<Shop> auctions = plugin.db.getPlayerItems(sellerPlayerName);
-        for (Shop shop:auctions) {
-
-            String playeritemname = shop.getItemStack().getName();
-            if(item_name.equals(playeritemname) && shop.getDamage() == itemBuy.getItemStack().getDurability())
-            {
-                if(itemBuy.getEnchantments().equals(shop.getEnchantments()) && shop.getQuantity() >= itemBuy.getQuantity())
-                {
-                    playerHasThatItem = true;
-                    StackId = shop.getId();
-                    Stackqtd = shop.getQuantity();
-                    if(Stackqtd - qtd > 0)
-                        plugin.db.updateItemQuantity(Stackqtd - qtd, StackId);
-                    else
-                        plugin.db.DeleteAuction(StackId);
-                }
-            }
-        }
-        if(!playerHasThatItem)
-            return WebPortal.Messages.WebFailDontHave;
+        List<Shop> shops = plugin.db.getPlayerItems(sellerPlayerName);
         
-        // wrong player get items
-        auctions = plugin.db.getPlayerItems(itemBuy.getPlayerName());
-        for (Shop auction:auctions) {
-
-            String playeritemname =  auction.getItemStack().getName();
-            if(item_name.equals(playeritemname) && auction.getDamage() == itemBuy.getItemStack().getDurability())
+        for (Shop item:shops) {
+            
+            if(isItemEquals(itemBuy, item))
             {
-                if(itemBuy.getEnchantments().equals(auction.getEnchantments()))
-                {
-                    found = true;
-                    StackId = auction.getId();
-                    Stackqtd = auction.getQuantity();
-                }
+                playerHasThatItem = true;
+                
+                if(item.getQuantity() - qtd > 0)
+                    plugin.db.updateItemQuantity(item.getQuantity() - qtd, item.getId() );
+                else
+                    plugin.db.DeleteAuction(item.getId());
+                
+                break;
             }
         }
         
-        if(ingame) {
-            Player _player = plugin.getServer().getPlayer(itemBuy.getPlayerName());
-            ItemStack itemstack = new ItemStack(itemBuy.getItemStack());
-            itemstack.setAmount(qtd);
-            if(itemstack.getMaxStackSize() == 1) {
-                ItemStack NewStack = new ItemStack(itemstack);
-                NewStack.setAmount(1);
-                for (int i = 0; i < itemstack.getAmount(); i++) {
-                   _player.getInventory().addItem(NewStack);
-                }
-            }else{
-                _player.getInventory().addItem(itemstack);  
-            }
-            _player.updateInventory();
-        }else if(found && !ingame) {
-            plugin.db.updateItemQuantity(Stackqtd + qtd, StackId);
-        }else if(!ingame) {
-            String Type = itemBuy.getItemStack().getType().toString();
-            String searchtype = itemBuy.getItemStack().GetSearchType();
-            plugin.db.createItem(itemBuy.getItemStack().getTypeId(), itemBuy.getItemStack().getDurability() , itemBuy.getPlayerName(), qtd, 0.0, itemBuy.getEnchantments(), plugin.Myitems,Type,searchtype);
-        }
+        if(!playerHasThatItem) return WebPortal.Messages.WebFailDontHave;
+        
+        GivePlayerItem(itemBuy.getPlayerName(),itemBuy, qtd);
         
         if(itemBuy.getPlayerName().equalsIgnoreCase("Server") && itemBuy.getItemStack().getAmount() == 9999 ){
             return WebPortal.Messages.WebYouSell
@@ -248,4 +176,62 @@ public class TradeSystem extends Util {
         return enchants.equals(auction.getEnchantments()) || ( enchants.isEmpty() && auction.getEnchantments().isEmpty() );
     }
 
+    private boolean isItemEquals(Shop from,Shop to) {
+        return  from.getItemStack().getName().equals(to.getItemStack().getName()) 
+                && to.getDamage() == from.getItemStack().getDurability()
+                && from.getEnchantments().equals(to.getEnchantments());
+    }
+    
+    
+    private boolean GivePlayerItem(String player,Shop itemShop,int qtd) {
+        
+        List<Shop> shops = plugin.db.getPlayerItems(player);
+        boolean found = false;
+        int existId = 0;
+        int existQtd = 0;
+        
+        for (Shop item:shops) {
+
+            if(isItemEquals(itemShop, item))
+            {
+                found = true;
+                existId = item.getId();
+                existQtd = item.getQuantity();
+            }
+            
+        }
+        
+        boolean ingame = plugin.getServer().getPlayer(player) != null;
+        
+        if(ingame) {
+            AddItemToPlayer(player, itemShop, qtd);
+        }else if(found && !ingame) {
+            plugin.db.updateItemQuantity(existQtd + qtd, existId);
+        }else if(!ingame) {
+            String Type = itemShop.getItemStack().getType().toString();
+            String searchtype = itemShop.getItemStack().GetSearchType();
+            plugin.db.createItem(itemShop.getItemStack().getTypeId(), itemShop.getItemStack().getDurability() , player, qtd, 0.0, itemShop.getEnchantments(), plugin.Myitems,Type,searchtype);
+        }
+        return true;
+        
+    }
+    
+    private boolean AddItemToPlayer(String player,Shop shop,int qtd) {
+        Player _player = plugin.getServer().getPlayer(player);
+        ItemStack itemstack = new ItemStack(shop.getItemStack());
+        itemstack.setAmount(qtd);
+        
+        if (itemstack.getMaxStackSize() == 1) {
+            ItemStack NewStack = new ItemStack(itemstack);
+            NewStack.setAmount(1);
+            for (int i = 0; i < itemstack.getAmount(); i++) {
+                _player.getInventory().addItem(NewStack);
+            }
+        } else {
+            _player.getInventory().addItem(itemstack);
+        }
+        
+        _player.updateInventory();
+        return true;
+    }
 }
