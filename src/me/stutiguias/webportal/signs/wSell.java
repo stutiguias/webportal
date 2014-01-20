@@ -90,7 +90,7 @@ public class wSell extends Util {
                 }
                 TradeSystem ts = new TradeSystem(plugin);
                 if(!event.getPlayer().getName().equals(au.getPlayerName())) {
-                    event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0]),true));
+                    event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0])));
                     if(( qtdnow - qtdsold ) <= 0) {
                         setSignSold(sign);
                     }else{

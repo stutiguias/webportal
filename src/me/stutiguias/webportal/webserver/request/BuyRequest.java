@@ -38,7 +38,7 @@ public class BuyRequest extends HttpResponse {
             String type = Item.getType().toString();
             String searchtype = Item.GetSearchType();
             String player = WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName();
-            plugin.db.createItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.Buy, type, searchtype);
+            plugin.db.CreateItem(Item.getTypeId(), Item.getDurability(), player, Quantity, Price,"", plugin.Buy, type, searchtype);
             Print(message.WebSucessCreateBuy,"text/html");
           }catch(NumberFormatException ex) {
               ex.printStackTrace();

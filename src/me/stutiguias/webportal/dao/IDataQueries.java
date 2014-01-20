@@ -62,10 +62,13 @@ public interface IDataQueries {
         void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
 	//void CreateAuction(int quantity, int id);
-	int createItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
+	int CreateItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
         int GetMarketPriceofItem(int itemID, int itemDamage);
+        
+        //Item Extra info
         int InsertItemInfo(int auctionId,String type,String value);
         String GetItemInfo(int auctionId,String type);
+        boolean ChangeItemInfo(int FromShopId,int ToShopId);
         WebItemStack EnchantItem(String ench,WebItemStack stack);
         
         //WithList

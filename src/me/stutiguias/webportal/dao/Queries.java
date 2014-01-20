@@ -927,7 +927,7 @@ public class Queries implements IDataQueries {
     }
 
     @Override
-    public int createItem(int itemID, int itemDamage, String player, int quantity, Double price, String ench, int tableId, String type, String searchtype) {
+    public int CreateItem(int itemID, int itemDamage, String player, int quantity, Double price, String ench, int tableId, String type, String searchtype) {
         int id = 0;
         WALConnection conn = getConnection();
         PreparedStatement st = null;
@@ -1136,5 +1136,25 @@ public class Queries implements IDataQueries {
                 closeResources(conn, st, rs);
         }
         return auctions;
+    }
+
+    @Override
+    public boolean ChangeItemInfo(int FromShopId, int ToShopId) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+                st = conn.prepareStatement("UPDATE WA_ItemExtraInfo SET WA_ItemExtraInfo.auctionid = ? WHERE auctionid = ?");
+                st.setInt(1, ToShopId);
+                st.setInt(2, FromShopId);
+                st.executeUpdate();
+        } catch (SQLException e) {
+                WebPortal.logger.log(Level.WARNING, "{0} Unable Change Extra info", plugin.logPrefix);
+                WebPortal.logger.warning(e.getMessage());
+        } finally {
+                closeResources(conn, st, rs);
+        }
+        return true;
     }
 }

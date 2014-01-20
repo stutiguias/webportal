@@ -208,7 +208,7 @@ public class ShopRequest extends HttpResponse {
               Print(message.WebFailBuyYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
-               Print(tr.Buy(ap.getName(),shop, qtd, false),"text/plain");
+               Print(tr.Buy(ap.getName(),shop, qtd),"text/plain");
            }
        }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());
@@ -239,7 +239,7 @@ public class ShopRequest extends HttpResponse {
               Print(message.WebFailSellYours,"text/plain");
            } else {
                tr = new TradeSystem(plugin);
-               Print(tr.Sell(ap.getName(),shop, qtd, false),"text/plain");
+               Print(tr.Sell(ap.getName(),shop, qtd),"text/plain");
            }
        }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());
