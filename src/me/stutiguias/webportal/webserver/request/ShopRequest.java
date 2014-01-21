@@ -7,9 +7,9 @@ package me.stutiguias.webportal.webserver.request;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Shop;
-import me.stutiguias.webportal.settings.WebSitePlayer;
-import me.stutiguias.webportal.settings.TradeSystem;
+import me.stutiguias.webportal.model.Shop;
+import me.stutiguias.webportal.trade.TradeHandle;
+import me.stutiguias.webportal.model.WebSitePlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,11 +20,11 @@ import org.json.simple.JSONObject;
  */
 public class ShopRequest extends HttpResponse {
     
-    TradeSystem tr;
+    TradeHandle tr;
 
     public ShopRequest(WebPortal plugin) {
         super(plugin);
-        tr = new TradeSystem(plugin);
+        tr = new TradeHandle(plugin);
     }
         
 
@@ -207,8 +207,7 @@ public class ShopRequest extends HttpResponse {
            } else if(ap.getName().equals(shop.getPlayerName())) {
               Print(message.WebFailBuyYours,"text/plain");
            } else {
-               tr = new TradeSystem(plugin);
-               Print(tr.Buy(ap.getName(),shop, qtd),"text/plain");
+               Print(plugin.Buy(ap.getName(),shop, qtd),"text/plain");
            }
        }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());
@@ -238,8 +237,7 @@ public class ShopRequest extends HttpResponse {
            } else if(ap.getName().equals(shop.getPlayerName())) {
               Print(message.WebFailSellYours,"text/plain");
            } else {
-               tr = new TradeSystem(plugin);
-               Print(tr.Sell(ap.getName(),shop, qtd),"text/plain");
+               Print(plugin.Sell(ap.getName(),shop, qtd),"text/plain");
            }
        }catch(NumberFormatException ex){
            WebPortal.logger.warning(ex.getMessage());

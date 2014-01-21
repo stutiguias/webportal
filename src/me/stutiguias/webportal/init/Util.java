@@ -6,7 +6,7 @@
 
 package me.stutiguias.webportal.init;
 
-import me.stutiguias.webportal.settings.WebItemStack;
+import me.stutiguias.webportal.model.WebItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

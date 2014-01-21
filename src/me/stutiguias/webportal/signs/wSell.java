@@ -6,8 +6,9 @@ package me.stutiguias.webportal.signs;
 
 import me.stutiguias.webportal.init.Util;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Shop;
-import me.stutiguias.webportal.settings.TradeSystem;
+import me.stutiguias.webportal.model.Shop;
+import me.stutiguias.webportal.trade.TradeHandle;
+import me.stutiguias.webportal.trade.Transaction;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -88,9 +89,9 @@ public class wSell extends Util {
                     event.getPlayer().sendMessage(plugin.logPrefix + " You don't have enough money");
                     return;
                 }
-                TradeSystem ts = new TradeSystem(plugin);
+                
                 if(!event.getPlayer().getName().equals(au.getPlayerName())) {
-                    event.getPlayer().sendMessage(ts.Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0])));
+                    event.getPlayer().sendMessage(new Transaction(plugin).Buy(event.getPlayer().getName(), au, Integer.valueOf(price[0])));
                     if(( qtdnow - qtdsold ) <= 0) {
                         setSignSold(sign);
                     }else{

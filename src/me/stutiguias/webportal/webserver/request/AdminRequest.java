@@ -4,10 +4,13 @@
  */
 package me.stutiguias.webportal.webserver.request;
 
+import me.stutiguias.webportal.model.WebSitePlayer;
+import me.stutiguias.webportal.model.Transact;
+import me.stutiguias.webportal.model.Shop;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.*;
+import me.stutiguias.webportal.model.WebSiteMail;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.json.simple.JSONArray;

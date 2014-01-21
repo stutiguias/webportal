@@ -2,7 +2,7 @@ package me.stutiguias.webportal.tasks;
 
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.SaleAlert;
+import me.stutiguias.webportal.model.SaleAlert;
 import org.bukkit.entity.Player;
 
 public class SaleAlertTask implements Runnable {

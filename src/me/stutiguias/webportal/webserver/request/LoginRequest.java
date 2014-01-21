@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.WebSitePlayer;
+import me.stutiguias.webportal.model.WebSitePlayer;
 import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.webserver.authentication.AuthSystem;
 import me.stutiguias.webportal.webserver.HttpResponse;

@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.signs;
 
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.InventoryHandler;
+import me.stutiguias.webportal.inventory.InventoryHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -31,7 +31,7 @@ public class vBox {
     
     public void Close(Inventory inventory,Player player) {
         inventoryHandler = new InventoryHandler(plugin,player);
-        inventoryHandler.InventoryClose(inventory);
+        inventoryHandler.Close(inventory);
     }
   
 }

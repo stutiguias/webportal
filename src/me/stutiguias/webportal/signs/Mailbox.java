@@ -9,9 +9,8 @@ import java.util.List;
 import me.stutiguias.webportal.init.Util;
 import me.stutiguias.webportal.init.Messages;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.WebSiteMail;
-import me.stutiguias.webportal.settings.TradeSystem;
-import me.stutiguias.webportal.settings.WebItemStack;
+import me.stutiguias.webportal.model.WebItemStack;
+import me.stutiguias.webportal.model.WebSiteMail;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,13 +20,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Mailbox extends Util {
     
-    private final TradeSystem TradeSystem;
     private final Messages message;
     
     public Mailbox(WebPortal plugin)
     {
         super(plugin);
-       TradeSystem = new TradeSystem(plugin);
        this.message = WebPortal.Messages;
     }
  
@@ -46,7 +43,7 @@ public class Mailbox extends Util {
         if (stack == null) return;
 
         if (stack.getTypeId() != 0) {
-            TradeSystem.ItemtoStore(stack,player);
+            plugin.Store(stack,player);
             SendMessage(player, message.SignStackStored);
         }else{
             SendMessage(player, message.SignHoldHelp);						
@@ -86,7 +83,7 @@ public class Mailbox extends Util {
                         if (!notfit.isEmpty()) {
                             for (ItemStack notfitstack : notfit.values()) {
                                 SendMessage(player, message.SignInventoryFull);
-                                TradeSystem.ItemtoStore(notfitstack, player);
+                                plugin.Store(notfitstack, player);
                             }
                         }
                     }

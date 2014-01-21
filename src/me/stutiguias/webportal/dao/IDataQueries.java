@@ -4,9 +4,14 @@
  */
 package me.stutiguias.webportal.dao;
 
+import me.stutiguias.webportal.model.WebSitePlayer;
+import me.stutiguias.webportal.model.WebSiteMail;
+import me.stutiguias.webportal.model.Transact;
+import me.stutiguias.webportal.model.WebItemStack;
+import me.stutiguias.webportal.model.SaleAlert;
+import me.stutiguias.webportal.model.Shop;
 import java.util.List;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
-import me.stutiguias.webportal.settings.*;
 import org.bukkit.inventory.ItemStack;
 
 /**

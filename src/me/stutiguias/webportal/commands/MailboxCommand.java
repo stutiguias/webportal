@@ -7,7 +7,7 @@
 package me.stutiguias.webportal.commands;
 
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.InventoryHandler;
+import me.stutiguias.webportal.inventory.InventoryHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

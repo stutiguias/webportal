@@ -13,16 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.model.SaleAlert;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
-import me.stutiguias.webportal.settings.Shop;
-import me.stutiguias.webportal.settings.WebSiteMail;
-import me.stutiguias.webportal.settings.WebSitePlayer;
-import me.stutiguias.webportal.settings.SaleAlert;
-import me.stutiguias.webportal.settings.Transact;
-import me.stutiguias.webportal.settings.WebItemStack;
+import me.stutiguias.webportal.model.Shop;
+import me.stutiguias.webportal.model.Transact;
+import me.stutiguias.webportal.model.WebItemStack;
+import me.stutiguias.webportal.model.WebSiteMail;
+import me.stutiguias.webportal.model.WebSitePlayer;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 /**

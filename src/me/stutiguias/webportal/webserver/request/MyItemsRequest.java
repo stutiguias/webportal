@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.settings.Shop;
-import me.stutiguias.webportal.settings.WebItemStack;
+import me.stutiguias.webportal.model.Shop;
+import me.stutiguias.webportal.model.WebItemStack;
 import me.stutiguias.webportal.webserver.HttpResponse;
-import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

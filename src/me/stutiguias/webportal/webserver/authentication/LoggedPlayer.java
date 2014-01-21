@@ -5,7 +5,7 @@
 package me.stutiguias.webportal.webserver.authentication;
 
 import java.util.Date;
-import me.stutiguias.webportal.settings.WebSitePlayer;
+import me.stutiguias.webportal.model.WebSitePlayer;
 
 /**
  *
