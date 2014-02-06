@@ -195,7 +195,7 @@ public class WebPortalHttpHandler implements HttpHandler {
     
     public void MyItemsHandler() {
         if(url.startsWith("/myitems/get")) {
-                MyItems.GetMyItems(SessionId);
+                MyItems.GetMyItemsForSelectBox(SessionId);
         }else if(url.startsWith("/myitems/dataTable")) {
                 MyItems.GetMyItems(SessionId, url, params);
         }else if(url.startsWith("/myitems/postauction") && !isLocked()) {

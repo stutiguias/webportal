@@ -37,7 +37,7 @@ public class WebItemStack extends ItemStack {
          super();
         GetConfig();
         if(WebPortal.AllowMetaItem) {
-            AddMeta(MetaCSV, Name);
+            AddMeta(MetaCSV, Name, true);
         }
     }
     
@@ -173,18 +173,18 @@ public class WebItemStack extends ItemStack {
         this.Image = Image;
     }
     
-    public void SetMetaItemName(String metaCSV) {
-        if(WebPortal.AllowMetaItem) Name = AddMeta(metaCSV, Name);
+    public void SetMetaItemNameForDisplay(String metaCSV,boolean useFullmeta) {
+        if(WebPortal.AllowMetaItem) Name = AddMeta(metaCSV, Name,useFullmeta);
     }
     
-    private String AddMeta(String metaCSV, String itemName) {
+    private String AddMeta(String metaCSV, String itemName,boolean useFullmeta) {
 
         if(metaCSV.isEmpty()) return itemName;
   
         for (String meta : metaCSV.split(",")) {
             if (meta.startsWith("N[#$]")) {
-                itemName = meta.replace("N[#$]", "").replaceAll("§\\w", "");
-            } else {
+                itemName = "[ " + meta.replace("N[#$]", "").replaceAll("§\\w", "") + " ]";
+            } else if(useFullmeta) {
                 itemName += " " + meta.replace("L[#$]", "").replaceAll("§\\w", "");
             }
         }

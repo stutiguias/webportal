@@ -214,7 +214,7 @@ public class HttpResponse {
         String itemImage = item.getImage();
         
         String metaCSV = plugin.db.GetItemInfo(itemId,"meta");
-        item.SetMetaItemName(metaCSV);
+        item.SetMetaItemNameForDisplay(metaCSV,true);
         
         if(!itemImage.contains("http") || !itemImage.contains("www"))
             itemImage = String.format("images/%s",itemImage);

@@ -3,14 +3,9 @@ package me.stutiguias.webportal.commands;
 import java.util.HashMap;
 import me.stutiguias.webportal.init.Util;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.model.WebSitePlayer;
-import me.stutiguias.webportal.inventory.InventoryHandler;
-import me.stutiguias.webportal.webserver.authentication.Algorithm;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 

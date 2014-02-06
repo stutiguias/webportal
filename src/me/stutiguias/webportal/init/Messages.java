@@ -12,7 +12,8 @@ import org.bukkit.configuration.file.FileConfiguration;
  * @author Daniel
  */
 public class Messages {
-    private ConfigAccessor message;
+    
+    private final ConfigAccessor message;
     
     public Messages(WebPortal instance,String language) throws IOException {
         

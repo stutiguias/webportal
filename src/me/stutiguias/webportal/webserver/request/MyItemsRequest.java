@@ -75,18 +75,21 @@ public class MyItemsRequest extends HttpResponse {
         JSONObject json;
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < shops.size(); i++) {
-            Shop shop = shops.get(i);          
+            Shop item = shops.get(i);          
             json = new JSONObject();
             
-            double mprice = plugin.db.GetMarketPriceofItem(shop.getItemStack().getTypeId(),shop.getItemStack().getDurability());
-
-            json.put("1",JSON("Id",shop.getId()));
-            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
-            json.put("3",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
+            double mprice = plugin.db.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+            
+            String metaCSV = plugin.db.GetItemInfo(item.getId(),"meta");
+            item.getItemStack().SetMetaItemNameForDisplay(metaCSV,true);
+            
+            json.put("1",JSON("Id",item.getId()));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,item.getType())));
+            json.put("3",JSON(message.WebQuantity,item.getItemStack().getAmount()));
             json.put("4",JSON(message.WebMarketPriceE,mprice));
-            json.put("5",JSON(message.WebMarketPriceT,mprice * shop.getItemStack().getAmount()));
-            json.put("6",JSON(message.WebEnchant,GetEnchant(shop)));
-            json.put("7",JSON(message.WebDurability,GetDurability(shop)));
+            json.put("5",JSON(message.WebMarketPriceT,mprice * item.getItemStack().getAmount()));
+            json.put("6",JSON(message.WebEnchant,GetEnchant(item)));
+            json.put("7",JSON(message.WebDurability,GetDurability(item)));
             
             jsonArray.add(json);
         }
@@ -96,13 +99,13 @@ public class MyItemsRequest extends HttpResponse {
         Print(jsonresult.toJSONString(),"application/json");
     }
     
-    public void GetMyItems(String ip) {
+    public void GetMyItemsForSelectBox(String ip) {
         List<Shop> auctions = plugin.db.getPlayerItems(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName());
         JSONObject json = new JSONObject();
         for(Shop item:auctions){
             
             String metaCSV = plugin.db.GetItemInfo(item.getId(),"meta");
-            item.getItemStack().SetMetaItemName(metaCSV);
+            item.getItemStack().SetMetaItemNameForDisplay(metaCSV,false);
             
             JSONObject jsonNameImg = new JSONObject();
             jsonNameImg.put(item.getItemStack().getName(),item.getItemStack().getImage());
