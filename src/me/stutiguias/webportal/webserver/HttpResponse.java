@@ -209,13 +209,13 @@ public class HttpResponse {
     } 
     
     public String ConvertItemToResult(int itemId,WebItemStack item,String type) {
-
-        String itemName = item.getName();
-        String itemImage = item.getImage();
         
         String metaCSV = plugin.db.GetItemInfo(itemId,"meta");
         item.SetMetaItemNameForDisplay(metaCSV,true);
         
+        String itemName = item.getName();
+        String itemImage = item.getImage();
+ 
         if(!itemImage.contains("http") || !itemImage.contains("www"))
             itemImage = String.format("images/%s",itemImage);
         
