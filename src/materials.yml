@@ -6,6 +6,7 @@ Enchant:
    4: Projectile Protection
    5: Respiration
    6: Aqua Affinity
+   7: Thorns
    16: Sharpness
    17: Smite
    18: Bane of Arthropods
@@ -19,6 +20,9 @@ Enchant:
    48: Power
    49: Punch
    50: Flame
+   51: Infinity
+   61: Luck of the Sea
+   62: Lure
 
 # Block images : http://www.minecraftwiki.net/wiki/Data_values
 # Item images : http://www.minecraftwiki.net/wiki/Items
@@ -77,7 +81,7 @@ Block:
   44-4:       Brincks Slab,Blocks/Brincks_Slab.png
   44-5:       Stone Brincks Slab,Blocks/Stone_Brincks_Slab.png
   44-6:       Nether Bricks Slab,Blocks/Nether_Brick_Slab.png
-  45-7:       Quartz Slab,Blocks/Quartz_Slab.png
+  44-7:       Quartz Slab,Blocks/Quartz_Slab.png
   45:         Brincks,Blocks/Brick_(Block).png
   47:         Bookshelf,Blocks/Bookshelf.png
   48:         Moss Stone,Blocks/Moss_Stone.png
@@ -143,10 +147,45 @@ Block:
   155-1:      Chised Quartz Block,Blocks/Block_of_Chiseled_Nether_Quartz.png
   155-2:      Pillar Quartz Block,Blocks/Block_of_Lines_Nether_Quartz.png
   156:        Quartz Stairs,Blocks/Quartz_Stairs.png
+  159:        White Stained Clay,Blocks/White_Stained_Clay.png
+  159-1:      Orange Stained Clay,Blocks/Orange_Stained_Clay.png
+  159-2:      Magenta Stained Clay,Blocks/Magenta_Stained_Clay.png
+  159-3:      Light Blue Stained Clay,Blocks/Light_Blue_Stained_Clay.png
+  159-4:      Yellow Stained Clay,Blocks/Yellow_Stained_Clay.png
+  159-5:      Lime Stained Clay,Blocks/Lime_Stained_Clay.png
+  159-6:      Pink Stained Clay,Blocks/Pink_Stained_Clay.png
+  159-7:      Gray Stained Clay,Blocks/Gray_Stained_Clay.png
+  159-8:      Light Gray Stained Clay,Blocks/Light_Gray_Stained_Clay.png
+  159-9:      Cyan Stained Clay,Blocks/Cyan_Stained_Clay.png
+  159-10:     Purple Stained Clay,Blocks/Purple_Stained_Clay.png
+  159-11:     Blue Stained Clay,Blocks/Blue_Stained_Clay.png
+  159-12:     Brown Stained Clay,Blocks/Brown_Stained_Clay.png
+  159-13:     Green Stained Clay,Blocks/Green_Stained_Clay.png
+  159-14:     Red Stained Clay,Blocks/Red_Stained_Clay.png
+  159-15:     Black Stained Clay,Blocks/Black_Stained_Clay.png
   162:        Acacia Wood,Blocks/Acacia_Wood.png
   162-1:      Dark Oak Wood,Blocks/Dark_Oak_Wood.png
   163:        Acacia Wood Stairs,Blocks/Acacia_Wood_Stairs.png
   164:        Dark Oak Wood Stairs,Blocks/Dark_Oak_Wood_Stairs.png
+  170:        Hay Bale,Blocks/Hay_Bale.png
+  171:        White Carpet,Blocks/White_Carpet.png
+  171-1:      Orange Carpet,Blocks/Orange_Carpet.png
+  171-2:      Magenta Carpet,Blocks/Magenta_Carpet.png
+  171-3:      Light Blue Carpet,Blocks/Light_Blue_Carpet.png
+  171-4:      Yellow Carpet,Blocks/Yellow_Carpet.png
+  171-5:      Lime Carpet,Blocks/Lime_Carpet.png
+  171-6:      Pink Carpet,Blocks/Pink_Carpet.png
+  171-7:      Gray Carpet,Blocks/Gray_Carpet.png
+  171-8:      Light Gray Carpet,Blocks/Light_Gray_Carpet.png
+  171-9:      Cyan Carpet,Blocks/Cyan_Carpet.png
+  171-10:     Purple Carpet,Blocks/Purple_Carpet.png
+  171-11:     Blue Carpet,Blocks/Blue_Carpet.png
+  171-12:     Brown Carpet,Blocks/Brown_Carpet.png
+  171-13:     Green Carpet,Blocks/Green_Carpet.png
+  171-14:     Red Carpet,Blocks/Red_Carpet.png
+  171-15:     Black Carpet,Blocks/Black_Carpet.png
+  172:        Hardened Clay,Blocks/Hardened_Clay.png
+  173:        Block of Coal,Blocks/Block_of_Coal.png
   174:        Packed Ice,Blocks/Packed_Ice.png
 
 Decoration:
@@ -257,8 +296,8 @@ Redstone:
   152:  Block of Redstone,Blocks/Block_of_Redstone.png
   154:  Hopper,Blocks/Hopper.png
   158:  Dropper,Blocks/Dropper.png
-  324:  Wooden Door,Items/Utility/woodendoor.png
-  330:  Iron Door,Items/Utility/irondoor.png
+  324:  Wooden Door,Items/Utility/wooden_door.png
+  330:  Iron Door,Items/Utility/iron_door.png
   331:  Redstone Dust,Items/Rawmaterials/Redstone_(Dust).png
   356:  Redstone Repeater,Items/Utility/Redstone_(Repeater,_Inactive).gif
   404:  Redstone Comparator,Items/Utility/Redstone_Comparator_(Inactive).gif
@@ -393,6 +432,7 @@ Tools:
   346:     Fishing Rod,Items/Tools/Fishing_Rod.png
   347:     Clock,Items/Informative/Watch.png
   359:     Shears,Items/Tools/Shears.png
+  420:     Leash,Items/Tools/Leash.png
 
 Combat:
   261:        Bow,Items/Weapons/AnimatedBow.gif
@@ -422,6 +462,9 @@ Combat:
   315:        Gold Chestplate,Items/Armor/Grid_Gold_Chestplate.png
   314:        Gold Helmet,Items/Armor/Grid_Gold_Helmet.png
   316:        Gold Leggings,Items/Armor/Grid_Gold_Leggings.png
+  417:        Iron Horse Armor,Items/Armor/Iron_Horse_Armor.png
+  418:        Golden Horse Armor,Items/Armor/Golden_Horse_Armor.png
+  419:        Diamond Horse Armor,Items/Armor/Diamond_Horse_Armor.png
 
 Brewing:
   370:          Ghast Tear,Items/Rawmaterials/Ghast_Tear.png
@@ -494,7 +537,7 @@ Brewing:
 
 Materials:
   263:  Coal,Items/Rawmaterials/Coal2.png
-  263-1: Charcoal,Items/Rawmaterials/Coal2.png
+  263-1: Charcoal,Items/Rawmaterials/Charcoal.png
   264:  Diamond,Items/Rawmaterials/Diamond_(Gem).png
   265:  Iron Ingot,Items/Rawmaterials/Ironitm.png
   266:  Gold Ingot,Items/Rawmaterials/Golditm.png
@@ -538,3 +581,4 @@ Materials:
   399:  Nether Star,Items/Rawmaterials/Nether_star.png
   405:  Nether Brick,Items/Manufactured/Nether_Brick_(Item).png
   406:  Nether Quartz,Items/Rawmaterials/Nether_Quartz.png
+  421:  Name Tag,Items/Utility/Name_Tag.png
