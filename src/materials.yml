@@ -27,13 +27,17 @@ Block:
   1:          Stone,Blocks/Stone.png
   2:          Grass,Blocks/Grass.png
   3:          Dirt,Blocks/Dirt.png
+  3-2:        Podzol,Blocks/Podzol.png
   4:          Cobblestone,Blocks/Cobblestone.png
   5:          Oak Wood Planks,Blocks/Wooden_Plank.png
   5-1:        Spruce Wood Planks,Blocks/Spruce_Wood_Planks.png
   5-2:        Birch Wood Planks,Blocks/Birch_Wood_Planks.png
   5-3:        Jungle Wood Planks,Blocks/Jungle_Wood_Planks.png
+  5-4:        Acacia Wood Planks,Blocks/Acacia_Wood_Planks.png
+  5-5:        Dark Oak Wood Planks,Blocks/Dark_Oak_Wood_Planks.png
   7:          Bedrock,Blocks/Bedrock.png
   12:         Sand,Blocks/Sand.png
+  12-1:       Red Sand,Blocks/Red_Sand.png
   13:         Gravel,Blocks/Gravel.png
   14:         Gold Ore,Blocks/Gold_(Ore).png
   15:         Iron Ore,Blocks/Iron_(Ore).png
@@ -91,6 +95,22 @@ Block:
   88:         Soul Sand,Blocks/Soul_Sand.png
   89:         Glowstone,Blocks/Glowstone_(Block).png
   91:         Jack 'o' Lantern,Blocks/Jack-O-Lantern.png
+  95:         White Stained Glass,Blocks/White_Stained_Glass.png
+  95-1:       Orange Stained Glass,Blocks/Orange_Stained_Glass.png
+  95-2:       Magenta Stained Glass,Blocks/Magenta_Stained_Glass.png
+  95-3:       Light Blue Stained Glass,Blocks/Light_Blue_Stained_Glass.png
+  95-4:       Yellow Stained Glass,Blocks/Yellow_Stained_Glass.png
+  95-5:       Lime Stained Glass,Blocks/Lime_Stained_Glass.png
+  95-6:       Pink Stained Glass,Blocks/Pink_Stained_Glass.png
+  95-7:       Gray Stained Glass,Blocks/Gray_Stained_Glass.png
+  95-8:       Light Gray Stained Glass,Blocks/Light_Gray_Stained_Glass.png
+  95-9:       Cyan Stained Glass,Blocks/Cyan_Stained_Glass.png
+  95-10:      Purple Stained Glass,Blocks/Purple_Stained_Glass.png
+  95-11:      Blue Stained Glass,Blocks/Blue_Stained_Glass.png
+  95-12:      Brown Stained Glass,Blocks/Brown_Stained_Glass.png
+  95-13:      Green Stained Glass,Blocks/Green_Stained_Glass.png
+  95-14:      Red Stained Glass,Blocks/Red_Stained_Glass.png
+  95-15:      Black Stained Glass,Blocks/Black_Stained_Glass.png
   98:         Stone Bricks,Blocks/Stone_Brick.png
   98-1:       Mossy Stone Bricks,Blocks/Mossy_Stone_Brick.png
   98-2:       Cracked Stone Bricks,Blocks/Cracked_Stone_Brick.png
@@ -108,6 +128,8 @@ Block:
   126-1:      Spruce Wood Slab,Blocks/Spruce_Wood_Slab.png
   126-2:      Birch Wood Slab,Blocks/Birch_Wood_Slab.png
   126-3:      Jungle Wood Slab,Blocks/Jungle_Wood_Slab.png
+  126-4:      Acacia Wood Slab,Blocks/Acacia_Wood_Slab.png
+  126-5:      Dark Oak Wood Slab,Blocks/Dark_Oak_Wood_Slab.png
   128:        Sandstone Stairs,Blocks/Sandstone_Stairs.png
   129:        Emerald Ore,Blocks/Emerald_Ore2.png
   133:        Emerald Block,Blocks/Block_of_Emerald.png
@@ -121,12 +143,19 @@ Block:
   155-1:      Chised Quartz Block,Blocks/Block_of_Chiseled_Nether_Quartz.png
   155-2:      Pillar Quartz Block,Blocks/Block_of_Lines_Nether_Quartz.png
   156:        Quartz Stairs,Blocks/Quartz_Stairs.png
+  162:        Acacia Wood,Blocks/Acacia_Wood.png
+  162-1:      Dark Oak Wood,Blocks/Dark_Oak_Wood.png
+  163:        Acacia Wood Stairs,Blocks/Acacia_Wood_Stairs.png
+  164:        Dark Oak Wood Stairs,Blocks/Dark_Oak_Wood_Stairs.png
+  174:        Packed Ice,Blocks/Packed_Ice.png
 
 Decoration:
   6:     Oak Sapling,Blocks/Sapling.png
   6-1:   Spruce Sapling,Blocks/Grid_Sapling_Spruce.png
   6-2:   Birch Sapling,Blocks/Grid_Sapling_Birch.png
   6-3:   Jungle Sapling,Blocks/Grid_Sapling_Jungle.png
+  6-4:   Acacia Sapling,Blocks/Acacia_Sapling.png
+  6-5:   Dark Oak Sapling,Blocks/Dark_Oak_Sapling.png
   18:    Oak Leaves,Blocks/Leaves.png
   18-1:  Spruce Leaves,Blocks/Spruce_Leaves.png
   18-2:  Birch Leaves,Blocks/Birch_Leaves.png
@@ -135,8 +164,16 @@ Decoration:
   31:    Shrub,Blocks/Grid_Tall_Grass1.png
   31-1:  Grass,Blocks/Grid_Tall_Grass2.png
   31-2:  Fern,Blocks/Grid_Tall_Grass3.png
-  37:    Flower,Blocks/Dandelion.png
-  38:    Rose,Blocks/Rose.png
+  37:    Yellow Flower,Blocks/Dandelion.png
+  38:    Poppy,Blocks/Poppy.png
+  38-1:  Blue Orchid,Blocks/Blue_Orchid.png
+  38-2:  Allium,/Blocks/Allium.png
+  38-3:  Azure Bluet,Blocks/Azure_Bluet.png
+  38-4:  Red Tulip,Blocks/Red_Tulip.png
+  38-5:  Orange Tulip,Blocks/Orange_Tulip.png
+  38-6:  White Tulip,Blocks/White_Tulip.png
+  38-7:  Pink Tulip,Blocks/Pink_Tulip.png
+  38-8:  Oxeye Daisy,Blocks/Oxeye_Daisy.png
   39:    Brown Mushroom,Blocks/Brown_Mushroom.png
   40:    Red Mushroom,Blocks/Red_Mushroom.png
   50:    Torch,Blocks/Torch.png
@@ -163,6 +200,30 @@ Decoration:
   145-1: Anvil (Slightly Damaged),Blocks/Anvil.png
   145-2: Anvil (Very Damaged),Blocks/Anvil.png
   146:   Trapped Chest,Blocks/Trapped_Chest.png
+  160:    White Stained Glass Pane,Blocks/White_Stained_Glass_Pane.png
+  160-1:  Orange Stained Glass Pane,Blocks/Orange_Stained_Glass_Pane.png
+  160-2:  Magenta Stained Glass Pane,Blocks/Magenta_Stained_Glass_Pane.png
+  160-3:  Light Blue Stained Glass Pane,Blocks/Light_Blue_Stained_Glass_Pane.png
+  160-4:  Yellow Stained Glass Pane,Blocks/Yellow_Stained_Glass_Pane.png
+  160-5:  Lime Stained Glass Pane,Blocks/Lime_Stained_Glass_Pane.png
+  160-6:  Pink Stained Glass Pane,Blocks/Pink_Stained_Glass_Pane.png
+  160-7:  Gray Stained Glass Pane,Blocks/Gray_Stained_Glass_Pane.png
+  160-8:  Light Gray Stained Glass Pane,Blocks/Light_Gray_Stained_Glass_Pane.png
+  160-9:  Cyan Stained Glass Pane,Blocks/Cyan_Stained_Glass_Pane.png
+  160-10: Purple Stained Glass Pane,Blocks/Purple_Stained_Glass_Pane.png
+  160-11: Blue Stained Glass Pane,Blocks/Blue_Stained_Glass_Pane.png
+  160-12: Brown Stained Glass Pane,Blocks/Brown_Stained_Glass_Pane.png
+  160-13: Green Stained Glass Pane,Blocks/Green_Stained_Glass_Pane.png
+  160-14: Red Stained Glass Pane,Blocks/Red_Stained_Glass_Pane.png
+  160-15: Black Stained Glass Pane,Blocks/Black_Stained_Glass_Pane.png
+  161:   Acacia Leaves,Blocks/Acacia_Leaves.png
+  161-1: Dark Oak Leaves,Blocks/Dark_Oak_Leaves.png
+  175:   Sunflower,Blocks/double_plant.png
+  175-1: Lilac,Blocks/Grid_Lilac.png
+  175-2: Double Tallgrass,Blocks/Grid_Double_Tallgrass.png
+  175-3: Large Fern,Blocks/Grid_Large_Fern.png
+  175-4: Rose Bush,Blocks/Grid_Rose_Bush.png
+  175-5: Peony,Blocks/Grid_Peony.png
   321:   Painting,Items/Decoration/Painting.png
   323:   Sign,Items/Utility/Sign.png
   355:   Bed,Items/Utility/Bed.png
@@ -215,9 +276,11 @@ Transportation:
   398:  Carrot on a Stick,Items/Utility/Carrot_on_a_Stick.png
   407:  Minecart with TNT,Items/Vehicles/Minecart_with_TNT.png
   408:  Minecart with Hopper,Items/Vehicles/Minecart_with_Hopper.png
+  422:  Minecart with Command Block,Items/Vehicles/Minecart_with_Command_Block.png
 
 Micellaneous:
   32:      Dead Shrub,Items/Plants/Dead_Bush.png
+  51:      Fire,Blocks/Fire.png
   83:      Sugar Cane,Items/Plants/Sugar_Cane.png
   138:     Beacon,Blocks/Beacon.png
   325:     Bucket,Items/Tools/Bucket.png
@@ -283,7 +346,11 @@ Food:
   322:  Golden Apple,Items/Food/Goldenapple.png
   322-1: Enchanted Golden Apple,Items/Food/Goldenapple.png
   349:  Raw Fish,Items/Food/Fish.png
+  349-1: Raw Salmon,Items/Food/Raw_Salmon.png
+  349-2: Clownfish,Items/Food/Clownfish.png
+  349-3: Pufferfish,Items/Food/Pufferfish.png
   350:  Cooked Fish,Items/Food/Fishcooked.png
+  350-1: Cooked Salmon,Items/Food/Cooked_Salmon.png
   354:  Cake,Items/Food/Cake.png
   357:  Cookie,Items/Food/Cookie.png
   360:  Melon,Items/Food/Melonslice.png
@@ -358,7 +425,7 @@ Combat:
 
 Brewing:
   370:          Ghast Tear,Items/Rawmaterials/Ghast_Tear.png
-  373:          Glass Bottle,Items/Manufactured/Glass_Bottle.png
+  373:          Water Bottle,Items/Manufactured/Grid_Water_Bottle.png
   373-8193:     Potion of Regeneration,Items/Manufactured/Grid_Potion_of_Regeneration.png
   373-8225:     Potion of Regeneration II,Items/Manufactured/Grid_Potion_of_Regeneration.png
   373-8257:     Potion of Regeneration (Extended),Items/Manufactured/Grid_Potion_of_Regeneration.png
@@ -411,8 +478,13 @@ Brewing:
   373-16428:    Splash Potion of Harming II,Items/Manufactured/Grid_Splash_Potion_of_Harming.png
   373-8206:     Potion of Invisibility,Items/Manufactured/Grid_Potion_of_Invisibility.png
   373-8270:     Potion of Invisibility (Extended),Items/Manufactured/Grid_Potion_of_Invisibility.png
-  373-16398:    Splash Potion of Invisibility,Items/Manufactured/Grid_Splash_Potion_of_Invisibility
-  373-16462:    Splash Potion of Invisibility (Extended),Items/Manufactured/Grid_Splash_Potion_of_Invisibility
+  373-16398:    Splash Potion of Invisibility,Items/Manufactured/Grid_Splash_Potion_of_Invisibility.png
+  373-16462:    Splash Potion of Invisibility (Extended),Items/Manufactured/Grid_Splash_Potion_of_Invisibility.png
+  373-8237:     Potion of Water Breathing,Items/Manufactured/Grid_Potion_of_Water_Breathing.png
+  373-8269:     Potion of Water Breathing (Extended),Items/Manufactured/Grid_Potion_of_Water_Breathing.png
+  373-16429:    Splash Potion of Wather Breathing,Items/Manufactured/Grid_Splash_Mundane_Potion.png
+  373-16461:    Splash Potion of Wather Breathing (Extended),Items/Manufactured/Grid_Splash_Mundane_Potion.png
+  374:          Glass Bottle,Items/Manufactured/Glass_Bottle.png
   376:          Fermented Spider Eye,Items/Manufactured/Fermented_spider_eye.png
   377:          Blaze Powder,Items/Manufactured/Blaze_powder.png
   378:          Magma Cream,Items/Manufactured/Magma_cream.png
