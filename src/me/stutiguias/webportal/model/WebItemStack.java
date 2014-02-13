@@ -133,7 +133,7 @@ public class WebItemStack extends ItemStack {
         
         String itemId;
         Short dmg = getDurability();
-        if( ( getType().isBlock() || isPotion() || getTypeId() == 322 || getTypeId() == 383 ) && !dmg.equals(Short.valueOf("0")) ) 
+        if( ( getType().isBlock() || isPotion() || getTypeId() == 322 || getTypeId() == 383 || getTypeId() == 349 ) && !dmg.equals(Short.valueOf("0")) ) 
             itemId = getTypeId() + "-" + getDurability();
         else
             itemId = String.valueOf(getTypeId());
