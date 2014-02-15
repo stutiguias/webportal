@@ -87,12 +87,18 @@ public class Util {
         return message;
     }
     
-    public WebItemStack Convert(ItemStack item){
+    public WebItemStack ToWebItemStack(ItemStack item){
         WebItemStack webItemStack = new WebItemStack(item.getType(),item.getAmount(),item.getDurability());
         webItemStack.setData(item.getData());
         webItemStack.setItemMeta(item.getItemMeta());
         webItemStack.setTypeId(item.getTypeId());
-        webItemStack.addEnchantments(webItemStack.getEnchantments());
+        
+        try{
+            webItemStack.addEnchantments(item.getEnchantments());
+        }catch (IllegalArgumentException ex) {
+            webItemStack.addUnsafeEnchantments(item.getEnchantments());
+        }
+        
         return webItemStack;
     }
     

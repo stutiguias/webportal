@@ -24,7 +24,7 @@ public class TradeHandle extends Util {
     }
     
     public void Store(ItemStack item, Player player) {
-        Store( Convert(item) , player);
+        Store( ToWebItemStack(item) , player);
     }
     
     public void Store(WebItemStack stack,Player player){

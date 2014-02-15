@@ -997,7 +997,11 @@ public class Queries implements IDataQueries {
                 bookmeta.addStoredEnchant(enchant, level, true);
                 stack.setItemMeta(bookmeta);
             }else{
-                stack.addEnchantment(enchant,level);
+                try{
+                    stack.addEnchantment(enchant,level);
+                }catch(IllegalArgumentException ex) {
+                    stack.addUnsafeEnchantment(enchant, level);
+                }
             }
         }
         return stack;
