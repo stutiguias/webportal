@@ -133,12 +133,16 @@ public class WebItemStack extends ItemStack {
         
         String itemId;
         Short dmg = getDurability();
-        if( ( getType().isBlock() || isPotion() || getTypeId() == 322 || getTypeId() == 383 || getTypeId() == 349 ) && !dmg.equals(Short.valueOf("0")) ) 
+        if( isIdWithDurability() && !dmg.equals(Short.valueOf("0")) ) 
             itemId = getTypeId() + "-" + getDurability();
         else
             itemId = String.valueOf(getTypeId());
         return itemId;
         
+    }
+    
+    private boolean isIdWithDurability() {
+        return getType().isBlock() || isPotion() || getTypeId() == 322 || getTypeId() == 383 || getTypeId() == 349 || getTypeId() == 350;
     }
     
     public Boolean isPotion() {
