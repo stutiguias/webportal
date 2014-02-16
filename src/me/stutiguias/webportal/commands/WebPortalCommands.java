@@ -34,11 +34,11 @@ public class WebPortalCommands extends Util implements CommandExecutor {
             this.sender = sender;
             int paramsLength = args.length;
             
-            String executedCommand = args[0].toLowerCase();
-            
             if(paramsLength == 0) {
                 return avaibleCommands.get("help").OnCommand(sender, args);
             }
+                        
+            String executedCommand = args[0].toLowerCase();
             
             if(avaibleCommands.containsKey(executedCommand))
                 return avaibleCommands.get(executedCommand).OnCommand(sender,args);
