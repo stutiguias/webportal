@@ -23,7 +23,8 @@ public class PasswordCommand extends CommandHandler {
 
     @Override
     protected Boolean OnCommand(CommandSender sender, String[] args) {
-              
+        this.sender = sender;
+        
         if(sender.getName().equalsIgnoreCase("CONSOLE")) {
             SendMessage("&4You need to be player");
             return true;                

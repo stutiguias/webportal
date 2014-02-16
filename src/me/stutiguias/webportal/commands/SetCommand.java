@@ -23,7 +23,8 @@ public class SetCommand extends CommandHandler {
 
     @Override
     protected Boolean OnCommand(CommandSender sender, String[] args) {
-               
+        this.sender = sender;
+        
         if(args.length != 4){
             SendMessage("&4 Need to inform the player name, option ( buy,sell,admin ) and yes or no");
             return true;

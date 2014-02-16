@@ -23,7 +23,8 @@ public class ViewCommand extends CommandHandler {
 
     @Override
     protected Boolean OnCommand(CommandSender sender, String[] args) {
-                
+        this.sender = sender;
+        
         if(args.length != 2){
             SendMessage("&4 Need to inform the player name");
             return true;

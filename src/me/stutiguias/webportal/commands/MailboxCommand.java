@@ -24,6 +24,8 @@ public class MailboxCommand extends CommandHandler {
 
     @Override
     protected Boolean OnCommand(CommandSender sender, String[] args) {
+        this.sender = sender;
+        
         if (!sender.hasPermission("wa.command.vbox")){
             sender.sendMessage(ChatColor.YELLOW + " You do not have permission");
             return false;
