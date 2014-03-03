@@ -95,8 +95,7 @@ public class Enchant {
             case 500: result += "D"; break;
             case 900: result += "CM"; break;
             case 1000: result += "M"; break;
-            default:
-                break;
+            default: result += level; break;
         }
         return result;
     }
