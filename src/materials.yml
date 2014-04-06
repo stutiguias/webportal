@@ -29,6 +29,12 @@ Enchant:
 
 Block:
   1:          Stone,Blocks/Stone.png
+  1-1:        Granite,Blocks/granite.png
+  1-2:        Polished Granite,Blocks/polished_granite.png
+  1-3:        Diorite,Blocks/Diorite.png
+  1-4:        Polished Diorite,Blocks/Polished_Diorite.png
+  1-5:        Andesite,Blocks/Andesite.png
+  1-6:        Polished Andesite,Blocks/Polished_Andesite.png
   2:          Grass,Blocks/Grass.png
   3:          Dirt,Blocks/Dirt.png
   3-2:        Podzol,Blocks/Podzol.png
@@ -167,6 +173,7 @@ Block:
   162-1:      Dark Oak Wood,Blocks/Dark_Oak_Wood.png
   163:        Acacia Wood Stairs,Blocks/Acacia_Wood_Stairs.png
   164:        Dark Oak Wood Stairs,Blocks/Dark_Oak_Wood_Stairs.png
+  165:        Slime Block,Blocks/Slime_Block.png
   170:        Hay Bale,Blocks/Hay_Bale.png
   171:        White Carpet,Blocks/White_Carpet.png
   171-1:      Orange Carpet,Blocks/Orange_Carpet.png
@@ -296,6 +303,7 @@ Redstone:
   152:  Block of Redstone,Blocks/Block_of_Redstone.png
   154:  Hopper,Blocks/Hopper.png
   158:  Dropper,Blocks/Dropper.png
+  167:  Iron Trapdoor,Blocks/Iron_Trapdoor.png
   324:  Wooden Door,Items/Utility/wooden_door.png
   330:  Iron Door,Items/Utility/iron_door.png
   331:  Redstone Dust,Items/Rawmaterials/Redstone_(Dust).png
@@ -552,7 +560,7 @@ Materials:
   334:  Leather,Items/Rawmaterials/Leather.png
   336:   Brick,Items/Rawmaterials/Clay_(Brick).png
   337:  Clay,Items/Rawmaterials/Clay_(Item)png
-  338:  Sugar Canes,Items/Rawmaterials/Sugar_Cane.png
+  338:  Sugar Canes,Items/Rawmaterials/Grid_Sugar_Cane.png
   344:  Egg,Items/Weapons/Egg2.png
   348:  Glowstone Dust,Lightstonedust.png
   351:  Ink Sac,Items/Dyes/Ink_Sack.png
