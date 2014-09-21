@@ -4,7 +4,6 @@
  */
 package me.stutiguias.webportal.inventory;
 
-import me.stutiguias.webportal.trade.TradeHandle;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.model.Shop;

@@ -27,7 +27,7 @@ AuthSystem:
   System: WebPortal
   # MD5 - SHA1 - SHA-256
   Algorithm: MD5
-  # if you r using AuthDb or AuthMe or xAuth put here your the table name
+  # if you r using AuthMe put here your the table name
   TableName: minecraft
   # if you r using AuthDb or AuthMe put here password column name ( not need for xAuth )
   ColumnPassword: password

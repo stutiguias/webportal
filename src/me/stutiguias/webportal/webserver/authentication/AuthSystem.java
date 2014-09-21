@@ -28,9 +28,7 @@ public final class AuthSystem {
             if(_player == null) return false;
         }
         if(plugin.authplugin.equalsIgnoreCase("AuthMe") && AuthMeReloadedisLogged(name,pass)) return true;
-        if(plugin.authplugin.equalsIgnoreCase("WebPortal") && WebPortalisLogged(name,pass)) return true;
-        if(plugin.authplugin.equalsIgnoreCase("AuthDb") && AuthDbisLogged(name,pass)) return true;
-        return plugin.authplugin.equalsIgnoreCase("xAuth") && xAuthisLogged(name,pass);
+        return plugin.authplugin.equalsIgnoreCase("WebPortal") && WebPortalisLogged(name,pass);
     }
     
     public boolean WebPortalisLogged(String player,String pass) {
@@ -44,26 +42,6 @@ public final class AuthSystem {
             String hash = plugin.db.getPassword(player);
             return PasswordSecurity.comparePasswordWithHash(password,hash,player);
          }catch(NoSuchAlgorithmException e) {
-            return false; 
-         }
-    }
-    
-    public boolean AuthDbisLogged(String player,String password) {
-         try {
-            String pass = Algorithm.stringHexa(Algorithm.gerarHash(password,plugin.algorithm));
-            String pass_db = plugin.db.getPassword(player);
-            return pass_db.equals(pass);
-         }catch(Exception e) {
-            return false; 
-         }
-    }
-        
-    public boolean xAuthisLogged(String player,String password) {
-         try {
-            String id = plugin.db.getPassword(player);
-            PasswordHandler ph = new PasswordHandler(xAuth.getPlugin());
-            return ph.checkPassword(Integer.parseInt(id), password);
-         }catch(NumberFormatException e) {
             return false; 
          }
     }
