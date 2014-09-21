@@ -1,7 +1,6 @@
 package me.stutiguias.webportal.listeners;
 
 import java.util.List;
-import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.model.SaleAlert;
 import me.stutiguias.webportal.model.WebSitePlayer;
@@ -15,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;

@@ -14,7 +14,6 @@ import me.stutiguias.webportal.dao.MySQLDataQueries;
 import me.stutiguias.webportal.dao.SqliteDataQueries;
 import me.stutiguias.webportal.listeners.WebAuctionBlockListener;
 import me.stutiguias.webportal.listeners.WebAuctionPlayerListener;
-import me.stutiguias.webportal.metrics.Metrics;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
 import me.stutiguias.webportal.plugins.Essentials;
@@ -151,16 +150,6 @@ public class WebPortal extends JavaPlugin {
                logger.log(Level.INFO, "{0} Vault perm enable.", logPrefix);    
             }else{
                logger.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);    
-            }
-
-
-            //Metrics 
-            try {
-                logger.log(Level.INFO, "{0} Sending Metrics", logPrefix);
-                Metrics metrics = new Metrics(this);
-                metrics.start();
-            } catch (IOException e) {
-                logger.log(Level.INFO, "{0} Failed to submit Metrics", logPrefix);
             }
 
             if(UpdaterNotify){

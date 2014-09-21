@@ -12,7 +12,6 @@ import me.stutiguias.webportal.model.SaleAlert;
 import me.stutiguias.webportal.model.Shop;
 import java.util.List;
 import me.stutiguias.webportal.plugins.ProfileMcMMO;
-import org.bukkit.inventory.ItemStack;
 
 /**
  *
