@@ -4,8 +4,6 @@
  */
 package me.stutiguias.webportal.webserver.authentication;
 
-import com.cypherx.xauth.password.PasswordHandler;
-import com.cypherx.xauth.xAuth;
 import java.security.NoSuchAlgorithmException;
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.entity.Player;

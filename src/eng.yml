@@ -48,14 +48,14 @@ Web:
   WebSiteBan: WebSite Ban
   Buyer: Buyer
   Seller: Seller
-  NotEnought: Not enought items
+  NotEnought: Not enough items
   Never: Never
   IdNotFound: Item ID not found
   Cancel: Cancel
   CancelDone: Cancel Done.
   InvalidNumber: Invalid Number
-  SucessCreateSale: You have sucess create Sale
-  SucessCreateBuy: You have sucess create Buy
+  SucessCreateSale: You have success create Sale
+  SucessCreateBuy: You have success create Buy
   Mailit: Mail it
   MailSend: Mail send
   CreateSell: Create Sale

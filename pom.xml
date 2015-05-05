@@ -48,14 +48,6 @@
       <systemPath>${basedir}/lib/AuthMe.jar</systemPath>
     </dependency>
     
-    <dependency>
-      <groupId>com.cypherx.xauth.password</groupId>
-      <artifactId>xAuth</artifactId>
-      <version>v2.0.26</version>
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/xAuth.jar</systemPath>
-    </dependency>
-    
   </dependencies>
   
   <build>

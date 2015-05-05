@@ -3,7 +3,6 @@ package me.stutiguias.webportal.init;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -161,6 +160,14 @@ public class WebPortal extends JavaPlugin {
                 type = updater.getLatestType(); // Get the latest game version
                 link = updater.getLatestFileLink(); // Get the latest link
             }
+            
+            try {
+                Metrics metrics = new Metrics(this);
+                metrics.start();
+                logger.log(Level.INFO,"{0} Metrics Enable !", logPrefix);
+            } catch (IOException e) {
+                // Failed to submit the stats :-(
+            }
     }
 
     public void onReload() {
@@ -210,13 +217,7 @@ public class WebPortal extends JavaPlugin {
 
     public void onLoadConfig() {
 
-            try{
-                initConfig();
-            }catch(IOException ex) {
-                logger.warning("unable to setup config.yml");
-                onDisable();
-            }
-
+            initConfig();
             WebConfig();
 
             materials = new ConfigAccessor(this, "materials.yml");
@@ -232,16 +233,27 @@ public class WebPortal extends JavaPlugin {
             pm.registerEvents(blockListener, this);
     }
 
-    private void initConfig() throws IOException {
+    private void initConfig() {
 
             config = new ConfigAccessor(this,"config.yml");
-            config.setupConfig();
-
+            
+            try {
+                config.setupConfig();
+            }catch(IOException ex) {
+                logger.warning("unable to setup materials.yml");
+                onDisable();
+            }
+            
             FileConfiguration c = config.getConfig();
 
             if(!c.isSet("configversion") || c.getInt("configversion") != 2){ 
                 config.MakeOld();
-                config.setupConfig();
+                try {
+                    config.setupConfig();
+                }catch(IOException ex) {
+                    logger.warning("unable to setup materials.yml");
+                    onDisable();
+                }
                 c = config.getConfig();
             }
 
@@ -249,7 +261,7 @@ public class WebPortal extends JavaPlugin {
             showSalesOnJoin =       c.getBoolean("Misc.ShowSalesOnJoin");
             allowlogifonline =      c.getBoolean("Misc.AllowLogOnlyIfOnline");
             signDelay =             c.getInt("Misc.SignDelay");
-            mailboxDelay =             c.getInt("Misc.MailboxDelay");
+            mailboxDelay =          c.getInt("Misc.MailboxDelay");
             port =                  c.getInt("Misc.WebServicePort");
             OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
             AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");

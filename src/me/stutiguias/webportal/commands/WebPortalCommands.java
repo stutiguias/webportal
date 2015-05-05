@@ -17,13 +17,13 @@ public class WebPortalCommands extends Util implements CommandExecutor {
     public WebPortalCommands(WebPortal plugin) {
         super(plugin);
         avaibleCommands = new HashMap<>();
-        avaibleCommands.put("reload",new ReloadCommand(plugin));
-        avaibleCommands.put("save", new SaveCommand(plugin));
-        avaibleCommands.put("help", new HelpCommand(plugin));
-        avaibleCommands.put("mailbox", new MailboxCommand(plugin));
-        avaibleCommands.put("password", new PasswordCommand(plugin));
-        avaibleCommands.put("view", new ViewCommand(plugin));
-        avaibleCommands.put("set",new SetCommand(plugin));
+        avaibleCommands.put("reload"    , new ReloadCommand(plugin));
+        avaibleCommands.put("save"      , new SaveCommand(plugin));
+        avaibleCommands.put("help"      , new HelpCommand(plugin));
+        avaibleCommands.put("mailbox"   , new MailboxCommand(plugin));
+        avaibleCommands.put("password"  , new PasswordCommand(plugin));
+        avaibleCommands.put("view"      , new ViewCommand(plugin));
+        avaibleCommands.put("set"       , new SetCommand(plugin));
     }
 
     @Override
