@@ -67,15 +67,13 @@
           <include>eng.yml</include>
         </includes>
       </resource>
-      
+
       <resource>
-        <targetPath>.</targetPath>
-        <directory>${basedir}/src/</directory>
+        <targetPath>/html/</targetPath>
+        <directory>${basedir}/src/html/</directory>
         <filtering>false</filtering>
-        <includes>
-          <include>html.zip</include>
-        </includes>
       </resource>
+      
     </resources>
     
     <plugins>
