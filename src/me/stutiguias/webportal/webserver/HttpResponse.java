@@ -13,13 +13,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.Messages;
+import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.Enchant;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -227,7 +227,7 @@ public class HttpResponse {
         return ConvertItemToResult(item.getId(),item.getItemStack(), type);
     }
     
-    public JSONObject JSON (String title,Object value) {
+    public JSONObject JSON(String title,Object value) {
         JSONObject json = new JSONObject();
         json.put("Title",title);
         json.put("Val",value); 

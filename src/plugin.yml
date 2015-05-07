@@ -27,7 +27,6 @@ permissions:
             wa.vbox : true
             wa.view : true
             wa.set: true
-            wa.update: true
     wa.use.*:
         description: Gives access to all WebAuction commands
         children:
@@ -90,7 +89,4 @@ permissions:
        default: op
     wa.set:
        description: Set Player Permission
-       default: op
-    wa.update:
-       description: See Updater Notify
        default: op

@@ -24,7 +24,6 @@ import me.stutiguias.webportal.signs.wSell;
 import me.stutiguias.webportal.tasks.SaleAlertTask;
 import me.stutiguias.webportal.tasks.WebPortalHttpServer;
 import me.stutiguias.webportal.trade.Transaction;
-import me.stutiguias.webportal.updater.Updater;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.ChatColor;
@@ -142,16 +141,6 @@ public class WebPortal extends JavaPlugin {
             }else{
                logger.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);    
             }
-
-            if(UpdaterNotify){
-                Updater updater = new Updater(this, 38246, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, false); // Start Updater but just do a version check
-
-                update = updater.getResult() == Updater.UpdateResult.UPDATE_AVAILABLE; // Determine if there is an update ready for us
-                name = updater.getLatestName(); // Get the latest name
-                version = updater.getLatestGameVersion(); // Get the latest game version
-                type = updater.getLatestType(); // Get the latest game version
-                link = updater.getLatestFileLink(); // Get the latest link
-            }
             
             try {
                 Metrics metrics = new Metrics(this);
@@ -238,7 +227,7 @@ public class WebPortal extends JavaPlugin {
             
             FileConfiguration c = config.getConfig();
 
-            if(!c.isSet("configversion") || c.getInt("configversion") != 2){ 
+            if(!c.isSet("configversion") || c.getInt("configversion") != 3){ 
                 config.MakeOld();
                 try {
                     config.setupConfig();

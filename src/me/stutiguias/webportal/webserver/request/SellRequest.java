@@ -7,10 +7,10 @@ package me.stutiguias.webportal.webserver.request;
 import java.util.List;
 import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.init.json.JSONArray;
+import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.webserver.HttpResponse;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  *

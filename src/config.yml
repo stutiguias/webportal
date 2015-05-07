@@ -1,4 +1,4 @@
-configversion: 2
+configversion: 3
 #Use SQLite or MYSQL
 DataBase:
   # You need to choose if you will use SQLite or Mysql ( default is SQLite )
@@ -12,8 +12,6 @@ MySQL:
   Database: minecraft
   
 Misc:
-  # Notify about any  update
-  UpdaterNotify: true
   # Report the sale in game if web sell something
   ReportSales: false
   # Show the sales that player have on player join

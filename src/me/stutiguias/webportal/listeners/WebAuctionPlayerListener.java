@@ -1,6 +1,7 @@
 package me.stutiguias.webportal.listeners;
 
 import java.util.List;
+import java.util.Set;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.model.SaleAlert;
 import me.stutiguias.webportal.model.WebSitePlayer;
@@ -75,7 +76,7 @@ public class WebAuctionPlayerListener implements Listener {
 		if (!event.hasItem() && !event.hasBlock()) return;
                 Block block;
                 try{
-                  block = event.getPlayer().getTargetBlock(null, 1);
+                  block = event.getPlayer().getTargetBlock((Set<Material>) null, 1);
                 }catch(IllegalStateException ex){
                   return;  
                 }
