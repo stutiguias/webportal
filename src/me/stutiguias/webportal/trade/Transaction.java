@@ -46,7 +46,7 @@ public class Transaction extends TradeHandle {
         }
 
         int time = (int) ((System.currentTimeMillis() / 1000));
-        plugin.db.LogSellPrice(itemSold.getItemStack().getTypeId(),itemSold.getItemStack().getDurability(),time, BuyPlayerName, itemSold.getPlayerName(), qtd, itemSold.getPrice(), itemSold.getEnchantments());
+        plugin.db.LogSellPrice(itemSold.getItemStack().getType().name(),itemSold.getItemStack().getDurability(),time, BuyPlayerName, itemSold.getPlayerName(), qtd, itemSold.getPrice(), itemSold.getEnchantments());
         
         return BuyMsg(itemSold, qtd);
     }
@@ -122,7 +122,7 @@ public class Transaction extends TradeHandle {
         }else if(!ingame) {
             String Type = itemShop.getItemStack().getType().toString();
             String searchtype = itemShop.getItemStack().GetSearchType();
-            int newID = plugin.db.CreateItem(itemShop.getItemStack().getTypeId(), itemShop.getItemStack().getDurability() , player, qtd, 0.0, itemShop.getEnchantments(), plugin.Myitems,Type,searchtype);
+            int newID = plugin.db.CreateItem(itemShop.getItemStack().getType().name(), itemShop.getItemStack().getDurability() , player, qtd, 0.0, itemShop.getEnchantments(), plugin.Myitems,Type,searchtype);
             String meta = plugin.db.GetItemInfo(itemShop.getId(), "meta");
             if(meta.isEmpty()) return true;
             plugin.db.InsertItemInfo(newID, "meta", meta);

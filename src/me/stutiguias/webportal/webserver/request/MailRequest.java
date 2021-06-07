@@ -63,7 +63,7 @@ public class MailRequest extends HttpResponse {
         }else if(shop.getItemStack().getAmount() > quantity) {
             plugin.db.updateItemQuantity(shop.getItemStack().getAmount() - quantity, id);
             String SearchType = shop.getItemStack().GetSearchType();
-            plugin.db.CreateItem(shop.getItemStack().getTypeId(),shop.getItemStack().getDurability(),shop.getPlayerName(),quantity, shop.getPrice(),shop.getEnchantments(),plugin.Mail,shop.getType() , SearchType );
+            plugin.db.CreateItem(shop.getItemStack().getType().name(),shop.getItemStack().getDurability(),shop.getPlayerName(),quantity, shop.getPrice(),shop.getEnchantments(),plugin.Mail,shop.getType() , SearchType );
         }
         Print(message.WebMailSend,"text/plain");
     }

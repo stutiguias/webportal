@@ -8,6 +8,7 @@ import me.stutiguias.webportal.model.WebSitePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -80,7 +81,8 @@ public class WebAuctionPlayerListener implements Listener {
                 }catch(IllegalStateException ex){
                   return;  
                 }
-		if (block == null || (block.getType() != Material.SIGN_POST && block.getType() != Material.WALL_SIGN)) 	return;
+                boolean isSign = Tag.SIGNS.isTagged(block.getType());
+		if (!isSign) return;
 
 		Sign sign = (Sign) block.getState();
 		String[] lines = sign.getLines();
@@ -124,7 +126,7 @@ public class WebAuctionPlayerListener implements Listener {
         
         @EventHandler(priority = EventPriority.NORMAL)
         public void onWebAuctionLiteInventoryClose(InventoryCloseEvent event) {
-            if(!event.getInventory().getName().equalsIgnoreCase("WebPortal")) return;
+            if(!event.getView().getTitle().equalsIgnoreCase("WebPortal")) return;
             Player pl = (Player)event.getPlayer();
             
             plugin.vbox.Close(event.getInventory(),pl);

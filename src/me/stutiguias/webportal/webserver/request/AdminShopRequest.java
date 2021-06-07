@@ -37,7 +37,7 @@ public class AdminShopRequest extends HttpResponse {
             
             String type = Item.getType().toString();
             String searchtype = Item.GetSearchType();
-            plugin.db.CreateItem(Item.getTypeId(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Sell, type, searchtype);
+            plugin.db.CreateItem(Item.getType().name(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Sell, type, searchtype);
             Print("ok","text/html");
         }else{
             Print(message.WebNotAdmin,"text/html");

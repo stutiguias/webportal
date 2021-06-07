@@ -2,12 +2,9 @@ package me.stutiguias.webportal.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
@@ -18,16 +15,7 @@ public class WebItemStack extends ItemStack {
 
     private String Name;
     private String Image;
-
-    public WebItemStack() {
-        super();
-    }
-     
-    public WebItemStack(Integer type,int amount,Short damage) {
-        super(type, amount, damage);
-        GetConfig();
-    }
-        
+    
     public WebItemStack(Material type,int amount,Short damage) {
         super(type, amount, damage);
         GetConfig();
@@ -79,74 +67,40 @@ public class WebItemStack extends ItemStack {
 
         setItemMeta(meta);
     }
-
-    public String GetEnchants() {
-        Map<Enchantment, Integer> itemEnchantments;
-        String enchants = "";
-
-        if (getType() == Material.ENCHANTED_BOOK) {
-            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta) getItemMeta();
-            itemEnchantments = bookmeta.getStoredEnchants();
-        } else {
-            itemEnchantments = getEnchantments();
-        }
-
-        for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
-            int enchId = entry.getKey().getId();
-            int level = entry.getValue();
-            enchants += enchId + "," + level + ":";
-        }
-        return enchants;
-    }
     
     private void GetConfig() {
-        
-        String itemId = GetItemId();
-        String itemConfig;
-        
-        String SearchType = WebPortal.GetSearchType(itemId);
-        
-        if(!SearchType.equalsIgnoreCase("Others"))
-            itemConfig = GetConfigName(itemId,SearchType);
-        else
-            itemConfig = "Not Found,Not Found";
-        
-        Name = itemConfig.split(",")[0];
-        Image = itemConfig.split(",")[1];
+        Name = GetItemName();
+        Image = Name;
     }
-            
-    private String GetConfigName(String itemId,String type) {
-        for (String key : WebPortal.materials.getConfig().getConfigurationSection(type).getKeys(false)) {
-            if(key.equalsIgnoreCase(itemId)) {
-                return WebPortal.materials.getConfig().getString(type + "." + key);
-            }
-        }
-        return "Not Found,Not Found";
-    }
-    
+             
     public String GetSearchType() {
-        String itemId = GetItemId();        
-        return WebPortal.GetSearchType(itemId);
+        String itemName = GetItemName();        
+        return WebPortal.GetSearchType(itemName);
     }
         
-    public String GetItemId() {
+    public String GetItemName() {
         
         String itemId;
         Short dmg = getDurability();
         if( isIdWithDurability() && !dmg.equals(Short.valueOf("0")) ) 
-            itemId = getTypeId() + "-" + getDurability();
+            itemId = getType().name() + "-" + getDurability();
         else
-            itemId = String.valueOf(getTypeId());
+            itemId = getType().name();
         return itemId;
         
     }
     
     private boolean isIdWithDurability() {
-        return getType().isBlock() || isPotion() || getTypeId() == 322 || getTypeId() == 383 || getTypeId() == 349 || getTypeId() == 350;
+        return getType().isBlock() 
+                || isPotion() 
+                || getType() == Material.GOLDEN_APPLE 
+               // || getType() == Material.LEGACY_MONSTER_EGGS
+                || getType() == Material.LEGACY_RAW_FISH 
+                || getType() == Material.LEGACY_COOKED_FISH;
     }
     
     public Boolean isPotion() {
-        return getType() == Material.POTION || getType() == Material.INK_SACK;
+        return getType() == Material.POTION || getType() == Material.INK_SAC;
     }
 
     /**

@@ -60,7 +60,20 @@ public class MySQLDataQueries extends Queries {
 	public void initTables() {
 		if (!tableExists("WA_Players")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_Players", plugin.logPrefix);
-			executeRawSQL("CREATE TABLE WA_Players (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name VARCHAR(255), pass VARCHAR(255), money DOUBLE, itemsSold INT, itemsBought INT, earnt DOUBLE, spent DOUBLE, canBuy INT, canSell INT, isAdmin INT);");
+			executeRawSQL("CREATE TABLE WA_Players "
+                                + "(id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), "
+                                + "name VARCHAR(255), "
+                                + "pass VARCHAR(255), "
+                                + "money DOUBLE, "
+                                + "itemsSold INT, "
+                                + "itemsBought INT, "
+                                + "earnt DOUBLE, "
+                                + "spent DOUBLE, "
+                                + "canBuy INT, "
+                                + "canSell INT, "
+                                + "isAdmin INT,"
+                                + "lock VARCHAR(1) Default 'N',"
+                                + "webban VARCHAR(1) Default 'N');");
 		}
 		if (!tableExists("WA_StorageCheck")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_StorageCheck", plugin.logPrefix);
@@ -68,42 +81,48 @@ public class MySQLDataQueries extends Queries {
 		}
 		if (!tableExists("WA_Auctions")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_Auctions", plugin.logPrefix);
-			executeRawSQL("CREATE TABLE WA_Auctions (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name INT, damage INT, player VARCHAR(255), quantity INT, price DOUBLE, created INT, allowBids BOOLEAN Default '0', currentBid DOUBLE, currentWinner VARCHAR(255), ench VARCHAR(45), tableid INT(1));");
+			executeRawSQL("CREATE TABLE WA_Auctions "
+                                + "(id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), "
+                                + "name VARCHAR(255), "
+                                + "damage INT, "
+                                + "player VARCHAR(255), "
+                                + "quantity INT, "
+                                + "price DOUBLE, "
+                                + "created INT, "
+                                + "allowBids BOOLEAN Default '0', "
+                                + "currentBid DOUBLE, "
+                                + "currentWinner VARCHAR(255), "
+                                + "ench VARCHAR(45), "
+                                + "tableid INT(1),"
+                                + "type VARCHAR(45),"
+                                + "itemname VARCHAR(45),"
+                                + "searchtype VARCHAR(45));");
 		}
 		if (!tableExists("WA_SellPrice")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_SellPrice", plugin.logPrefix);
-			executeRawSQL("CREATE TABLE WA_SellPrice (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name INT, damage INT, time INT, quantity INT, price DOUBLE, seller VARCHAR(255), buyer VARCHAR(255), ench VARCHAR(45));");
-		}
-		if (!tableExists("WA_MarketPrices")) {
-			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_MarketPrices", plugin.logPrefix);
-			executeRawSQL("CREATE TABLE WA_MarketPrices (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), name INT, damage INT, time INT, marketprice DOUBLE, ref INT);");
+			executeRawSQL("CREATE TABLE WA_SellPrice "
+                                + "(id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), "
+                                + "name VARCHAR(255), "
+                                + "damage INT, "
+                                + "time INT,"
+                                + "quantity INT,"
+                                + "price DOUBLE, "
+                                + "seller VARCHAR(255), "
+                                + "buyer VARCHAR(255), "
+                                + "ench VARCHAR(45));");
 		}
 		if (!tableExists("WA_SaleAlerts")) {
 			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_SaleAlerts", plugin.logPrefix);
 			executeRawSQL("CREATE TABLE WA_SaleAlerts (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), seller VARCHAR(255), quantity INT, price DOUBLE, buyer VARCHAR(255), item VARCHAR(255), alerted BOOLEAN Default '0');");
 		}
+		if (!tableExists("WA_ItemExtraInfo")) {
+			WebPortal.logger.log(Level.INFO, "{0} Creating table WA_ItemExtraInfo", plugin.logPrefix);
+                        executeRawSQL("CREATE TABLE WA_ItemExtraInfo (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), auctionId INT, type VARCHAR(45), value TEXT );");
+		}
                 if (!tableExists("WA_DbVersion")) {
                         WebPortal.logger.log(Level.INFO, "{0} Creating table WA_DbVersion", plugin.logPrefix);
                         executeRawSQL("CREATE TABLE WA_DbVersion (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), dbversion INT);");
                         executeRawSQL("INSERT INTO WA_DbVersion (dbversion) VALUES (1)");
-                        executeRawSQL("ALTER TABLE WA_Auctions ADD COLUMN `type` VARCHAR(45) NULL AFTER `tableid` , ADD COLUMN `itemname` VARCHAR(45) NULL  AFTER `type`, ADD COLUMN `searchtype` VARCHAR(45) NULL  AFTER `itemname` ;");
-                }
-                if (tableVersion() == 1) {
-                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 2", plugin.logPrefix);
-                        executeRawSQL("ALTER TABLE WA_Players ADD COLUMN `lock` VARCHAR(1) Default 'N' AFTER `isAdmin` ");
-                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 2 where id = 1");
-                }
-                if (tableVersion() == 2) {
-                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 3", plugin.logPrefix);
-                        executeRawSQL("ALTER TABLE WA_Auctions DROP COLUMN `Itemname`, DROP COLUMN `allowBids`, DROP COLUMN `currentBid`, DROP COLUMN `currentWinner`;");
-                        executeRawSQL("CREATE TABLE WA_ItemExtraInfo (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY(id), auctionId INT, type VARCHAR(45), value TEXT );");
-                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 3 where id = 1");
-                }
-                if (tableVersion() == 3) {
-                        WebPortal.logger.log(Level.INFO, "{0} Update DB version to 4", plugin.logPrefix);
-                        executeRawSQL("ALTER TABLE WA_Players DROP COLUMN `money`;");
-                        executeRawSQL("ALTER TABLE WA_Players ADD COLUMN `webban` VARCHAR(1) Default 'N' AFTER `lock` ;");
-                        executeRawSQL("UPDATE WA_DbVersion SET dbversion = 4 where id = 1");
                 }
 	}
 

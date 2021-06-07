@@ -3,7 +3,7 @@ package me.stutiguias.webportal.model;
 public class Shop {
 
     private int id;
-    private int name;
+    private String name;
     private int damage;
     private int quantity;
     private String type;
@@ -73,14 +73,14 @@ public class Shop {
     /**
      * @return the name
      */
-    public int getName() {
+    public String getName() {
         return name;
     }
 
     /**
      * @param name the name to set
      */
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 

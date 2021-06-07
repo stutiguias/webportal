@@ -56,24 +56,24 @@ public interface IDataQueries {
         List<WebSiteMail> getMail(String player,int to,int from);
         
 	// Admin
-        void LogSellPrice(Integer name,Short damage,Integer time,String buyer,String seller,Integer quantity,Double price,String ench);
+        void LogSellPrice(String materialName,Short damage,Integer time,String buyer,String seller,Integer quantity,Double price,String ench);
         List<Transact> GetTransactOfPlayer(String player);
 
         //Items
         Shop getItemById(int ID,int tableid);
-        List<Shop> getItem(String player, int itemID, int damage, boolean reverseOrder, int tableid);
+        List<Shop> getItem(String player, String materialName, int damage, boolean reverseOrder, int tableid);
         List<Shop> getItemByName(String player, boolean reverseOrder, int tableid);
         void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
 	//void CreateAuction(int quantity, int id);
-	int CreateItem(int itemID, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
-        int GetMarketPriceofItem(int itemID, int itemDamage);
+	int CreateItem(String materialName, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
+        int GetMarketPriceofItem(String materialName, int itemDamage);
         
         //Item Extra info
         int InsertItemInfo(int auctionId,String type,String value);
         String GetItemInfo(int auctionId,String type);
         boolean ChangeItemInfo(int FromShopId,int ToShopId);
-        WebItemStack EnchantItem(String ench,WebItemStack stack);
+        //WebItemStack EnchantItem(String ench,WebItemStack stack);
         
         //WithList
         List<Shop> GetBuyList(String player,int from,int qtd);

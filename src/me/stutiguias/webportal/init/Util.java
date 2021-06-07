@@ -91,7 +91,7 @@ public class Util {
         WebItemStack webItemStack = new WebItemStack(item.getType(),item.getAmount(),item.getDurability());
         webItemStack.setData(item.getData());
         webItemStack.setItemMeta(item.getItemMeta());
-        webItemStack.setTypeId(item.getTypeId());
+        webItemStack.setType(item.getType());
         
         try{
             webItemStack.addEnchantments(item.getEnchantments());

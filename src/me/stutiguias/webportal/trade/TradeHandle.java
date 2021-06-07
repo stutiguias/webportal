@@ -7,6 +7,7 @@ package me.stutiguias.webportal.trade;
 import java.util.List;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.Util;
+import me.stutiguias.webportal.model.Enchant;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
 import org.bukkit.Material;
@@ -30,10 +31,10 @@ public class TradeHandle extends Util {
     public void Store(WebItemStack stack,Player player){
         
         int itemDamage = getDurability(stack);
-        String enchants = stack.GetEnchants();
+        String enchants = Enchant.GetEnchants(stack);
         int quantityInt = stack.getAmount();
                 
-        List<Shop> shops = plugin.db.getItem(player.getName(), stack.getTypeId(), itemDamage, false,plugin.Myitems);
+        List<Shop> shops = plugin.db.getItem(player.getName(), stack.getType().toString(), itemDamage, false,plugin.Myitems);
         
         Boolean foundMatch = false;
 
@@ -56,7 +57,7 @@ public class TradeHandle extends Util {
             
         String type = stack.getType().toString();
         String searchtype = stack.GetSearchType();
-        int createdId = plugin.db.CreateItem(stack.getTypeId(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
+        int createdId = plugin.db.CreateItem(stack.getType().name(), itemDamage, player.getName(), quantityInt, 0.0,enchants,1,type,searchtype);
 
         if( WebPortal.AllowMetaItem && stack.hasItemMeta() && stack.getType() != Material.ENCHANTED_BOOK ) {
            String ItemMeta = stack.GetMeta();

@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.stutiguias</groupId>
   <artifactId>WebPortal</artifactId>
-  <version>0.9.x</version>
-  <name>WebPortal</name>
+  <version>1.0.0</version>
+  <name>WebPortal-${project.version}</name>
   <description>WebPortal por minecraft</description>
   <packaging>jar</packaging>
   
@@ -18,11 +18,11 @@
 
   <dependencies>
 
-    <dependency>
-        <groupId>org.bukkit</groupId>
-        <artifactId>bukkit</artifactId>
-        <version>1.8.5-R0.1-SNAPSHOT</version>
-    </dependency>
+  <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.16.5-R0.1-SNAPSHOT</version>
+  </dependency>
 
   <dependency>
       <groupId>com.gmail.nossr50.mcMMO</groupId>

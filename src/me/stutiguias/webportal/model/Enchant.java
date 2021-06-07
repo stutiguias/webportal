@@ -4,7 +4,13 @@
  */
 package me.stutiguias.webportal.model;
 
+import java.util.Map;
 import me.stutiguias.webportal.init.WebPortal;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 /**
  *
@@ -73,8 +79,8 @@ public class Enchant {
         this.level = level;
     }
     
-    public String getEnchantName(int enchant,int level){
-        String result = WebPortal.materials.getConfig().getString("Enchant." + enchant );
+    public String getEnchantName(String enchant,int level){
+        String result = enchant;
         result += " ";
         switch (level) {
             case 1: result += "I"; break;
@@ -98,5 +104,50 @@ public class Enchant {
             default: result += level; break;
         }
         return result;
+    }
+    
+    public static String GetEnchants(ItemStack item) {
+        Map<Enchantment, Integer> itemEnchantments;
+        String enchants = "";
+
+        if (item.getType() == Material.ENCHANTED_BOOK) {
+            EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta) item.getItemMeta();
+            itemEnchantments = bookmeta.getStoredEnchants();
+        } else {
+            itemEnchantments = item.getEnchantments();
+        }
+
+        for (Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()) {
+            String enchId = entry.getKey().getKey().toString();
+            int level = entry.getValue();
+            enchants += enchId + "," + level + ":";
+        }
+        return enchants;
+    }
+        
+    public static WebItemStack EnchantItem(String ench, WebItemStack stack) {
+        if(ench.equals("")) return stack;
+        ench = ench.replace("minecraft:", "");
+        String[] enchs = ench.split(":");
+
+        for (String enchantString:enchs) {
+            if(enchantString.equals("")) continue;
+            String[] number_level = enchantString.split(",");
+            Enchantment enchant = Enchantment.getByKey(NamespacedKey.minecraft(number_level[0]));
+            int level = Integer.parseInt(number_level[1]);
+
+            if(stack.getType() == Material.ENCHANTED_BOOK) {
+                EnchantmentStorageMeta bookmeta = (EnchantmentStorageMeta)stack.getItemMeta();
+                bookmeta.addStoredEnchant(enchant, level, true);
+                stack.setItemMeta(bookmeta);
+            }else{
+                try{
+                    stack.addEnchantment(enchant,level);
+                }catch(IllegalArgumentException ex) {
+                    stack.addUnsafeEnchantment(enchant, level);
+                }
+            }
+        }
+        return stack;
     }
 }

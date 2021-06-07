@@ -23,7 +23,7 @@ public class ConfigAccessor {
     private FileConfiguration fileConfiguration;
 
     public ConfigAccessor(JavaPlugin plugin, String fileName) {
-        if (!plugin.isInitialized()) {
+        if (!plugin.isEnabled()) {
             throw new IllegalArgumentException("plugin must be initiaized");
         }
         this.plugin = plugin;
@@ -68,7 +68,8 @@ public class ConfigAccessor {
         InputStream defConfigStream = plugin.getResource(fileName);
 
         if (defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+            Reader reader = new InputStreamReader(defConfigStream);
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
             fileConfiguration.setDefaults(defConfig);
         }
     }

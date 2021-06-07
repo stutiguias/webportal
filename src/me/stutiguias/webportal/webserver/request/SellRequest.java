@@ -11,6 +11,7 @@ import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.bukkit.Material;
 
 /**
  *
@@ -59,16 +60,16 @@ public class SellRequest extends HttpResponse {
         Shop auction = plugin.db.getAuction(id);
         
         String player = auction.getPlayerName();
-        Integer cancelItemId = auction.getItemStack().getTypeId();
+        String cancelItemName = auction.getItemStack().getType().name();
         Short cancelItemDamage = auction.getItemStack().getDurability();
         
         if(!WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName().equals(player)) {
             Print(message.WebIdNotFound,"text/plain");
         }
 
-        List<Shop> auctions = plugin.db.getItem(player,cancelItemId,cancelItemDamage, true, plugin.Myitems);
+        List<Shop> auctions = plugin.db.getItem(player,cancelItemName,cancelItemDamage, true, plugin.Myitems);
         
-        if(!auctions.isEmpty() && cancelItemId != 403) {
+        if(!auctions.isEmpty() && auction.getItemStack().getType() != Material.ENCHANTED_BOOK) {
             
             Integer newAmount = auction.getItemStack().getAmount() + auctions.get(0).getItemStack().getAmount();
             Integer itemId = auctions.get(0).getId();

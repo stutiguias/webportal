@@ -200,15 +200,6 @@ public class WebPortal extends JavaPlugin {
 
             initConfig();
             WebConfig();
-
-            materials = new ConfigAccessor(this, "materials.yml");
-            try {
-                materials.setupConfig();
-            }catch(IOException ex) {
-                logger.warning("unable to setup materials.yml");
-                onDisable();
-            }
-
             PluginManager pm = getServer().getPluginManager();
             pm.registerEvents(playerListener, this);
             pm.registerEvents(blockListener, this);
@@ -325,29 +316,6 @@ public class WebPortal extends JavaPlugin {
     }
 
     public static String GetSearchType(String itemId) {
-
-        ConfigurationSection[] Configs =  { 
-                    materials.getConfig().getConfigurationSection("Block"),
-                    materials.getConfig().getConfigurationSection("Materials"),
-                    materials.getConfig().getConfigurationSection("Micellaneous"),
-                    materials.getConfig().getConfigurationSection("Redstone"),
-                    materials.getConfig().getConfigurationSection("Transportation"),
-                    materials.getConfig().getConfigurationSection("Decoration"),
-                    materials.getConfig().getConfigurationSection("Tools"),
-                    materials.getConfig().getConfigurationSection("Combat"),
-                    materials.getConfig().getConfigurationSection("Food"),    
-                    materials.getConfig().getConfigurationSection("Brewing"),    
-        };
-
-        for (ConfigurationSection configurationSection : Configs) {
-
-            Set<String> keys = configurationSection.getKeys(false);
-
-            for (String key : keys) {
-                if (key.equals(itemId)) return configurationSection.getName();
-            }
-
-        }
 
         logger.warning(String.format("[WebPortal] Item id %s Not FOUND \n[WebPortal] Add it on materials.yml and post comment on dev site",itemId));
         return "Others";

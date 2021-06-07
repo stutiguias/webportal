@@ -13,6 +13,7 @@ import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.bukkit.Material;
 
 /**
  *
@@ -52,7 +53,8 @@ public class MyItemsRequest extends HttpResponse {
             {
               plugin.db.UpdateItemAuctionQuantity(auction.getQuantity() - qtd, id);
               Short dmg = Short.valueOf(String.valueOf(auction.getDamage()));
-              WebItemStack stack = new WebItemStack(auction.getName(),auction.getQuantity(),dmg);  
+              Material material = Material.getMaterial(auction.getName(),false);
+              WebItemStack stack = new WebItemStack(material,auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
               String searchtype = stack.GetSearchType();
               plugin.db.CreateItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Sell,type,searchtype);
@@ -78,18 +80,23 @@ public class MyItemsRequest extends HttpResponse {
             Shop item = shops.get(i);          
             json = new JSONObject();
             
-            double mprice = plugin.db.GetMarketPriceofItem(item.getItemStack().getTypeId(),item.getItemStack().getDurability());
+            double mprice = plugin.db.GetMarketPriceofItem(item.getItemStack().getType().name(),item.getItemStack().getDurability());
             
-            String metaCSV = plugin.db.GetItemInfo(item.getId(),"meta");
-            item.getItemStack().SetMetaItemNameForDisplay(metaCSV,true);
-            
-            json.put("1",JSON("Id",item.getId()));
-            json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,item.getType())));
-            json.put("3",JSON(message.WebQuantity,item.getItemStack().getAmount()));
-            json.put("4",JSON(message.WebMarketPriceE,mprice));
-            json.put("5",JSON(message.WebMarketPriceT,mprice * item.getItemStack().getAmount()));
-            json.put("6",JSON(message.WebEnchant,GetEnchant(item)));
-            json.put("7",JSON(message.WebDurability,GetDurability(item)));
+//            String metaCSV = plugin.db.GetItemInfo(item.getId(),"meta");
+//            item.getItemStack().SetMetaItemNameForDisplay(metaCSV,true);
+            try {
+                json.put("1",JSON("Id",item.getId()));
+                json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,item.getType())));
+                json.put("3",JSON(message.WebQuantity,item.getItemStack().getAmount()));
+                json.put("4",JSON(message.WebMarketPriceE,mprice));
+                json.put("5",JSON(message.WebMarketPriceT,mprice * item.getItemStack().getAmount()));
+                json.put("6",JSON(message.WebEnchant,GetEnchant(item)));
+                json.put("7",JSON(message.WebDurability,GetDurability(item)));  
+            }catch(Exception ex){
+                ex.printStackTrace();
+                return;
+            }
+
             
             jsonArray.add(json);
         }

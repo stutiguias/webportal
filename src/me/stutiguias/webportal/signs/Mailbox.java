@@ -42,12 +42,8 @@ public class Mailbox extends Util {
         ItemStack stack = player.getItemInHand();
         if (stack == null) return;
 
-        if (stack.getTypeId() != 0) {
-            plugin.Store(stack,player);
-            SendMessage(player, message.SignStackStored);
-        }else{
-            SendMessage(player, message.SignHoldHelp);						
-        }
+        plugin.Store(stack,player);
+        SendMessage(player, message.SignStackStored);
         
         player.setItemInHand(null);
     }

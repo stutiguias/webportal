@@ -2,6 +2,8 @@ package me.stutiguias.webportal.listeners;
 
 import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -23,17 +25,16 @@ public class WebAuctionBlockListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
-		if ((block.getTypeId() == 63) || (block.getTypeId() == 68)) {
-			Sign thisSign = (Sign) block.getState();
-			if (thisSign.getLine(0).equals("[WebAuction]")) {
-				if (!plugin.permission.has(player, "wa.remove")) {
-					event.setCancelled(true);
-					player.sendMessage(plugin.logPrefix + "You do not have permission to remove that");
-				} else {
-					player.sendMessage(plugin.logPrefix + "WebAuction sign removed.");
-				}
-			}
-		}
+                boolean isSign = Tag.SIGNS.isTagged(block.getType());
+		if (!isSign) return;
+                Sign thisSign = (Sign) block.getState();
+                if (thisSign.getLine(0).equals("[WebAuction]")) return;
+                if (!plugin.permission.has(player, "wa.remove")) {
+                        event.setCancelled(true);
+                        player.sendMessage(plugin.logPrefix + "You do not have permission to remove that");
+                } else {
+                        player.sendMessage(plugin.logPrefix + "WebAuction sign removed.");
+                }
 	}
         
         @EventHandler(priority = EventPriority.NORMAL)
@@ -71,7 +72,7 @@ public class WebAuctionBlockListener implements Listener {
                             player.sendMessage(plugin.logPrefix + "Virtual Box created");
                     }
             }
-            if (allowEvent == false) CancelEvent(event,player,sign);
+            if (allowEvent == false) CancelEvent(event,player);
         }
         
         private boolean isMailboxSign(String[] lines) {
@@ -83,9 +84,8 @@ public class WebAuctionBlockListener implements Listener {
             }
         }
         
-        private void CancelEvent(SignChangeEvent event,Player player,Block thisSign) {
+        private void CancelEvent(SignChangeEvent event,Player player) {
                 event.setCancelled(true);
-                thisSign.setTypeId(0);
                 player.sendMessage(plugin.logPrefix + "You do not have permission");
         }
 }
