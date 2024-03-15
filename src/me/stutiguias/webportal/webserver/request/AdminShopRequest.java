@@ -63,7 +63,7 @@ public class AdminShopRequest extends HttpResponse {
                 
                     Shop auction = Auctions.get(i);
                     jsonObjectArray = new JSONObject();
-                    jsonObjectArray.put(message.WebItemName, ConvertItemToResult(auction,auction.getType()) );
+                    jsonObjectArray.put(message.WebItemName, ConvertItemToResult(auction.getItemStack()) );
                     jsonObjectArray.put(message.WebQuantity, auction.getItemStack().getAmount());
                     jsonObjectArray.put(message.WebPrice, auction.getPrice());
                     jsonObjectArray.put(message.WebDelete, HTMLDelete(ip,auction.getId()));

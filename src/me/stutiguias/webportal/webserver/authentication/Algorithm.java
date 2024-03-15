@@ -4,8 +4,11 @@
  */
 package me.stutiguias.webportal.webserver.authentication;
 
+import me.stutiguias.webportal.init.WebPortal;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
 
 /**
  *
@@ -43,7 +46,9 @@ public class Algorithm {
             md.update(frase.getBytes());
             byte[] digest = md.digest();
             return digest;
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
+            WebPortal.logger.log(Level.INFO,algoritmo);
+            WebPortal.logger.log(Level.INFO,e.getMessage());
             return null;
         }
     }

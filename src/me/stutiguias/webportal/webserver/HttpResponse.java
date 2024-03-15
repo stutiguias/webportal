@@ -210,25 +210,22 @@ public class HttpResponse {
         return String.format("%.2f", x);  
     } 
     
-    public String ConvertItemToResult(int itemId,WebItemStack item,String type) {
+    public String ConvertItemToResult(WebItemStack item) {
+
+        // TODO Analisar meta itens
+        //String metaCSV = plugin.db.GetItemInfo(itemId,"meta");
+        //item.SetMetaItemNameForDisplay(metaCSV,true);
         
-//        String metaCSV = plugin.db.GetItemInfo(itemId,"meta");
-//        item.SetMetaItemNameForDisplay(metaCSV,true);
-        
-        String itemName = item.getName();
+        String itemName = item.getName().substring(0, 1).toUpperCase() + item.getName().substring(1);
         String itemImage = item.getImage();
  
         if(!itemImage.contains("http") || !itemImage.contains("www"))
-            itemImage = String.format("images/%s",itemImage);
+            itemImage = String.format("images/%s.png",itemName);
         
         return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /> %s</div>",itemImage,itemName);
         
     }
-    
-    public String ConvertItemToResult(Shop item,String type) {
-        return ConvertItemToResult(item.getId(),item.getItemStack(), type);
-    }
-    
+
     public JSONObject JSON(String title,Object value) {
         JSONObject json = new JSONObject();
         json.put("Title",title);

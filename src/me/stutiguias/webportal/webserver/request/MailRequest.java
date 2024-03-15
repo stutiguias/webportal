@@ -36,7 +36,7 @@ public class MailRequest extends HttpResponse {
             WebSiteMail mail = mails.get(i);
             json = new JSONObject();           
             json.put("1",JSON("Id",mail.getId()));
-            json.put("2",JSON(message.WebItemName,ConvertItemToResult(mail.getId(),mail.getItemStack(),mail.getItemStack().getType().toString())));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(mail.getItemStack())));
             json.put("3",JSON(message.WebQuantity,mail.getItemStack().getAmount()));
             json.put("4",JSON(message.WebItemCategory,mail.getItemStack().GetSearchType()));
             jsonArray.add(json);

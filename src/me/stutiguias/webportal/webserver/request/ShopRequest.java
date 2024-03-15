@@ -96,7 +96,7 @@ public class ShopRequest extends HttpResponse {
             double MakertPercent = MarketPrice(shop, shop.getPrice());
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebType,GetType(shop)));
-            json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop,searchtype)));
+            json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop.getItemStack())));
             json.put("4",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
             json.put("5",JSON(message.WebExpire, message.WebNever));
             json.put("6",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
@@ -134,7 +134,7 @@ public class ShopRequest extends HttpResponse {
             
             json = new JSONObject();
             json.put("1",JSON(message.WebType,GetType(item)));
-            json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
             json.put("3",JSON(message.WebOwner,getName(item)));
             json.put("4",JSON(message.WebExpire, message.WebNever));
             if(item.getItemStack().getAmount() == 9999) {
@@ -157,7 +157,7 @@ public class ShopRequest extends HttpResponse {
         JSONObject json = new JSONObject();
         json.put("1",JSON("Id",item.getId()));
         json.put("2",JSON(message.WebType,GetType(item) ));
-        json.put("3",JSON(message.WebItemName,ConvertItemToResult(item,searchtype)));
+        json.put("3",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
         json.put("4",JSON(message.WebOwner,item.getPlayerName()));
         json.put("5",JSON(message.WebExpire, message.WebNever));
         

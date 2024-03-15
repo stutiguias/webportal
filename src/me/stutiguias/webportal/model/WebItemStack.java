@@ -74,8 +74,9 @@ public class WebItemStack extends ItemStack {
     }
              
     public String GetSearchType() {
-        String itemName = GetItemName();        
-        return WebPortal.GetSearchType(itemName);
+        //String itemName = GetItemName();
+        //return WebPortal.GetSearchType(itemName);
+        return GetItemName();
     }
         
     public String GetItemName() {

@@ -84,7 +84,7 @@ public class BuyRequest extends HttpResponse {
            
             json = new JSONObject();
             json.put("1",JSON("Id",shop.getId()));
-            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop.getItemStack())));
             json.put("3",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
             json.put("4",JSON(message.WebItemCategory,shop.getItemStack().GetSearchType()));
             json.put("5",JSON(message.WebPrice,shop.getPrice()));

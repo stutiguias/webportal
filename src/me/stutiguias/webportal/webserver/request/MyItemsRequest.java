@@ -86,7 +86,7 @@ public class MyItemsRequest extends HttpResponse {
 //            item.getItemStack().SetMetaItemNameForDisplay(metaCSV,true);
             try {
                 json.put("1",JSON("Id",item.getId()));
-                json.put("2",JSON(message.WebItemName,ConvertItemToResult(item,item.getType())));
+                json.put("2",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
                 json.put("3",JSON(message.WebQuantity,item.getItemStack().getAmount()));
                 json.put("4",JSON(message.WebMarketPriceE,mprice));
                 json.put("5",JSON(message.WebMarketPriceT,mprice * item.getItemStack().getAmount()));

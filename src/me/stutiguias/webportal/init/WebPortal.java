@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.stutiguias.webportal.commands.WebPortalCommands;
@@ -111,7 +110,7 @@ public class WebPortal extends JavaPlugin {
     @Override
     public void onEnable() {
 
-            logger.log(Level.INFO, "{0} WebAuction is initializing.", logPrefix);
+            logger.log(Level.INFO, "{0} WebPortal is initializing.", logPrefix);
 
             File dir = getDataFolder();
             if (!dir.exists()) {
@@ -135,20 +134,21 @@ public class WebPortal extends JavaPlugin {
             setupEconomy();
             setupPermissions();
 
-            if(this.permission.isEnabled() == true)
+            if(this.permission.isEnabled())
             {
                logger.log(Level.INFO, "{0} Vault perm enable.", logPrefix);    
             }else{
                logger.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);    
             }
-            
-            try {
-                Metrics metrics = new Metrics(this);
-                metrics.start();
+
+            try{
+                int pluginId = 21331;
+                Metrics metrics = new Metrics(this, pluginId);
                 logger.log(Level.INFO,"{0} Metrics Enable !", logPrefix);
-            } catch (IOException e) {
-                // Failed to submit the stats :-(
+            }catch (Exception ex){
+                logger.log(Level.INFO, "{0} Metrics NOT ENABLE!", logPrefix);
             }
+
     }
 
     public void onReload() {
@@ -284,7 +284,7 @@ public class WebPortal extends JavaPlugin {
 
     public void WebConfig(){
 
-            web = new ConfigAccessor(this,"web.yml");
+            web = new ConfigAccessor(this, "web.yml");
             try {
                 web.setupConfig();
             }catch(IOException ex) {
@@ -315,12 +315,13 @@ public class WebPortal extends JavaPlugin {
             }
     }
 
-    public static String GetSearchType(String itemId) {
-
-        logger.warning(String.format("[WebPortal] Item id %s Not FOUND \n[WebPortal] Add it on materials.yml and post comment on dev site",itemId));
-        return "Others";
-
-    }
+// TODO Remover
+//    public static String GetSearchType(String itemId) {
+//
+//        logger.warning(String.format("[WebPortal] Item id %s Not FOUND \n[WebPortal] Add it on materials.yml and post comment on dev site",itemId));
+//        return "Others";
+//
+//    }
 
     public String parseColor(String message) {
         try {

@@ -37,7 +37,7 @@ public class SellRequest extends HttpResponse {
             json = new JSONObject();
             
             json.put("1",JSON("Id",shop.getId()));
-            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop,shop.getType())));
+            json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop.getItemStack())));
             json.put("3",JSON(message.WebPrice,shop.getPrice()));
             json.put("4",JSON(message.WebPriceEach,shop.getPrice() * shop.getItemStack().getAmount()));
             json.put("5",JSON(message.WebMarketPrice,Format(MarketPrice(shop, shop.getPrice())) + "%"));
