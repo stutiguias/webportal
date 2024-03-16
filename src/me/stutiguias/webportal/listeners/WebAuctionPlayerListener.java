@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -75,52 +76,53 @@ public class WebAuctionPlayerListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
 		if (!event.hasItem() && !event.hasBlock()) return;
-                Block block;
-                try{
-                  block = event.getPlayer().getTargetBlock((Set<Material>) null, 1);
-                }catch(IllegalStateException ex){
-                  return;  
-                }
-                boolean isSign = Tag.SIGNS.isTagged(block.getType());
+        Block block;
+        try{
+          block = event.getPlayer().getTargetBlock((Set<Material>) null, 1);
+        }catch(IllegalStateException ex){
+          return;
+        }
+        boolean isSign = Tag.SIGNS.isTagged(block.getType());
 		if (!isSign) return;
 
 		Sign sign = (Sign) block.getState();
-		String[] lines = sign.getLines();
+        SignSide side = sign.getTargetSide(event.getPlayer());
+		String[] lines = side.getLines();
                 
-                if(!lines[0].contains("[WebAuction]")) return;
-                
-            	if ( ( lines[0].equals(ChatColor.GREEN + "[WebAuction]") || lines[0].equals(ChatColor.GREEN + "[wSell]") ) && isCreative(event)) {
-                    event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
-                    return;
-                }
+        if(!lines[0].contains("[WebAuction]")) return;
+
+        if ( ( lines[0].equals(ChatColor.GREEN + "[WebAuction]") || lines[0].equals(ChatColor.GREEN + "[wSell]") ) && isCreative(event)) {
+            event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
+            return;
+        }
                 
 		if ( lines[0].equals(ChatColor.GREEN + "[wSell]")) {
-                    plugin.wsell.ClickSign(event,sign,lines);
-                    return;
-                }
+            plugin.wsell.ClickSign(event,sign,lines);
+            return;
+        }
                 
-                if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
 		Player player = event.getPlayer();
 		event.setCancelled(true);
  
-                if(!isDelayExpire(player, plugin.signDelay)) {
-                     event.setCancelled(true);
-                     return;
-                } 
+        if(!isDelayExpire(player, plugin.signDelay)) {
+             event.setCancelled(true);
+             return;
+        }
                 
 		plugin.lastUse.put(player.getName(), plugin.getCurrentMilli());
                 
-                if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
-                {
-                    plugin.mailbox.MailBoxOperationType(event.getPlayer(), lines[2]);
-                }else if(lines[1].equalsIgnoreCase("vbox")) {
-                    if(!event.getPlayer().hasPermission("wa.vbox"))
-                    {
-                        event.getPlayer().sendMessage(plugin.logPrefix + "You don't have permission to use vbox");
-                        return;
-                    }
-                    plugin.vbox.Open(event);
-                }
+        if(lines[1].equalsIgnoreCase("mailbox") || lines[1].equalsIgnoreCase("mail box"))
+        {
+            plugin.mailbox.MailBoxOperationType(event.getPlayer(), lines[2]);
+        }else if(lines[1].equalsIgnoreCase("vbox")) {
+            if(!event.getPlayer().hasPermission("wa.vbox"))
+            {
+                event.getPlayer().sendMessage(plugin.logPrefix + "You don't have permission to use vbox");
+                return;
+            }
+            plugin.vbox.Open(event);
+        }
                 
 	}
         

@@ -18,39 +18,46 @@ public class BoxRequest extends HttpResponse {
     public BoxRequest(WebPortal plugin) {
         super(plugin);
     }
-    
-    public void BOX1(String HostAddress) {
+    private StringBuilder sb;
+    private String Name;
+
+    public void BoxMcMMO(String HostAddress) {
         if(plugin.mcmmo == null) {
             NotActive();
             return;
         }
         
-        StringBuilder sb = new StringBuilder();
-        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
-        String Name = authPlayer.WebSitePlayer.getName();
+        sb = new StringBuilder();
+        Name = getNameLoggedPlayerWebsite(HostAddress);
 
         if(!(Boolean)plugin.mcmmo.Config.get("McMMOMYSql")) {
-            OfflinePlayer player = plugin.getServer().getOfflinePlayer(Name);
-            sb.append(plugin.mcmmo.getBox(player));
-        }else {
             sb.append(plugin.mcmmo.getBox(Name));
+        }else {
+            sb.append(plugin.mcmmo.getBoxMcMMoMySql(Name));
         }
+
         Print(sb.toString(), "text/plain");
     }
-    
+
     public void BOX2(String HostAddress) {
         if(plugin.essentials == null) {
             NotActive();
             return;
         }
         
-        StringBuilder sb = new StringBuilder();
-        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
-        String Name = authPlayer.WebSitePlayer.getName();
+        sb = new StringBuilder();
+        Name = getNameLoggedPlayerWebsite(HostAddress);
+
         sb.append(plugin.essentials.getBox(Name));
         Print(sb.toString(),"text/plain");
     }
-    
+
+    private static String getNameLoggedPlayerWebsite(String HostAddress) {
+        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
+        String Name = authPlayer.WebSitePlayer.getName();
+        return Name;
+    }
+
     private void NotActive() {
         Print("","text/plain");
     }

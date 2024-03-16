@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.stutiguias.webportal.commands.WebPortalCommands;
@@ -131,10 +132,10 @@ public class WebPortal extends JavaPlugin {
             transaction = new Transaction(this);
             
             // Setup Vault
-            setupEconomy();
-            setupPermissions();
+            boolean bEconomy = setupEconomy();
+            boolean bPermissions = setupPermissions();
 
-            if(this.permission.isEnabled())
+            if(this.permission.isEnabled() && bEconomy && bPermissions)
             {
                logger.log(Level.INFO, "{0} Vault perm enable.", logPrefix);    
             }else{
@@ -184,16 +185,14 @@ public class WebPortal extends JavaPlugin {
 
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        permission = rsp.getProvider();
+        permission = rsp != null ? rsp.getProvider() : null;
         return permission != null;
     }
 
-    private Boolean setupEconomy() {
-            RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
-            if (economyProvider != null) {
-                    economy = economyProvider.getProvider();
-            }
-            return (economy != null);
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
+        economy = economyProvider != null ? economyProvider.getProvider() : null;
+        return economy != null;
     }
 
     public void onLoadConfig() {
@@ -208,26 +207,15 @@ public class WebPortal extends JavaPlugin {
     private void initConfig() {
 
             config = new ConfigAccessor(this,"config.yml");
-            
+
             try {
                 config.setupConfig();
             }catch(IOException ex) {
-                logger.warning("unable to setup materials.yml");
+                logger.warning("unable to setup config.yml");
                 onDisable();
             }
-            
-            FileConfiguration c = config.getConfig();
 
-            if(!c.isSet("configversion") || c.getInt("configversion") != 3){ 
-                config.MakeOld();
-                try {
-                    config.setupConfig();
-                }catch(IOException ex) {
-                    logger.warning("unable to setup materials.yml");
-                    onDisable();
-                }
-                c = config.getConfig();
-            }
+            FileConfiguration c = updateConfigFileVersionIfNeedIt();
 
             blockcreative =         c.getBoolean("Misc.BlockCreative");
             showSalesOnJoin =       c.getBoolean("Misc.ShowSalesOnJoin");
@@ -247,39 +235,63 @@ public class WebPortal extends JavaPlugin {
                 onDisable();
             }
 
-            long saleAlertFrequency = c.getLong("Updates.SaleAlertFrequency");
-            boolean getMessages = c.getBoolean("Misc.ReportSales");
+            SetupSaleAlert(c);
+            SetupDatabase(c);
+            SetupWebServer(c);
+    }
 
-            if (getMessages) {
-                getServer().getScheduler().runTaskTimerAsynchronously(this, new SaleAlertTask(this), saleAlertFrequency, saleAlertFrequency);
+    private void SetupWebServer(FileConfiguration c) {
+        int NUM_CONN_MAX = c.getInt("Misc.MaxSimultaneousConnection");
+        logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
+
+        server = new WebPortalHttpServer(this, NUM_CONN_MAX);
+        server.start();
+    }
+
+    private void SetupDatabase(FileConfiguration c) {
+        if(!Objects.requireNonNull(c.getString("DataBase.Type")).equalsIgnoreCase("SQLite"))
+        {
+            logger.log(Level.INFO, "{0} Choose MySQL db type.", logPrefix);
+            logger.log(Level.INFO, "{0} MySQL Initializing.", logPrefix);
+
+            String dbHost = c.getString("MySQL.Host");
+            String dbUser = c.getString("MySQL.Username");
+            String dbPass = c.getString("MySQL.Password");
+            String dbPort = c.getString("MySQL.Port");
+            String dbDatabase = c.getString("MySQL.Database");
+
+            db = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
+            db.initTables();
+       }else{
+            logger.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
+            logger.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
+
+            db = new SqliteDataQueries(this);
+            db.initTables();
+        }
+    }
+
+    private void SetupSaleAlert(FileConfiguration c) {
+        long saleAlertFrequency = c.getLong("Updates.SaleAlertFrequency");
+        boolean getMessages = c.getBoolean("Misc.ReportSales");
+
+        if (getMessages)
+            getServer().getScheduler().runTaskTimerAsynchronously(this, new SaleAlertTask(this), saleAlertFrequency, saleAlertFrequency);
+    }
+
+    private FileConfiguration updateConfigFileVersionIfNeedIt() {
+        FileConfiguration c = config.getConfig();
+        if(!c.isSet("configversion") || c.getInt("configversion") != 3){
+            try {
+                boolean makeOld = config.MakeOld();
+                if(makeOld) config.setupConfig();
+                c = config.getConfig();
+            }catch(IOException ex) {
+                logger.warning("unable to setup config.yml");
+                onDisable();
             }
-
-            if(!c.getString("DataBase.Type").equalsIgnoreCase("SQLite"))
-            {
-                logger.log(Level.INFO, "{0} Choose MySQL db type.", logPrefix);
-                logger.log(Level.INFO, "{0} MySQL Initializing.", logPrefix);
-
-                String dbHost = c.getString("MySQL.Host");
-                String dbUser = c.getString("MySQL.Username");
-                String dbPass = c.getString("MySQL.Password");
-                String dbPort = c.getString("MySQL.Port");
-                String dbDatabase = c.getString("MySQL.Database");
-
-                db = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
-                db.initTables();
-           }else{ 
-                logger.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
-                logger.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
-
-                db = new SqliteDataQueries(this);
-                db.initTables();
-            }
-
-            int NUM_CONN_MAX = c.getInt("Misc.MaxSimultaneousConnection");
-            logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
-
-            server = new WebPortalHttpServer(this, NUM_CONN_MAX);
-            server.start();  
+        }
+        return c;
     }
 
     public void WebConfig(){

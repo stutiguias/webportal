@@ -34,8 +34,8 @@ public class ConfigAccessor {
         configFile = new File(plugin.getDataFolder(), fileName);
         
         if(!configFile.exists()) {
-            configFile.createNewFile();
-            copy(plugin.getResource(fileName), configFile);
+            boolean success = configFile.createNewFile();
+            if(success) copy(plugin.getResource(fileName), configFile);
         }
     }
     
@@ -57,9 +57,7 @@ public class ConfigAccessor {
     public void reloadConfig() {
         if (configFile == null) {
             File dataFolder = plugin.getDataFolder();
-            if (dataFolder == null) {
-                throw new IllegalStateException();
-            }
+            if (dataFolder == null) throw new IllegalStateException();
             configFile = new File(dataFolder, fileName);
         }
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
@@ -100,7 +98,8 @@ public class ConfigAccessor {
 
     public boolean MakeOld() {
         File file = new File(plugin.getDataFolder(),fileName + "_old");
-        file.delete();
-        return configFile.renameTo(new File(plugin.getDataFolder(),fileName + "_old"));
+        boolean deleted = file.delete();
+        if(deleted) return configFile.renameTo(new File(plugin.getDataFolder(),fileName + "_old"));
+        else return false;
     }
 }

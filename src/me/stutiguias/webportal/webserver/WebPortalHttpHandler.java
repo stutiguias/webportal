@@ -187,7 +187,7 @@ public class WebPortalHttpHandler implements HttpHandler {
     
     public void BoxHandler() {
         if(url.startsWith("/box/1")) {
-                Box.BOX1(SessionId);
+                Box.BoxMcMMO(SessionId);
         }else if(url.startsWith("/box/2")) {
                 Box.BOX2(SessionId);
         }

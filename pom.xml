@@ -17,40 +17,40 @@
       <id>sonatype</id>
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
+    <!-- vault -->
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+    <!-- McMMO -->
+    <repository>
+      <id>neetgames</id>
+      <url>https://nexus.neetgames.com/repository/maven-releases/</url>
+    </repository>
   </repositories>
 
   <dependencies>
 
-  <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.20.4-R0.1-SNAPSHOT</version>
-  </dependency>
+    <dependency>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.20.4-R0.1-SNAPSHOT</version>
+    </dependency>
 
-  <dependency>
+    <dependency>
+      <groupId>com.github.MilkBowl</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.7.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>com.gmail.nossr50.mcMMO</groupId>
       <artifactId>mcMMO</artifactId>
-      <version>1.4.06</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/mcMMO.jar</systemPath>
-  </dependency>
-
-    <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>Vault</artifactId>
-      <version>1.2.18</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/Vault.jar</systemPath>
+      <version>2.1.231</version>
+      <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>uk.org.whoami.authme</groupId>
-      <artifactId>AuthMe</artifactId>
-      <version>2.7.16</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/AuthMe.jar</systemPath>
-    </dependency>
-    
   </dependencies>
   
   <build>

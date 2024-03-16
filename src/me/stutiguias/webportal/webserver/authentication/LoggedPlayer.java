@@ -21,9 +21,7 @@ public class LoggedPlayer {
     }
     
     public boolean Login(String name){
-        if(true) {
-           WebSitePlayer.setName(name);
-        }
+        WebSitePlayer.setName(name);
         return true;
     }
     

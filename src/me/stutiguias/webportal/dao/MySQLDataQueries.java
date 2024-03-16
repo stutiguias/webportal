@@ -170,34 +170,34 @@ public class MySQLDataQueries extends Queries {
                 ProfileMcMMO pf = null;
             
             	WALConnection conn = getConnection();
-		PreparedStatement st = null;
-		ResultSet rs = null;
+				PreparedStatement st = null;
+				ResultSet rs = null;
 
-		try {
-			st = conn.prepareStatement("SELECT taming,mining,repair,unarmed,herbalism,excavation,archery,swords,axes,acrobatics,fishing FROM "+ tableprefix +"skills INNER JOIN "+ tableprefix +"users ON "+ tableprefix +"skills.user_id = "+ tableprefix +"users.id WHERE user = ?");
-			st.setString(1, player);
-			rs = st.executeQuery();
-			while (rs.next()) {
-				pf = new ProfileMcMMO();
-				pf.setEXCAVATION(rs.getInt("excavation"));
-                                pf.setTAMING(rs.getInt("taming"));
-                                pf.setMINING(rs.getInt("mining"));
-                                pf.setREPAIR(rs.getInt("repair"));
-                                pf.setUNARMED(rs.getInt("unarmed"));
-                                pf.setHERBALISM(rs.getInt("herbalism"));
-                                pf.setARCHERY(rs.getInt("archery"));
-                                pf.setSWORDS(rs.getInt("swords"));
-                                pf.setAXES(rs.getInt("axes"));
-                                pf.setACROBATICS(rs.getInt("acrobatics"));
-                                pf.setFISHING(rs.getInt("fishing"));
-			}
-		} catch (SQLException e) {
-			WebPortal.logger.log(Level.WARNING, "{0} Unable to get profile {1}", new Object[]{plugin.logPrefix, player});
-			WebPortal.logger.warning(e.getMessage());
-		} finally {
-			closeResources(conn, st, rs);
-		}
-		return pf;
+				try {
+					st = conn.prepareStatement("SELECT taming,mining,repair,unarmed,herbalism,excavation,archery,swords,axes,acrobatics,fishing FROM "+ tableprefix +"skills INNER JOIN "+ tableprefix +"users ON "+ tableprefix +"skills.user_id = "+ tableprefix +"users.id WHERE user = ?");
+					st.setString(1, player);
+					rs = st.executeQuery();
+					while (rs.next()) {
+						pf = new ProfileMcMMO();
+						pf.setEXCAVATION(rs.getInt("excavation"));
+										pf.setTAMING(rs.getInt("taming"));
+										pf.setMINING(rs.getInt("mining"));
+										pf.setREPAIR(rs.getInt("repair"));
+										pf.setUNARMED(rs.getInt("unarmed"));
+										pf.setHERBALISM(rs.getInt("herbalism"));
+										pf.setARCHERY(rs.getInt("archery"));
+										pf.setSWORDS(rs.getInt("swords"));
+										pf.setAXES(rs.getInt("axes"));
+										pf.setACROBATICS(rs.getInt("acrobatics"));
+										pf.setFISHING(rs.getInt("fishing"));
+					}
+				} catch (SQLException e) {
+					WebPortal.logger.log(Level.WARNING, "{0} Unable to get profile {1}", new Object[]{plugin.logPrefix, player});
+					WebPortal.logger.warning(e.getMessage());
+				} finally {
+					closeResources(conn, st, rs);
+				}
+				return pf;
         }
     
 }

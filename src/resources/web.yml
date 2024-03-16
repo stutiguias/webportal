@@ -23,13 +23,13 @@ Index:
     Active: false
 # Authentication System for WebSite
 AuthSystem:
-  # Choose WebPortal or if you r using MySQL you can use AuthDb or AuthMe or xAuth
+  # Choose WebPortal // More will be implemented later
   System: WebPortal
   # MD5 - SHA1 - SHA-256
   Algorithm: MD5
-  # if you r using AuthMe put here your the table name
+  # Not in use // Will me use in next version
   TableName: minecraft
-  # if you r using AuthDb or AuthMe put here password column name ( not need for xAuth )
+  # Not in use // Will me use in next version
   ColumnPassword: password
-  # if you r using AuthDb or AuthMe or xAuth put here the username column name
+  # Not in use // Will me use in next version
   ColumnUsername: username
