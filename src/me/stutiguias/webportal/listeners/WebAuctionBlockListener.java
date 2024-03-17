@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,16 +26,18 @@ public class WebAuctionBlockListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		Player player = event.getPlayer();
-                boolean isSign = Tag.SIGNS.isTagged(block.getType());
+
+        boolean isSign = Tag.SIGNS.isTagged(block.getType());
 		if (!isSign) return;
-                Sign thisSign = (Sign) block.getState();
-                if (thisSign.getLine(0).equals("[WebAuction]")) return;
-                if (!plugin.permission.has(player, "wa.remove")) {
-                        event.setCancelled(true);
-                        player.sendMessage(plugin.logPrefix + "You do not have permission to remove that");
-                } else {
-                        player.sendMessage(plugin.logPrefix + "WebAuction sign removed.");
-                }
+        Sign thisSign = (Sign) block.getState();
+        SignSide signside = thisSign.getTargetSide(player);
+        if (signside.getLine(0).equals("[WebAuction]")) return;
+        if (!plugin.permission.has(player, "wa.remove")) {
+                event.setCancelled(true);
+                player.sendMessage(plugin.logPrefix + "You do not have permission to remove that");
+        } else {
+                player.sendMessage(plugin.logPrefix + "WebAuction sign removed.");
+        }
 	}
         
         @EventHandler(priority = EventPriority.NORMAL)
@@ -52,36 +55,31 @@ public class WebAuctionBlockListener implements Listener {
   
         public void WebAuction(String[] lines,Player player,Block sign,SignChangeEvent event)
         {
-            Boolean allowEvent = false;
+            boolean allowEvent = false;
             if (isMailboxSign(lines)) {
                     if (lines[2].equalsIgnoreCase("Deposit")) {
-                            if (plugin.permission.has(player.getWorld(),player.getName(),"wa.create.sign.mailbox.deposit")) {
+                            if (plugin.permission.has(player,"wa.create.sign.mailbox.deposit")) {
                                     allowEvent = true;
                                     event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
                                     player.sendMessage(plugin.logPrefix + "Deposit Mail Box created");
                             }
-                    } else if (plugin.permission.has(player.getWorld(),player.getName(), "wa.create.sign.mailbox.withdraw")) {
+                    } else if (plugin.permission.has(player, "wa.create.sign.mailbox.withdraw")) {
                                     allowEvent = true;
                                     event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
                                     player.sendMessage(plugin.logPrefix + "Withdraw Mail Box created");
                     }
             } else if(lines[1].equalsIgnoreCase("vbox")) {
-                    if (plugin.permission.has(player.getWorld(),player.getName(), "wa.create.sign.vbox")) {
+                    if (plugin.permission.has(player, "wa.create.sign.vbox")) {
                             allowEvent = true;
                             event.setLine(0, ChatColor.GREEN + "[WebAuction]" );
                             player.sendMessage(plugin.logPrefix + "Virtual Box created");
                     }
             }
-            if (allowEvent == false) CancelEvent(event,player);
+            if (!allowEvent) CancelEvent(event,player);
         }
         
         private boolean isMailboxSign(String[] lines) {
-            if((lines[1].equalsIgnoreCase("MailBox")) || 
-               (lines[1].equalsIgnoreCase("Mail Box"))) {
-                return true;
-            }else{
-                return false;
-            }
+            return (lines[1].equalsIgnoreCase("MailBox")) || (lines[1].equalsIgnoreCase("Mail Box"));
         }
         
         private void CancelEvent(SignChangeEvent event,Player player) {

@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 /**
@@ -175,12 +177,10 @@ public class HttpResponse {
     }   
         
     public String GetDurability(Shop item) {
-        Short dmg = item.getItemStack().getDurability();
-        Short maxdur = item.getItemStack().getType().getMaxDurability();
+        int dmg = ((Damageable) Objects.requireNonNull(item.getItemStack().getItemMeta())).getDamage();
+        int maxdur = item.getItemStack().getType().getMaxDurability();
         String Durability = "";
-        if(!item.getItemStack().getType().isBlock() && !item.getItemStack().isPotion() && maxdur != 0) {
-            Durability = dmg + "/" + maxdur;
-        }
+        if(maxdur != 0) Durability = dmg + "/" + maxdur;
         return Durability;
     }
             
@@ -216,7 +216,7 @@ public class HttpResponse {
         //String metaCSV = plugin.db.GetItemInfo(itemId,"meta");
         //item.SetMetaItemNameForDisplay(metaCSV,true);
         
-        String itemName = item.getName().substring(0, 1).toUpperCase() + item.getName().substring(1);
+        String itemName = item.getName().substring(0, 1).toUpperCase() + item.getName().toLowerCase().substring(1);
         String itemImage = item.getImage();
  
         if(!itemImage.contains("http") || !itemImage.contains("www"))

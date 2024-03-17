@@ -111,44 +111,48 @@ public class WebPortal extends JavaPlugin {
     @Override
     public void onEnable() {
 
-            logger.log(Level.INFO, "{0} WebPortal is initializing.", logPrefix);
+        logger.log(Level.INFO, "{0} WebPortal is initializing.", logPrefix);
 
-            File dir = getDataFolder();
-            if (!dir.exists()) {
-              dir.mkdirs();
-            }
+        File dir = getDataFolder();
+        if (!dir.exists()) {
+          dir.mkdirs();
+        }
 
-            new SaveResource(this).Save();
+        try {
+            new SaveResource(this).extract();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
-            onLoadConfig();
+        onLoadConfig();
 
-            getCommand("wa").setExecutor(new WebPortalCommands(this));
+        getCommand("wa").setExecutor(new WebPortalCommands(this));
 
-            wsell   = new wSell(this);
-            mailbox = new Mailbox(this);
-            vbox    = new vBox(this);
+        wsell   = new wSell(this);
+        mailbox = new Mailbox(this);
+        vbox    = new vBox(this);
 
-            transaction = new Transaction(this);
-            
-            // Setup Vault
-            boolean bEconomy = setupEconomy();
-            boolean bPermissions = setupPermissions();
+        transaction = new Transaction(this);
 
-            if(this.permission.isEnabled() && bEconomy && bPermissions)
-            {
-               logger.log(Level.INFO, "{0} Vault perm enable.", logPrefix);    
-            }else{
-               logger.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);    
-            }
+        // Setup Vault
+        boolean bEconomy = setupEconomy();
+        boolean bPermissions = setupPermissions();
 
-            try{
-                int pluginId = 21331;
-                Metrics metrics = new Metrics(this, pluginId);
-                logger.log(Level.INFO,"{0} Metrics Enable !", logPrefix);
-            }catch (Exception ex){
-                logger.log(Level.INFO, "{0} Metrics NOT ENABLE!", logPrefix);
-            }
+        if(this.permission.isEnabled() && bEconomy && bPermissions)
+        {
+           logger.log(Level.INFO, "{0} Vault perm enable.", logPrefix);
+        }else{
+           logger.log(Level.INFO, "{0} Vault NOT ENABLE.", logPrefix);
+        }
+
+        try{
+            int pluginId = 21331;
+            Metrics metrics = new Metrics(this, pluginId);
+            logger.log(Level.INFO,"{0} Metrics Enable !", logPrefix);
+        }catch (Exception ex){
+            logger.log(Level.INFO, "{0} Metrics NOT ENABLE!", logPrefix);
+        }
 
     }
 
@@ -347,7 +351,7 @@ public class WebPortal extends JavaPlugin {
     }
 
     public boolean hasPermission(Player player, String Permission) {
-        return permission.has(player.getWorld(), player.getName(), Permission.toLowerCase());
+        return permission.has(player, Permission.toLowerCase());
     }
 
     public void Store(ItemStack item, Player player) {

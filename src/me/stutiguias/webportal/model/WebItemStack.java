@@ -2,9 +2,12 @@ package me.stutiguias.webportal.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import me.stutiguias.webportal.init.WebPortal;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
@@ -16,11 +19,25 @@ public class WebItemStack extends ItemStack {
     private String Name;
     private String Image;
     
-    public WebItemStack(Material type,int amount,Short damage) {
-        super(type, amount, damage);
+    public WebItemStack(Material type,int amount,int damage) {
+        super(type, amount);
+        setItemMeta(Bukkit.getItemFactory().getItemMeta(getType()));
+        setItemMetaDamage(damage);
         GetConfig();
     }
-    
+
+    public WebItemStack(Material type,int amount) {
+        super(type, amount);
+        GetConfig();
+    }
+
+    public void setItemMetaDamage(int damage) {
+        if(getItemMeta() == null) return;
+        ItemMeta meta = this.getItemMeta();
+        if(this.getType().getMaxDurability() > 0) ((Damageable) meta).setDamage(damage);
+        this.setItemMeta(meta);
+    }
+
     public WebItemStack(String MetaCSV) {
          super();
         GetConfig();

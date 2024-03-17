@@ -14,6 +14,8 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -88,11 +90,19 @@ public class Util {
     }
     
     public WebItemStack ToWebItemStack(ItemStack item){
-        WebItemStack webItemStack = new WebItemStack(item.getType(),item.getAmount(),item.getDurability());
-        webItemStack.setData(item.getData());
+
+        int dmg = 0;
+        ItemMeta meta = item.getItemMeta();
+        if(meta != null) {
+            if(item.getType().getMaxDurability() > 0)
+                dmg = ((Damageable) meta).getDamage();
+        }
+
+        WebItemStack webItemStack = new WebItemStack(item.getType(),item.getAmount());
         webItemStack.setItemMeta(item.getItemMeta());
+        webItemStack.setItemMetaDamage(dmg);
         webItemStack.setType(item.getType());
-        
+
         try{
             webItemStack.addEnchantments(item.getEnchantments());
         }catch (IllegalArgumentException ex) {

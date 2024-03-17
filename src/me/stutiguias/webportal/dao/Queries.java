@@ -150,7 +150,7 @@ public class Queries implements IDataQueries {
                              auction = new Shop();
                              auction.setId(rs.getInt("id"));
                              Material material = Material.getMaterial(rs.getString("name"));
-                             WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getShort("damage"));
+                             WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
                              stack = Enchant.EnchantItem(rs.getString("ench"), stack);
                              auction.setType(rs.getString("type"));
                              auction.setItemStack(stack);
@@ -241,7 +241,7 @@ public class Queries implements IDataQueries {
                         auction = new Shop();
                         auction.setId(id);
                         Material material = Material.getMaterial(rs.getString("name"), false);
-                        WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
                         stack = Enchant.EnchantItem(rs.getString("ench"),stack);
                         auction.setItemStack(stack);
                         auction.setPlayerName(rs.getString("player"));
@@ -275,17 +275,17 @@ public class Queries implements IDataQueries {
                         st.setInt(4, qtd);
 			rs = st.executeQuery();
 			while (rs.next()) {
-				auction = new Shop();
-				auction.setId(rs.getInt("id"));
-                                Material material = Material.getMaterial(rs.getString("name"), false);
-                                WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getShort("damage"));
-                                stack = Enchant.EnchantItem(rs.getString("ench"), stack);
-				auction.setItemStack(stack);
-				auction.setPlayerName(rs.getString("player"));
-				auction.setPrice(rs.getDouble("price"));
-				auction.setCreated(rs.getInt("created"));
-                                auction.setTableId(rs.getInt("tableid"));
-                                la.add(auction);
+                    auction = new Shop();
+                    auction.setId(rs.getInt("id"));
+                    Material material = Material.getMaterial(rs.getString("name"), false);
+                    WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
+                    stack = Enchant.EnchantItem(rs.getString("ench"), stack);
+                    auction.setItemStack(stack);
+                    auction.setPlayerName(rs.getString("player"));
+                    auction.setPrice(rs.getDouble("price"));
+                    auction.setCreated(rs.getInt("created"));
+                    auction.setTableId(rs.getInt("tableid"));
+                    la.add(auction);
 			}
                         st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions where tableid = ? or tableid = ?");
                         st.setInt(1, plugin.Sell);
@@ -322,7 +322,7 @@ public class Queries implements IDataQueries {
                             auction = new Shop();
                             auction.setId(rs.getInt("id"));
                             Material material = Material.getMaterial(rs.getString("name"));
-                            WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getShort("damage"));
+                            WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
                             stack = Enchant.EnchantItem(rs.getString("ench"), stack);
                             auction.setItemStack(stack);
                             auction.setPlayerName(rs.getString("player"));
@@ -551,7 +551,7 @@ public class Queries implements IDataQueries {
                         auction.setDamage(rs.getInt("damage"));
                         auction.setQuantity(rs.getInt("quantity"));
                         Material material = Material.getMaterial(rs.getString("name"));
-                        WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
                         stack = Enchant.EnchantItem(rs.getString("ench"),stack);
                         auction.setItemStack(stack);
                         auction.setPlayerName(rs.getString("player"));
@@ -667,7 +667,7 @@ public class Queries implements IDataQueries {
                         WebSiteMail auctionMail = new WebSiteMail();
                         auctionMail.setId(rs.getInt("id"));
                         Material material = Material.getMaterial(rs.getString("name"));
-                        WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getShort("damage"));
+                        WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
                         stack = Enchant.EnchantItem(rs.getString("ench"),stack);
                         auctionMail.setItemStack(stack);
                         auctionMail.setPlayerName(rs.getString("player"));
