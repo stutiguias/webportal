@@ -126,7 +126,7 @@ public class Enchant {
     }
         
     public static WebItemStack EnchantItem(String ench, WebItemStack stack) {
-        if(ench.equals("")) return stack;
+        if(ench.isEmpty()) return stack;
         ench = ench.replace("minecraft:", "");
         String[] enchs = ench.split(":");
 

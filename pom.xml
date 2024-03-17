@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.stutiguias</groupId>
   <artifactId>WebPortal</artifactId>
-  <version>1.0.0</version>
+  <version>1.01</version>
   <name>WebPortal-${project.version}</name>
   <description>WebPortal por minecraft</description>
   <packaging>jar</packaging>
@@ -100,32 +100,8 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.4.1</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.MF</exclude>
-                    <exclude>META-INF/versions/9/module-info.*</exclude>
-                    <exclude>META-INF/LICENSE</exclude>
-                    <exclude>module-info.class</exclude>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-        </executions>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
       </plugin>
 
     </plugins>
