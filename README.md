@@ -1,4 +1,5 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/qvtlvlgvuy77y27g?svg=true)](https://ci.appveyor.com/project/stutiguias/webportal)
+Help the dev ~!
 
-WebPortal for minecraft 
+https://builtbybit.com/resources/webportal.41097/
 
+https://polymart.org/resource/webportal.5647
