@@ -18,7 +18,8 @@ function getCookie(szName) {
         }
     }
     return szValue;
-}
+}
+
 $.ajaxSetup({
     data: "sessionid=" + getCookie("sessionid"),
     type: "POST"
@@ -37,7 +38,7 @@ $(document).ready(function () {
                 var adm = " <a href='admin.html'>Admin Panel</a>";
                 var isAdmin = (data["Admin"].toString().indexOf("1") != -1) ? adm : "";
                 $('#user').html(data["Name"] + " " + isAdmin);
-                $('#money').html(data["Money"].split(" ")[1]);
+                $('#money').html(data["Money"]);
                 $('#mail').html(data["Mail"]);
                 $('#avatarimg').attr('src', data["Avatarurl"]);
             } catch (err) {
