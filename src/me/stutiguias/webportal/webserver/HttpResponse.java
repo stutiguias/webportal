@@ -151,23 +151,7 @@ public class HttpResponse {
         this.httpExchange = httpExchange;
     }
     
-//    TODO: TO BE REMOVED
-//    public WebItemStack ConvertToItemStack(String ItemId) {
-//        Integer Name;
-//        Short Damage;
-//        if(ItemId.contains(":")) {
-//            String[] NameDamage = ItemId.split(":");
-//            Name = Integer.parseInt(NameDamage[0]);
-//            Damage = Short.parseShort(NameDamage[1]);
-//        }else{
-//            Name = Integer.parseInt(ItemId);
-//            Damage = 0;
-//        }
-//        Material material = Material.getMaterial(ItemId);
-//        WebItemStack item = new WebItemStack(material ,1,Damage);
-//        return item; 
-//    }
-           
+
     public double MarketPrice(Shop item,Double price) {
            double mprice = plugin.db.GetMarketPriceofItem(item.getItemStack().getType().name(),item.getItemStack().getDurability());
            if(mprice == 0.0) {
@@ -233,16 +217,7 @@ public class HttpResponse {
         return json;
     }
     
-      public WebItemStack ConvertToItemStack(String itemName) {
-        Short Damage;
-        if(itemName.contains(":")) {
-            String[] NameDamage = itemName.split(":");
-            Damage = Short.parseShort(NameDamage[1]);
-        }else{
-            Damage = 0;
-        }
-        Material material = Material.getMaterial(itemName);
-        WebItemStack item = new WebItemStack(material ,1,Damage);
-        return item; 
+      public WebItemStack ConvertInputToWebItemStack(String itemName) {
+        return new WebItemStack(Material.getMaterial(itemName.toUpperCase()) ,1,0);
     }
 }

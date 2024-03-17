@@ -28,19 +28,12 @@ public class UserRequest extends HttpResponse {
         JSONObject json = new JSONObject();
         json.put("Name", authPlayer.WebSitePlayer.getName() );
         json.put("Admin", authPlayer.WebSitePlayer.getIsAdmin() );
-        json.put("Money", FormatMoney(plugin.economy.getBalance( authPlayer.WebSitePlayer.getName() ) ) );
-        json.put("Mail", plugin.db.getMail(authPlayer.WebSitePlayer.getName() ).size() );
+        json.put("Money", plugin.economy.getBalance( authPlayer.WebSitePlayer.getName() ) );
+        json.put("Mail", plugin.Moneyformat + " " + plugin.db.getMail(authPlayer.WebSitePlayer.getName() ).size() );
         json.put("Avatarurl", plugin.Avatarurl + authPlayer.WebSitePlayer.getName() );
         Print(json.toJSONString(),"application/json");
     }
-    
-    public String FormatMoney(double num) {
-        String[] format = plugin.Moneyformat.split("_");
-        Locale locale = new Locale(format[0],format[1]);
-        NumberFormat localeFormat = NumberFormat.getCurrencyInstance(locale);
-        return localeFormat.format(num);
-    }
-    
+
     public void ItemLore(String SessionId,Map param) {
         int id = Integer.parseInt((String)param.get("id"));
         String metaCSV = plugin.db.GetItemInfo(id,"meta");

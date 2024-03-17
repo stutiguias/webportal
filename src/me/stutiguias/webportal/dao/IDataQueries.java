@@ -66,7 +66,7 @@ public interface IDataQueries {
         void updateItemQuantity(int quantity, int id);
         void updateTable(int id,int tableid);
 	//void CreateAuction(int quantity, int id);
-	int CreateItem(String materialName, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
+	    int CreateItem(String materialName, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
         int GetMarketPriceofItem(String materialName, int itemDamage);
         
         //Item Extra info

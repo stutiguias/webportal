@@ -6,12 +6,15 @@ package me.stutiguias.webportal.webserver.request;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.bukkit.inventory.meta.Damageable;
 
 /**
  *
@@ -26,19 +29,21 @@ public class AdminShopRequest extends HttpResponse {
     public void AddShop(String ip,String url,Map param){
         
         if(isAdmin(ip)){
-            String itemId = (String)param.get("itemId");
-            String price = (String)param.get("price");
-            String quantity = (String)param.get("quantity");
-            
-            WebItemStack Item = ConvertToItemStack(itemId);
-            if(Item == null) Print(message.WebIdNotFound,"text/html");
-            Double Price = Double.parseDouble(price);
-            Integer Quantity = Integer.parseInt(quantity);
-            
-            String type = Item.getType().toString();
-            String searchtype = Item.GetSearchType();
-            plugin.db.CreateItem(Item.getType().name(), Item.getDurability(), "Server", Quantity, Price,"", plugin.Sell, type, searchtype);
-            Print("ok","text/html");
+            try{
+                String itemId = (String)param.get("itemId");
+                Double price = Double.parseDouble((String)param.get("price"));
+                int quantity = Integer.parseInt((String)param.get("quantity"));
+
+                WebItemStack Item = ConvertInputToWebItemStack(itemId);
+                if(Item == null) Print(message.WebIdNotFound,"text/html");
+
+                String type = Objects.requireNonNull(Item).getType().toString();
+                plugin.db.CreateItem(Item.getType().name(),((Damageable) Objects.requireNonNull(Item.getItemMeta())).getDamage(), "Server", quantity, price,"", plugin.Sell, type, Item.GetSearchType());
+                Print("ok","text/html");
+            }catch (Exception e){
+                Print("Invalid Material","text/html");
+            }
+
         }else{
             Print(message.WebNotAdmin,"text/html");
         }

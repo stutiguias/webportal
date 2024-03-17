@@ -29,7 +29,7 @@ public class BuyRequest extends HttpResponse {
             String price = (String)param.get("price");
             String quantity = (String)param.get("quantity");
 
-            WebItemStack Item = ConvertToItemStack(itemId);
+            WebItemStack Item = ConvertInputToWebItemStack(itemId);
             if(Item == null) Print(message.WebIdNotFound,"text/html");
             Double Price = Double.parseDouble(price);
             Integer Quantity = Integer.parseInt(quantity);
