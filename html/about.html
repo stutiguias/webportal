@@ -1,0 +1,241 @@
+ï»¿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>WebPortal</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand replace" href="#">lang1SvName</a>
+                    <div class="nav-collapse collapse">
+				        <ul class="nav">
+					        <li class="active"><a href="about.html" class="replace">About</a></li>
+                        </ul>
+                    </div>
+                    <div class="nav-collapse collapse">
+                        <form name="login" onsubmit="return loginform(this)" class="navbar-form pull-right">
+                            <input name="Username" class="span2" type="text" placeholder="UserName">
+                            <input name="Password" class="span2" type="password" placeholder="Password">
+                            <button name="Submit" type="submit" class="btn replace">langSubmit</button>
+                        </form>
+                        <div class="brand error"></div>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+       
+                <h4 class="text-center">Api Documentation for Theme Design ( In progress )</h4>
+                <p class="alert">All information displayed on this default template have a simple call ( Post or Get ) listed here
+                   if you want make the front-end project to your server will need this, for more details about 
+                    return dataTable json format see <a href="http://www.datatables.net/">http://www.datatables.net/</a> !</p>
+                <div class="text-center"><a href="#auctionformat" role="button" class="btn" data-toggle="modal">Auctions in json format</a></div>
+               
+                <span id="result"></span>
+
+ 
+<!-- Modal -->
+<div id="auctionformat" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Auctions in json format</h3>
+  </div>
+  <div class="modal-body">
+        <pre>
+{ 
+    '0':
+        {
+        '0':'ITEM_INFO',
+        '1':'SELLER',
+        '2':'EXPIRES',
+        '3':'QUANTITY',
+        '4':'PRICE_EACH',
+        '5':'Enchants',
+        '6':'Durability'
+        },
+    '1':
+        {
+        '0':'ITEM_INFO',
+        '1':'SELLER',
+        '2':'EXPIRES',
+        '3':'QUANTITY',
+        '4':'PRICE_EACH',
+        '5':'Enchants',
+        '6':'Durability'
+        },
+}
+        </pre>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+            <hr>
+
+            <footer>
+                <p>&copy; Made by Stutiguias.
+                   Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.</p>
+            </footer>
+
+        </div> <!-- /container -->
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
+        <script id="entry-template" type="text/x-handlebars-template">
+            <div class="row">
+                <div class="span3">
+                    <ul class="nav nav-list affix">
+                        {{#each api}}
+                                  <li><a href="#{{id}}">{{title}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="span6">
+                    {{#each api}}
+                    <section id="{{id}}">
+                            <div class="page-header">
+                                <h3>{{title}}</h3>
+                            </div>    
+                            <dl class="dl-horizontal">
+                                <dt>URL</dt>
+                                <dd>{{url}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>NEED LOGIN</dt>
+                                <dd style="{{style}}">{{needlogin}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>NEED ADMIN</dt>
+                                <dd>{{needadmin}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>INPUT</dt>
+                                <dd>{{input}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt class="add-on">OUTPUT</dt>
+                                <dd>{{output}}</dd>
+                            </dl>
+                           
+                            {{#each o}}
+                                <dl class="dl-horizontal">
+                                    <dt class="add-on">{{othersTitle}}</dt>
+                                    <dd>{{others}}</dd>
+                                </dl>
+                            {{/each}}
+                    </section>
+                    {{/each}}
+                </div>
+            </div>
+        </script>
+        <script>
+
+            var source = $("#entry-template").html();
+            var context = {
+                api: [
+                    {
+                        id: "1", title: "Auctions", url: "/get/auction", style: "", needlogin: "No", needadmin: "No", input: "to / from", output: "auctions in json format",
+                    },
+                    {
+                        id: "2", title: "Login Authentication", url: "/web/login", style: "", needlogin: "No", needadmin: "No", input: "Username / Password ( Case Sensitive )", output: "ok / no"
+                    },
+                    {
+                        id: "3", title: "User Information", url: "/server/username/info", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: "NAME , ADMURL, MONEY , MAIL"
+                    },
+                    {
+                        id: "4", title: "Auctions With Buy Form", methods: "Post or Get", url: "/auction/get/{category}", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format ",
+                        o: [
+                           { othersTitle: "Category", others: "byall, byblock, byfood, bytools, bycombat, byredstone, bydecoration, bytransportation, bymicellaneous, bymaterials, bybrewing, byothers" },
+                           { othersTitle: "Buy Form", others: "implement onsubmit='return buy(this)' function" },
+                        ]
+                    },
+                    {
+                        id: "5", title: "My Items", url: "/myitens/dataTable", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
+                    },
+                    {
+                        id: "6", title: "My Items Simple", methods: "Post or Get", url: "/myitems/get", style: "color:red", needlogin: "Yes", needadmin: "No", input: "", output: " json format ",
+                        code: "{ 'ID': {'NAME_ITEM':'PATH_IMAGE','enchant':'ENCHANTS'} }",
+                    },
+                    {
+                        id: "7", title: "My Auctions", url: "/myauctions/get", style: "color:red", needlogin: "Yes", needadmin: "No", input: "sEcho / iDisplayStart / iDisplayLength", output: " dataTables json format"
+                    },
+                    {
+                        id: "8", title: "Post Auctions", url: "/myitems/postauction", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity / Price ", output: " text/plain result "
+                    },
+                    {
+                        id: "9", title: "Send Mail", url: "/mail/send", style: "color:red", needlogin: "Yes", needadmin: "No", input: " ID / Quantity ", output: " text/plain result "
+                    },
+                    {
+                        id: "10", title: "Buy Auction", url: "/auction/buy", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID / Quantity ", output: " text/plain result "
+                    },
+                    {
+                        id: "11", title: "Cancel Auction", url: "/myauctions/cancel", style: "color:red", needlogin: "Yes", needadmin: "NO", input: " ID ", output: " text/plain result"
+                    },
+                    {
+                        id: "12", title: "Admin Search", url: "/adm/search", style: "color:red", needlogin: "Yes", needadmin: "Yes", input: " nick / {information} ", output: " text/plain result with tables ",
+                        o: [
+                            { othersTitle: "Information", others: " playeritems, playermail, playerauctions, playertransaction " },
+                        ],
+                    },
+                    
+                ]
+            };
+            var template = Handlebars.compile(source);
+            var html = template(context);
+            $("#result").html(html);
+            var offset = 200;
+            $('.nav-list li a').click(function (event) {
+                event.preventDefault();
+                $($(this).attr('href'))[0].scrollIntoView();
+                scrollBy(0, -offset);
+            });
+        </script>
+        <script src="js/translate.js"></script>
+        <script src="js/urlcall.js"></script>
+        <script src="js/page/login.js"></script>
+        <script>
+            var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+            (function (d, t) {
+                var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+                s.parentNode.insertBefore(g, s)
+            }(document, 'script'));
+        </script>
+    </body>
+</html>
