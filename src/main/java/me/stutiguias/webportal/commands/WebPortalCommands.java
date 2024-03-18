@@ -6,8 +6,6 @@ import me.stutiguias.webportal.init.WebPortal;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 
 public class WebPortalCommands extends Util implements CommandExecutor {
 
@@ -27,7 +25,6 @@ public class WebPortalCommands extends Util implements CommandExecutor {
     }
 
     @Override
-    @EventHandler(priority = EventPriority.NORMAL)
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
             this.args = args;
