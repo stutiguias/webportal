@@ -3,6 +3,7 @@ main: me.stutiguias.webportal.init.WebPortal
 version: ${project.version}
 author: Stutiguias
 depend: [Vault]
+softdepend: [mcMMO]
 api-version: 1.20
 commands:
   wa:

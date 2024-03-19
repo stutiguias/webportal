@@ -67,43 +67,38 @@ public class wSell extends Util {
            
     public void ClickSign(PlayerInteractEvent event,Sign sign,String[] lines) {
         String[] price = lines[2].split("-");
-        int qtdnow,qtdsold;
-        try {
-            qtdnow = plugin.db.getItemById(Integer.parseInt(lines[3]), plugin.Sell).getQuantity();
-            qtdsold = Integer.parseInt(price[0]);
-        }catch(NumberFormatException ex) {
-            event.getPlayer().sendMessage(plugin.logPrefix + " Error try get line of sign");
+        Shop au = plugin.db.getItemById(Integer.parseInt(lines[3]), plugin.Sell);
+        if(au == null) {
+            event.getPlayer().sendMessage(plugin.logPrefix + " No more itens left here!");
+            setSignSold(sign.getTargetSide(event.getPlayer()));
+            sign.update();
             event.setCancelled(true);
             return;
         }
+        int qtdnow = plugin.db.getItemById(Integer.parseInt(lines[3]), plugin.Sell).getQuantity();
+        int qtdsold = Integer.parseInt(price[0]);
         if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             event.getPlayer().sendMessage(plugin.logPrefix + " You want buy " + price[0] + " " + lines[1] + " for " + price[2] + " each ?");
         }else{
-            Shop au = plugin.db.getAuction(Integer.parseInt(lines[3]));
 
-            if(au == null) {
-                event.getPlayer().sendMessage(plugin.logPrefix + " No more itens left here!");
-                setSignSold(sign.getTargetSide(event.getPlayer()));
-                sign.update();
-            }else{
-                if(!plugin.economy.has(event.getPlayer(),au.getPrice() * Integer.parseInt(price[0]))) {
-                    event.setCancelled(true);
-                    event.getPlayer().sendMessage(plugin.logPrefix + " You don't have enough money");
-                    return;
-                }
-                
-                if(!event.getPlayer().getName().equals(au.getPlayerName())) {
-                    event.getPlayer().sendMessage(new Transaction(plugin).Buy(event.getPlayer().getName(), au, Integer.parseInt(price[0])));
-                    if(( qtdnow - qtdsold ) <= 0) {
-                        setSignSold(sign.getTargetSide(event.getPlayer()));
-                    }else{
-                        sign.getTargetSide(event.getPlayer()).setLine(2,price[0]+"-"+(qtdnow-qtdsold)+"-"+au.getPrice());
-                        sign.update();
-                    }
-                }else{
-                    event.getPlayer().sendMessage(plugin.logPrefix + " You can't buy from yourself");
-                }
+            if(!plugin.economy.has(event.getPlayer(),au.getPrice() * Integer.parseInt(price[0]))) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(plugin.logPrefix + " You don't have enough money");
+                return;
             }
+
+            if(!event.getPlayer().getName().equals(au.getPlayerName())) {
+                event.getPlayer().sendMessage(new Transaction(plugin).Buy(event.getPlayer().getName(), au, Integer.parseInt(price[0])));
+                if(( qtdnow - qtdsold ) <= 0) {
+                    setSignSold(sign.getTargetSide(event.getPlayer()));
+                }else{
+                    sign.getTargetSide(event.getPlayer()).setLine(2,price[0]+"-"+(qtdnow-qtdsold)+"-"+au.getPrice());
+                    sign.update();
+                }
+            }else{
+                event.getPlayer().sendMessage(plugin.logPrefix + " You can't buy from yourself");
+            }
+
             event.setCancelled(true);
         }
     }

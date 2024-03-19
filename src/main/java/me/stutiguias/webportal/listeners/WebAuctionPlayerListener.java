@@ -89,14 +89,14 @@ public class WebAuctionPlayerListener implements Listener {
         SignSide side = sign.getTargetSide(event.getPlayer());
 		String[] lines = side.getLines();
                 
-        if(!lines[0].contains("[WebAuction]")) return;
+        if(!lines[0].contains("[WebAuction]") && !lines[0].contains("[wSell]")) return;
 
-        if ( ( lines[0].equals(ChatColor.GREEN + "[WebAuction]") || lines[0].equals(ChatColor.GREEN + "[wSell]") ) && isCreative(event)) {
+        if (isCreative(event)) {
             event.getPlayer().sendMessage(plugin.logPrefix + " Don't work in creative" );
             return;
         }
                 
-		if ( lines[0].equals(ChatColor.GREEN + "[wSell]")) {
+		if (lines[0].contains("[wSell]")) {
             plugin.wsell.ClickSign(event,sign,lines);
             return;
         }
