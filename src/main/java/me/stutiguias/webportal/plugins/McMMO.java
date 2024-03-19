@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import java.util.HashMap;
 
 /**
@@ -65,7 +66,7 @@ public class McMMO {
     }
     
     public void GetInfoOnPlugin(String player) {
-        PlayerProfile mcpl = new PlayerProfile(player);
+        PlayerProfile mcpl =  mcMMO.getDatabaseManager().loadPlayerProfile(player);
         profile.setEXCAVATION(mcpl.getSkillLevel(PrimarySkillType.EXCAVATION));
         profile.setFISHING(mcpl.getSkillLevel(PrimarySkillType.FISHING));
         profile.setHERBALISM(mcpl.getSkillLevel(PrimarySkillType.HERBALISM));
