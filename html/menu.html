@@ -1,0 +1,36 @@
+<!-- Navbar -->
+<v-app-bar app dense dark color="primary">
+	<v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
+	<v-spacer></v-spacer>
+	<v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
+	<v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
+
+	<!-- Dropdown Menu -->
+	<v-menu offset-y>
+		<template v-slot:activator="{ on, attrs }">
+			<v-btn text v-bind="attrs" v-on="on">
+				{{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
+			</v-btn>
+		</template>
+		<v-list>
+			<v-list-item>
+				<v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+			</v-list-item>
+			<v-list-item>
+				<v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+			</v-list-item>
+			<v-list-item>
+				<v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+			</v-list-item>
+			<v-list-item>
+				<v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+			</v-list-item>
+			<v-list-item>
+				<v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+			</v-list-item>
+			<!-- Outras opções do dropdown -->
+		</v-list>
+	</v-menu>
+
+	<v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+</v-app-bar>

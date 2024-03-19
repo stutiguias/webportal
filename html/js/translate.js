@@ -13,14 +13,15 @@ var langIndex = {
     'lang1Money': 'Money $',
     'lang1Admin': 'Admin',
     'lang1Mail': 'Mail',
-    
+    'lang1TitleInfoPlayer': 'Info about player',
+
     ///////////////////
     //	Menu
     ///////////////////
     'lang1Title': 'Shop',
     'lang1Home': 'Home',
     'lang1Shop': 'Shop',
-    'lang1My_itens': 'Items',
+    'lang1MyItems': 'Items',
     'lang1Settings': 'Settings',
     'lang1Options': 'Options',
     'lang1Info': 'Info',

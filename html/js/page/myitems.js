@@ -1,118 +1,148 @@
-$(document).ready(function () {
-
-    $("#btnCreateAuction").click(function () {
-        getItems();
-        $(".hideform").show();
-        $('#result').html("");
-    });
-
-    $("#btnSendMail").click(function () {
-        getItems();
-        $(".hideform").show();
-        $('.result').html("");
-    });
-
-});
-
-var getItems = function () {
-    $.ajax({
-        url: window.qualifyURL("/myitems/get"),
-        success: function (data) {
-            $(".selectItem").empty();
-            $(".selectItemMail").empty();
-            $.each(data, function (itemId, nameImage) {
-                select(itemId, nameImage, ".selectItem", ".img", ".enchants");
-                select(itemId, nameImage, ".selectItemMail", ".imgMail", ".enchantsMail");
-            });
-
+new Vue({
+    el: '#app',
+    vuetify: new Vuetify(),
+    data: {
+        from: 0,
+        qtd: 10,
+        dialogCreateSale: false,
+        dialogSendMail: false,
+        items: [], 
+        mailItems: [],
+        headers: [],
+        sessionid: this.getCookie("sessionid"),
+        user: '',
+        money: '',
+        mail: '',
+        avatarUrl: 'http://minotar.net/avatar/',
+        isAdmin: false,
+        itemNames: [],
+        formData: {
+            ID: '',
+            quantity: '',
+            price: ''
         },
-        error: function (error) {
-            $('#resultado').html(error);
+        formResult: '',
+        sessionid: this.getCookie("sessionid"),
+formResult: '',
+    },
+    methods: {
+        processData() {
+            this.itemNames = this.items.map(item => {
+                return {
+                        text: item.item_name,
+                        value: item.id
+                        };
+                    });
         },
-        dataType: "json"
-    });
-};
-
-var select = function (itemId, nameImage, selector, img, enchants) {
-    $(selector).change(function () {
-        var imgsrc = "images/" + nameImage[$(selector + ' :selected').text()];
-        if ($(selector + ' :selected').val().indexOf(itemId) != -1) {
-            $(img).attr("src", imgsrc);
-            $(enchants).html(nameImage["enchant"]);
-        }
-    });
-
-    $.each(nameImage, function (name, image) {
-        if (name.indexOf("enchant") == -1) {
-            $(selector).append(new Option(name, itemId));
-        }
-        var imgsrc = "images/" + nameImage[$(selector + ' :selected').text()];
-        if (imgsrc.indexOf("undefined") == -1)
-            $(img).attr("src", imgsrc);
-    });
-};
-
-var qtd = 10;
-
-$(function () {
-    window.AjaxTable(0, 10);
-});
-
-var AjaxTable = function (from, qtd) {
-    $.ajax({
-        url: window.qualifyURL("/myitems/dataTable"),
-        data: "from=" + from + "&qtd=" + qtd + "&sessionid=" + getCookie("sessionid"),
-        success: function (data) {
-            try {
-                window.LoadTable(data,from,qtd);
-            } catch (err) {
-                $('#resultado').html(err);
-            };
-        },
-        error: function (error) {
-            $('#resultado').html(error);
-        },
-        dataType: "json"
-    });
-};
-
-function postauction(form) {
-    var ar = $(form).serializeArray();
-    $.ajax({
-        url: window.qualifyURL("/myitems/postauction"),
-        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
-        success: function (data) {
-            if (data == "no") {
-                $('#error').html('Invalid');
-            } else {
-                $(".hideform").hide();
-                $('#result').html(data);
+        getCookie(szName) {
+            var szValue = null;
+            if (document.cookie) {
+                var arr = document.cookie.split((escape(szName) + '='));
+                if (2 <= arr.length) {
+                    var arr2 = arr[1].split(';');
+                    szValue = unescape(arr2[0]);
+                }
             }
+            return szValue;
         },
-        error: function (error) {
-
+        getUserInfo() {
+            fetch(window.qualifyURL("/server/username/info?sessionid=" + this.sessionid))
+            .then(response => response.json())
+            .then(data => {
+                this.user = data["Name"];
+                this.money = data["Money"];
+                this.mail = data["Mail"];
+                this.isAdmin = data["Admin"].toString() === "1";
+                this.avatarUrl = data["Avatarurl"];
+            })
+            .catch(error => {
+                this.user = "Error loading data";
+            });
         },
-        dataType: "text"
-    });
-
-    return false;
-};
-
-function mail(form) {
-    var ar = $(form).serializeArray();
-    $.ajax({
-        url: window.qualifyURL("/mail/send"),
-        data: $(form).serialize() + "&sessionid=" + getCookie("sessionid"),
-        success: function (data) {
-            $(".hideform").hide();
-            $('.result').html(data);
+        translate(key) {
+            return window.langIndex[key] || key;
         },
-        error: function (error) {
-            $(form).hide();
-            $('.result').html(error);
-        },
-        dataType: "text"
-    });
+        submitSale() {
+            const params = new URLSearchParams({
+                ID: this.formData.ID,
+                Quantity: this.formData.quantity,
+                Price: this.formData.price,
+                sessionid: this.getCookie("sessionid")
+            }).toString();
 
-    return false;
-};
+            const url = window.qualifyURL(`/myitems/postauction?${params}`);
+
+            fetch(url, {
+                method: 'GET',
+            })
+            .then(response => response.text())
+            .then(data => {
+                this.formResult = data;
+            })
+            .catch(error => {
+                this.formResult = "Error: " + error;
+            });
+            this.dialogCreateSale = false;
+        },
+        sendMail() {
+            const params = new URLSearchParams({
+                ID: this.formData.ID,
+                Quantity: this.formData.quantity,
+                Price: this.formData.price,
+                sessionid: this.getCookie("sessionid")
+            }).toString();
+
+            const url = window.qualifyURL(`/mail/send?${params}`);
+
+            fetch(url, {
+                method: 'GET',
+            })
+            .then(response => response.text())
+            .then(data => {
+                this.formResult = data;
+            })
+            .catch(error => {
+                this.formResult = "Error: " + error;
+            });
+            this.dialogSendMail = false;
+        },
+        getMyItens(from, qtd) {
+            fetch(`/myitems/dataTable?from=${this.from}&qtd=${this.qtd}&sessionid=${this.sessionid}`)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na rede ou resposta não OK');
+                }
+
+                return response.json();
+                })
+                .then(data => {
+                    this.loadTable(data, from, qtd);
+                    this.processData();
+                })
+                .catch(error => {
+                    this.resultado = error.message || 'Erro desconhecido';
+                });
+        },
+        loadTable(data, from, qtd) {
+            if(data[0] != null) return;
+            const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
+
+            this.headers = Object.values(data[firstKey][0]).map(field => ({
+                text: field.Title,
+                value: field.Title.toLowerCase().replace(/\s+/g, '_')
+            }));
+            this.items = data[firstKey].map(item => {
+                const newItem = {};
+                Object.values(item).forEach(field => {
+                    const key = field.Title.toLowerCase().replace(/\s+/g, '_');
+                    newItem[key] = field.Val;
+                });
+                return newItem;
+            });
+        },
+    },
+    mounted() {
+        this.getMyItens();
+        this.getUserInfo();
+    }
+});

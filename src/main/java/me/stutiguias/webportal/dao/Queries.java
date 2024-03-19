@@ -1078,7 +1078,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Players SET WA_Players.webban = ? WHERE id = ?");
+                st = conn.prepareStatement("UPDATE WA_Players SET webban = ? WHERE id = ?");
                 st.setString(1, option);
                 st.setString(2, player);
                 st.executeUpdate();

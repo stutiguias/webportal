@@ -41,7 +41,7 @@ public class UserRequest extends HttpResponse {
             json.put("Name", authPlayer.WebSitePlayer.getName() );
             json.put("Admin", authPlayer.WebSitePlayer.getIsAdmin() );
             json.put("Money", plugin.economy.getBalance( plugin.getServer().getOfflinePlayer(uuid) ) );
-            json.put("Mail", plugin.Moneyformat + " " + plugin.db.getMail(authPlayer.WebSitePlayer.getName() ).size() );
+            json.put("Mail", plugin.db.getMail(authPlayer.WebSitePlayer.getName() ).size() );
             json.put("Avatarurl", plugin.Avatarurl + authPlayer.WebSitePlayer.getName() );
             Print(json.toJSONString(),"application/json");
         }catch (Exception ex){

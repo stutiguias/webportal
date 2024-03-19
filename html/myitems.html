@@ -1,153 +1,152 @@
 ﻿<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
 <html class="no-js">
-<!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <style>
         body {
             padding-top: 60px;
             padding-bottom: 40px;
         }
     </style>
-
-   
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="css/main.css">
-
-    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 <body>
-    <!--[if lt IE 7]>
-        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-    <![endif]-->
+    <div id="app">
+        <v-app>                       <!-- Navbar -->
+            <v-app-bar app dense dark color="primary">
+                <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
+                <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-    <div class="menu"></div>
-    
-    <div class="container replace">
-    
-        <h2>langMyItensTitle</h2>
+                <!-- Dropdown Menu -->
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text v-bind="attrs" v-on="on">
+                            {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <!-- Outras opções do dropdown -->
+                    </v-list>
+                </v-menu>
 
-        <div class="brand row replace">
-            <div class="span8"><img id="avatarimg" style="width:24px" src="http://minotar.net/avatar/" alt="avatar" />
-                lang1Name: <span id="user"></span> | lang1Money : <span id="money"></span> | lang1Mail : <span id="mail"></span>
-            </div>
-        </div>
+                <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+            </v-app-bar>
 
-            <br />
-            <a id="btnCreateAuction" href="#myModal" role="button" class="btn btn-primary replace" data-toggle="modal">langCreateSale</a>
-            <a id="btnSendMail" href="#myModalMail" role="button" class="btn btn-primary replace" data-toggle="modal">langSendItemMail</a>
+            <v-container>
 
-            <form onsubmit='return postauction(this)'>
-                <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <h2>{{ translate('langMyItensTitle') }}</h2>
 
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="myModalLabel replace">langCreateSale</h3>
-                  </div>
-             
-                      <div class="modal-body">
-                        <div class="nav hideform" style="text-align:center;">
-                                <div class="input-prepend">
-                                    <img class="img add-on" src="#" style="max-height:32px" />
-                                    <select name='ID' class="selectItem"></select>
-                                </div>
-                                <div class="input-prepend">
-                                    <span class="add-on replace">langQuantity</span>
-                                    <input name='Quantity' type="number" onKeyPress='return numbersonly(this, event);' class='input' value="" max="99999" required />
-                                </div>
+                <v-row>
+                    <v-col cols="12" sm="2">
+                        <v-avatar size="64">
+                            <img :src="avatarUrl" alt="avatar">
+                        </v-avatar>
+                    </v-col>
+                    <v-col cols="12" sm="10">
+                        {{ translate('lang1Name') }}: <span>{{ user }}</span> | {{ translate('lang1Money') }}: <span>{{ money }}</span> | {{ translate('lang1Mail') }}: <span>{{ mail }}</span>
+                    </v-col>
+                </v-row>
 
-                                <div class="input-prepend input-append">
-                                    <span class="add-on replace">langPrice</span>
-                                    <input name='Price' type="number" onKeyPress='return numbersonly(this, event);' class='input' max="99999" required />
-                                </div>
-                            <br />
-                            <span class="enchants"></span> 
-                        </div>
-                        <span id="result" class="nav" style="text-align:center;"></span>
-                      </div>
+                <v-row justify="center">
+                    <v-btn color="primary" class="mr-4" @click="dialogCreateSale = true">{{ translate('langCreateSale') }}</v-btn>
+                    <v-btn color="primary" @click="dialogSendMail = true">{{ translate('langSendItemMail') }}</v-btn>
+                </v-row>
+                <v-container>
+                    <v-alert type="info" v-if="formResult" class="text-center">
+                        {{ formResult }}
+                    </v-alert>
+                </v-container>
+                <!-- Diálogo Modal para Criar Venda -->
+                <v-dialog v-model="dialogCreateSale" persistent max-width="600px">
+                    <v-card>
+                        <v-card-title class="headline">{{ translate('langCreateSale') }}</v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-select v-model="formData.ID" :items="itemNames" item-text="text" item-value="value" label="Select Item"></v-select>
+                                        <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
+                                        <v-text-field v-model="formData.price" :label="translate('langPrice')" type="number"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" text @click="submitSale">Submit</v-btn>
+                            <v-btn color="red darken-1" text @click="dialogCreateSale = false">Cancel</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                
+                <!-- Diálogo Modal para Enviar Item por E-mail -->
+                <v-dialog v-model="dialogSendMail" persistent max-width="600px">
+                    <v-card>
+                        <v-card-title class="headline">{{ translate('langSendItemMail') }}</v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-select v-model="formData.ID" :items="itemNames" item-text="text" item-value="value" label="Select Item"></v-select>
+                                        <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green darken-1" text @click="sendMail">Send</v-btn>
+                            <v-btn color="red darken-1" text @click="dialogSendMail = false">Cancel</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
 
-                      <div class="modal-footer hideform">
-                         <input type="submit" name="name" class="btn" />
-                      </div>
-                </div>
-            </form>
+                <!-- Coloque os modais e outros componentes aqui conforme necessário -->
 
+                <div id="resultado"></div>
+                <!-- Tabela de Resultados -->
+                <v-data-table :headers="headers" :items="items" class="mt-5">
+                    <template v-slot:item.item_name="{ item }">
+                        <div v-html="item.item_name"></div>
+                    </template>
+                    <template v-slot:item.owner="{ item }">
+                        <div v-html="item.owner"></div>
+                    </template>
+                </v-data-table>
 
-            <form onsubmit='return mail(this)'>
-                <div id="myModalMail" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelMail" aria-hidden="true">
+                <v-footer fixed>
+                    &copy; Made by Stutiguias.
+                </v-footer>
 
-                    <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 id="myModalLabelMail">langSendItemMail</h3>
-                    </div>
-             
-                    <div class="modal-body">
-
-                        <div class="nav hideform" style="text-align:center;">
-                            <div class="input-prepend">
-                                <img class="imgMail add-on" src="#" style="max-height:32px" />
-                                <select name='ID' class="selectItemMail" style="margin-bottom:0px !important"></select>
-                            </div>
-
-                            <div class="input-prepend">
-                                <span class="add-on">langQuantity</span>
-                                <input name='Quantity' type="number" onKeyPress='return numbersonly(this, event);' style="margin-bottom:0px !important" class='input' value="" max="99999" />
-                            </div>
-                            <br />
-                            <span class="enchantsMail"></span>
-                        </div>
-
-                        <span class="nav result" style="text-align:center;"></span>
-                    </div>
-
-                    <div class="modal-footer hideform">
-                        <input type='submit' class="btn"  />
-                    </div>
-                </div>
-            </form>
-
-            <div id="resultado"></div>
-            <br />
-            <table border="0" class="table table-striped table-bordered">
-                <thead>
-                    <tr id="thead">
-
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                </tbody>
-            </table>
-
-        <hr />
-
-        <footer>
-            <p>
-                &copy; Made by Stutiguias.
-                    Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
-            </p>
-        </footer>
+            </v-container>
+        </v-app>
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-    <script src="js/vendor/bootstrap.min.js"></script>
-
-    <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
-    <script src="js/templates.js"></script>
-    <script src="js/inputfunc.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.js"></script>
     <script src="js/translate.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/table.js"></script>
     <script src="js/page/myitems.js"></script>
 </body>
 </html>

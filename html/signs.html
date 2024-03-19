@@ -1,69 +1,92 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
 <html class="no-js">
-<!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
+    <title>Vue + Vuetify Signs Page</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <style>
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-    </style>
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="css/main.css">
-
-    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
 </head>
 <body>
-    <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-    <![endif]-->
+    <div id="app">
+        <v-app>
+            <!-- Navbar -->
+            <v-app-bar app dense dark color="primary">
+                <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
+                <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-    <div class="menu"></div>
+                <!-- Dropdown Menu -->
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text v-bind="attrs" v-on="on">
+                            {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <!-- Outras opções do dropdown -->
+                    </v-list>
+                </v-menu>
 
-    <div class="container replace">
-        <div class="hero-unit">
+                <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+            </v-app-bar>
+            <v-main>
+                <v-container>
+                    <v-row justify="center">
+                        <v-col cols="12" md="8">
+                            <v-card class="pa-5" elevation="2">
+                                <v-card-title class="text-h5">
+                                    {{ translate('In Progress... !') }}
+                                </v-card-title>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-container>
 
-            in Progress... !
-        </div>
-
-
-        <hr />
-
-        <footer>
-            <p>
-                &copy; Made by Stutiguias.
-                Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
-            </p>
-        </footer>
+                <v-footer fixed padless>
+                    <v-col class="text-center">
+                        &copy; Made by Stutiguias. 
+                    </v-col>
+                </v-footer>
+            </v-main>
+        </v-app>
     </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.1/jquery.dataTables.min.js"></script>
-    <script src="js/vendor/bootstrap.min.js"></script>
 
-    <script src ="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0-rc.3/handlebars.min.js"></script>
-    <script src="js/templates.js"></script>
-    <script src="js/translate.js"></script>
-    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.js"></script>
     <script>
-        var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
-        (function (d, t) {
-            var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-            g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g, s)
-        }(document, 'script'));
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data() {
+                return {
+                    // Data properties here
+                };
+            },
+            methods: {
+                translate(key) {
+                    // Sua lógica de tradução aqui
+                    return key;
+                }
+            }
+        });
     </script>
-
 </body>
 </html>
