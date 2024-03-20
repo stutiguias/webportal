@@ -7,7 +7,9 @@ package me.stutiguias.webportal.webserver.request;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
@@ -26,8 +28,9 @@ public class ShopRequest extends HttpResponse {
     
     TradeHandle tr;
 
-    public ShopRequest(WebPortal plugin) {
+    public ShopRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
+        setHttpExchange(exchange);
         tr = new TradeHandle(plugin);
     }
         
@@ -119,7 +122,7 @@ public class ShopRequest extends HttpResponse {
     public void GetShopWithoutLogin(Map param) {
         int from;
         int qtd;
-        
+
         try {
             from = Integer.parseInt((String)param.get("from"));
             qtd = Integer.parseInt((String)param.get("qtd"));
@@ -127,7 +130,6 @@ public class ShopRequest extends HttpResponse {
             Print("Invalid Call", "text/plain");
             return;
         }
-       
         List<Shop> auctions = plugin.db.getAuctions(from,qtd);
 
         JSONArray jsonArray = new JSONArray();
@@ -153,7 +155,7 @@ public class ShopRequest extends HttpResponse {
         }
         JSONObject jsonresult = new JSONObject();
         jsonresult.put(plugin.db.getFound(),jsonArray);
-        
+
         Print(jsonresult.toJSONString(),"application/json");
     }
 

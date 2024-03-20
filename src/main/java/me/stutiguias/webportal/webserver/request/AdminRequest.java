@@ -4,6 +4,7 @@
  */
 package me.stutiguias.webportal.webserver.request;
 
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.model.WebSitePlayer;
 import me.stutiguias.webportal.model.Transact;
 import me.stutiguias.webportal.model.Shop;
@@ -28,10 +29,11 @@ public class AdminRequest extends HttpResponse {
     List<WebSiteMail> _playerMail;
     List<Shop> _PlayerAuction;
     
-    public AdminRequest(WebPortal plugin) {
+    public AdminRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
+        setHttpExchange(exchange);
     }
-    
+
     public void AdmGetInfo(String Hostadress,Map param) {
         if(isAdmin(Hostadress)) {
             String name = (String)param.get("nick");

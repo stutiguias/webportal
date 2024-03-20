@@ -6,10 +6,18 @@ package me.stutiguias.webportal.webserver;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.webserver.handlers.*;
 import me.stutiguias.webportal.webserver.request.AdminRequest;
 import me.stutiguias.webportal.webserver.request.AdminShopRequest;
 import me.stutiguias.webportal.webserver.request.BoxRequest;
@@ -27,11 +35,9 @@ import me.stutiguias.webportal.webserver.request.UserRequest;
  */
 public class WebPortalHttpHandler implements HttpHandler {
   
-    Socket WebServerSocket;
-    String Lang;
-    int Port;
     String SessionId;
     private final WebPortal plugin;
+    private Map<String, IRequestHandler> requestHandlers = new HashMap<>();
     String htmlDir = "./plugins/WebPortal/html";
     String url;
     Map params;
@@ -52,181 +58,124 @@ public class WebPortalHttpHandler implements HttpHandler {
     public WebPortalHttpHandler(WebPortal plugin)
     {
         this.plugin = plugin;
-        Shop = new ShopRequest(plugin);
-        Admin = new AdminRequest(plugin);
-        AdminShop = new AdminShopRequest(plugin);
-        Box = new BoxRequest(plugin);
-        Sell = new SellRequest(plugin);
-        MyItems = new MyItemsRequest(plugin);
-        Login = new LoginRequest(plugin);
-        UserInfo = new UserRequest(plugin);
-        Response = new HttpResponse(plugin);
-        Mail = new MailRequest(plugin);
-        Buy = new BuyRequest(plugin);
+        initializeRequestHandlers();
+    }
+
+    private void initializeRequestHandlers() {
+        requestHandlers.put("web", new LoginHandler(plugin));
+        requestHandlers.put("myitems", new MyItemsHandler(plugin));
+        requestHandlers.put("mail", new MailHandler(plugin));
+        requestHandlers.put("auction", new ShopHandler(plugin));
+        requestHandlers.put("admin", new AdminHandler(plugin));
+        requestHandlers.put("box", new BoxHandler(plugin));
+        requestHandlers.put("myauctions", new SellHandler(plugin));
+        requestHandlers.put("user", new UserHandler(plugin));
+        requestHandlers.put("buy", new BuyHandler(plugin));
+
     }
 
     @Override
-    public void handle(HttpExchange t) throws IOException {
-        try {
-            SetHttpExchange(t);
-            String request = t.getRequestURI().toString();
+    public void handle(HttpExchange exchange) throws IOException {
+        url = exchange.getRequestURI().getPath();
+        Map<String, Object> params = (Map<String, Object>) exchange.getAttribute("parameters");
+        String sessionId = (String) params.get("sessionid");
+        boolean isAuthenticated = sessionId != null && plugin.AuthPlayers.containsKey(sessionId);
 
-            params = (Map)t.getAttribute("parameters");
-            url = t.getRequestURI().toString();
+        if (url.contains("..") || url.contains("./")) {
+            serveStaticFile("/login.html", "text/html", exchange);
+            return;
+        }
+        if(url.equalsIgnoreCase("/")){
+            serveStaticFile(htmlDir+"/login.html","text/html", exchange);
+            return;
+        }
+        if(isAllowed()) {
+            serveStaticFile(htmlDir+url,GetMimeType(url), exchange);
+            return;
+        }
+        if(url.startsWith("/logout")) {
+            WebPortal.AuthPlayers.remove(sessionId);
+            serveStaticFile(htmlDir+"/login.html","text/html", exchange);
+            return;
+        }
 
-            if(request.contains("..") || request.contains("./"))
-            {
-                Response().ReadFile(htmlDir+"/login.html","text/html");
-                return;
+        IRequestHandler handler = requestHandlers.getOrDefault(url.split("/")[1], null);
+        if (handler != null) {
+            if (isAuthenticated || handler.isPublic()) {
+                handler.handle(exchange, params);
+            } else {
+                if(plugin.EnableExternalSource) serveStaticFile(htmlDir+"/external.html","text/html",exchange);
+                sendUnauthorizedResponse(exchange);
             }
-
-            SessionId = (String)params.get("sessionid");
-          
-            if(!WebPortal.AuthPlayers.containsKey(SessionId)) {
-                RequestWithoutLogin();
-            }else { 
-                RequestWithLogin();
-            }
-        }catch(IOException ex) {
-            Response().Print("Cookie Disable, please enable cookie","text/plain");
+        } else {
+            sendNotFoundResponse(exchange);
         }
-    }
-    
-    public void SetHttpExchange(HttpExchange t) {
-        Shop.setHttpExchange(t);
-        Admin.setHttpExchange(t);
-        AdminShop.setHttpExchange(t);
-        Box.setHttpExchange(t);
-        Sell.setHttpExchange(t);
-        MyItems.setHttpExchange(t);
-        Login.setHttpExchange(t);
-        UserInfo.setHttpExchange(t);
-        Response.setHttpExchange(t);
-        Mail.setHttpExchange(t);
-        Buy.setHttpExchange(t);
-    }
-    
-    public void RequestWithoutLogin() throws IOException {
-        if(url.startsWith("/web/login")){
-            if(SessionId.length() == 0) {
-               Response().Print("Cookie Disable, please enable cookie","text/plain");
-               return;
-           }
-           Login.TryToLogin(SessionId,params);
-        }else if(url.startsWith("/get/auction")) {
-            Shop.GetShopWithoutLogin(params);
-        }else if(isAllowed()) {
-            Response().ReadFile(htmlDir+url,GetMimeType(url));
-        }else if(plugin.EnableExternalSource) {
-            Response().ReadFile(htmlDir+"/external.html","text/html");
-        }else{
-            Response().ReadFile(htmlDir+"/login.html","text/html");
-        } 
     }
 
-    public void RequestWithLogin() throws IOException {
-           if(isAllowed()) {
-                Response().ReadFile(htmlDir+url,GetMimeType(url));
-            }else if(url.startsWith("/server/username/info")) {
-                UserInfo.GetInfo(SessionId);
-            }else if(url.startsWith("/logout")) {
-                WebPortal.AuthPlayers.remove(SessionId);
-                Response().ReadFile(htmlDir + "/login.html","text/html");
-            }else if(url.startsWith("/myitems")) {
-                MyItemsHandler();
-            }else if(url.startsWith("/mail")) {
-                MailHandler();
-            }else if(url.startsWith("/myauctions")) {
-                MyAuctionHandler();
-            }else if(url.startsWith("/box")) {
-                BoxHandler();
-            }else if(url.startsWith("/adm")) {
-                AdmHandler();
-            }else if(url.startsWith("/auction")) {
-                AuctionHandler();
-            }else if(url.startsWith("/buy")) {
-                BuyHandler();
-            }else if(url.equalsIgnoreCase("/")) {
-                Response().ReadFile(htmlDir+"/index.html","text/html");
+    private void sendUnauthorizedResponse(HttpExchange exchange) throws IOException {
+        String response = "Access denied: authentication required.";
+        exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
+        exchange.sendResponseHeaders(401, response.getBytes(StandardCharsets.UTF_8).length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    private void sendNotFoundResponse(HttpExchange exchange) throws IOException {
+        String response = "Page not found.";
+        exchange.getResponseHeaders().add("Content-Type", "text/plain; charset=utf-8");
+        exchange.sendResponseHeaders(404, response.getBytes(StandardCharsets.UTF_8).length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    private void serveStaticFile(String path, String mimeType, HttpExchange exchange) throws IOException {
+        try
+        {
+            File file = new File(path);
+            if(file.exists()) {
+                serveFile(file, mimeType, exchange);
+            } else {
+                sendErrorResponse(exchange);
             }
-    }
-    
-    public void BuyHandler() {
-        if(url.startsWith("/buy/additem")) {
-            Buy.AddItem(SessionId, params);
-        }else if(url.startsWith("/buy/remitem")) { 
-            Buy.Cancel(params,SessionId);
-        }else if(url.startsWith("/buy/getitem")) {
-            Buy.GetItems(SessionId, params);
+        }
+        catch(IOException e)
+        {
+            WebPortal.logger.info("ERROR in readFileAsBinary(): " + e.getMessage());
         }
     }
-    
-    public void AdmHandler() {
-        if(url.startsWith("/adm/search")) {
-                Admin.AdmGetInfo(SessionId,params);
-        }else if(url.startsWith("/adm/deleteshop")){     
-                AdminShop.Delete(SessionId, url, params);
-        }else if(url.startsWith("/adm/addshop")){ 
-                AdminShop.AddShop(SessionId, url, params);
-        }else if(url.startsWith("/adm/shoplist")){ 
-                AdminShop.List(SessionId, url, params);
-        }else if(url.startsWith("/adm/webban")) {
-                Admin.WebBan(SessionId, params);
-        }else if(url.startsWith("/adm/webunban")) {
-                Admin.WebUnBan(SessionId, params);
+
+    private void serveFile(File file, String mimeType, HttpExchange exchange) throws IOException {
+        byte[] buffer = new byte[0x10000];
+        long length = file.length();
+
+        if(plugin.EnableExternalSource) {
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+        }
+
+        exchange.getResponseHeaders().set("Content-Type", mimeType);
+        exchange.sendResponseHeaders(200, length);
+
+        try (FileInputStream fis = new FileInputStream(file); OutputStream out = exchange.getResponseBody()) {
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
         }
     }
-    
-    public void MailHandler() {
-        if(url.startsWith("/mail/get")) {
-                Mail.GetMails(SessionId,params);
-        }else if(url.startsWith("/mail/send") && !isLocked()) {
-                Mail.SendMail(SessionId, url, params);
+
+    private void sendErrorResponse(HttpExchange exchange) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", "text/html");
+        exchange.getResponseHeaders().set("Server","WebPortal Server");
+        exchange.getResponseHeaders().set("Connection","Close");
+        if(plugin.EnableExternalSource) {
+            exchange.getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
         }
-    }
-    
-    public void BoxHandler() {
-        if(url.startsWith("/box/1")) {
-                Box.BoxMcMMO(SessionId);
-        }else if(url.startsWith("/box/2")) {
-                Box.BOX2(SessionId);
-        }
-    }
-    
-    public void MyItemsHandler() {
-        if(url.startsWith("/myitems/get")) {
-                MyItems.GetMyItemsForSelectBox(SessionId);
-        }else if(url.startsWith("/myitems/dataTable")) {
-                MyItems.GetMyItems(SessionId, url, params);
-        }else if(url.startsWith("/myitems/postauction") && !isLocked()) {
-                MyItems.CreateSell(SessionId, url, params);
-        }else if(url.startsWith("/myitems/lore")) {
-                UserInfo.ItemLore(SessionId, params);
-        }
-    }
-    
-    public void MyAuctionHandler() {
-         if(url.startsWith("/myauctions/cancel")) {
-                Sell.Cancel(url, params,SessionId);
-        }else if(url.startsWith("/myauctions/get")) {
-                Sell.GetSell(SessionId, url, params);
-        }
-    }
-    
-    public void AuctionHandler() {
-        if(url.startsWith("/auction/get")) {
-                Shop.RequestShopBy(SessionId,url,params);
-        }else if(url.startsWith("/auction/shop")) {
-                Shop.BuySellShop(SessionId,params);
-        }
-    }
-    
-    public Boolean isLocked() {
-        if(WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(SessionId).WebSitePlayer.getName()) != null) {
-            return WebPortal.LockTransact.get(WebPortal.AuthPlayers.get(SessionId).WebSitePlayer.getName());
-        }else{
-            return false;
-        }
+        exchange.sendResponseHeaders(400,"404 Not Found".getBytes().length);
+        exchange.getResponseBody().write("404 Not Found".getBytes());
+        exchange.getResponseBody().flush();
+        exchange.getResponseBody().close();
     }
     
     public String GetMimeType(String url) {
@@ -265,9 +214,5 @@ public class WebPortalHttpHandler implements HttpHandler {
                 url.startsWith("/mail.html") ||
                 url.startsWith("/buy.html") ||
                 url.startsWith("/signs.html");
-    }
-    
-    public HttpResponse Response() {
-        return Response;
     }
 }

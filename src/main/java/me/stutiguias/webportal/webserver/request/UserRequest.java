@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
@@ -25,8 +26,9 @@ import me.stutiguias.webportal.webserver.HttpResponse;
 @SuppressWarnings("unchecked")
 public class UserRequest extends HttpResponse {
 
-    public UserRequest(WebPortal plugin) {
+    public UserRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
+        setHttpExchange(exchange);
     }
 
     public void GetInfo(String sessionId)  {

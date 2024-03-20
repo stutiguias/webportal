@@ -7,6 +7,8 @@ package me.stutiguias.webportal.webserver.request;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.model.WebSitePlayer;
 import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
@@ -21,8 +23,9 @@ public class LoginRequest extends HttpResponse {
 
     public AuthSystem AS;
     
-    public LoginRequest(WebPortal plugin){
+    public LoginRequest(WebPortal plugin, HttpExchange exchange){
         super(plugin);
+        setHttpExchange(exchange);
         AS = new AuthSystem(plugin);
     }
     

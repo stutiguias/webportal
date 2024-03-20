@@ -35,7 +35,7 @@ new Vue({
         if(n == 1) return this.box01;
       },
       getUserInfo() {
-          fetch("/server/username/info?sessionid=" + this.sessionid)
+          fetch("/user/info?sessionid=" + this.sessionid)
           .then(response => response.json())
           .then(data => {
               this.user = data["Name"];

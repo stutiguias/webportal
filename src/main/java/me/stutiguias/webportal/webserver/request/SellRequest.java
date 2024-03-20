@@ -6,6 +6,8 @@ package me.stutiguias.webportal.webserver.request;
 
 import java.util.List;
 import java.util.Map;
+
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
@@ -22,8 +24,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 @SuppressWarnings("unchecked")
 public class SellRequest extends HttpResponse {
 
-    public SellRequest(WebPortal plugin) {
+    public SellRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
+        setHttpExchange(exchange);
     }
     
     public void GetSell(String ip,String url,Map param) {

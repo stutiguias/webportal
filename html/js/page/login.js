@@ -21,7 +21,7 @@ new Vue({
             return window.langLogin[key] || key;
         },
         getauction(from, qtd) {
-            fetch(`/get/auction?from=${from}&qtd=${qtd}`)
+            fetch(`/web/auction?from=${from}&qtd=${qtd}`)
                 .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro na rede ou resposta não OK');

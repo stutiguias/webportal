@@ -4,10 +4,10 @@
  */
 package me.stutiguias.webportal.webserver.request;
 
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
-import org.bukkit.OfflinePlayer;
 
 /**
  *
@@ -15,9 +15,11 @@ import org.bukkit.OfflinePlayer;
  */
 public class BoxRequest extends HttpResponse {
   
-    public BoxRequest(WebPortal plugin) {
+    public BoxRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
+        setHttpExchange(exchange);
     }
+
     private StringBuilder sb;
     private String Name;
 

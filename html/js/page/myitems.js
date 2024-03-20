@@ -46,7 +46,7 @@ formResult: '',
             return szValue;
         },
         getUserInfo() {
-            fetch(window.qualifyURL("/server/username/info?sessionid=" + this.sessionid))
+            fetch(window.qualifyURL("/user/info?sessionid=" + this.sessionid))
             .then(response => response.json())
             .then(data => {
                 this.user = data["Name"];

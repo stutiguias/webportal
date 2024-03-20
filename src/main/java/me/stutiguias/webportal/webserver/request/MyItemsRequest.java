@@ -7,6 +7,8 @@ package me.stutiguias.webportal.webserver.request;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
@@ -26,8 +28,9 @@ public class MyItemsRequest extends HttpResponse {
     
     private WebPortal plugin;
     
-    public MyItemsRequest(WebPortal plugin) {
+    public MyItemsRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
+        setHttpExchange(exchange);
         this.plugin = plugin;
     }
         

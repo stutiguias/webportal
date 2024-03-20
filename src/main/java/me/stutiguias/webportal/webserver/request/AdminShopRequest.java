@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.sun.net.httpserver.HttpExchange;
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
@@ -23,8 +24,9 @@ import org.bukkit.inventory.meta.Damageable;
 @SuppressWarnings("unchecked")
 public class AdminShopRequest extends HttpResponse {
   
-    public AdminShopRequest(WebPortal instance) {
+    public AdminShopRequest(WebPortal instance, HttpExchange exchange) {
         super(instance);
+        setHttpExchange(exchange);
     }
     
     public void AddShop(String ip,String url,Map param){

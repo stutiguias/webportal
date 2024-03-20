@@ -128,22 +128,6 @@ public class HttpResponse {
             WebPortal.logger.info("ERROR in readFileAsBinary(): " + e.getMessage());
         }
     }
-    
-    public String GetParam(String param, String URL)
-    {
-        Pattern regex = Pattern.compile("[\\?&]"+param+"=([^&#]*)");
-        Matcher result = regex.matcher(URL);
-        if(result.find()){
-            try{
-                return URLDecoder.decode(result.group(1),"UTF-8");
-            }catch (UnsupportedEncodingException e){
-                WebPortal.logger.log(Level.INFO, "{0} ERROR in getParam(): {1}", new Object[]{plugin.logPrefix, e.getMessage()});
-                return "";
-            }
-        }else {
-            return "";
-        }
-    }
 
     /**
      * @return the httpExchange
