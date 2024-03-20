@@ -9,10 +9,16 @@ new Vue({
       avatarUrl: '',
       isAdmin: false,
       sessionid: this.getCookie("sessionid"),
+      box01: ''
     },
     methods: {
       translate(key) {
           return window.langIndex[key] || key;
+      },
+      async getBox(n){
+        const response = await fetch("/box/1?sessionid=" + this.sessionid)
+        const data = await response.text();
+        this.box01 = data;
       },
       getCookie(szName) {
           var szValue = null;
@@ -24,6 +30,9 @@ new Vue({
               }
           }
           return szValue;
+      },
+      getContentBox(n){
+        if(n == 1) return this.box01;
       },
       getUserInfo() {
           fetch("/server/username/info?sessionid=" + this.sessionid)
@@ -49,5 +58,6 @@ new Vue({
     },
     mounted() {
         this.getUserInfo();
+        this.getBox(1);
     }
 });

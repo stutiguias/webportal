@@ -99,7 +99,7 @@
                             <v-row>
                                 <v-col v-for="n in 4" :key="n" cols="12" sm="3">
                                     <v-card class="pa-4" outlined tile elevation="2">
-                                        <v-icon large left>mdi-gift</v-icon> Box {{ n }} Content
+                                        <span v-html="getContentBox(n)"></span>
                                     </v-card>
                                 </v-col>
                             </v-row>
