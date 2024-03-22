@@ -1,24 +1,36 @@
+function read() {
+    if(document.getElementById("mailread") == null) return;
+    document.getElementById("mailread").addEventListener("click", function(){
+        document.getElementById("mail").style.display = "block";
+    });
+    if(document.getElementById("mailclose") == null) return;
+    document.getElementById("mailclose").addEventListener("click", function(){
+        document.getElementById("mail").style.display = "none";
+    });
+}
+
 
 new Vue({
     el: '#app',
     vuetify: new Vuetify(),
     data: {
-      user: '',
-      money: '',
-      mail: '',
-      avatarUrl: '',
-      isAdmin: false,
-      sessionid: this.getCookie("sessionid"),
-      box01: ''
+        user: '',
+        money: '',
+        mail: '',
+        avatarUrl: '',
+        isAdmin: false,
+        sessionid: this.getCookie("sessionid"),
+        box01: '',
+        box02: '',
     },
     methods: {
       translate(key) {
           return window.langIndex[key] || key;
       },
       async getBox(n){
-        const response = await fetch("/box/1?sessionid=" + this.sessionid)
-        const data = await response.text();
-        this.box01 = data;
+        const response = await fetch("/box/"+n+"?sessionid=" + this.sessionid)
+        if(n === 1) this.box01 = await response.text();
+        if(n === 2) this.box02 = await response.text();
       },
       getCookie(szName) {
           var szValue = null;
@@ -31,8 +43,9 @@ new Vue({
           }
           return szValue;
       },
-      getContentBox(n){
-        if(n == 1) return this.box01;
+      async getContentBox(n){
+        if(n === 1) return await this.getBox(1);
+        if(n === 2) return await this.getBox(2);
       },
       getUserInfo() {
           fetch("/user/info?sessionid=" + this.sessionid)
@@ -58,6 +71,5 @@ new Vue({
     },
     mounted() {
         this.getUserInfo();
-        this.getBox(1);
     }
 });

@@ -23,7 +23,9 @@ Index:
     Active: false
 # Authentication System for WebSite
 AuthSystem:
-  # Choose WebPortal // More will be implemented later
+  # WebPortal default
+  # LoginSecurity - https://www.spigotmc.org/resources/loginsecurity.19362/
+  # More will be implemented later
   System: WebPortal
   # MD5 - SHA1 - SHA-256
   Algorithm: MD5

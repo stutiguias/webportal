@@ -2,13 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.plugins;
+package me.stutiguias.webportal.plugins.McMMO;
 
 import java.util.logging.Level;
 
 import me.stutiguias.webportal.init.WebPortal;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 

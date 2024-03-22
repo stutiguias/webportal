@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.plugins;
+package me.stutiguias.webportal.plugins.Esssentials;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 
 /**
@@ -22,7 +22,7 @@ public class Essentials {
         plugin = instance;
         Plugin pl = plugin.getServer().getPluginManager().getPlugin("Essentials");
         if(pl != null) {
-            WebPortal.logger.log(Level.INFO, plugin.logPrefix + "PortalBox Essentials set to true and Essentials found !!!");
+            WebPortal.logger.log(Level.INFO, plugin.logPrefix + " Essentials set to true and Essentials found !!!");
         }
     }
     
@@ -39,7 +39,7 @@ public class Essentials {
     }
     
     public StringBuilder BOX(StringBuilder sb) {
-        sb.append("<div id='boxmcmmo'>");
+        sb.append("<div id='essentials'>");
             sb.append("<div style=\"text-align:center;\" >Essentials Info</div><br/>");
             sb = BoxIp(sb);
             sb = BoxMail(sb);
@@ -53,12 +53,12 @@ public class Essentials {
             List<String> homes = profile.GetHomes();
             if(homes != null) {
                 sb.append("You have ").append(homes.size()).append(" homes<br/>");
-                sb.append("( ");
-                if(homes.size() > 0) {
+                if(!homes.isEmpty()) {
+                    sb.append("( ");
                     for (String home:homes) {
                         sb.append(home).append(",");
                     }
-                sb.append(" )<br/>");
+                    sb.append(" )<br/>");
                 }
             }else{
                 sb.append("You have 0 homes<br/>");
@@ -72,15 +72,13 @@ public class Essentials {
     
     public StringBuilder BoxMail(StringBuilder sb) {
            try {
-                List<String> mails = profile.GetMail();
-                sb.append("You have ").append(mails.size()).append(" mail(s)<br/>");
-                String showmails = "";
-                for(String mail:mails) {
-                showmails += mail + "<br/>";
-                }
-                sb.append("<input class=\"button\" id=\"mailread\" type=\"button\" value=\"Read\"><br/>");
-                sb.append("<div id=\"mail\" style=\"display:none;padding:10px;background:#E7E7E7; border:1px solid black;border-radius: 6px;-moz-border-radius: 6px;position:absolute;z-index:100;top:30%;left:40;\">").append(showmails).append("<br/>");
-                sb.append("<input class=\"button\" id=\"mailclose\" type=\"button\" value=\"Close\"></div>");
+               List<Map<?,?>> mails = profile.GetMail();
+               sb.append("You have ").append(mails.size()).append(" mail(s)<br/>Mails:<br/>");
+               for(Map<?, ?> mail:mails) {
+                   sb.append("msg : ").append(mail.get("message")).append("<br/>")
+                     .append("de : ").append(mail.get("sender-name")).append("<br/>");
+               }
+               sb.append("<br/>");
            }catch(Exception ex) {
                 ex.printStackTrace();
                 sb.append("Unable to get Mail");

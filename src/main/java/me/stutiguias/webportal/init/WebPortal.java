@@ -15,8 +15,9 @@ import me.stutiguias.webportal.listeners.WebAuctionBlockListener;
 import me.stutiguias.webportal.listeners.WebAuctionPlayerListener;
 import me.stutiguias.webportal.model.Shop;
 import me.stutiguias.webportal.model.WebItemStack;
-import me.stutiguias.webportal.plugins.Essentials;
-import me.stutiguias.webportal.plugins.McMMO;
+import me.stutiguias.webportal.plugins.Esssentials.Essentials;
+import me.stutiguias.webportal.plugins.LoginSecurity.LoginSecurity;
+import me.stutiguias.webportal.plugins.McMMO.McMMO;
 import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.signs.Mailbox;
 import me.stutiguias.webportal.signs.vBox;
@@ -61,6 +62,7 @@ public class WebPortal extends JavaPlugin {
     // Plugins Settings
     public McMMO mcmmo;
     public Essentials essentials;
+    public LoginSecurity loginSecutiry;
 
     public Boolean showSalesOnJoin = false;
     public Boolean allowlogifonline = false;
@@ -328,6 +330,10 @@ public class WebPortal extends JavaPlugin {
 
             if(w.getBoolean("Index.Essentials.Active")) {
                 essentials = new Essentials(this);
+            }
+
+            if(authplugin.equalsIgnoreCase("LoginSecurity")) {
+                loginSecutiry = new LoginSecurity(this);
             }
     }
 

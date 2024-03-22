@@ -6,6 +6,8 @@ package me.stutiguias.webportal.webserver.authentication;
 
 import java.security.NoSuchAlgorithmException;
 import me.stutiguias.webportal.init.WebPortal;
+import me.stutiguias.webportal.plugins.LoginSecurity.LoginSecurity;
+import me.stutiguias.webportal.plugins.LoginSecurity.ProfileLoginSecurity;
 import org.bukkit.entity.Player;
 /**
  *
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 public final class AuthSystem {
     
     private final WebPortal plugin;
+    private LoginSecurity loginSecurity;
     
     public AuthSystem(WebPortal plugin) {
         this.plugin = plugin;
@@ -25,6 +28,7 @@ public final class AuthSystem {
             if(_player == null) return false;
         }
         // TODO : Implement More Auth System Here
+        if(plugin.authplugin.equalsIgnoreCase("LoginSecurity")) return plugin.loginSecutiry.Auth(name, pass);
         return plugin.authplugin.equalsIgnoreCase("WebPortal") && WebPortalisLogged(name,pass);
     }
     

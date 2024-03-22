@@ -9,57 +9,54 @@ import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.webserver.HttpResponse;
 
+import java.util.Map;
+
 /**
  *
  * @author Daniel
  */
 public class BoxRequest extends HttpResponse {
-  
+
     public BoxRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
         setHttpExchange(exchange);
     }
 
-    private StringBuilder sb;
-    private String Name;
-
-    public void BoxMcMMO(String HostAddress) {
-        if(plugin.mcmmo == null) {
+    public void handleBoxRequest(String sessionid,BoxType type) {
+        String box = getBox(type, sessionid);
+        if(box == null) {
             NotActive();
             return;
         }
-        
-        sb = new StringBuilder();
-        Name = getNameLoggedPlayerWebsite(HostAddress);
+        Print(box, "text/plain");
+    }
 
+    private String getBox(BoxType type, String sessionid) {
+        switch(type) {
+            case MCMMO:
+                return getBoxMcMMo(sessionid);
+            case ESSENTIALS:
+                return plugin.essentials.getBox(getUUID(sessionid));
+            default:
+                return null;
+        }
+    }
+
+    private String getBoxMcMMo(String sessionid) {
         if(!(Boolean)plugin.mcmmo.Config.get("McMMOMYSql")) {
-            sb.append(plugin.mcmmo.getBox(Name));
-        }else {
-            sb.append(plugin.mcmmo.getBoxMcMMoMySql(Name));
+            return plugin.mcmmo.getBox(getUUID(sessionid));
+        } else {
+            return plugin.mcmmo.getBoxMcMMoMySql(getUUID(sessionid));
         }
-
-        Print(sb.toString(), "text/plain");
     }
 
-    public void BOX2(String HostAddress) {
-        if(plugin.essentials == null) {
-            NotActive();
-            return;
-        }
-        
-        sb = new StringBuilder();
-        Name = getNameLoggedPlayerWebsite(HostAddress);
-
-        sb.append(plugin.essentials.getBox(Name));
-        Print(sb.toString(),"text/plain");
-    }
-
-    private static String getNameLoggedPlayerWebsite(String HostAddress) {
-        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(HostAddress);
-        return authPlayer.WebSitePlayer.getName();
+    private static String getUUID(String sessionid) {
+        LoggedPlayer authPlayer = WebPortal.AuthPlayers.get(sessionid);
+        return authPlayer.WebSitePlayer.getUUID();
     }
 
     private void NotActive() {
         Print("","text/plain");
     }
 }
+

@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import me.stutiguias.webportal.init.WebPortal;
-import me.stutiguias.webportal.plugins.ProfileMcMMO;
+import me.stutiguias.webportal.plugins.McMMO.ProfileMcMMO;
 
 public class MySQLDataQueries extends Queries {
 

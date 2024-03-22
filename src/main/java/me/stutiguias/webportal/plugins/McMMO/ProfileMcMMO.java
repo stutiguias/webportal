@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.stutiguias.webportal.plugins;
+package me.stutiguias.webportal.plugins.McMMO;
 
 /**
  *
