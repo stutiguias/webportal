@@ -119,19 +119,30 @@
                     </v-card-text>
                 </v-card>
                 <v-card>
-                    <v-card-title>Card 2</v-card-title>
-                    <v-card-text>
-                        <!-- Content for Card 2 -->
-                    </v-card-text>
-                </v-card>
-                <v-card>
-                    <v-card-title>Card 3</v-card-title>
+                    <v-card-title>Default CMD</v-card-title>
                     <v-card-text>
                         <!-- Content for Card 3 -->
                     </v-card-text>
                 </v-card>
+                <v-card>
+                    <v-card-title>Essentials CMD</v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" class="text-center">
+                                    <v-select v-model="selectedCmd" :items="cmdOptions" label="Command"></v-select>
+                                    <v-text-field v-if="selectedCmd === 'whois' || selectedCmd === 'mail'" v-model="nickname" label="Nickname"></v-text-field>
+                                    <v-text-field v-if="selectedCmd === 'mail'" v-model="msg" label="Message"></v-text-field>
+                                    <v-btn @click="sendEssentialsCmd" class="replace" style="padding: 5px;">{{ selectedCmd }}</v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                </v-card>
             </div>
-
+            <div style="display: flex; justify-content: center;">
+                <pre>{{ resultcmd }}</pre>
+            </div>
             <v-container>
                 <v-row>
                     <v-col cols="12" class="text-center">

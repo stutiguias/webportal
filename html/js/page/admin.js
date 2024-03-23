@@ -27,6 +27,14 @@ const vue = new Vue({
         tableItems: [],
         userInfo: [],
         monitor: "",
+        resultcmd: "",
+        nickname: "",
+        msg: "",
+        selectedCmd: "Select Command",
+        cmdOptions: [
+            { text: 'whois', value: 'whois' },
+            { text: 'mail', value: 'mail' },
+        ]
     }),
     methods: {
         async get(url) {
@@ -37,6 +45,13 @@ const vue = new Vue({
             } catch (error) {
                 this.resultado = error;
             }
+        },
+        async sendEssentialsCmd() {
+            if(this.selectedCmd === "mail") url = "/adm/essentials/mail?nickname=" + this.nickname + "&msg=" + this.msg;;
+            if(this.selectedCmd === "whois") url = "/adm/essentials/whois?nickname=" + this.nickname;
+            const response = await fetch(window.qualifyURL(url + "&sessionid=" + this.getCookie("sessionid")));
+            const data = await response.json();
+            this.resultcmd = data[0].result;
         },
         async getMonitor() {
             const response = await fetch(window.qualifyURL("/adm/getMonitor?sessionid=" + this.getCookie("sessionid")));
