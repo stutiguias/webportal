@@ -8,114 +8,208 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <style>
+        .button {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            background-color: #3f51b5;
+            border: none;
+            border-radius: 12px; /* Adiciona bordas redondas */
+            padding: 10px 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: inline-block;
+            transition: all 0.3s ease 0s;
+            text-decoration: none;
+            outline: none;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+            margin: 10px; /* Adiciona margem */
+        }
+
+        .button:hover {
+            background-color: #283593;
+            box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2);
+        }
+
+        .button:after {
+            content: "";
+            background: white;
+            display: block;
+            position: absolute;
+            padding-top: 300%;
+            padding-left: 350%;
+            margin-left: -20px!important;
+            margin-top: -120%;
+            opacity: 0;
+            transition: all 0.8s
+        }
+
+        .button:active:after {
+            padding: 0;
+            margin: 0;
+            opacity: 1;
+            transition: 0s
+        }
+    </style>
 </head>
 <body>
-        <div id="app">
-            <v-app>
-                <!-- Navbar -->
-                <v-app-bar app dense dark color="primary">
-                    <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
-                    <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
+<div id="app">
+    <v-app>
+        <!-- Navbar -->
+        <v-app-bar app dense dark color="primary">
+            <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
+            <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-                    <!-- Dropdown Menu -->
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn text v-bind="attrs" v-on="on">
-                                {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item>
-                                <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <!-- Outras opções do dropdown -->
-                        </v-list>
-                    </v-menu>
+            <!-- Dropdown Menu -->
+            <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn text v-bind="attrs" v-on="on">
+                        {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item>
+                        <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                    </v-list-item>
+                    <!-- Outras opções do dropdown -->
+                </v-list>
+            </v-menu>
 
-                    <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
-                </v-app-bar>
-                <v-main>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" class="text-center">
-                                <v-btn-group>
-                                    <v-btn @click="listshop" class="replace">{{ translate('langAdmListItem') }}</v-btn>
-                                    <v-btn @click="admshop" class="replace">{{ translate('langAdmAddItem') }}</v-btn>
-                                    <v-btn @click="infoplayer" class="replace">{{ translate('langPlayerInfo') }}</v-btn>
-                                </v-btn-group>
-                            </v-col>
-                        </v-row>
-    
-                        <!-- Info Player -->
-                        <v-row v-if="showInfoPlayer" align="center" justify="center">
-                            <v-col cols="12" sm="6">
-                                <v-form @submit.prevent="adm" class="pt-5">
-                                    <v-text-field v-model="nick" :label="translate('lang1Name')" placeholder="Insert Name Here"></v-text-field>
-                                    <v-select v-model="information" :items="infoOptions" :label="translate('langInfo')"></v-select>
-                                    <v-btn type="submit" color="primary">Submit</v-btn>
-                                </v-form>
-                            </v-col>
-                        </v-row>
-    
-                        <!-- Add Item Shop -->
-                        <v-row v-if="showAddItemShop" align="center" justify="center">
-                            <v-col cols="12" sm="6">
-                                <v-form @submit.prevent="additem" class="pt-5">
-                                    <v-text-field v-model="itemId" :label="translate('langItemId')"></v-text-field>
-                                    <v-text-field v-model="quantity" :label="translate('langQuantity')" type="number"></v-text-field>
-                                    <v-text-field v-model="price" :label="translate('langPrice')" type="number"></v-text-field>
-                                    <v-btn type="submit" color="primary">Submit</v-btn>
-                                </v-form>
-                            </v-col>
-                        </v-row>
-    
-                        <v-alert v-if="resultado" type="info">{{ resultado }}</v-alert>
+            <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+        </v-app-bar>
+        <v-main>
+            <div class="card-container" style="display: flex; margin: 10px;">
+                <v-card>
+                    <v-card-title>Server Monitor</v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="12" v-for="item in monitor" :key="item">
+                                    <v-card>
+                                        <v-card-text>
+                                            <div>
+                                                <v-icon>mdi-memory</v-icon> {{ item.mem }}
+                                            </div>
+                                            <div>
+                                                <v-icon>mdi-cpu-64-bit</v-icon> {{ item.cpu }}
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                </v-card>
+                <v-card>
+                    <v-card-title>Card 2</v-card-title>
+                    <v-card-text>
+                        <!-- Content for Card 2 -->
+                    </v-card-text>
+                </v-card>
+                <v-card>
+                    <v-card-title>Card 3</v-card-title>
+                    <v-card-text>
+                        <!-- Content for Card 3 -->
+                    </v-card-text>
+                </v-card>
+            </div>
 
-                        <div v-if="showInfoPlayer" v-for="user in userInfo" :key="user.name">
-                            <p>Name: {{ user.name }}</p>
-                            <p>Can Buy?: {{ user.canBuy }}</p>
-                            <p>Is Admin?: {{ user.isAdmin }}</p>
-                            <p>Banned?: {{ user.banned }}</p>
-                            <p>IP: {{ user.ip }}</p>
-                            <!-- Exibindo o formulário HTML -->
-                            <div v-html="user.websiteBanForm"></div>
-                        </div>
+            <v-container>
+                <v-row>
+                    <v-col cols="12" class="text-center">
+                        <v-btn-group>
+                            <v-btn @click="listshop" class="replace">{{ translate('langAdmListItem') }}</v-btn>
+                            <v-btn @click="admshop" class="replace">{{ translate('langAdmAddItem') }}</v-btn>
+                            <v-btn @click="infoplayer" class="replace">{{ translate('langPlayerInfo') }}</v-btn>
+                        </v-btn-group>
+                    </v-col>
+                </v-row>
 
-                        <!-- List Admin Shop -->
-                        <v-data-table v-if="showListAdmShop" :headers="tableHeaders" :items="tableItems" class="elevation-1">
-                            <template v-slot:item.item_name="{ item }">
-                                <div v-html="item.item_name"></div>
-                            </template>
-                            <template v-slot:item.delete="{ item }">
-                                <v-btn icon @click="deleteItem(item.delete)">
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
-                            </template>
-                        </v-data-table>
-                    </v-container>
-                </v-main>
-            </v-app>
-        </div>
-    
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.js"></script>
-        <script src="js/translate.js"></script>
-        <script src="js/main.js"></script>
-        <script src="js/page/admin.js"></script>
+                <!-- Info Player -->
+                <v-row v-if="showInfoPlayer" align="center" justify="center">
+                    <v-col cols="12" sm="6">
+                        <v-form @submit.prevent="adm" class="pt-5">
+                            <v-text-field v-model="nick" :label="translate('lang1Name')" placeholder="Insert Name Here"></v-text-field>
+                            <v-select v-model="information" :items="infoOptions" :label="translate('langInfo')"></v-select>
+                            <v-btn type="submit" color="primary">Submit</v-btn>
+                        </v-form>
+                    </v-col>
+                </v-row>
 
-  </body>
+                <!-- Add Item Shop -->
+                <v-row v-if="showAddItemShop" align="center" justify="center" style="padding-bottom: 10px;">
+                    <v-col cols="12" sm="6">
+                        <v-form @submit.prevent="additem" class="pt-5">
+                            <v-text-field v-model="itemId" :label="translate('langItemId')"></v-text-field>
+                            <v-text-field v-model="quantity" :label="translate('langQuantity')" type="number"></v-text-field>
+                            <v-text-field v-model="price" :label="translate('langPrice')" type="number"></v-text-field>
+                            <v-btn type="submit" color="primary">Submit</v-btn>
+                        </v-form>
+                    </v-col>
+                </v-row>
+
+                <v-alert v-if="resultado" type="info">{{ resultado }}</v-alert>
+
+                <v-container>
+                    <v-row v-if="showInfoPlayer" align="center" justify="center">
+                        <v-col cols="12" sm="6">
+                            <v-card class="pa-2" outlined>
+                                <v-list-item-group v-for="user in userInfo" :key="user.name">
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <v-list-item-title class="headline">{{ user.name }}</v-list-item-title>
+                                            <v-list-item-subtitle>Can Buy?: {{ user.canBuy }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle>Is Admin?: {{ user.isAdmin }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle>Banned?: {{ user.banned }}</v-list-item-subtitle>
+                                            <v-list-item-subtitle>IP: {{ user.ip }}</v-list-item-subtitle>
+                                            <div v-html="user.websiteBanForm"></div>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list-item-group>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-container>
+
+                <!-- List Admin Shop -->
+                <v-data-table v-if="showListAdmShop" :headers="tableHeaders" :items="tableItems" class="elevation-1">
+                    <template v-slot:item.item_name="{ item }">
+                        <div v-html="item.item_name"></div>
+                    </template>
+                    <template v-slot:item.delete="{ item }">
+                        <v-btn icon @click="deleteItem(item.delete)">
+                            <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                    </template>
+                </v-data-table>
+            </v-container>
+        </v-main>
+    </v-app>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.js"></script>
+<script src="js/translate.js"></script>
+<script src="js/main.js"></script>
+<script src="js/page/admin.js"></script>
+
+</body>
 </html>

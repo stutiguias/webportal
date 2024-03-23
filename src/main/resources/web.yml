@@ -7,6 +7,10 @@ Setting:
   Avatarurl: 'http://minotar.net/avatar/'
   # Default Money format
   Moneyformat: '$'
+  # Disable CMD on WebSite
+  # if you not want to use the command
+  # on the website
+  DisableCMD: false
 ## This is the list what you can 
 ## Show on Index Page
 ## Set this Active if you have the 

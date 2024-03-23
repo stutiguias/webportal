@@ -66,7 +66,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         requestHandlers.put("myitems", new MyItemsHandler(plugin));
         requestHandlers.put("mail", new MailHandler(plugin));
         requestHandlers.put("auction", new ShopHandler(plugin));
-        requestHandlers.put("admin", new AdminHandler(plugin));
+        requestHandlers.put("adm", new AdminHandler(plugin));
         requestHandlers.put("box", new BoxHandler(plugin));
         requestHandlers.put("myauctions", new SellHandler(plugin));
         requestHandlers.put("user", new UserHandler(plugin));

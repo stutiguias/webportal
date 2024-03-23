@@ -5,17 +5,26 @@
 package me.stutiguias.webportal.webserver.request;
 
 import com.sun.net.httpserver.HttpExchange;
+import me.stutiguias.webportal.commands.CapturingCommandSender;
+import me.stutiguias.webportal.commands.CommandUtils;
 import me.stutiguias.webportal.model.WebSitePlayer;
 import me.stutiguias.webportal.model.Transact;
 import me.stutiguias.webportal.model.Shop;
+
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.WebSiteMail;
+import me.stutiguias.webportal.plugins.Esssentials.CmdEssentials;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
+import org.bukkit.Bukkit;
 
 /**
  *
@@ -32,6 +41,48 @@ public class AdminRequest extends HttpResponse {
     public AdminRequest(WebPortal plugin, HttpExchange exchange) {
         super(plugin);
         setHttpExchange(exchange);
+    }
+
+    public void getMonitor(String SessionId) {
+        if(!isAdmin(SessionId)) {
+            Print(message.WebNotAdmin,"text/html");
+            return;
+        }
+        Runtime runtime = Runtime.getRuntime();
+
+        long memoryMax = runtime.maxMemory() / 1024 / 1024;
+        long memoryTotal = runtime.totalMemory() / 1024 / 1024;
+        long memoryFree = runtime.freeMemory() / 1024 / 1024;
+        long memoryUsed = memoryTotal - memoryFree;
+        double cpuLoad = getProcessCpuLoad();
+
+        JSONArray jsonarray = new JSONArray();
+        JSONObject json;
+        json = new JSONObject();
+        json.put("mem","Memory (MB): " + memoryUsed + " / " + memoryTotal + " (Max: " + memoryMax + ")");
+        json.put("cpu","CPU Load (%): " + String.format("%.2f", cpuLoad * 100));
+        jsonarray.add(json);
+        Print(jsonarray.toJSONString(),"application/json");
+    }
+
+    public void CmdEssentials(String cmd,String sessionid,Map param) {
+        if(!isAdmin(sessionid)) {
+            Print(message.WebNotAdmin,"text/html");
+            return;
+        }
+        CmdEssentials cmdEssentials = new CmdEssentials(plugin);
+        cmdEssentials.setHttpExchange(getHttpExchange());
+        String webSitePlayerName = WebPortal.AuthPlayers.get(sessionid).WebSitePlayer.getName();
+
+        if(cmd.equals("whois")) cmdEssentials.Whois(webSitePlayerName,param);
+        if(cmd.equals("mail")) cmdEssentials.Mail(webSitePlayerName,param);
+    }
+
+    public static double getProcessCpuLoad() {
+        com.sun.management.OperatingSystemMXBean osBean =
+                java.lang.management.ManagementFactory.getPlatformMXBean(
+                        com.sun.management.OperatingSystemMXBean.class);
+        return osBean.getProcessCpuLoad();
     }
 
     public void AdmGetInfo(String Hostadress,Map param) {

@@ -28,6 +28,14 @@ public class AdminHandler implements IRequestHandler {
         if(url.startsWith("/adm/shoplist")) AdminShop.List(SessionId, url, params);
         if(url.startsWith("/adm/webban")) Admin.WebBan(SessionId, params);
         if(url.startsWith("/adm/webunban")) Admin.WebUnBan(SessionId, params);
+        if(url.startsWith("/adm/getMonitor")) Admin.getMonitor(SessionId);
+
+        if(plugin.DisableCmd){
+            Admin.Print("Command Disabled", "text/plain");
+            return;
+        }
+        if(url.startsWith("/adm/essentials/whois")) Admin.CmdEssentials("whois",SessionId, params);
+        if(url.startsWith("/adm/essentials/mail")) Admin.CmdEssentials("mail",SessionId, params);
     }
 
     @Override

@@ -25,7 +25,8 @@ const vue = new Vue({
             { text: 'Quantity', value: 'quantity' }
         ],
         tableItems: [],
-        userInfo: []
+        userInfo: [],
+        monitor: "",
     }),
     methods: {
         async get(url) {
@@ -37,6 +38,11 @@ const vue = new Vue({
                 this.resultado = error;
             }
         },
+        async getMonitor() {
+            const response = await fetch(window.qualifyURL("/adm/getMonitor?sessionid=" + this.getCookie("sessionid")));
+            const data = await response.json();
+            this.monitor = data;
+        },
         processData(data) {
             this.loadTable(data)
         },
@@ -46,8 +52,8 @@ const vue = new Vue({
             if (firstKey) {
                 this.tableItems = data[firstKey].map(item => {
                     return {
-                        delete: this.extractIdFromDeleteForm(item.Delete), 
-                        item_name: item["Item Name"], // Extrai o texto do nome do item
+                        delete: this.extractIdFromDeleteForm(item.Delete),
+                        item_name: item["Item Name"],
                         price: item.Price,
                         quantity: item.Quantity
                     };
@@ -79,23 +85,23 @@ const vue = new Vue({
             this.showListAdmShop = true;
             this.showAddItemShop = false;
             this.showInfoPlayer = false;
-            this.get("/adm/shoplist?&DisplayStart=" + this.to + "&DisplayLength=" + this.from + "&sessionid=" + this.getCookie("sessionid"));
+            this.get("/adm/shoplist?DisplayStart=" + this.to + "&DisplayLength=" + this.from + "&sessionid=" + this.getCookie("sessionid"));
         },
         admshop() {
             this.resultado = null;
             this.showAddItemShop = true;
             this.showListAdmShop = false;
             this.showInfoPlayer = false;
-            
+
         },
         infoplayer() {
             this.resultado = null;
             this.showInfoPlayer = true;
             this.showListAdmShop = false;
             this.showAddItemShop = false;
-            
+
         },
-        async deleteItem(itemId) { 
+        async deleteItem(itemId) {
             const response = await fetch(window.qualifyURL("/adm/deleteshop?ID=" + itemId + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.text();
             this.resultado = data;
@@ -146,7 +152,7 @@ const vue = new Vue({
                     }
 
                     const data = await response.text();
-                    this.resultado = data; // Supondo que 'resultado' seja uma propriedade reativa para exibir a resposta
+                    this.resultado = data;
                 } catch (error) {
                     this.resultado = 'Error: ' + error.message;
                 }
@@ -175,7 +181,7 @@ const vue = new Vue({
                     }
 
                     const data = await response.text();
-                    this.resultado = data; // Supondo que 'resultado' seja uma propriedade reativa para exibir a resposta
+                    this.resultado = data;
                 } catch (error) {
                     this.resultado = 'Error: ' + error.message;
                 }
@@ -187,15 +193,13 @@ const vue = new Vue({
 
     },
     mounted() {
-    // Aqui você pode inicializar componentes da página ou buscar dados iniciais
-    // Por exemplo, buscar a lista de itens do shop para exibir no "List Admin Shop"
-    // this.fetchShopItems();
+        this.getMonitor();
     }
 });
 
 window.vueApp = vue;
 function websiteban(form) {
-    window.vueApp.websiteban(form);   
+    window.vueApp.websiteban(form);
     return false;
 }
 

@@ -40,8 +40,8 @@ public class WebPortalHttpServer extends Thread {
             server = HttpServer.create(new InetSocketAddress(Port),NUM_CONN_MAX);
             HttpContext cc  = server.createContext("/", new WebPortalHttpHandler(plugin));
             cc.getFilters().add(new ParameterFilter());
-            // TODO : Implementar Executor
-           // server.setExecutor(Executors.newFixedThreadPool(10));
+            // TODO : Implementer Executor
+            // server.setExecutor(Executors.newFixedThreadPool(10));
             server.start();
             WebPortal.logger.log(Level.INFO,"{0} Server start on port {1} ",new Object[]{ plugin.logPrefix , Port });
         }catch(Exception ex) {

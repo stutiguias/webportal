@@ -3,10 +3,14 @@ package me.stutiguias.webportal.init;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import me.stutiguias.webportal.commands.CapturingCommandSender;
 import me.stutiguias.webportal.commands.WebPortalCommands;
 import me.stutiguias.webportal.dao.IDataQueries;
 import me.stutiguias.webportal.dao.MySQLDataQueries;
@@ -27,7 +31,9 @@ import me.stutiguias.webportal.tasks.WebPortalHttpServer;
 import me.stutiguias.webportal.trade.Transaction;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -35,6 +41,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class WebPortal extends JavaPlugin {
 
@@ -76,6 +83,7 @@ public class WebPortal extends JavaPlugin {
     public int mailboxDelay;
 
     public String allowexternal;
+    public Boolean DisableCmd;
     public Boolean EnableExternalSource;
     public String authplugin;
     public String algorithm;
@@ -187,7 +195,19 @@ public class WebPortal extends JavaPlugin {
             logger.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
     }
 
+    public CompletableFuture<List<String>> executeCommandAndGetResultAsync(CommandSender sender, String command) {
+        CompletableFuture<List<String>> future = new CompletableFuture<>();
 
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                CapturingCommandSender capturingSender = new CapturingCommandSender(sender);
+                Bukkit.dispatchCommand(capturingSender, command);
+                future.complete(capturingSender.getMessages());
+            }
+        }.runTask(this);
+        return future;
+    }
 
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
@@ -320,6 +340,7 @@ public class WebPortal extends JavaPlugin {
             SessionTime =    w.getInt("Setting.SessionTime");
             Avatarurl=       w.getString("Setting.Avatarurl");
             Moneyformat=     w.getString("Setting.Moneyformat");
+            DisableCmd =     w.getBoolean("Setting.DisableCMD");
 
             if(w.getBoolean("Index.McMMO.Active")) {
                 ConfigurationSection s = w.getConfigurationSection("Index.McMMO");

@@ -64,6 +64,26 @@ public class HttpResponse {
         }
     }
 
+    public void sendJsonResponse(String jsonResponse) {
+        try {
+            HttpExchange exchange = getHttpExchange();
+            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            exchange.getResponseHeaders().set("Server", "WebPortal Server");
+            exchange.getResponseHeaders().set("Connection", "Close");
+            exchange.getResponseHeaders().set("Cache-Control", "no-cache, must-revalidate");
+            if (plugin.EnableExternalSource) {
+                exchange.getResponseHeaders().set("Access-Control-Allow-Origin", plugin.allowexternal);
+            }
+            exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(jsonResponse.getBytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean PrintWithReturn(String data, String MimeType)
     {
         Print(data,MimeType);
