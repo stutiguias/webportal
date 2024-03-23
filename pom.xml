@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.stutiguias</groupId>
   <artifactId>WebPortal</artifactId>
-  <version>1.07</version>
+  <version>1.08</version>
   <name>WebPortal-${project.version}</name>
   <description>WebPortal por minecraft</description>
   <packaging>jar</packaging>
