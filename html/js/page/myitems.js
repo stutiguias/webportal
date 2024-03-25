@@ -107,7 +107,7 @@ formResult: '',
             this.dialogSendMail = false;
         },
         getMyItens(from, qtd) {
-            fetch(`/myitems/dataTable?from=${this.from}&qtd=${this.qtd}&sessionid=${this.sessionid}`)
+            fetch(window.qualifyURL(`/myitems/dataTable?from=${this.from}&qtd=${this.qtd}&sessionid=${this.sessionid}`))
                 .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro na rede ou resposta não OK');

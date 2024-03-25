@@ -28,7 +28,7 @@ new Vue({
           return window.langIndex[key] || key;
       },
       async getBox(n){
-        const response = await fetch("/box/"+n+"?sessionid=" + this.sessionid)
+        const response = await fetch(window.qualifyURL("/box/"+n+"?sessionid=" + this.sessionid))
         if(n === 1) this.box01 = await response.text();
         if(n === 2) this.box02 = await response.text();
       },
@@ -48,7 +48,7 @@ new Vue({
         if(n === 2) return await this.getBox(2);
       },
       getUserInfo() {
-          fetch("/user/info?sessionid=" + this.sessionid)
+          fetch(window.qualifyURL("/user/info?sessionid=" + this.sessionid))
           .then(response => response.json())
           .then(data => {
               this.user = data["Name"];
@@ -62,7 +62,7 @@ new Vue({
           });
       },
       logout() {
-          fetch("/logout?sessionid=" + this.sessionid)
+          fetch(window.qualifyURL("/logout?sessionid=" + this.sessionid))
           .then(() => {
               document.cookie = encodeURIComponent("sessionid") + "=deleted; expires=" + new Date(0).toUTCString();
               window.location = "login.html";

@@ -44,8 +44,8 @@ public class AdminRequest extends HttpResponse {
     }
 
     public void getMonitor(String SessionId) {
-        if(!isAdmin(SessionId)) {
-            Print(message.WebNotAdmin,"text/html");
+        if (!isAdmin(SessionId)) {
+            Print(message.WebNotAdmin, "text/html");
             return;
         }
         Runtime runtime = Runtime.getRuntime();
@@ -59,10 +59,10 @@ public class AdminRequest extends HttpResponse {
         JSONArray jsonarray = new JSONArray();
         JSONObject json;
         json = new JSONObject();
-        json.put("mem","Memory (MB): " + memoryUsed + " / " + memoryTotal + " (Max: " + memoryMax + ")");
-        json.put("cpu","CPU Load (%): " + String.format("%.2f", cpuLoad * 100));
+        json.put("mem", "Memory (MB): " + memoryUsed + " / " + memoryTotal + " (Max: " + memoryMax + ")");
+        json.put("cpu", "CPU Load (%): " + String.format("%.2f", cpuLoad * 100));
         jsonarray.add(json);
-        Print(jsonarray.toJSONString(),"application/json");
+        Print(jsonarray.toJSONString(), "application/json");
     }
 
     public void CmdEssentials(String cmd,String sessionid,Map param) {

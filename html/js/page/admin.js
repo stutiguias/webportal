@@ -100,7 +100,7 @@ const vue = new Vue({
             this.showListAdmShop = true;
             this.showAddItemShop = false;
             this.showInfoPlayer = false;
-            this.get("/adm/shoplist?DisplayStart=" + this.to + "&DisplayLength=" + this.from + "&sessionid=" + this.getCookie("sessionid"));
+            this.get(window.qualifyURL("/adm/shoplist?DisplayStart=" + this.to + "&DisplayLength=" + this.from + "&sessionid=" + this.getCookie("sessionid")));
         },
         admshop() {
             this.resultado = null;

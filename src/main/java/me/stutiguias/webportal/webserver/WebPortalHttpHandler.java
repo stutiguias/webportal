@@ -102,7 +102,13 @@ public class WebPortalHttpHandler implements HttpHandler {
         IRequestHandler handler = requestHandlers.getOrDefault(url.split("/")[1], null);
         if (handler != null) {
             if (isAuthenticated || handler.isPublic()) {
-                handler.handle(exchange, params);
+                try {
+                    handler.handle(exchange, params);
+                } catch (IOException e) {
+                    WebPortal.logger.log(Level.INFO, "Error handling request: {0}", e.getMessage());
+                    e.printStackTrace();
+                    sendErrorResponse(exchange);
+                }
             } else {
                 if(plugin.EnableExternalSource) serveStaticFile(htmlDir+"/external.html","text/html",exchange);
                 sendUnauthorizedResponse(exchange);

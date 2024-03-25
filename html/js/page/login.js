@@ -21,7 +21,7 @@ new Vue({
             return window.langLogin[key] || key;
         },
         getauction(from, qtd) {
-            fetch(`/web/auction?from=${from}&qtd=${qtd}`)
+            fetch(window.qualifyURL(`/web/auction?from=${from}&qtd=${qtd}`))
                 .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro na rede ou resposta não OK');
@@ -96,7 +96,7 @@ new Vue({
             const queryParams = new URLSearchParams({ Username: this.username, Password: this.password, sessionid: this.sessionid }).toString();
             const url = `/web/login?${queryParams}`;
             try {
-                const response = await fetch(url);
+                const response = await fetch(window.qualifyURL(url));
                 const data = await response.text();
                 if (data === "ok") {
                     window.location = 'index.html';
