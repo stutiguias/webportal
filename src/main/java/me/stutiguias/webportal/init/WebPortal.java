@@ -2,10 +2,7 @@ package me.stutiguias.webportal.init;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,6 +110,7 @@ public class WebPortal extends JavaPlugin {
     public static String type = "";
     public static String version = "";
     public static String link = "";
+    public boolean useSSL;
 
     public long getCurrentMilli() {
             return System.currentTimeMillis();
@@ -209,6 +207,21 @@ public class WebPortal extends JavaPlugin {
         return future;
     }
 
+    public CompletableFuture<List<String>> executeVanillaCommandAndGetResultAsync(CommandSender sender, String command) {
+        CompletableFuture<List<String>> future = new CompletableFuture<>();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.dispatchCommand(sender, command);
+                List<String> result = new ArrayList<>();
+                result.add("command send");
+                future.complete(result);
+            }
+        }.runTask(this);
+        return future;
+    }
+
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         permission = rsp != null ? rsp.getProvider() : null;
@@ -249,6 +262,7 @@ public class WebPortal extends JavaPlugin {
             signDelay =             c.getInt("Misc.SignDelay");
             mailboxDelay =          c.getInt("Misc.MailboxDelay");
             port =                  c.getInt("Misc.WebServicePort");
+            useSSL =                c.getBoolean("Misc.UseSSL");
             OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
             AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");
             allowexternal=          c.getString("Misc.Allow");

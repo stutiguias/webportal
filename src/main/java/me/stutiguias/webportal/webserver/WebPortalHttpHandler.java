@@ -34,26 +34,11 @@ import me.stutiguias.webportal.webserver.request.UserRequest;
  * @author Daniel
  */
 public class WebPortalHttpHandler implements HttpHandler {
-  
-    String SessionId;
+
     private final WebPortal plugin;
     private Map<String, IRequestHandler> requestHandlers = new HashMap<>();
     String htmlDir = "./plugins/WebPortal/html";
     String url;
-    Map params;
-    
-    ShopRequest Shop;
-    AdminRequest Admin;
-    AdminShopRequest AdminShop;
-    BoxRequest Box;
-    SellRequest Sell;
-    MyItemsRequest MyItems;
-    LoginRequest Login;
-    UserRequest UserInfo;
-    HttpResponse Response;
-    MailRequest Mail;
-    BuyRequest Buy;
-
 
     public WebPortalHttpHandler(WebPortal plugin)
     {

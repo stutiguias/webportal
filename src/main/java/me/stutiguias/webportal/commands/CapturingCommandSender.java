@@ -1,5 +1,6 @@
 package me.stutiguias.webportal.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
@@ -38,11 +39,8 @@ public class CapturingCommandSender implements CommandSender {
         }
     }
 
-    // Implementação do novo método necessário
     @Override
     public void sendMessage(UUID sender, String message) {
-        // Aqui você decide como deseja tratar a identificação do remetente (UUID).
-        // Por simplicidade, vamos apenas adicionar a mensagem à lista de mensagens capturadas.
         messages.add(message);
     }
 
@@ -53,8 +51,6 @@ public class CapturingCommandSender implements CommandSender {
         }
     }
 
-    // Implemente todos os outros métodos abstratos do CommandSender aqui
-    // Exemplo:
     @Override
     public boolean isOp() {
         return originalSender.isOp();
@@ -65,6 +61,7 @@ public class CapturingCommandSender implements CommandSender {
 
     }
 
+    @NotNull
     @Override
     public Server getServer() {
         return originalSender.getServer();
@@ -73,74 +70,73 @@ public class CapturingCommandSender implements CommandSender {
     @NotNull
     @Override
     public String getName() {
-        return null;
+        return originalSender.getName();
     }
 
     @NotNull
     @Override
     public Spigot spigot() {
-        return null;
+        return originalSender.spigot();
     }
 
     @Override
     public boolean isPermissionSet(@NotNull String s) {
-        return false;
+        return originalSender.isPermissionSet(s);
     }
 
     @Override
     public boolean isPermissionSet(@NotNull Permission permission) {
-        return false;
+        return originalSender.isPermissionSet(permission);
     }
 
     @Override
     public boolean hasPermission(@NotNull String s) {
-        return false;
+        return originalSender.hasPermission(s);
     }
 
     @Override
     public boolean hasPermission(@NotNull Permission permission) {
-        return false;
+        return originalSender.hasPermission(permission);
     }
 
     @NotNull
     @Override
     public PermissionAttachment addAttachment(@NotNull Plugin plugin, @NotNull String s, boolean b) {
-        return null;
+        return originalSender.addAttachment(plugin, s, b);
     }
 
     @NotNull
     @Override
     public PermissionAttachment addAttachment(@NotNull Plugin plugin) {
-        return null;
+        return originalSender.addAttachment(plugin);
     }
 
     @Nullable
     @Override
     public PermissionAttachment addAttachment(@NotNull Plugin plugin, @NotNull String s, boolean b, int i) {
-        return null;
+        return originalSender.addAttachment(plugin, s, b, i);
     }
 
     @Nullable
     @Override
     public PermissionAttachment addAttachment(@NotNull Plugin plugin, int i) {
-        return null;
+        return originalSender.addAttachment(plugin, i);
     }
 
     @Override
     public void removeAttachment(@NotNull PermissionAttachment permissionAttachment) {
-
+            originalSender.removeAttachment(permissionAttachment);
     }
 
     @Override
     public void recalculatePermissions() {
-
+        originalSender.recalculatePermissions();
     }
 
     @NotNull
     @Override
     public Set<PermissionAttachmentInfo> getEffectivePermissions() {
-        return null;
+        return originalSender.getEffectivePermissions();
     }
 
-    // Adicione os métodos faltantes conforme necessário...
 }
