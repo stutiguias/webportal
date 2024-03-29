@@ -34,8 +34,27 @@ public class AdminHandler implements IRequestHandler {
             Admin.Print("Command Disabled", "text/plain");
             return;
         }
+
+        // ESSENTIALS COMMANDS
         if(url.startsWith("/adm/essentials/whois")) Admin.CmdEssentials("whois",SessionId, params);
         if(url.startsWith("/adm/essentials/mail")) Admin.CmdEssentials("mail",SessionId, params);
+
+        // BASE COMMANDS
+        if(url.startsWith("/adm/base/op")) Admin.CmdBaseWithParams("op", SessionId, 1, params);
+        if(url.startsWith("/adm/base/deop")) Admin.CmdBaseWithParams("deop", SessionId,1, params);
+
+        if(url.startsWith("/adm/base/ipban")) Admin.CmdBaseWithParams("ban-ip", SessionId,1, params);
+        if(url.startsWith("/adm/base/ban")) Admin.CmdBaseWithParams("ban", SessionId,1, params);
+
+        if(url.startsWith("/adm/base/ippardon")) Admin.CmdBaseWithParams("pardon-ip", SessionId,1, params);
+        if(url.startsWith("/adm/base/pardon")) Admin.CmdBaseWithParams("pardon", SessionId,1, params);
+
+        if(url.startsWith("/adm/base/kick")) Admin.CmdBaseWithParams("kick", SessionId,1, params);
+
+        if(url.startsWith("/adm/base/say")) Admin.CmdBaseWithParams("say", SessionId,1, params);
+
+        if(url.startsWith("/adm/base/gamemode")) Admin.CmdBaseWithParams("gamemode", SessionId,1, params);
+
     }
 
     @Override

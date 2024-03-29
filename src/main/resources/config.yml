@@ -27,6 +27,12 @@ Misc:
   # Check if your host not will block that port
   # Check if your server is not behind firewall
   WebServicePort: 25900
+  # Use SSL on WebService
+  # If you use SSL you need to put the certificate on the folder
+  # plugins/Webportal
+  # The certificate need to be named as myserver.p12
+  # if you change this need to restart the server ( not reload )
+  UseSSL: false
   # Delay for don't allow spam on sign
   SignDelay: 1000
   # Mailbox delay for spam on mailbox and item don't disappear

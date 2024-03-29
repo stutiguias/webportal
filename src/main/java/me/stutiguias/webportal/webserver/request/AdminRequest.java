@@ -5,17 +5,13 @@
 package me.stutiguias.webportal.webserver.request;
 
 import com.sun.net.httpserver.HttpExchange;
-import me.stutiguias.webportal.commands.CapturingCommandSender;
-import me.stutiguias.webportal.commands.CommandUtils;
 import me.stutiguias.webportal.model.WebSitePlayer;
 import me.stutiguias.webportal.model.Transact;
 import me.stutiguias.webportal.model.Shop;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.json.JSONArray;
@@ -25,6 +21,9 @@ import me.stutiguias.webportal.plugins.Esssentials.CmdEssentials;
 import me.stutiguias.webportal.webserver.Html;
 import me.stutiguias.webportal.webserver.HttpResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -76,6 +75,36 @@ public class AdminRequest extends HttpResponse {
 
         if(cmd.equals("whois")) cmdEssentials.Whois(webSitePlayerName,param);
         if(cmd.equals("mail")) cmdEssentials.Mail(webSitePlayerName,param);
+    }
+
+    public void CmdBaseWithParams(String cmd, String sessionid,int amount, Map param) {
+        if(!isAdmin(sessionid)) {
+            Print(message.WebNotAdmin,"text/html");
+            return;
+        }
+        String webSitePlayerName = WebPortal.AuthPlayers.get(sessionid).WebSitePlayer.getName();
+
+        StringBuilder cmdToSend = new StringBuilder(cmd);
+        for (int i = 1; i <= amount; i++) {
+            cmdToSend.append(" ").append(param.get("param" + i));
+        }
+        String finalCmdToSend = cmdToSend.toString();
+
+        plugin.executeVanillaCommandAndGetResultAsync(Bukkit.getConsoleSender(),finalCmdToSend).thenAccept(messages -> {
+            SendResultCMD(messages, webSitePlayerName, "Command : ", finalCmdToSend);
+        });
+    }
+
+    public void CmdBaseOnlyCMD(String cmd,String sessionid) {
+        if(!isAdmin(sessionid)) {
+            Print(message.WebNotAdmin,"text/html");
+            return;
+        }
+        String webSitePlayerName = WebPortal.AuthPlayers.get(sessionid).WebSitePlayer.getName();
+
+        plugin.executeVanillaCommandAndGetResultAsync(Bukkit.getConsoleSender(),cmd).thenAccept(messages -> {
+            SendResultCMD(messages, webSitePlayerName, "Command : "+ cmd, "");
+        });
     }
 
     public static double getProcessCpuLoad() {

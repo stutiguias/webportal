@@ -6,14 +6,14 @@ package me.stutiguias.webportal.webserver;
 
 import com.sun.net.httpserver.HttpExchange;
 import java.io.*;
-import java.net.URLDecoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import me.stutiguias.webportal.init.WebPortal;
 import me.stutiguias.webportal.init.Messages;
+import me.stutiguias.webportal.init.json.JSONArray;
 import me.stutiguias.webportal.init.json.JSONObject;
 import me.stutiguias.webportal.model.Enchant;
 import me.stutiguias.webportal.model.Shop;
@@ -82,6 +82,27 @@ public class HttpResponse {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void SendResultCMD(List<String> messages, String webSitePlayerName, String x, String nickname) {
+        JSONObject json = new JSONObject();
+        String cleanedResult = messages.stream()
+                .map(this::removeColorCodes)
+                .collect(Collectors.joining("\n"));
+        json.put("result", cleanedResult);
+
+        JSONArray jsonarray = new JSONArray();
+        jsonarray.add(json);
+
+        plugin.getLogger().info("Sender by : " + webSitePlayerName);
+        plugin.getLogger().info(x + nickname);
+        plugin.getLogger().info("Result : " + cleanedResult);
+
+        sendJsonResponse(jsonarray.toJSONString());
+    }
+
+    public String removeColorCodes(String textWithCodes) {
+        return textWithCodes.replaceAll("§[0-9a-fk-or]", "");
     }
 
     public boolean PrintWithReturn(String data, String MimeType)

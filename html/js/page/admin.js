@@ -30,11 +30,21 @@ const vue = new Vue({
         resultcmd: "",
         nickname: "",
         msg: "",
-        selectedCmd: "Select Command",
-        cmdOptions: [
+        selectedEssentialsCmd: "Select Command",
+        selectedBaseCmd: "Select Command",
+        cmdEssentialsOptions: [
             { text: 'whois', value: 'whois' },
             { text: 'mail', value: 'mail' },
-        ]
+        ],
+        cmdBaseOptions: [
+            { text: 'op', value: 'op' },
+            { text: 'deop', value: 'deop' },
+            { text: 'ban', value: 'ban' },
+            { text: 'ipban', value: 'ipban' },
+            { text: 'pardon', value: 'pardon' },
+            { text: 'ippardon', value: 'ippardon' },
+            { text: 'banlist', value: 'banlist'}
+        ],
     }),
     methods: {
         async get(url) {
@@ -46,9 +56,29 @@ const vue = new Vue({
                 this.resultado = error;
             }
         },
+        showBaseNickName() {
+            return this.selectedBaseCmd === 'op' 
+            || this.selectedBaseCmd === 'ban'
+            || this.selectedBaseCmd === 'deop'
+            || this.selectedBaseCmd === 'ipban'
+            || this.selectedBaseCmd === 'pardon'
+            || this.selectedBaseCmd === 'ippardon'
+            ? true : false;
+        },
         async sendEssentialsCmd() {
-            if(this.selectedCmd === "mail") url = "/adm/essentials/mail?nickname=" + this.nickname + "&msg=" + this.msg;;
-            if(this.selectedCmd === "whois") url = "/adm/essentials/whois?nickname=" + this.nickname;
+            if(this.selectedEssentialsCmd === "mail") url = "/adm/essentials/mail?nickname=" + this.nickname + "&msg=" + this.msg;
+            if(this.selectedEssentialsCmd === "whois") url = "/adm/essentials/whois?nickname=" + this.nickname;
+            const response = await fetch(window.qualifyURL(url + "&sessionid=" + this.getCookie("sessionid")));
+            const data = await response.json();
+            this.resultcmd = data[0].result;
+        },
+        async sendBaseCmd() {
+            if(this.selectedBaseCmd === "op") url = "/adm/base/op?param1=" + this.nickname
+            if(this.selectedBaseCmd === "deop") url = "/adm/base/deop?param1=" + this.nickname;
+            if(this.selectedBaseCmd === "ban") url = "/adm/base/ban?param1=" + this.nickname;
+            if(this.selectedBaseCmd === "ipban") url = "/adm/base/ipban?param1=" + this.nickname;
+            if(this.selectedBaseCmd === "pardon") url = "/adm/base/pardon?param1=" + this.nickname;
+            if(this.selectedBaseCmd === "ippardon") url = "/adm/base/ippardon?param1=" + this.nickname;
             const response = await fetch(window.qualifyURL(url + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.json();
             this.resultcmd = data[0].result;
@@ -100,7 +130,7 @@ const vue = new Vue({
             this.showListAdmShop = true;
             this.showAddItemShop = false;
             this.showInfoPlayer = false;
-            this.get(window.qualifyURL("/adm/shoplist?DisplayStart=" + this.to + "&DisplayLength=" + this.from + "&sessionid=" + this.getCookie("sessionid")));
+            this.get("/adm/shoplist?DisplayStart=" + this.to + "&DisplayLength=" + this.from + "&sessionid=" + this.getCookie("sessionid"));
         },
         admshop() {
             this.resultado = null;
