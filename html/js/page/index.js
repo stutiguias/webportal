@@ -10,27 +10,56 @@ function read() {
 }
 
 
-new Vue({
+WebPortalVue3.mountApp({
     el: '#app',
-    vuetify: new Vuetify(),
-    data: {
-        user: '',
-        money: '',
-        mail: '',
-        avatarUrl: '',
-        isAdmin: false,
-        sessionid: this.getCookie("sessionid"),
-        box01: '',
-        box02: '',
+    data() {
+        return {
+            user: '',
+            money: '',
+            mail: '',
+            avatarUrl: '',
+            isAdmin: false,
+            sessionid: '',
+            dashboardCards: [
+                { id: 1, content: '' },
+                { id: 2, content: '' }
+            ]
+        };
     },
     methods: {
       translate(key) {
           return window.langIndex[key] || key;
       },
-      async getBox(n){
-        const response = await fetch(window.qualifyURL("/box/"+n+"?sessionid=" + this.sessionid))
-        if(n === 1) this.box01 = await response.text();
-        if(n === 2) this.box02 = await response.text();
+      async fetchText(url, errorMessage) {
+          const response = await fetch(window.qualifyURL(url));
+          if (!response.ok) {
+              throw new Error(errorMessage);
+          }
+
+          return response.text();
+      },
+      async fetchJson(url, errorMessage) {
+          const response = await fetch(window.qualifyURL(url));
+          if (!response.ok) {
+              throw new Error(errorMessage);
+          }
+
+          return response.json();
+      },
+      async getBox(n) {
+          const content = await this.fetchText(
+              "/box/" + n + "?sessionid=" + this.sessionid,
+              "Unable to load dashboard panel " + n
+          );
+
+          const card = this.dashboardCards.find(item => item.id === n);
+          if (card) {
+              card.content = content;
+          }
+
+          if (n === 2) {
+              this.$nextTick(() => read());
+          }
       },
       getCookie(szName) {
           var szValue = null;
@@ -43,33 +72,48 @@ new Vue({
           }
           return szValue;
       },
-      async getContentBox(n){
-        if(n === 1) return await this.getBox(1);
-        if(n === 2) return await this.getBox(2);
-      },
-      getUserInfo() {
-          fetch(window.qualifyURL("/user/info?sessionid=" + this.sessionid))
-          .then(response => response.json())
-          .then(data => {
+      async getUserInfo() {
+          try {
+              const data = await this.fetchJson(
+                  "/user/info?sessionid=" + this.sessionid,
+                  "Unable to load user data"
+              );
+
               this.user = data["Name"];
               this.money = data["Money"];
               this.mail = data["Mail"];
               this.isAdmin = data["Admin"].toString() === "1";
               this.avatarUrl = data["Avatarurl"];
-          })
-          .catch(error => {
+          } catch (error) {
               this.user = "Error loading data";
-          });
+          }
       },
-      logout() {
-          fetch(window.qualifyURL("/logout?sessionid=" + this.sessionid))
-          .then(() => {
+      async logout() {
+          try {
+              await this.fetchText(
+                  "/logout?sessionid=" + this.sessionid,
+                  "Unable to log out"
+              );
+          } finally {
               document.cookie = encodeURIComponent("sessionid") + "=deleted; expires=" + new Date(0).toUTCString();
               window.location = "login.html";
-          });
+          }
       }
     },
     mounted() {
+        this.sessionid = this.getCookie("sessionid");
+
+        if (!this.sessionid) {
+            window.location = "login.html";
+            return;
+        }
+
         this.getUserInfo();
+
+        this.dashboardCards.forEach(card => {
+            this.getBox(card.id).catch(() => {
+                card.content = "<p>Unable to load this panel right now.</p>";
+            });
+        });
     }
 });

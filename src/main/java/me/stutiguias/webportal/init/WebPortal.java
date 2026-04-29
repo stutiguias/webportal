@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,8 +53,8 @@ public class WebPortal extends JavaPlugin {
 
     public Map<String, Long> lastUse = new HashMap<>();
 
-    public static final HashMap<String, LoggedPlayer> AuthPlayers = new HashMap<>();
-    public static final HashMap<String, Boolean> LockTransact = new HashMap<>();
+    public static final Map<String, LoggedPlayer> AuthPlayers = new ConcurrentHashMap<>();
+    public static final Map<String, Boolean> LockTransact = new ConcurrentHashMap<>();
 
     public WebPortalHttpServer server;
 
@@ -78,6 +79,7 @@ public class WebPortal extends JavaPlugin {
     public int signDelay;
     public Boolean UpdaterNotify;
     public int mailboxDelay;
+    public int webServerQueueLimit;
 
     public String allowexternal;
     public Boolean DisableCmd;
@@ -110,7 +112,8 @@ public class WebPortal extends JavaPlugin {
     public static String type = "";
     public static String version = "";
     public static String link = "";
-    public boolean useSSL;
+    public String sslCertificatePath = "myserver.p12";
+    public String sslCertificatePassword = "123";
 
     public long getCurrentMilli() {
             return System.currentTimeMillis();
@@ -166,11 +169,15 @@ public class WebPortal extends JavaPlugin {
 
     public void onReload() {
         try {
-            server.server.stop(0);
+            if (server != null) {
+                server.stopServer();
+            }
         }catch(Exception ex) {
             WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
         }
-        server.interrupt();
+        if (server != null) {
+            server.interrupt();
+        }
 
         config.reloadConfig();
         materials.reloadConfig();
@@ -184,11 +191,15 @@ public class WebPortal extends JavaPlugin {
     public void onDisable() {
             getServer().getScheduler().cancelTasks(this);
             try {
-                server.server.stop(0);
+                if (server != null) {
+                    server.stopServer();
+                }
             }catch(Exception ex) {
                 WebPortal.logger.log(Level.WARNING, "{0} Error try stop server bind", logPrefix);
             }
-            server.interrupt();
+            if (server != null) {
+                server.interrupt();
+            }
 
             logger.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
     }
@@ -262,7 +273,9 @@ public class WebPortal extends JavaPlugin {
             signDelay =             c.getInt("Misc.SignDelay");
             mailboxDelay =          c.getInt("Misc.MailboxDelay");
             port =                  c.getInt("Misc.WebServicePort");
-            useSSL =                c.getBoolean("Misc.UseSSL");
+            sslCertificatePath =    c.getString("Misc.SSLCertificatePath", "myserver.p12");
+            sslCertificatePassword= c.getString("Misc.SSLCertificatePassword", "123");
+            webServerQueueLimit =   c.getInt("Misc.WebServerQueueLimit", 8);
             OnJoinCheckPermission=  c.getBoolean("Misc.OnJoinCheckPermission");
             AllowMetaItem=          c.getBoolean("Misc.AllowMetaItem");
             allowexternal=          c.getString("Misc.Allow");
@@ -282,9 +295,13 @@ public class WebPortal extends JavaPlugin {
 
     private void SetupWebServer(FileConfiguration c) {
         int NUM_CONN_MAX = c.getInt("Misc.MaxSimultaneousConnection");
+        int workerThreads = c.getInt("Misc.WebServerWorkerThreads", 4);
+        int queueLimit = c.getInt("Misc.WebServerQueueLimit", 8);
         logger.log(Level.INFO, "{0} Max Simultaneous Connection set {1}", new Object[]{logPrefix, NUM_CONN_MAX});
+        logger.log(Level.INFO, "{0} Web worker threads limit set {1}", new Object[]{logPrefix, workerThreads});
+        logger.log(Level.INFO, "{0} Web request queue limit set {1}", new Object[]{logPrefix, queueLimit});
 
-        server = new WebPortalHttpServer(this, NUM_CONN_MAX);
+        server = new WebPortalHttpServer(this, NUM_CONN_MAX, workerThreads, queueLimit);
         server.start();
     }
 

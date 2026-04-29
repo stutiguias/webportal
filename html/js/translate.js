@@ -135,9 +135,18 @@ var langLogin = {
     'langLast': 'Last 10 auctions.'
 };
 
-// NEED TO CHANGE THIS TO YOUR IP
-// DO NOT remove http://
-// Ex : http://123.123.123.123:25900
+// Optional override for the backend origin, for example:
+// window.WEBPORTAL_API_ORIGIN = "https://example.com:25900";
 var qualifyURL = function (url) {
-    return "http://localhost:25900" + url;
+    if (/^https?:\/\//i.test(url)) {
+        return url.replace(/^http:\/\//i, 'https://');
+    }
+
+    var configuredOrigin = (window.WEBPORTAL_API_ORIGIN || '').trim();
+    if (configuredOrigin) {
+        return configuredOrigin.replace(/\/$/, '') + (url.charAt(0) === '/' ? url : '/' + url);
+    }
+
+    var hostname = window.location.hostname || 'localhost';
+    return 'https://' + hostname + ':25900' + (url.charAt(0) === '/' ? url : '/' + url);
 };

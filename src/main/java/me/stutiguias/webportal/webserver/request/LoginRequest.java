@@ -56,8 +56,9 @@ public class LoginRequest extends HttpResponse {
             
             for (Map.Entry<String,LoggedPlayer> pairs : WebPortal.AuthPlayers.entrySet()) {
                 LoggedPlayer authplayer = pairs.getValue();
-                if(authplayer.GetLogin().equalsIgnoreCase(username) || authplayer.getDate().before(d))
-                    WebPortal.AuthPlayers.remove(pairs.getKey());
+                if(authplayer.GetLogin().equalsIgnoreCase(username) || authplayer.getDate().before(d)) {
+                    WebPortal.AuthPlayers.remove(pairs.getKey(), authplayer);
+                }
             }
             
             WebPortal.AuthPlayers.put(sessionid,_AuthPlayer);

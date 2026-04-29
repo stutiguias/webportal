@@ -1,6 +1,5 @@
-new Vue({
+WebPortalVue3.mountApp({
     el: '#app',
-    vuetify: new Vuetify(),
     data: () => ({
         from:0,
         qtd:10,
@@ -107,6 +106,7 @@ new Vue({
         loadTable(data, from, qtd) {
             if(data[0] != null) return;
             const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
+            const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
             
             this.headers = Object.values(data[firstKey][0]).map(field => ({
                 text: field.Title,
@@ -116,7 +116,7 @@ new Vue({
                 const newItem = {};
                 Object.values(item).forEach(field => {
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
-                    newItem[key] = field.Val;
+                    newItem[key] = upgradeHtml(field.Val);
                 });
                 return newItem;
             });

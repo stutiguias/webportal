@@ -1,18 +1,19 @@
-new Vue({
+WebPortalVue3.mountApp({
     el: '#app',
-    vuetify: new Vuetify(),
     data: () => ({
         username: '',
         password: '',
         headers: [],
         items: [],
         resultado: '', 
+        errorMessage: '',
         sessionid: '',
-        qtd: 10
+        qtd: 10,
+        isLoading: false
     }),
     mounted() {
-        this.getauction(0, this.qtd);
         this.checkAndSetSessionId();
+        this.getauction(0, this.qtd);
     },
     methods: {
         loginform() {
@@ -38,6 +39,13 @@ new Vue({
         },
         loadTable(data, from, qtd) {
             const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
+            const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
+
+            if (!firstKey) {
+                this.headers = [];
+                this.items = [];
+                return;
+            }
 
             this.headers = Object.values(data[firstKey][0]).map(field => ({
                 text: field.Title,
@@ -48,7 +56,7 @@ new Vue({
                 const newItem = {};
                 Object.values(item).forEach(field => {
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
-                    newItem[key] = field.Val;
+                    newItem[key] = upgradeHtml(field.Val);
                 });
                 return newItem;
             });
@@ -86,25 +94,50 @@ new Vue({
         },
         checkAndSetSessionId() {
             if (!this.areCookiesEnabled()) {
-                alert("ENABLE COOKIE");
+                this.errorMessage = 'Cookies must be enabled to sign in.';
                 return;
             }
-            this.sessionid = this.makeid();
+            const existingSessionId = this.getCookie('sessionid');
+            this.sessionid = existingSessionId || this.makeid();
             this.setCookie("sessionid", this.sessionid); 
         },
         async login() {
+            this.errorMessage = '';
+
+            if (!this.username || !this.password) {
+                this.errorMessage = 'Fill in username and password before signing in.';
+                return;
+            }
+
+            if (!this.sessionid) {
+                this.checkAndSetSessionId();
+                if (!this.sessionid) {
+                    return;
+                }
+            }
+
             const queryParams = new URLSearchParams({ Username: this.username, Password: this.password, sessionid: this.sessionid }).toString();
-            const url = `/web/login?${queryParams}`;
+            const url = window.qualifyURL(`/web/login?${queryParams}`);
+
             try {
-                const response = await fetch(window.qualifyURL(url));
+                this.isLoading = true;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Unable to reach the login service.');
+                }
+
                 const data = await response.text();
-                if (data === "ok") {
+                if (data.trim() === "ok") {
                     window.location = 'index.html';
-                } else if (data === "no") {
-                    this.errorMessage = 'Error trying to login:<br>The username must be case sensitive or check your password';
+                } else if (data.trim() === "no") {
+                    this.errorMessage = 'The username is case-sensitive. Check your password and try again.';
+                } else {
+                    this.errorMessage = data || 'Unexpected login response.';
                 }
             } catch (error) {
-                console.error('Login failed:', error);
+                this.errorMessage = error.message || 'Login failed.';
+            } finally {
+                this.isLoading = false;
             }
         },
     }

@@ -69,12 +69,13 @@
         </v-app>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+    <script src="js/vue3-portal.js"></script>
+    <script src="js/translate.js"></script>
+    <script src="js/main.js"></script>
     <script>
-        new Vue({
+        WebPortalVue3.mountApp({
             el: '#app',
-            vuetify: new Vuetify(),
             data() {
                 return {
                     // Data properties here

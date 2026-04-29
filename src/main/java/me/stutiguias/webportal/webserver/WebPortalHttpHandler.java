@@ -36,9 +36,8 @@ import me.stutiguias.webportal.webserver.request.UserRequest;
 public class WebPortalHttpHandler implements HttpHandler {
 
     private final WebPortal plugin;
-    private Map<String, IRequestHandler> requestHandlers = new HashMap<>();
-    String htmlDir = "./plugins/WebPortal/html";
-    String url;
+    private final Map<String, IRequestHandler> requestHandlers = new HashMap<>();
+    private final String htmlDir = "./plugins/WebPortal/html";
 
     public WebPortalHttpHandler(WebPortal plugin)
     {
@@ -61,7 +60,7 @@ public class WebPortalHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        url = exchange.getRequestURI().getPath();
+        String url = exchange.getRequestURI().getPath();
         Map<String, Object> params = (Map<String, Object>) exchange.getAttribute("parameters");
         String sessionId = (String) params.get("sessionid");
         boolean isAuthenticated = sessionId != null && plugin.AuthPlayers.containsKey(sessionId);
@@ -74,7 +73,7 @@ public class WebPortalHttpHandler implements HttpHandler {
             serveStaticFile(htmlDir+"/login.html","text/html", exchange);
             return;
         }
-        if(isAllowed()) {
+        if(isAllowed(url)) {
             serveStaticFile(htmlDir+url,GetMimeType(url), exchange);
             return;
         }
@@ -181,7 +180,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         return "text/plain";
     }
     
-    public Boolean isAllowed() {
+    public Boolean isAllowed(String url) {
         if(plugin.EnableExternalSource) return false;
         
         if(url.contains("./") || url.contains("..")) return false;

@@ -27,12 +27,15 @@ Misc:
   # Check if your host not will block that port
   # Check if your server is not behind firewall
   WebServicePort: 25900
-  # Use SSL on WebService
-  # If you use SSL you need to put the certificate on the folder
-  # plugins/Webportal
-  # The certificate need to be named as myserver.p12
+  # WebService now always uses HTTPS.
+  # Plain HTTP is no longer available.
+  # Use a valid PKCS12 certificate (*.p12 or *.pfx)
+  # Relative paths are resolved from plugins/Webportal
+  # For a trusted browser connection, the certificate must match the host
+  # you open in the browser and be issued by a trusted CA.
   # if you change this need to restart the server ( not reload )
-  UseSSL: false
+  SSLCertificatePath: myserver.p12
+  SSLCertificatePassword: 'change_this'
   # Delay for don't allow spam on sign
   SignDelay: 1000
   # Mailbox delay for spam on mailbox and item don't disappear
@@ -40,6 +43,12 @@ Misc:
   # Max Simultaneous Connection the Server Can Hold !
   # This base on WebSite Request
   MaxSimultaneousConnection: 500
+  # Limit how many web requests are processed in parallel.
+  # Keep this low because the web server runs inside Minecraft.
+  WebServerWorkerThreads: 4
+  # Extra accepted requests waiting for a free worker before new requests
+  # start receiving 503 Service Unavailable.
+  WebServerQueueLimit: 8
   # Check this if you don't allow player use sign
   # on creative mode on
   BlockCreative: true

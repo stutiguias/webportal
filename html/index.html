@@ -6,9 +6,198 @@
     <title>WebPortal</title>
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <style>
+        html, body {
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(255, 213, 79, 0.14), transparent 28%),
+                linear-gradient(135deg, #f4efe2 0%, #e8f0fb 48%, #dce8d7 100%);
+        }
+
         body {
-            padding-top: 60px;
+            padding-top: 64px;
             padding-bottom: 40px;
+        }
+
+        .page-shell {
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .site-navbar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            min-height: 64px !important;
+            padding: 10px 24px !important;
+            box-shadow: 0 12px 28px rgba(16, 35, 54, 0.16) !important;
+        }
+
+        .hero-card,
+        .info-card,
+        .feature-card {
+            border-radius: 8px;
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            box-shadow: 0 24px 60px rgba(27, 39, 51, 0.12);
+        }
+
+        .hero-card {
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 249, 252, 0.92)),
+                radial-gradient(circle at bottom right, rgba(46, 125, 50, 0.12), transparent 34%);
+            color: #17324d;
+        }
+
+        .info-card,
+        .feature-card {
+            background: rgba(255, 255, 255, 0.84);
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-kicker {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: rgba(31, 77, 122, 0.08);
+            color: #1f4d7a;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 3.4vw, 3.1rem);
+            line-height: 1.05;
+            font-weight: 800;
+        }
+
+        .hero-text {
+            max-width: 540px;
+            color: rgba(23, 50, 77, 0.72);
+            line-height: 1.7;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .dashboard-stat {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 104px;
+            padding: 18px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid rgba(23, 50, 77, 0.1);
+            box-shadow: 0 14px 30px rgba(23, 50, 77, 0.08);
+        }
+
+        .dashboard-stat-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 44px;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: rgba(31, 77, 122, 0.1);
+            color: #1f4d7a;
+            font-size: 1.35rem;
+        }
+
+        .dashboard-stat-label {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .dashboard-stat-value {
+            margin-top: 5px;
+            color: #17324d;
+            font-size: 1.45rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .section-label {
+            color: rgba(23, 50, 77, 0.68);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .summary-value {
+            color: #17324d;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .avatar-frame {
+            border: 4px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 18px 36px rgba(23, 50, 77, 0.18);
+        }
+
+        .hero-aside {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            min-height: 100%;
+            padding: 24px;
+            border-left: 1px solid rgba(23, 50, 77, 0.08);
+            background: rgba(31, 77, 122, 0.04);
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .feature-body {
+            color: rgba(23, 50, 77, 0.82);
+        }
+
+        .footer-copy {
+            color: rgba(23, 50, 77, 0.65);
+        }
+
+        .menu-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        @media (max-width: 959px) {
+            body {
+                padding-top: 56px;
+            }
+
+            .site-navbar {
+                min-height: 56px !important;
+                padding: 8px 14px !important;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-aside {
+                border-left: 0;
+                border-top: 1px solid rgba(23, 50, 77, 0.08);
+            }
         }
     </style>
 </head>
@@ -16,7 +205,7 @@
     <div id="app">
         <v-app>
             <!-- Navbar -->
-            <v-app-bar app dense dark color="primary">
+            <v-app-bar app dense dark color="primary" class="site-navbar">
                 <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
@@ -29,97 +218,159 @@
                     </template>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
 
-                <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+                <v-btn text @click="logout">{{ translate('lang1Logout') }}</v-btn>
             </v-app-bar>
 
-            <v-container>
+            <v-container class="page-shell py-6 py-md-10" fluid>
                 <v-row>
                     <v-col cols="12">
-                        <v-container>
+                        <v-row class="mb-6 mb-md-8">
+                            <v-col cols="12">
+                                <v-card class="hero-card" flat>
+                                    <v-row align="stretch">
+                                        <v-col cols="12" md="8" class="pa-6 pa-md-8">
+                                            <div class="hero-kicker">Player dashboard</div>
+                                            <div class="hero-title mb-4">{{ user ? user + ', here is your market pulse.' : 'Your market pulse, ready.' }}</div>
+                                            <div class="hero-text mb-6">
+                                                Track your balance, mailbox and trading access from one place without digging through menus.
+                                            </div>
+                                            <div class="dashboard-grid">
+                                                <div class="dashboard-stat">
+                                                    <div class="dashboard-stat-icon">
+                                                        <v-icon>mdi-cash-multiple</v-icon>
+                                                    </div>
+                                                    <div>
+                                                        <div class="dashboard-stat-label">Balance</div>
+                                                        <div class="dashboard-stat-value">{{ money || '--' }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="dashboard-stat">
+                                                    <div class="dashboard-stat-icon">
+                                                        <v-icon>mdi-email-fast</v-icon>
+                                                    </div>
+                                                    <div>
+                                                        <div class="dashboard-stat-label">Mail</div>
+                                                        <div class="dashboard-stat-value">{{ mail || '--' }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="dashboard-stat">
+                                                    <div class="dashboard-stat-icon">
+                                                        <v-icon>{{ isAdmin ? 'mdi-crown' : 'mdi-account' }}</v-icon>
+                                                    </div>
+                                                    <div>
+                                                        <div class="dashboard-stat-label">Access</div>
+                                                        <div class="dashboard-stat-value">{{ isAdmin ? 'Admin' : 'Player' }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </v-col>
+                                        <v-col cols="12" md="4" class="pa-0">
+                                            <div class="hero-aside">
+                                                <v-avatar size="148" class="avatar-frame">
+                                                    <img v-bind:src="avatarUrl || 'images/default_avatar.png'" alt="avatar" class="avatar-img" />
+                                                </v-avatar>
+                                                <div class="quick-actions">
+                                                    <v-btn color="primary" href="shop.html">{{ translate('lang1Shop') }}</v-btn>
+                                                    <v-btn v-if="isAdmin" color="primary" outlined href="admin.html">{{ translate('lang1Admin') }}</v-btn>
+                                                </div>
+                                            </div>
+                                        </v-col>
+                                    </v-row>
+                                </v-card>
+                            </v-col>
+                        </v-row>
 
-                            <v-row class="my-5">
-                                <v-col cols="12" sm="2" class="d-flex justify-center">
-                                    <v-avatar size="120">
-                                        <img v-bind:src="avatarUrl" alt="avatar" class="avatar-img" />
-                                    </v-avatar>
-                                </v-col>
-                        
-                                <v-col cols="12" sm="10">
-                                    <v-card class="pa-4" elevation="2" tile outlined>
-                                        <v-list dense>
-                                            <v-subheader class="display-1">{{ translate('lang1TitleInfoPlayer') }}</v-subheader>
-                                            <v-list-item>
-                                                <v-list-item-icon>
-                                                    <v-icon color="deep-orange">mdi-pickaxe</v-icon>
-                                                </v-list-item-icon>
-                                                <v-list-item-content class="title"> {{ translate('lang1Name') }}: {{ user }}</v-list-item-content>
-                                            </v-list-item>
-                                            <v-list-item>
-                                                <v-list-item-icon>
-                                                    <v-icon color="lime">mdi-gold</v-icon>
-                                                </v-list-item-icon>
-                                                <v-list-item-content class="title"> {{ translate('lang1Money') }}: {{ money }}</v-list-item-content>
-                                            </v-list-item>
-                                            <v-list-item>
-                                                <v-list-item-icon>
-                                                    <v-icon color="light-blue">mdi-email</v-icon>
-                                                </v-list-item-icon>
-                                                <v-list-item-content class="title"> {{ translate('lang1Mail') }}: {{ mail }}</v-list-item-content>
-                                            </v-list-item>
-                                            <v-list-item v-if="isAdmin">
-                                                <v-list-item-icon>
-                                                    <v-icon color="red">mdi-crown</v-icon>
-                                                </v-list-item-icon>
-                                                <v-list-item-content class="title">
-                                                    <a href="admin.html">{{ translate('lang1Admin') }}</a>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list>
-                                    </v-card>
-                                </v-col>
-                            </v-row>
-                
-                            <v-row>
-                                <v-col v-for="n in 4" :key="n" cols="12" sm="3">
-                                    <v-card class="pa-4" outlined tile elevation="2">
-                                        <span v-html="getContentBox(n)"></span>
-                                    </v-card>
-                                </v-col>
-                            </v-row>
-                
-                        </v-container>
+                        <v-row>
+                            <v-col cols="12" md="4">
+                                <v-card class="info-card pa-5 pa-md-6 fill-height" flat>
+                                    <div class="section-label mb-3">Player overview</div>
+                                    <h2 class="text-h4 mb-4">{{ translate('lang1TitleInfoPlayer') }}</h2>
+                                    <v-list color="transparent" dense>
+                                        <v-list-item class="px-0">
+                                            <v-list-item-icon>
+                                                <v-icon color="deep-orange">mdi-pickaxe</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <div class="section-label">{{ translate('lang1Name') }}</div>
+                                                <div class="summary-value">{{ user || '--' }}</div>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item class="px-0">
+                                            <v-list-item-icon>
+                                                <v-icon color="amber darken-2">mdi-cash-multiple</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <div class="section-label">{{ translate('lang1Money') }}</div>
+                                                <div class="summary-value">{{ money || '--' }}</div>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item class="px-0">
+                                            <v-list-item-icon>
+                                                <v-icon color="light-blue darken-1">mdi-email-fast</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <div class="section-label">{{ translate('lang1Mail') }}</div>
+                                                <div class="summary-value">{{ mail || '--' }}</div>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                        <v-list-item v-if="isAdmin" class="px-0">
+                                            <v-list-item-icon>
+                                                <v-icon color="red darken-1">mdi-crown</v-icon>
+                                            </v-list-item-icon>
+                                            <v-list-item-content>
+                                                <div class="section-label">{{ translate('lang1Admin') }}</div>
+                                                <div class="pt-2">
+                                                    <v-btn color="primary" outlined href="admin.html">{{ translate('lang1Admin') }}</v-btn>
+                                                </div>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-card>
+                            </v-col>
+
+                            <v-col cols="12" md="8">
+                                <v-row>
+                                    <v-col v-for="card in dashboardCards" :key="card.id" cols="12" sm="6">
+                                        <v-card class="feature-card pa-5 pa-md-6 fill-height" flat>
+                                            <div class="section-label mb-3">Panel {{ card.id }}</div>
+                                            <div class="feature-body" v-html="card.content"></div>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-row>
                     </v-col>
                 </v-row>
             </v-container>
 
             <!-- Footer -->
-            <v-footer fixed padless>
-                <v-col class="text-center">
+            <v-footer color="transparent" padless>
+                <v-col class="text-center footer-copy">
                     ©2024 Made by Stutiguias.
                 </v-col>
             </v-footer>
         </v-app>
     </div>
     <script src="js/translate.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+    <script src="js/vue3-portal.js"></script>
     <script src="js/main.js"></script>
     <script src="js/page/index.js"></script>
 </body>

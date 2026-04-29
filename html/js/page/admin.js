@@ -1,6 +1,5 @@
-const vue = new Vue({
+const vue = WebPortalVue3.mountApp({
     el: '#app',
-    vuetify: new Vuetify(),
     data: () => ({
         to: 0,
         from: 10,
@@ -47,9 +46,12 @@ const vue = new Vue({
         ],
     }),
     methods: {
+        apiUrl(url) {
+            return window.qualifyURL(url);
+        },
         async get(url) {
             try {
-                const response = await fetch(window.qualifyURL(url));
+                const response = await fetch(this.apiUrl(url));
                 const data = await response.json();
                 this.processData(data);
             } catch (error) {
@@ -66,25 +68,27 @@ const vue = new Vue({
             ? true : false;
         },
         async sendEssentialsCmd() {
+            let url = "";
             if(this.selectedEssentialsCmd === "mail") url = "/adm/essentials/mail?nickname=" + this.nickname + "&msg=" + this.msg;
             if(this.selectedEssentialsCmd === "whois") url = "/adm/essentials/whois?nickname=" + this.nickname;
-            const response = await fetch(window.qualifyURL(url + "&sessionid=" + this.getCookie("sessionid")));
+            const response = await fetch(this.apiUrl(url + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.json();
             this.resultcmd = data[0].result;
         },
         async sendBaseCmd() {
+            let url = "";
             if(this.selectedBaseCmd === "op") url = "/adm/base/op?param1=" + this.nickname
             if(this.selectedBaseCmd === "deop") url = "/adm/base/deop?param1=" + this.nickname;
             if(this.selectedBaseCmd === "ban") url = "/adm/base/ban?param1=" + this.nickname;
             if(this.selectedBaseCmd === "ipban") url = "/adm/base/ipban?param1=" + this.nickname;
             if(this.selectedBaseCmd === "pardon") url = "/adm/base/pardon?param1=" + this.nickname;
             if(this.selectedBaseCmd === "ippardon") url = "/adm/base/ippardon?param1=" + this.nickname;
-            const response = await fetch(window.qualifyURL(url + "&sessionid=" + this.getCookie("sessionid")));
+            const response = await fetch(this.apiUrl(url + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.json();
             this.resultcmd = data[0].result;
         },
         async getMonitor() {
-            const response = await fetch(window.qualifyURL("/adm/getMonitor?sessionid=" + this.getCookie("sessionid")));
+            const response = await fetch(this.apiUrl("/adm/getMonitor?sessionid=" + this.getCookie("sessionid")));
             const data = await response.json();
             this.monitor = data;
         },
@@ -94,11 +98,12 @@ const vue = new Vue({
         loadTable(data, from, qtd) {
             if(data[0] != null) return;
             const firstKey = Object.keys(data).find(key => Array.isArray(data[key]) && data[key].length > 0);
+            const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
             if (firstKey) {
                 this.tableItems = data[firstKey].map(item => {
                     return {
                         delete: this.extractIdFromDeleteForm(item.Delete),
-                        item_name: item["Item Name"],
+                        item_name: upgradeHtml(item["Item Name"]),
                         price: item.Price,
                         quantity: item.Quantity
                     };
@@ -110,6 +115,20 @@ const vue = new Vue({
             const doc = parser.parseFromString(htmlString, 'text/html');
             const input = doc.querySelector("input[type='hidden'][name='ID']");
             return input ? input.value : null;
+        },
+        secureApiHtml(htmlString) {
+            const template = document.createElement('template');
+            template.innerHTML = htmlString || '';
+
+            template.content.querySelectorAll('form[action], a[href]').forEach(element => {
+                const attr = element.hasAttribute('action') ? 'action' : 'href';
+                const value = element.getAttribute(attr);
+                if (value && (/^https?:\/\//i.test(value) || value.charAt(0) === '/')) {
+                    element.setAttribute(attr, this.apiUrl(value));
+                }
+            });
+
+            return template.innerHTML;
         },
         getCookie(szName) {
             var szValue = null;
@@ -147,13 +166,13 @@ const vue = new Vue({
 
         },
         async deleteItem(itemId) {
-            const response = await fetch(window.qualifyURL("/adm/deleteshop?ID=" + itemId + "&sessionid=" + this.getCookie("sessionid")));
+            const response = await fetch(this.apiUrl("/adm/deleteshop?ID=" + itemId + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.text();
             this.resultado = data;
         },
         async adm() {
             console.log("Fetching player info:", this.nick, "Info type:", this.information);
-            const response = await fetch(window.qualifyURL("/adm/search?nick=" + this.nick + "&information=" + this.information + "&sessionid=" + this.getCookie("sessionid")));
+            const response = await fetch(this.apiUrl("/adm/search?nick=" + this.nick + "&information=" + this.information + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.json();
             this.userInfo = data.map(user => ({
                 banned: user["Banned ?"],
@@ -162,12 +181,12 @@ const vue = new Vue({
                 ip: user["Ip"],
                 canBuy: user["Can Buy ?"],
                 name: user["Name"],
-                websiteBanForm: user["WebSite Ban"]
+                websiteBanForm: this.secureApiHtml(user["WebSite Ban"])
             }));
         },
         async additem() {
             console.log("Adding item to shop:", this.itemId, "Quantity:", this.quantity, "Price:", this.price);
-            const response = await fetch(window.qualifyURL("/adm/addshop?&itemId=" + this.itemId + "&quantity=" + this.quantity + "&price=" + this.price + "&sessionid=" + this.getCookie("sessionid")));
+            const response = await fetch(this.apiUrl("/adm/addshop?itemId=" + this.itemId + "&quantity=" + this.quantity + "&price=" + this.price + "&sessionid=" + this.getCookie("sessionid")));
             const data = await response.text();
             this.resultado = data;
             this.resetAddItemForm();
@@ -187,10 +206,10 @@ const vue = new Vue({
                 }
                 formDataObj['sessionid'] = this.getCookie("sessionid");
                 const params = new URLSearchParams(formDataObj);
-                const url = window.qualifyURL("/adm/webban") + "?" + params.toString();
+                const url = this.apiUrl("/adm/webban?" + params.toString());
 
                 try {
-                    const response = await fetch(url);
+                    const response = await fetch(this.apiUrl(url));
 
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -216,10 +235,10 @@ const vue = new Vue({
                 }
                 formDataObj['sessionid'] = this.getCookie("sessionid");
                 const params = new URLSearchParams(formDataObj);
-                const url = window.qualifyURL("/adm/webunban") + "?" + params.toString();
+                const url = this.apiUrl("/adm/webunban?" + params.toString());
 
                 try {
-                    const response = await fetch(url);
+                    const response = await fetch(this.apiUrl(url));
 
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);

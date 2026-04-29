@@ -1,32 +1,50 @@
-new Vue({
+WebPortalVue3.mountApp({
     el: '#app',
-    vuetify: new Vuetify(),
-    data: {
-        qtd : 10,
-        user: '',
-        money: '',
-        mail: '',
-        avatarUrl: 'http://minotar.net/avatar/',
-        isAdmin: false,
-        shopId: '',
-        shopQuantity: '',
-        sessionid: this.getCookie("sessionid"),
-        formData: {
-            ID: '',
-            quantity: '',
-        },
-        formResult: '',
-        categories: [
-            { name: 'Todos', filter: 'all' },
-            { name: 'Blocos', filter: 'block' },
-            { name: 'Combate', filter: 'combat' },
-            // Adicione mais categorias conforme necessário
-        ],
-        headers: [],
-        items: [],
+    data() {
+        return {
+            qtd: 10,
+            user: '',
+            money: '',
+            mail: '',
+            avatarUrl: 'https://minotar.net/avatar/',
+            isAdmin: false,
+            shopId: '',
+            shopQuantity: '',
+            sessionid: '',
+            activeCategory: 'all',
+            formData: {
+                ID: '',
+                quantity: '',
+            },
+            formResult: '',
+            resultado: '',
+            categories: [
+                { name: window.langIndex.langAll || 'All', filter: 'all' },
+                { name: window.langIndex.langBlocks || 'Blocks', filter: 'block' },
+                { name: window.langIndex.langCombat || 'Combat', filter: 'combat' },
+                { name: window.langIndex.langTools || 'Tools', filter: 'tools' },
+                { name: window.langIndex.langFood || 'Food', filter: 'food' },
+                { name: window.langIndex.langDecoration || 'Decoration', filter: 'decoration' },
+                { name: window.langIndex.langMaterials || 'Materials', filter: 'materials' },
+                { name: window.langIndex.langOthers || 'Others', filter: 'others' },
+            ],
+            headers: [],
+            items: [],
+        };
+    },
+    computed: {
+        activeCategoryLabel() {
+            const active = this.categories.find(item => item.filter === this.activeCategory);
+            return active ? active.name : (window.langIndex.langAll || 'All');
+        }
     },
     methods: {
         shop() {
+            if (!this.formData.ID || !this.formData.quantity) {
+                this.formResult = 'Inform the item ID and quantity.';
+                return;
+            }
+
             const params = new URLSearchParams({
                 ID: this.formData.ID,
                 quantity: this.formData.quantity,
@@ -49,25 +67,42 @@ new Vue({
         translate(key) {
             return window.langIndex[key] || key;
         },
-        getauction(from, qtd) {
-            fetch( window.qualifyURL(`/auction/get/byall?from=${from}&qtd=${qtd}&sessionid=${sessionid}`))
-                .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro na rede ou resposta não OK');
-                }
+        filterCategory(filter) {
+            this.activeCategory = filter;
+            this.getauction(0, this.qtd, filter);
+        },
+        getauction(from, qtd, category = this.activeCategory) {
+            const endpoint = category === 'all' ? 'byall' : category;
 
-                return response.json();
+            fetch(window.qualifyURL(`/auction/get/${endpoint}?from=${from}&qtd=${qtd}&sessionid=${this.sessionid}`))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network error or invalid response');
+                    }
+
+                    return response.json();
                 })
                 .then(data => {
-                    this.loadTable(data, from, qtd);
+                    this.loadTable(data);
                 })
                 .catch(error => {
-                    this.resultado = error.message || 'Erro desconhecido';
+                    this.resultado = error.message || 'Unknown error';
+                    if (category !== 'all') {
+                        this.activeCategory = 'all';
+                        this.getauction(from, qtd, 'all');
+                    }
                 });
         },
-        loadTable(data, from, qtd) {
-            if(data[0] != null) return;
+        loadTable(data) {
+            this.headers = [];
+            this.items = [];
+
+            if (!data || data[0] != null) return;
+
             const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
+            if (!firstKey) return;
+
+            const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
 
             this.headers = Object.values(data[firstKey][0]).map(field => ({
                 text: field.Title,
@@ -77,7 +112,7 @@ new Vue({
                 const newItem = {};
                 Object.values(item).forEach(field => {
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
-                    newItem[key] = field.Val;
+                    newItem[key] = upgradeHtml(field.Val);
                 });
                 return newItem;
             });
@@ -94,7 +129,7 @@ new Vue({
             return szValue;
         },
         getUserInfo() {
-            fetch( window.qualifyURL("/user/info?sessionid=" + this.sessionid))
+            fetch(window.qualifyURL("/user/info?sessionid=" + this.sessionid))
             .then(response => response.json())
             .then(data => {
                 this.user = data["Name"];
@@ -109,8 +144,8 @@ new Vue({
         },
     },
     mounted() {
+        this.sessionid = this.getCookie("sessionid");
         this.getUserInfo();
-        this.getauction(0, this.qtd);
+        this.getauction(0, this.qtd, this.activeCategory);
     },
-    
 });
