@@ -6,99 +6,477 @@
     <title>Request BUY</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --buy-ink: #17324d;
+            --buy-accent: #2f7668;
+            --buy-panel: rgba(255, 255, 255, 0.92);
+            --buy-border: rgba(23, 50, 77, 0.08);
+            --buy-shadow: 0 22px 48px rgba(22, 33, 45, 0.12);
+            --buy-success: #256245;
+            --buy-success-bg: rgba(37, 98, 69, 0.1);
+            --buy-error: #9c3e2e;
+            --buy-error-bg: rgba(156, 62, 46, 0.1);
+            --buy-info: #345977;
+            --buy-info-bg: rgba(52, 89, 119, 0.1);
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(115, 190, 160, 0.2), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(80, 126, 182, 0.16), transparent 24%),
+                linear-gradient(135deg, #eef7f2 0%, #edf3fb 45%, #f6eee0 100%);
+        }
+
+        body {
+            padding-bottom: 40px;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--buy-ink);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .v-toolbar__title {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .buy-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .buy-hero,
+        .buy-panel,
+        .buy-table-card {
+            border-radius: 8px;
+            border: 1px solid var(--buy-border);
+            background: var(--buy-panel);
+            box-shadow: var(--buy-shadow);
+        }
+
+        .buy-hero {
+            overflow: hidden;
+        }
+
+        .buy-kicker,
+        .buy-section-label {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .buy-title {
+            margin-top: 12px;
+            color: var(--buy-ink);
+            font-size: clamp(2.2rem, 3vw, 3.35rem);
+            line-height: 1.02;
+            font-weight: 700;
+        }
+
+        .buy-subtitle {
+            max-width: 640px;
+            margin-top: 16px;
+            color: rgba(23, 50, 77, 0.74);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .buy-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .buy-profile {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 18px;
+            min-height: 100%;
+            padding: 28px;
+            border-left: 1px solid var(--buy-border);
+            background: linear-gradient(180deg, rgba(23, 50, 77, 0.03) 0%, rgba(47, 118, 104, 0.08) 100%);
+        }
+
+        .buy-profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .buy-profile-caption {
+            margin-top: 4px;
+            color: rgba(23, 50, 77, 0.62);
+            line-height: 1.5;
+        }
+
+        .buy-profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .buy-meta-pill {
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            color: var(--buy-ink);
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .buy-panel {
+            padding: 24px;
+        }
+
+        .buy-form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+            gap: 14px;
+            align-items: end;
+            margin-top: 18px;
+        }
+
+        .buy-cancel-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: end;
+            margin-top: 18px;
+        }
+
+        .buy-feedback {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .buy-feedback.is-success {
+            color: var(--buy-success);
+            background: var(--buy-success-bg);
+        }
+
+        .buy-feedback.is-error {
+            color: var(--buy-error);
+            background: var(--buy-error-bg);
+        }
+
+        .buy-feedback.is-info {
+            color: var(--buy-info);
+            background: var(--buy-info-bg);
+        }
+
+        .buy-field-help {
+            margin-top: 12px;
+            color: rgba(23, 50, 77, 0.72);
+            line-height: 1.6;
+        }
+
+        .buy-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .buy-stat-card {
+            padding: 16px;
+            border-radius: 8px;
+            background: rgba(23, 50, 77, 0.04);
+            border: 1px solid rgba(23, 50, 77, 0.06);
+        }
+
+        .buy-stat-value {
+            margin-top: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .buy-help-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            padding-left: 18px;
+            color: rgba(23, 50, 77, 0.72);
+        }
+
+        .buy-table-card {
+            overflow: hidden;
+        }
+
+        .buy-table-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--buy-border);
+        }
+
+        .buy-table-count {
+            color: rgba(23, 50, 77, 0.66);
+            font-weight: 700;
+        }
+
+        .buy-table-card .wp-data-table-wrap {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .buy-table-card .wp-data-table th {
+            background: rgba(23, 50, 77, 0.04);
+        }
+
+        .buy-empty-state {
+            padding: 24px;
+            color: rgba(23, 50, 77, 0.74);
+            text-align: center;
+        }
+
+        .menu-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .buy-footer {
+            color: rgba(23, 50, 77, 0.64);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        @media (max-width: 959px) {
+            .buy-profile {
+                border-left: 0;
+                border-top: 1px solid var(--buy-border);
+            }
+
+            .buy-form-grid,
+            .buy-cancel-grid,
+            .buy-stat-grid,
+            .buy-table-head {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buy-panel,
+            .buy-profile {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="app">
         <v-app>
-            <v-container>
-                <!-- Navbar -->
-                <v-app-bar app dense dark color="primary">
-                    <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
-                    <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
+            <v-app-bar app dense dark color="primary">
+                <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
+                <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-                    <!-- Dropdown Menu -->
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn text v-bind="attrs" v-on="on">
-                                {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item>
-                                <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <!-- Outras opções do dropdown -->
-                        </v-list>
-                    </v-menu>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text v-bind="attrs" v-on="on">
+                            {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
 
-                    <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
-                </v-app-bar>
-                <v-main>
-                    <v-container>
-                        <h2>{{ translate('langBuy') }} </h2>
-                        
-                        <v-row>
-                            <v-col cols="12" sm="2">
-                                <v-avatar size="64">
-                                    <img :src="avatarUrl" alt="avatar">
-                                </v-avatar>
+                <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+            </v-app-bar>
+
+            <v-main>
+                <v-container class="buy-shell py-6">
+                    <section class="buy-hero mb-6">
+                        <v-row no-gutters>
+                            <v-col cols="12" md="7">
+                                <div class="buy-panel">
+                                    <div class="buy-kicker">Request board</div>
+                                    <h1 class="buy-title">{{ translate('langBuy') }}</h1>
+                                    <p class="buy-subtitle">
+                                        Post what you want to buy, keep the board current, and remove stale requests before they waste market attention.
+                                    </p>
+                                    <div class="buy-hero-actions">
+                                        <a class="wp-btn" href="shop.html">{{ translate('lang1Shop') }}</a>
+                                        <button class="wp-btn is-outlined" type="button" @click="refreshRequests" :disabled="isLoading || isSubmittingAdd || isSubmittingRemove">
+                                            Refresh requests
+                                        </button>
+                                    </div>
+                                </div>
                             </v-col>
-                            <v-col cols="12" sm="10">
-                                {{ translate('lang1Name') }}: <span>{{ user }}</span> | {{ translate('lang1Money') }}: <span>{{ money }}</span> | {{ translate('lang1Mail') }}: <span>{{ mail }}</span>
+                            <v-col cols="12" md="5">
+                                <div class="buy-profile">
+                                    <v-avatar size="84">
+                                        <img :src="avatarUrl" alt="avatar">
+                                    </v-avatar>
+                                    <div>
+                                        <div class="buy-profile-name">{{ user || translate('lang1Name') }}</div>
+                                        <div class="buy-profile-caption">
+                                            Track your balance, mailbox, and active buy requests from one place.
+                                        </div>
+                                        <div class="buy-profile-meta">
+                                            <span class="buy-meta-pill">{{ translate('lang1Money') }}: {{ money || '0' }}</span>
+                                            <span class="buy-meta-pill">{{ translate('lang1Mail') }}: {{ mail || '0' }}</span>
+                                            <span class="buy-meta-pill">Open requests: {{ requestCount }}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </v-col>
                         </v-row>
-                        <br />
+                    </section>
 
-                        <div class="addItemShop">
-                            <v-row justify="center">
-                                <v-col cols="12" md="8" lg="6">
-                                    <h5 class="text-center">{{ translate('langWant') }}</h5>
-                                    <v-form @submit.prevent="addItem">
-                                        <v-text-field 
-                                            v-model="addItemForm.itemId" :label="translate('langItemId')" required prepend-icon="mdi-cube-outline">
-                                        </v-text-field>
-                                        <v-text-field 
-                                            v-model="addItemForm.quantity" :label="translate('langQuantity')" type="number" required prepend-icon="mdi-counter">
-                                        </v-text-field>
-                                        <v-text-field 
-                                            v-model="addItemForm.price" :label="translate('langPrice')" type="number" required prepend-icon="mdi-cash">
-                                        </v-text-field>
-                                        <v-btn type="submit" color="primary" block>{{ translate('Submit') }}</v-btn>
-                                    </v-form>
-                        
-                                    <h5 class="text-center mt-5">{{ translate('langCancel') }}</h5>
-                                    <v-form @submit.prevent="removeItem">
-                                        <v-text-field 
-                                            v-model="removeItemId" label="Id" required prepend-icon="mdi-cancel">
-                                        </v-text-field>
-                                        <v-btn type="submit" color="primary" block>{{ translate('Submit') }}</v-btn>
-                                    </v-form>
-                                </v-col>
-                            </v-row>
+                    <v-row class="mb-6" dense>
+                        <v-col cols="12" md="8">
+                            <section class="buy-panel">
+                                <div class="buy-section-label">Create request</div>
+                                <h2 class="mt-3 mb-0">{{ translate('langWant') }}</h2>
+                                <p class="buy-subtitle">
+                                    Publish a buy order with item ID, quantity, and offered price so sellers can target exactly what you need.
+                                </p>
+                                <v-form @submit.prevent="addItem">
+                                    <div class="buy-form-grid">
+                                        <v-text-field
+                                            v-model="addItemForm.itemId"
+                                            :label="translate('langItemId')"
+                                            placeholder="DIAMOND, OAK_LOG, IRON_INGOT"
+                                            outlined
+                                            dense
+                                            hide-details="auto"
+                                            required
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="addItemForm.quantity"
+                                            :label="translate('langQuantity')"
+                                            type="number"
+                                            outlined
+                                            dense
+                                            hide-details="auto"
+                                            required
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="addItemForm.price"
+                                            :label="translate('langPrice')"
+                                            type="number"
+                                            outlined
+                                            dense
+                                            hide-details="auto"
+                                            required
+                                        ></v-text-field>
+                                        <button class="wp-btn" type="submit" :disabled="isSubmittingAdd || isLoading || isSubmittingRemove">
+                                            {{ isSubmittingAdd ? 'Posting...' : 'Create request' }}
+                                        </button>
+                                    </div>
+                                </v-form>
+                                <div class="buy-field-help">
+                                    Use the exact Minecraft material name recognized by the server, for example <strong>DIAMOND</strong>, <strong>OAK_LOG</strong>, or <strong>IRON_INGOT</strong>.
+                                </div>
+
+                                <div class="buy-section-label mt-6">Remove request</div>
+                                <h3 class="mt-3 mb-0">{{ translate('langCancel') }}</h3>
+                                <v-form @submit.prevent="removeItem">
+                                    <div class="buy-cancel-grid">
+                                        <v-text-field
+                                            v-model="removeItemId"
+                                            label="Request ID"
+                                            outlined
+                                            dense
+                                            hide-details="auto"
+                                            required
+                                        ></v-text-field>
+                                        <button class="wp-btn is-outlined" type="submit" :disabled="isSubmittingRemove || isLoading || isSubmittingAdd">
+                                            {{ isSubmittingRemove ? 'Removing...' : 'Remove request' }}
+                                        </button>
+                                    </div>
+                                </v-form>
+
+                                <div
+                                    v-if="formResult"
+                                    id="formresult"
+                                    class="buy-feedback"
+                                    :class="formResultType === 'error' ? 'is-error' : 'is-success'"
+                                >
+                                    {{ formResult }}
+                                </div>
+                            </section>
+                        </v-col>
+
+                        <v-col cols="12" md="4">
+                            <section class="buy-panel">
+                                <div class="buy-section-label">Market pulse</div>
+                                <div class="buy-stat-grid">
+                                    <div class="buy-stat-card">
+                                        <div class="buy-section-label">Tracked requests</div>
+                                        <div class="buy-stat-value">{{ requestCount }}</div>
+                                    </div>
+                                    <div class="buy-stat-card">
+                                        <div class="buy-section-label">Board state</div>
+                                        <div class="buy-stat-value">{{ isLoading ? 'Syncing' : 'Ready' }}</div>
+                                    </div>
+                                </div>
+                                <ul class="buy-help-list">
+                                    <li>Post exact item IDs to avoid attracting the wrong sellers.</li>
+                                    <li>Refresh after editing requests so the board mirrors the backend state.</li>
+                                    <li>Remove obsolete requests quickly to keep the market clean.</li>
+                                </ul>
+                                <div
+                                    v-if="resultado"
+                                    id="resultado"
+                                    class="buy-feedback"
+                                    :class="loadResultType === 'error' ? 'is-error' : 'is-info'"
+                                >
+                                    {{ resultado }}
+                                </div>
+                            </section>
+                        </v-col>
+                    </v-row>
+
+                    <section class="buy-table-card">
+                        <div class="buy-table-head">
+                            <div>
+                                <div class="buy-section-label">Request board</div>
+                                <h3 class="mt-2 mb-0">Open buy orders</h3>
+                            </div>
+                            <div class="buy-table-count">
+                                {{ isLoading ? 'Loading requests...' : requestCount + ' requests loaded' }}
+                            </div>
                         </div>
-                        
-
-                        <div id="formresult" class="text-center">{{ formResult }}</div>
-                        <div id="resultado">{{ resultado }}</div>
-                        <br />
-
-                        <!-- Tabela de Resultados -->
-                        <v-data-table :headers="headers" :items="items" class="mt-5">
+                        <v-data-table :headers="headers" :items="items" class="mt-0">
                             <template v-slot:item.item_name="{ item }">
                                 <div v-html="item.item_name"></div>
                             </template>
@@ -106,17 +484,21 @@
                                 <div v-html="item.owner"></div>
                             </template>
                         </v-data-table>
-                    </v-container>
-                </v-main>
-                <v-footer fixed>
-                    &copy; Made by Stutiguias.
-                </v-footer>
-            </v-container>
+                        <div v-if="!isLoading && !hasItems && !resultado" class="buy-empty-state">
+                            No buy requests were found for this account.
+                        </div>
+                    </section>
+                </v-container>
+            </v-main>
+
+            <v-footer class="buy-footer mt-6">
+                &copy; Made by Stutiguias.
+            </v-footer>
         </v-app>
     </div>
     
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.prod.js"></script>
     <script src="js/vue3-portal.js"></script>
     <script src="js/translate.js"></script>
     <script src="js/main.js"></script>

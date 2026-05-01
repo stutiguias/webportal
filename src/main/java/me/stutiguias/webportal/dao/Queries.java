@@ -45,6 +45,10 @@ public class Queries implements IDataQueries {
     }
 
     @Override
+    public void shutdown() {
+    }
+
+    @Override
     public Integer getFound() {
         return found;
     }
@@ -575,11 +579,11 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("SELECT lock FROM WA_Players where name = ?");
+                st = conn.prepareStatement("SELECT `lock` AS player_lock FROM WA_Players where name = ?");
                 st.setString(1, player);
                 rs = st.executeQuery();
                 while (rs.next()) {
-                        Lock = rs.getString("lock");
+                        Lock = rs.getString("player_lock");
                 }
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to maket price ", plugin.logPrefix);
@@ -597,7 +601,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Players SET WA_Players.lock = ? WHERE name = ?");
+                st = conn.prepareStatement("UPDATE WA_Players SET `lock` = ? WHERE name = ?");
                 st.setString(1, lock);
                 st.setString(2, player);
                 st.executeUpdate();

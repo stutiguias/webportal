@@ -1,7 +1,8 @@
 package me.stutiguias.webportal.dao;
 
 import me.stutiguias.webportal.dao.connection.WALConnection;
-import me.stutiguias.webportal.dao.connection.WALConnectionPool;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,29 +12,51 @@ import me.stutiguias.webportal.plugins.McMMO.ProfileMcMMO;
 
 public class MySQLDataQueries extends Queries {
 
-	private WALConnectionPool pool;
+	private HikariDataSource dataSource;
         
 	public MySQLDataQueries(WebPortal plugin, String dbHost, String dbPort, String dbUser, String dbPass, String dbName) {
 		super(plugin);
                 try {
-                        WebPortal.logger.log(Level.INFO, "{0} Starting pool....", plugin.logPrefix);
-                        pool = new WALConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://"+ dbHost +":"+ dbPort +"/"+ dbName, dbUser, dbPass);
-                }catch(InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-                        WebPortal.logger.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
+                        WebPortal.logger.log(Level.INFO, "{0} Starting HikariCP pool....", plugin.logPrefix);
+                        HikariConfig config = new HikariConfig();
+                        config.setJdbcUrl("jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName);
+                        config.setUsername(dbUser);
+                        config.setPassword(dbPass);
+                        config.setPoolName("WebPortal-MySQL");
+                        config.setMaximumPoolSize(10);
+                        config.setMinimumIdle(2);
+                        config.setConnectionTimeout(10000);
+                        config.setIdleTimeout(300000);
+                        config.setMaxLifetime(1800000);
+                        config.setAutoCommit(true);
+                        dataSource = new HikariDataSource(config);
+                } catch (RuntimeException e) {
+                        WebPortal.logger.log(Level.WARNING, "{0} Exception getting mySQL connection pool", plugin.logPrefix);
 			WebPortal.logger.warning(e.getMessage());
+                        throw new IllegalStateException("Could not initialize MySQL datasource", e);
                 }
 	}
 
 	@Override
 	public WALConnection getConnection() {
 		try {
-			return pool.getConnection();
+                        if (dataSource == null || dataSource.isClosed()) {
+                                throw new IllegalStateException("MySQL datasource is not available");
+                        }
+			return new WALConnection(dataSource.getConnection());
 		} catch (SQLException e) {
 			WebPortal.logger.log(Level.WARNING, "{0} Exception getting mySQL WALConnection", plugin.logPrefix);
 			WebPortal.logger.warning(e.getMessage());
+                        throw new IllegalStateException("Could not get MySQL connection", e);
 		}
-		return null;
 	}
+
+        @Override
+        public void shutdown() {
+                if (dataSource != null && !dataSource.isClosed()) {
+                        dataSource.close();
+                }
+        }
         
 	public boolean tableExists(String tableName) {
 		boolean exists = false;
@@ -73,7 +96,7 @@ public class MySQLDataQueries extends Queries {
                                 + "canBuy INT, "
                                 + "canSell INT, "
                                 + "isAdmin INT,"
-                                + "lock VARCHAR(1) Default 'N',"
+                                + "`lock` VARCHAR(1) Default 'N',"
                                 + "webban VARCHAR(1) Default 'N');");
 		}
 

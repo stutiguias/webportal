@@ -200,6 +200,9 @@ public class WebPortal extends JavaPlugin {
             if (server != null) {
                 server.interrupt();
             }
+            if (db != null) {
+                db.shutdown();
+            }
 
             logger.log(Level.INFO, "{0} Disabled. Bye :D", logPrefix);
     }

@@ -6,25 +6,279 @@
     <title>Sell</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <style>
+        :root {
+            --sell-ink: #17324d;
+            --sell-accent: #b56a2b;
+            --sell-accent-soft: rgba(181, 106, 43, 0.12);
+            --sell-panel: rgba(255, 255, 255, 0.92);
+            --sell-border: rgba(23, 50, 77, 0.08);
+            --sell-shadow: 0 22px 48px rgba(22, 33, 45, 0.12);
+            --sell-success: #256245;
+            --sell-success-bg: rgba(37, 98, 69, 0.1);
+            --sell-error: #9c3e2e;
+            --sell-error-bg: rgba(156, 62, 46, 0.1);
+            --sell-info: #345977;
+            --sell-info-bg: rgba(52, 89, 119, 0.1);
+        }
+
+        html,
         body {
-            padding-top: 60px;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(239, 191, 116, 0.2), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(56, 92, 122, 0.18), transparent 24%),
+                linear-gradient(135deg, #f6efe1 0%, #edf3fb 48%, #e1eadc 100%);
+        }
+
+        body {
             padding-bottom: 40px;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--sell-ink);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .v-toolbar__title {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .sell-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .sell-hero,
+        .sell-panel,
+        .sell-table-card {
+            border-radius: 8px;
+            border: 1px solid var(--sell-border);
+            background: var(--sell-panel);
+            box-shadow: var(--sell-shadow);
+        }
+
+        .sell-hero {
+            overflow: hidden;
+        }
+
+        .sell-kicker,
+        .sell-section-label {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .sell-title {
+            margin-top: 12px;
+            color: var(--sell-ink);
+            font-size: clamp(2.2rem, 3vw, 3.35rem);
+            line-height: 1.02;
+            font-weight: 700;
+        }
+
+        .sell-subtitle {
+            max-width: 620px;
+            margin-top: 16px;
+            color: rgba(23, 50, 77, 0.74);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .sell-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .sell-profile {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 18px;
+            min-height: 100%;
+            padding: 28px;
+            border-left: 1px solid var(--sell-border);
+            background: linear-gradient(180deg, rgba(23, 50, 77, 0.03) 0%, rgba(181, 106, 43, 0.08) 100%);
+        }
+
+        .sell-profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .sell-profile-caption {
+            margin-top: 4px;
+            color: rgba(23, 50, 77, 0.62);
+            line-height: 1.5;
+        }
+
+        .sell-profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .sell-meta-pill {
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            color: var(--sell-ink);
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .sell-panel {
+            padding: 24px;
+        }
+
+        .sell-help-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            padding-left: 18px;
+            color: rgba(23, 50, 77, 0.72);
+        }
+
+        .sell-form-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: end;
+            margin-top: 18px;
+        }
+
+        .sell-feedback {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .sell-feedback.is-success {
+            color: var(--sell-success);
+            background: var(--sell-success-bg);
+        }
+
+        .sell-feedback.is-error {
+            color: var(--sell-error);
+            background: var(--sell-error-bg);
+        }
+
+        .sell-feedback.is-info {
+            color: var(--sell-info);
+            background: var(--sell-info-bg);
+        }
+
+        .sell-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .sell-stat-card {
+            padding: 16px;
+            border-radius: 8px;
+            background: rgba(23, 50, 77, 0.04);
+            border: 1px solid rgba(23, 50, 77, 0.06);
+        }
+
+        .sell-stat-value {
+            margin-top: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .sell-table-card {
+            overflow: hidden;
+        }
+
+        .sell-table-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--sell-border);
+        }
+
+        .sell-table-count {
+            color: rgba(23, 50, 77, 0.66);
+            font-weight: 700;
+        }
+
+        .sell-table-card .wp-data-table-wrap {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .sell-table-card .wp-data-table th {
+            background: rgba(23, 50, 77, 0.04);
+        }
+
+        .sell-empty-state {
+            padding: 24px;
+            color: rgba(23, 50, 77, 0.74);
+            text-align: center;
+        }
+
+        .menu-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .sell-footer {
+            color: rgba(23, 50, 77, 0.64);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        @media (max-width: 959px) {
+            .sell-profile {
+                border-left: 0;
+                border-top: 1px solid var(--sell-border);
+            }
+
+            .sell-form-grid,
+            .sell-stat-grid,
+            .sell-table-head {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sell-panel,
+            .sell-profile {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div id="app">
         <v-app>
-            <!-- Navbar -->
             <v-app-bar app dense dark color="primary">
                 <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
                 <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-                <!-- Dropdown Menu -->
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn text v-bind="attrs" v-on="on">
@@ -33,21 +287,20 @@
                     </template>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
                         </v-list-item>
-                        <!-- Outras opções do dropdown -->
                     </v-list>
                 </v-menu>
 
@@ -55,29 +308,119 @@
             </v-app-bar>
 
             <v-main>
-                <v-container>
-                    <h2>{{ translate('langSell') }}</h2>
-                    <v-row>
-                        <v-col cols="12" sm="2">
-                            <v-avatar size="64">
-                                <img :src="avatarUrl" alt="avatar">
-                            </v-avatar>
+                <v-container class="sell-shell py-6">
+                    <section class="sell-hero mb-6">
+                        <v-row no-gutters>
+                            <v-col cols="12" md="7">
+                                <div class="sell-panel">
+                                    <div class="sell-kicker">Trading desk</div>
+                                    <h1 class="sell-title">{{ translate('langSell') }}</h1>
+                                    <p class="sell-subtitle">
+                                        Review your active auctions, refresh the board, and cancel a listing without digging through the rest of the portal.
+                                    </p>
+                                    <div class="sell-hero-actions">
+                                        <a class="wp-btn" href="myitems.html">{{ translate('lang1MyItems') }}</a>
+                                        <button class="wp-btn is-outlined" type="button" @click="refreshAuctions" :disabled="isLoading || isSubmittingCancel">
+                                            Refresh auctions
+                                        </button>
+                                    </div>
+                                </div>
+                            </v-col>
+                            <v-col cols="12" md="5">
+                                <div class="sell-profile">
+                                    <v-avatar size="84">
+                                        <img :src="avatarUrl" alt="avatar">
+                                    </v-avatar>
+                                    <div>
+                                        <div class="sell-profile-name">{{ user || translate('lang1Name') }}</div>
+                                        <div class="sell-profile-caption">
+                                            Keep an eye on your balance and mail while managing your live offers.
+                                        </div>
+                                        <div class="sell-profile-meta">
+                                            <span class="sell-meta-pill">{{ translate('lang1Money') }}: {{ money || '0' }}</span>
+                                            <span class="sell-meta-pill">{{ translate('lang1Mail') }}: {{ mail || '0' }}</span>
+                                            <span class="sell-meta-pill">Live auctions: {{ auctionCount }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </section>
+
+                    <v-row class="mb-6" dense>
+                        <v-col cols="12" md="7">
+                            <section class="sell-panel">
+                                <div class="sell-section-label">Cancel listing</div>
+                                <h2 class="mt-3 mb-0">{{ translate('langCancel') }}</h2>
+                                <p class="sell-subtitle">
+                                    Enter the auction ID exactly as shown in the table below. The page refreshes the list after a successful cancellation.
+                                </p>
+                                <v-form @submit.prevent="remItem">
+                                    <div class="sell-form-grid">
+                                        <v-text-field
+                                            v-model="cancelId"
+                                            label="Auction ID"
+                                            outlined
+                                            dense
+                                            hide-details="auto"
+                                            required
+                                        ></v-text-field>
+                                        <button class="wp-btn" type="submit" :disabled="isSubmittingCancel || isLoading">
+                                            {{ isSubmittingCancel ? 'Cancelling...' : 'Cancel auction' }}
+                                        </button>
+                                    </div>
+                                </v-form>
+                                <div
+                                    v-if="formResult"
+                                    id="formresult"
+                                    class="sell-feedback"
+                                    :class="formResultType === 'error' ? 'is-error' : 'is-success'"
+                                >
+                                    {{ formResult }}
+                                </div>
+                            </section>
                         </v-col>
-                        <v-col cols="12" sm="10">
-                            {{ translate('lang1Name') }}: <span>{{ user }}</span> | {{ translate('lang1Money') }}: <span>{{ money }}</span> | {{ translate('lang1Mail') }}: <span>{{ mail }}</span>
+                        <v-col cols="12" md="5">
+                            <section class="sell-panel">
+                                <div class="sell-section-label">Quick view</div>
+                                <div class="sell-stat-grid">
+                                    <div class="sell-stat-card">
+                                        <div class="sell-section-label">Tracked auctions</div>
+                                        <div class="sell-stat-value">{{ auctionCount }}</div>
+                                    </div>
+                                    <div class="sell-stat-card">
+                                        <div class="sell-section-label">Board state</div>
+                                        <div class="sell-stat-value">{{ isLoading ? 'Syncing' : 'Ready' }}</div>
+                                    </div>
+                                </div>
+                                <ul class="sell-help-list">
+                                    <li>Use refresh after listing new items from your inventory page.</li>
+                                    <li>Cancel by ID only when you are sure the listing should disappear from the market.</li>
+                                    <li>If the table comes back empty, verify your session and market availability.</li>
+                                </ul>
+                                <div
+                                    v-if="resultado"
+                                    id="resultado"
+                                    class="sell-feedback"
+                                    :class="loadResultType === 'error' ? 'is-error' : 'is-info'"
+                                >
+                                    {{ resultado }}
+                                </div>
+                            </section>
                         </v-col>
                     </v-row>
 
-                    <h5 class="text-center">{{ translate('langCancel') }}</h5>
-                    <v-form class="text-center" @submit.prevent="remItem">
-                        <v-text-field v-model="cancelId" label="Id" required></v-text-field>
-                        <v-btn type="submit">Submit</v-btn>
-                    </v-form>
-                    <div id="formresult" class="text-center">{{ formResult }}</div>
-                    <div id="resultado">{{ resultado }}</div>
-                    <br />
-                    <!-- Tabela de Resultados -->
-                    <v-data-table :headers="headers" :items="items" class="mt-5">
+                    <section class="sell-table-card">
+                        <div class="sell-table-head">
+                            <div>
+                                <div class="sell-section-label">Auction board</div>
+                                <h3 class="mt-2 mb-0">Active listings</h3>
+                            </div>
+                            <div class="sell-table-count">
+                                {{ isLoading ? 'Loading auctions...' : auctionCount + ' items loaded' }}
+                            </div>
+                        </div>
+                        <v-data-table :headers="headers" :items="items" class="mt-0">
                         <template v-slot:item.item_name="{ item }">
                             <div v-html="item.item_name"></div>
                         </template>
@@ -85,8 +428,11 @@
                             <div v-html="item.owner"></div>
                         </template>
                     </v-data-table>
-                    <hr />
-                    <v-footer fixed>
+                        <div v-if="!isLoading && !hasItems && !resultado" class="sell-empty-state">
+                            No active auctions were found for this account.
+                        </div>
+                    </section>
+                    <v-footer class="sell-footer mt-6">
                         &copy; Made by Stutiguias.
                     </v-footer>
                 </v-container>
@@ -94,7 +440,7 @@
         </v-app>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.prod.js"></script>
     <script src="js/vue3-portal.js"></script>
     <script src="js/translate.js"></script>
     <script src="js/main.js"></script>

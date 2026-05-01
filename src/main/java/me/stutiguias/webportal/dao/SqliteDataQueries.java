@@ -84,7 +84,7 @@ public class SqliteDataQueries extends Queries {
                             + " canBuy INTEGER, "
                             + "canSell INTEGER, "
                             + "isAdmin INTEGER,"
-                            + "lock VARCHAR(1) Default 'N',"
+                            + "`lock` VARCHAR(1) Default 'N',"
                             + "webban VARCHAR(1) Default 'N');");
 		}
 		if (!tableExists("WA_StorageCheck")) {
@@ -165,7 +165,7 @@ public class SqliteDataQueries extends Queries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Players SET lock = ? WHERE name = ?");
+                st = conn.prepareStatement("UPDATE WA_Players SET `lock` = ? WHERE name = ?");
                 st.setString(1, lock);
                 st.setString(2, player);
                 st.executeUpdate();

@@ -6,17 +6,298 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <style>
+        :root {
+            --items-ink: #17324d;
+            --items-panel: rgba(255, 255, 255, 0.92);
+            --items-border: rgba(23, 50, 77, 0.08);
+            --items-shadow: 0 22px 48px rgba(22, 33, 45, 0.12);
+            --items-success: #256245;
+            --items-success-bg: rgba(37, 98, 69, 0.1);
+            --items-error: #9c3e2e;
+            --items-error-bg: rgba(156, 62, 46, 0.1);
+            --items-info: #345977;
+            --items-info-bg: rgba(52, 89, 119, 0.1);
+        }
+
+        html,
         body {
-            padding-top: 60px;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(123, 178, 141, 0.18), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(77, 121, 168, 0.16), transparent 24%),
+                linear-gradient(135deg, #f1f4e8 0%, #eef4fb 45%, #f8efe3 100%);
+        }
+
+        body {
             padding-bottom: 40px;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--items-ink);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .v-toolbar__title {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .items-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .items-hero,
+        .items-panel,
+        .items-table-card {
+            border-radius: 8px;
+            border: 1px solid var(--items-border);
+            background: var(--items-panel);
+            box-shadow: var(--items-shadow);
+        }
+
+        .items-hero {
+            overflow: hidden;
+        }
+
+        .items-kicker,
+        .items-section-label {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .items-title {
+            margin-top: 12px;
+            color: var(--items-ink);
+            font-size: clamp(2.2rem, 3vw, 3.35rem);
+            line-height: 1.02;
+            font-weight: 700;
+        }
+
+        .items-subtitle {
+            max-width: 640px;
+            margin-top: 16px;
+            color: rgba(23, 50, 77, 0.74);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .items-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .items-profile {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 18px;
+            min-height: 100%;
+            padding: 28px;
+            border-left: 1px solid var(--items-border);
+            background: linear-gradient(180deg, rgba(23, 50, 77, 0.03) 0%, rgba(78, 124, 92, 0.08) 100%);
+        }
+
+        .items-profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .items-profile-caption {
+            margin-top: 4px;
+            color: rgba(23, 50, 77, 0.62);
+            line-height: 1.5;
+        }
+
+        .items-profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .items-meta-pill {
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            color: var(--items-ink);
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .items-panel {
+            padding: 24px;
+        }
+
+        .items-action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .items-action-card {
+            padding: 18px;
+            border-radius: 8px;
+            background: rgba(23, 50, 77, 0.04);
+            border: 1px solid rgba(23, 50, 77, 0.06);
+        }
+
+        .items-action-title {
+            margin-top: 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .items-action-copy {
+            margin-top: 8px;
+            color: rgba(23, 50, 77, 0.72);
+            line-height: 1.6;
+        }
+
+        .items-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .items-stat-card {
+            padding: 16px;
+            border-radius: 8px;
+            background: rgba(23, 50, 77, 0.04);
+            border: 1px solid rgba(23, 50, 77, 0.06);
+        }
+
+        .items-stat-value {
+            margin-top: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .items-help-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            padding-left: 18px;
+            color: rgba(23, 50, 77, 0.72);
+        }
+
+        .items-feedback {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .items-feedback.is-success {
+            color: var(--items-success);
+            background: var(--items-success-bg);
+        }
+
+        .items-feedback.is-error {
+            color: var(--items-error);
+            background: var(--items-error-bg);
+        }
+
+        .items-feedback.is-info {
+            color: var(--items-info);
+            background: var(--items-info-bg);
+        }
+
+        .items-dialog-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .items-dialog-hint {
+            color: rgba(23, 50, 77, 0.7);
+            line-height: 1.6;
+        }
+
+        .items-table-card {
+            overflow: hidden;
+        }
+
+        .items-table-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--items-border);
+        }
+
+        .items-table-count {
+            color: rgba(23, 50, 77, 0.66);
+            font-weight: 700;
+        }
+
+        .items-table-card .wp-data-table-wrap {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .items-table-card .wp-data-table th {
+            background: rgba(23, 50, 77, 0.04);
+        }
+
+        .items-empty-state {
+            padding: 24px;
+            color: rgba(23, 50, 77, 0.74);
+            text-align: center;
+        }
+
+        .menu-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .items-footer {
+            color: rgba(23, 50, 77, 0.64);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        @media (max-width: 959px) {
+            .items-profile {
+                border-left: 0;
+                border-top: 1px solid var(--items-border);
+            }
+
+            .items-action-grid,
+            .items-stat-grid,
+            .items-table-head {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .items-panel,
+            .items-profile {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div id="app">
-        <v-app>                       <!-- Navbar -->
+        <v-app>
             <v-app-bar app dense dark color="primary">
                 <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -32,118 +313,206 @@
                     </template>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
                         </v-list-item>
-                        <!-- Outras opções do dropdown -->
                     </v-list>
                 </v-menu>
 
                 <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
             </v-app-bar>
 
-            <v-container>
+            <v-main>
+                <v-container class="items-shell py-6">
+                    <section class="items-hero mb-6">
+                        <v-row no-gutters>
+                            <v-col cols="12" md="7">
+                                <div class="items-panel">
+                                    <div class="items-kicker">Inventory desk</div>
+                                    <h1 class="items-title">{{ translate('langMyItensTitle') }}</h1>
+                                    <p class="items-subtitle">
+                                        Review your stored items, convert them into market listings, or route them into mail without leaving the inventory board.
+                                    </p>
+                                    <div class="items-hero-actions">
+                                        <button class="wp-btn" type="button" @click="openCreateSale" :disabled="isLoading || !hasItems">
+                                            {{ translate('langCreateSale') }}
+                                        </button>
+                                        <button class="wp-btn is-outlined" type="button" @click="openSendMail" :disabled="isLoading || !hasItems">
+                                            {{ translate('langSendItemMail') }}
+                                        </button>
+                                        <button class="wp-btn is-outlined" type="button" @click="refreshItems" :disabled="isLoading || isSubmittingSale || isSubmittingMail">
+                                            Refresh inventory
+                                        </button>
+                                    </div>
+                                </div>
+                            </v-col>
+                            <v-col cols="12" md="5">
+                                <div class="items-profile">
+                                    <v-avatar size="84">
+                                        <img :src="avatarUrl" alt="avatar">
+                                    </v-avatar>
+                                    <div>
+                                        <div class="items-profile-name">{{ user || translate('lang1Name') }}</div>
+                                        <div class="items-profile-caption">
+                                            Manage your stock, keep auctions moving, and ship items to mail when you do not want them on the market.
+                                        </div>
+                                        <div class="items-profile-meta">
+                                            <span class="items-meta-pill">{{ translate('lang1Money') }}: {{ money || '0' }}</span>
+                                            <span class="items-meta-pill">{{ translate('lang1Mail') }}: {{ mail || '0' }}</span>
+                                            <span class="items-meta-pill">Inventory rows: {{ inventoryCount }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </section>
 
-                <h2>{{ translate('langMyItensTitle') }}</h2>
+                    <v-row class="mb-6" dense>
+                        <v-col cols="12" md="8">
+                            <section class="items-panel">
+                                <div class="items-section-label">Actions</div>
+                                <div class="items-action-grid mt-4">
+                                    <div class="items-action-card">
+                                        <div class="items-section-label">Marketplace</div>
+                                        <div class="items-action-title">{{ translate('langCreateSale') }}</div>
+                                        <div class="items-action-copy">
+                                            Pick one of your stored items, define quantity and price, then post it directly to the auction board.
+                                        </div>
+                                        <button class="wp-btn mt-4" type="button" @click="openCreateSale" :disabled="isLoading || !hasItems">
+                                            Open sale form
+                                        </button>
+                                    </div>
+                                    <div class="items-action-card">
+                                        <div class="items-section-label">Mailbox</div>
+                                        <div class="items-action-title">{{ translate('langSendItemMail') }}</div>
+                                        <div class="items-action-copy">
+                                            Move an item out of storage and send it through mail when you want delivery instead of listing.
+                                        </div>
+                                        <button class="wp-btn is-outlined mt-4" type="button" @click="openSendMail" :disabled="isLoading || !hasItems">
+                                            Open mail form
+                                        </button>
+                                    </div>
+                                </div>
 
-                <v-row>
-                    <v-col cols="12" sm="2">
-                        <v-avatar size="64">
-                            <img :src="avatarUrl" alt="avatar">
-                        </v-avatar>
-                    </v-col>
-                    <v-col cols="12" sm="10">
-                        {{ translate('lang1Name') }}: <span>{{ user }}</span> | {{ translate('lang1Money') }}: <span>{{ money }}</span> | {{ translate('lang1Mail') }}: <span>{{ mail }}</span>
-                    </v-col>
-                </v-row>
+                                <div
+                                    v-if="formResult"
+                                    class="items-feedback"
+                                    :class="formResultType === 'error' ? 'is-error' : 'is-success'"
+                                >
+                                    {{ formResult }}
+                                </div>
+                            </section>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <section class="items-panel">
+                                <div class="items-section-label">Overview</div>
+                                <div class="items-stat-grid">
+                                    <div class="items-stat-card">
+                                        <div class="items-section-label">Tracked items</div>
+                                        <div class="items-stat-value">{{ inventoryCount }}</div>
+                                    </div>
+                                    <div class="items-stat-card">
+                                        <div class="items-section-label">Board state</div>
+                                        <div class="items-stat-value">{{ isLoading ? 'Syncing' : 'Ready' }}</div>
+                                    </div>
+                                </div>
+                                <ul class="items-help-list">
+                                    <li>Create a sale when you want market exposure and price control.</li>
+                                    <li>Use mail for direct delivery without leaving the inventory page.</li>
+                                    <li>Refresh after every action so the inventory board stays aligned with the backend.</li>
+                                </ul>
+                                <div
+                                    v-if="resultado"
+                                    id="resultado"
+                                    class="items-feedback"
+                                    :class="loadResultType === 'error' ? 'is-error' : 'is-info'"
+                                >
+                                    {{ resultado }}
+                                </div>
+                            </section>
+                        </v-col>
+                    </v-row>
 
-                <v-row justify="center">
-                    <v-btn color="primary" class="mr-4" @click="dialogCreateSale = true">{{ translate('langCreateSale') }}</v-btn>
-                    <v-btn color="primary" @click="dialogSendMail = true">{{ translate('langSendItemMail') }}</v-btn>
-                </v-row>
-                <v-container>
-                    <v-alert type="info" v-if="formResult" class="text-center">
-                        {{ formResult }}
-                    </v-alert>
-                </v-container>
-                <!-- Diálogo Modal para Criar Venda -->
                 <v-dialog v-model="dialogCreateSale" persistent max-width="600px">
                     <v-card>
                         <v-card-title class="headline">{{ translate('langCreateSale') }}</v-card-title>
                         <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12">
-                                        <v-select v-model="formData.ID" :items="itemNames" item-text="text" item-value="value" label="Select Item"></v-select>
-                                        <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
-                                        <v-text-field v-model="formData.price" :label="translate('langPrice')" type="number"></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                            <div class="items-dialog-form">
+                                <div class="items-dialog-hint">Choose an inventory row, define how many units to list, and set the price for the auction.</div>
+                                <v-select v-model="formData.ID" :items="itemNames" item-text="text" item-value="value" label="Select Item"></v-select>
+                                <div v-if="selectedItemLabel" class="items-dialog-hint">Selected item: {{ selectedItemLabel }}</div>
+                                <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
+                                <v-text-field v-model="formData.price" :label="translate('langPrice')" type="number"></v-text-field>
+                            </div>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" text @click="submitSale">Submit</v-btn>
-                            <v-btn color="red darken-1" text @click="dialogCreateSale = false">Cancel</v-btn>
+                            <v-btn color="green darken-1" text @click="submitSale" :disabled="isSubmittingSale">{{ isSubmittingSale ? 'Submitting...' : 'Submit' }}</v-btn>
+                            <v-btn color="red darken-1" text @click="closeCreateSale">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
                 
-                <!-- Diálogo Modal para Enviar Item por E-mail -->
                 <v-dialog v-model="dialogSendMail" persistent max-width="600px">
                     <v-card>
                         <v-card-title class="headline">{{ translate('langSendItemMail') }}</v-card-title>
                         <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12">
-                                        <v-select v-model="formData.ID" :items="itemNames" item-text="text" item-value="value" label="Select Item"></v-select>
-                                        <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                            <div class="items-dialog-form">
+                                <div class="items-dialog-hint">Select the item and quantity you want to send to mail.</div>
+                                <v-select v-model="formData.ID" :items="itemNames" item-text="text" item-value="value" label="Select Item"></v-select>
+                                <div v-if="selectedItemLabel" class="items-dialog-hint">Selected item: {{ selectedItemLabel }}</div>
+                                <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
+                            </div>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="green darken-1" text @click="sendMail">Send</v-btn>
-                            <v-btn color="red darken-1" text @click="dialogSendMail = false">Cancel</v-btn>
+                            <v-btn color="green darken-1" text @click="sendMail" :disabled="isSubmittingMail">{{ isSubmittingMail ? 'Sending...' : 'Send' }}</v-btn>
+                            <v-btn color="red darken-1" text @click="closeSendMail">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
 
-                <!-- Coloque os modais e outros componentes aqui conforme necessário -->
+                    <section class="items-table-card">
+                        <div class="items-table-head">
+                            <div>
+                                <div class="items-section-label">Inventory board</div>
+                                <h3 class="mt-2 mb-0">Stored items</h3>
+                            </div>
+                            <div class="items-table-count">{{ isLoading ? 'Loading inventory...' : inventoryCount + ' items loaded' }}</div>
+                        </div>
+                        <v-data-table :headers="headers" :items="items" class="mt-0">
+                            <template v-slot:item.item_name="{ item }">
+                                <div v-html="item.item_name"></div>
+                            </template>
+                            <template v-slot:item.owner="{ item }">
+                                <div v-html="item.owner"></div>
+                            </template>
+                        </v-data-table>
+                        <div v-if="!isLoading && !hasItems && !resultado" class="items-empty-state">
+                            No inventory items were found for this account.
+                        </div>
+                    </section>
 
-                <div id="resultado"></div>
-                <!-- Tabela de Resultados -->
-                <v-data-table :headers="headers" :items="items" class="mt-5">
-                    <template v-slot:item.item_name="{ item }">
-                        <div v-html="item.item_name"></div>
-                    </template>
-                    <template v-slot:item.owner="{ item }">
-                        <div v-html="item.owner"></div>
-                    </template>
-                </v-data-table>
-
-                <v-footer fixed>
+                    <v-footer class="items-footer mt-6">
                     &copy; Made by Stutiguias.
-                </v-footer>
-
-            </v-container>
+                    </v-footer>
+                </v-container>
+            </v-main>
         </v-app>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.prod.js"></script>
     <script src="js/vue3-portal.js"></script>
     <script src="js/translate.js"></script>
     <script src="js/main.js"></script>

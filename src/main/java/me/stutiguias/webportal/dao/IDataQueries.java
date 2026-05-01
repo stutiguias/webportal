@@ -19,6 +19,7 @@ import me.stutiguias.webportal.plugins.McMMO.ProfileMcMMO;
 public interface IDataQueries {
 
         void initTables(); // Init Tables
+        void shutdown();
         Integer getFound(); // Found On Last Search
         
         // Alert

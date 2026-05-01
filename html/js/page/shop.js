@@ -16,8 +16,11 @@ WebPortalVue3.mountApp({
                 ID: '',
                 quantity: '',
             },
+            selectedListingId: '',
             formResult: '',
             resultado: '',
+            isSubmittingPurchase: false,
+            isLoadingListings: false,
             categories: [
                 { name: window.langIndex.langAll || 'All', filter: 'all' },
                 { name: window.langIndex.langBlocks || 'Blocks', filter: 'block' },
@@ -36,6 +39,12 @@ WebPortalVue3.mountApp({
         activeCategoryLabel() {
             const active = this.categories.find(item => item.filter === this.activeCategory);
             return active ? active.name : (window.langIndex.langAll || 'All');
+        },
+        selectedListing() {
+            return this.items.find(item => String(item.id) === String(this.selectedListingId)) || null;
+        },
+        formResultType() {
+            return this.isErrorMessage(this.formResult) ? 'error' : 'info';
         }
     },
     methods: {
@@ -52,29 +61,52 @@ WebPortalVue3.mountApp({
             }).toString();
 
             const url = window.qualifyURL(`/auction/shop?${params}`);
+            this.formResult = '';
+            this.isSubmittingPurchase = true;
 
-            fetch(url, {
+            return fetch(url, {
                 method: 'GET',
             })
             .then(response => response.text())
             .then(data => {
                 this.formResult = data;
+                this.formData.quantity = '';
+                return this.getauction(0, this.qtd, this.activeCategory);
             })
             .catch(error => {
                 this.formResult = "Error: " + error;
+            })
+            .finally(() => {
+                this.isSubmittingPurchase = false;
             });
         },
         translate(key) {
             return window.langIndex[key] || key;
+        },
+        isErrorMessage(message) {
+            return /(error|invalid|erro|falha|failed)/i.test(message || '');
+        },
+        selectListing(item) {
+            this.selectedListingId = item.id;
+            this.formData.ID = item.id;
+            this.formData.quantity = '1';
+            this.formResult = '';
+        },
+        clearSelectedListing() {
+            this.selectedListingId = '';
+            this.formData.ID = '';
+            this.formData.quantity = '';
         },
         filterCategory(filter) {
             this.activeCategory = filter;
             this.getauction(0, this.qtd, filter);
         },
         getauction(from, qtd, category = this.activeCategory) {
-            const endpoint = category === 'all' ? 'byall' : category;
+            const endpoint = category === 'all' ? 'byall' : `by${category}`;
+            this.resultado = '';
+            this.isLoadingListings = true;
 
-            fetch(window.qualifyURL(`/auction/get/${endpoint}?from=${from}&qtd=${qtd}&sessionid=${this.sessionid}`))
+            return fetch(window.qualifyURL(`/auction/get/${endpoint}?from=${from}&qtd=${qtd}&sessionid=${this.sessionid}`))
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network error or invalid response');
@@ -89,8 +121,11 @@ WebPortalVue3.mountApp({
                     this.resultado = error.message || 'Unknown error';
                     if (category !== 'all') {
                         this.activeCategory = 'all';
-                        this.getauction(from, qtd, 'all');
+                        return this.getauction(from, qtd, 'all');
                     }
+                })
+                .finally(() => {
+                    this.isLoadingListings = false;
                 });
         },
         loadTable(data) {
@@ -108,6 +143,7 @@ WebPortalVue3.mountApp({
                 text: field.Title,
                 value: field.Title.toLowerCase().replace(/\s+/g, '_')
             }));
+            this.headers.push({ text: 'Quick buy', value: 'actions' });
             this.items = data[firstKey].map(item => {
                 const newItem = {};
                 Object.values(item).forEach(field => {
@@ -116,6 +152,10 @@ WebPortalVue3.mountApp({
                 });
                 return newItem;
             });
+
+            if (this.selectedListingId && !this.items.some(item => String(item.id) === String(this.selectedListingId))) {
+                this.clearSelectedListing();
+            }
         },
         getCookie(szName) {
             var szValue = null;

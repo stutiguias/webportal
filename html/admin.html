@@ -6,225 +6,513 @@
     <title>Admin Page</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
     <style>
-        .button {
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            color: white;
-            background-color: #3f51b5;
-            border: none;
-            border-radius: 12px; /* Adiciona bordas redondas */
-            padding: 10px 25px;
+        :root {
+            --admin-ink: #17324d;
+            --admin-panel: rgba(255, 255, 255, 0.92);
+            --admin-border: rgba(23, 50, 77, 0.08);
+            --admin-shadow: 0 22px 48px rgba(22, 33, 45, 0.12);
+            --admin-success: #256245;
+            --admin-success-bg: rgba(37, 98, 69, 0.1);
+            --admin-error: #9c3e2e;
+            --admin-error-bg: rgba(156, 62, 46, 0.1);
+            --admin-info: #345977;
+            --admin-info-bg: rgba(52, 89, 119, 0.1);
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(243, 191, 98, 0.18), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(78, 118, 176, 0.16), transparent 24%),
+                linear-gradient(135deg, #f7efe1 0%, #edf4fb 45%, #e6efe1 100%);
+        }
+
+        body {
+            padding-bottom: 40px;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--admin-ink);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        .v-toolbar__title {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .admin-shell {
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .admin-hero,
+        .admin-panel,
+        .admin-table-card {
+            border-radius: 8px;
+            border: 1px solid var(--admin-border);
+            background: var(--admin-panel);
+            box-shadow: var(--admin-shadow);
+        }
+
+        .admin-hero {
+            overflow: hidden;
+        }
+
+        .admin-kicker,
+        .admin-section-label {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
-            display: inline-block;
-            transition: all 0.3s ease 0s;
+        }
+
+        .admin-title {
+            margin-top: 12px;
+            color: var(--admin-ink);
+            font-size: clamp(2.2rem, 3vw, 3.35rem);
+            line-height: 1.02;
+            font-weight: 700;
+        }
+
+        .admin-subtitle {
+            max-width: 660px;
+            margin-top: 16px;
+            color: rgba(23, 50, 77, 0.74);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .admin-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .admin-profile {
+            display: grid;
+            gap: 18px;
+            min-height: 100%;
+            padding: 28px;
+            border-left: 1px solid var(--admin-border);
+            background: linear-gradient(180deg, rgba(23, 50, 77, 0.03) 0%, rgba(181, 106, 43, 0.08) 100%);
+        }
+
+        .admin-profile-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .admin-profile-copy {
+            color: rgba(23, 50, 77, 0.68);
+            line-height: 1.6;
+        }
+
+        .admin-meta-grid,
+        .admin-monitor-grid,
+        .admin-command-grid,
+        .admin-panel-grid,
+        .admin-stat-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .admin-meta-grid,
+        .admin-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .admin-command-grid,
+        .admin-panel-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .admin-monitor-grid {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+
+        .admin-meta-pill,
+        .admin-monitor-card,
+        .admin-command-card,
+        .admin-panel-card,
+        .admin-stat-card {
+            border-radius: 8px;
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .admin-meta-pill,
+        .admin-stat-card {
+            padding: 14px 16px;
+        }
+
+        .admin-panel {
+            padding: 24px;
+        }
+
+        .admin-monitor-card,
+        .admin-command-card,
+        .admin-panel-card {
+            padding: 18px;
+        }
+
+        .admin-monitor-value,
+        .admin-stat-value {
+            margin-top: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .admin-command-form,
+        .admin-single-form {
+            display: grid;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .admin-panel-switch {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .admin-panel-switch .is-active {
+            background: rgba(255, 255, 255, 0.18) !important;
+            border-color: rgba(255, 255, 255, 0.28) !important;
+        }
+
+        .admin-feedback {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .admin-feedback.is-success {
+            color: var(--admin-success);
+            background: var(--admin-success-bg);
+        }
+
+        .admin-feedback.is-error {
+            color: var(--admin-error);
+            background: var(--admin-error-bg);
+        }
+
+        .admin-feedback.is-info {
+            color: var(--admin-info);
+            background: var(--admin-info-bg);
+        }
+
+        .admin-table-card {
+            overflow: hidden;
+        }
+
+        .admin-table-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--admin-border);
+        }
+
+        .admin-table-count {
+            color: rgba(23, 50, 77, 0.66);
+            font-weight: 700;
+        }
+
+        .admin-table-card .wp-data-table-wrap {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .admin-table-card .wp-data-table th {
+            background: rgba(23, 50, 77, 0.04);
+        }
+
+        .admin-user-card {
+            padding: 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .admin-user-meta {
+            display: grid;
+            gap: 6px;
+            margin-top: 10px;
+            color: rgba(23, 50, 77, 0.74);
+        }
+
+        .menu-link {
+            color: inherit;
             text-decoration: none;
-            outline: none;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
-            margin: 10px; /* Adiciona margem */
         }
 
-        .button:hover {
-            background-color: #283593;
-            box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2);
+        .admin-footer {
+            color: rgba(23, 50, 77, 0.64);
+            background: transparent;
+            box-shadow: none;
         }
 
-        .button:after {
-            content: "";
-            background: white;
-            display: block;
-            position: absolute;
-            padding-top: 300%;
-            padding-left: 350%;
-            margin-left: -20px!important;
-            margin-top: -120%;
-            opacity: 0;
-            transition: all 0.8s
-        }
+        @media (max-width: 959px) {
+            .admin-profile {
+                border-left: 0;
+                border-top: 1px solid var(--admin-border);
+            }
 
-        .button:active:after {
-            padding: 0;
-            margin: 0;
-            opacity: 1;
-            transition: 0s
+            .admin-command-grid,
+            .admin-panel-grid,
+            .admin-meta-grid,
+            .admin-stat-grid,
+            .admin-table-head {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
 <body>
-        <div id="app">
-            <v-app>
-                <!-- Navbar -->
-                <v-app-bar app dense dark color="primary">
-                    <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
-                    <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
+    <div id="app">
+        <v-app>
+            <v-app-bar app dense dark color="primary">
+                <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
+                <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-                    <!-- Dropdown Menu -->
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn text v-bind="attrs" v-on="on">
-                                {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item>
-                                <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                                <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
-                            </v-list-item>
-                            <!-- Outras opções do dropdown -->
-                        </v-list>
-                    </v-menu>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn text v-bind="attrs" v-on="on">
+                            {{ translate('lang1Settings') }} <v-icon right>mdi-chevron-down</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
 
-                    <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
-                </v-app-bar>
-                <v-main>
-                    <div class="card-container" style="display: flex; margin: 10px;">
-                        <v-card>
-                            <v-card-title>Server Monitor</v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" v-for="item in monitor" :key="item">
-                                            <v-card>
-                                                <v-card-text>
-                                                    <div>
-                                                        <v-icon>mdi-memory</v-icon> {{ item.mem }}
-                                                    </div>
-                                                    <div>
-                                                        <v-icon>mdi-cpu-64-bit</v-icon> {{ item.cpu }}
-                                                    </div>
-                                                </v-card-text>
-                                            </v-card>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-card-text>
-                        </v-card>
-                        <v-card>
-                            <v-card-title>Default CMD</v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" class="text-center">
-                                            <v-select v-model="selectedBaseCmd" :items="cmdBaseOptions" label="Command"></v-select>
-                                            <v-text-field v-if="showBaseNickName()" v-model="nickname" label="Nickname"></v-text-field>
-                                            <v-btn @click="sendBaseCmd" class="replace" style="padding: 5px;">{{ selectedBaseCmd }}</v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-card-text>
-                        </v-card>
-                        <v-card>
-                            <v-card-title>Essentials CMD</v-card-title>
-                            <v-card-text>
-                                <v-container>
-                                    <v-row>
-                                        <v-col cols="12" class="text-center">
-                                            <v-select v-model="selectedEssentialsCmd" :items="cmdEssentialsOptions" label="Command"></v-select>
-                                            <v-text-field v-if="selectedEssentialsCmd === 'whois' || selectedEssentialsCmd === 'mail'" v-model="nickname" label="Nickname"></v-text-field>
-                                            <v-text-field v-if="selectedEssentialsCmd === 'mail'" v-model="msg" label="Message"></v-text-field>
-                                            <v-btn @click="sendEssentialsCmd" class="replace" style="padding: 5px;">{{ selectedEssentialsCmd }}</v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </v-container>
-                            </v-card-text>
-                        </v-card>
-                    </div>
-                    <div style="display: flex; justify-content: center;">
+                <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
+            </v-app-bar>
+
+            <v-main>
+                <v-container class="admin-shell py-6">
+                    <section class="admin-hero mb-6">
+                        <v-row no-gutters>
+                            <v-col cols="12" md="7">
+                                <div class="admin-panel">
+                                    <div class="admin-kicker">Control center</div>
+                                    <h1 class="admin-title">Admin Console</h1>
+                                    <p class="admin-subtitle">
+                                        Monitor server health, send operational commands, manage the admin shop, and inspect player status from one interface.
+                                    </p>
+                                    <div class="admin-hero-actions">
+                                        <button class="wp-btn" type="button" @click="setPanel('shopList')">{{ translate('langAdmListItem') }}</button>
+                                        <button class="wp-btn is-outlined" type="button" @click="setPanel('addShop')">{{ translate('langAdmAddItem') }}</button>
+                                        <button class="wp-btn is-outlined" type="button" @click="setPanel('playerInfo')">{{ translate('langPlayerInfo') }}</button>
+                                    </div>
+                                </div>
+                            </v-col>
+                            <v-col cols="12" md="5">
+                                <div class="admin-profile">
+                                    <div>
+                                        <div class="admin-profile-title">Operations snapshot</div>
+                                        <div class="admin-profile-copy">
+                                            Keep an eye on monitor data and route directly into the admin workflow that matters right now.
+                                        </div>
+                                    </div>
+                                    <div class="admin-meta-grid">
+                                        <div class="admin-meta-pill">
+                                            <div class="admin-section-label">Monitor cards</div>
+                                            <div class="admin-stat-value">{{ monitorCount }}</div>
+                                        </div>
+                                        <div class="admin-meta-pill">
+                                            <div class="admin-section-label">Active panel</div>
+                                            <div class="admin-stat-value">{{ activePanelLabel }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </section>
+
+                    <section class="admin-panel mb-6">
+                        <div class="admin-section-label">Infrastructure</div>
+                        <div class="admin-monitor-grid mt-4">
+                            <div class="admin-monitor-card" v-for="(item, index) in monitor" :key="index">
+                                <div class="admin-section-label">Node {{ index + 1 }}</div>
+                                <div class="admin-monitor-value"><v-icon>mdi-memory</v-icon> {{ item.mem || '--' }}</div>
+                                <div class="admin-profile-copy mt-2"><v-icon>mdi-cpu-64-bit</v-icon> {{ item.cpu || '--' }}</div>
+                            </div>
+                            <div class="admin-monitor-card" v-if="!monitorCount && !isLoadingMonitor">
+                                <div class="admin-profile-copy">No monitor data is available right now.</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <v-row class="mb-6" dense>
+                        <v-col cols="12" md="6">
+                            <section class="admin-panel">
+                                <div class="admin-section-label">Base commands</div>
+                                <div class="admin-command-card mt-4">
+                                    <div class="admin-profile-copy">Use server-level moderation and permission commands without leaving the portal.</div>
+                                    <div class="admin-command-form">
+                                        <v-select v-model="selectedBaseCmd" :items="cmdBaseOptions" label="Command"></v-select>
+                                        <v-text-field v-if="showBaseNickName()" v-model="nickname" label="Nickname"></v-text-field>
+                                        <button class="wp-btn" type="button" @click="sendBaseCmd" :disabled="isSendingBaseCmd">
+                                            {{ isSendingBaseCmd ? 'Running...' : (selectedBaseCmd || 'Run command') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <section class="admin-panel">
+                                <div class="admin-section-label">Essentials commands</div>
+                                <div class="admin-command-card mt-4">
+                                    <div class="admin-profile-copy">Inspect players or send an Essentials mail directly from the admin surface.</div>
+                                    <div class="admin-command-form">
+                                        <v-select v-model="selectedEssentialsCmd" :items="cmdEssentialsOptions" label="Command"></v-select>
+                                        <v-text-field v-if="selectedEssentialsCmd === 'whois' || selectedEssentialsCmd === 'mail'" v-model="nickname" label="Nickname"></v-text-field>
+                                        <v-text-field v-if="selectedEssentialsCmd === 'mail'" v-model="msg" label="Message"></v-text-field>
+                                        <button class="wp-btn" type="button" @click="sendEssentialsCmd" :disabled="isSendingEssentialsCmd">
+                                            {{ isSendingEssentialsCmd ? 'Running...' : (selectedEssentialsCmd || 'Run command') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </v-col>
+                    </v-row>
+
+                    <div v-if="resultcmd" class="admin-feedback" :class="commandResultType === 'error' ? 'is-error' : 'is-info'">
                         <pre>{{ resultcmd }}</pre>
                     </div>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" class="text-center">
-                                <v-btn-group>
-                                    <v-btn @click="listshop" class="replace">{{ translate('langAdmListItem') }}</v-btn>
-                                    <v-btn @click="admshop" class="replace">{{ translate('langAdmAddItem') }}</v-btn>
-                                    <v-btn @click="infoplayer" class="replace">{{ translate('langPlayerInfo') }}</v-btn>
-                                </v-btn-group>
-                            </v-col>
-                        </v-row>
-    
-                        <!-- Info Player -->
-                        <v-row v-if="showInfoPlayer" align="center" justify="center">
-                            <v-col cols="12" sm="6">
-                                <v-form @submit.prevent="adm" class="pt-5">
-                                    <v-text-field v-model="nick" :label="translate('lang1Name')" placeholder="Insert Name Here"></v-text-field>
-                                    <v-select v-model="information" :items="infoOptions" :label="translate('langInfo')"></v-select>
-                                    <v-btn type="submit" color="primary">Submit</v-btn>
-                                </v-form>
-                            </v-col>
-                        </v-row>
-    
-                        <!-- Add Item Shop -->
-                        <v-row v-if="showAddItemShop" align="center" justify="center" style="padding-bottom: 10px;">
-                            <v-col cols="12" sm="6">
-                                <v-form @submit.prevent="additem" class="pt-5">
-                                    <v-text-field v-model="itemId" :label="translate('langItemId')"></v-text-field>
+
+                    <section class="admin-panel mb-6">
+                        <div class="admin-section-label">Admin workflows</div>
+                        <div class="admin-panel-switch mt-4">
+                            <button class="wp-btn" type="button" :class="{ 'is-active': showListAdmShop }" @click="setPanel('shopList')">{{ translate('langAdmListItem') }}</button>
+                            <button class="wp-btn is-outlined" type="button" :class="{ 'is-active': showAddItemShop }" @click="setPanel('addShop')">{{ translate('langAdmAddItem') }}</button>
+                            <button class="wp-btn is-outlined" type="button" :class="{ 'is-active': showInfoPlayer }" @click="setPanel('playerInfo')">{{ translate('langPlayerInfo') }}</button>
+                        </div>
+
+                        <div v-if="resultado" class="admin-feedback" :class="panelResultType === 'error' ? 'is-error' : 'is-info'">
+                            {{ resultado }}
+                        </div>
+
+                        <div class="admin-panel-grid mt-4">
+                            <div class="admin-panel-card" v-if="showAddItemShop">
+                                <div class="admin-section-label">Add item</div>
+                                <div class="admin-profile-copy">Insert the exact material, quantity and price to publish a new admin-shop listing.</div>
+                                <v-form @submit.prevent="additem" class="admin-single-form">
+                                    <v-text-field v-model="itemId" :label="translate('langItemId')" placeholder="DIAMOND, OAK_LOG, IRON_INGOT"></v-text-field>
                                     <v-text-field v-model="quantity" :label="translate('langQuantity')" type="number"></v-text-field>
                                     <v-text-field v-model="price" :label="translate('langPrice')" type="number"></v-text-field>
-                                    <v-btn type="submit" color="primary">Submit</v-btn>
+                                    <button class="wp-btn" type="submit" :disabled="isSubmittingAddItem">{{ isSubmittingAddItem ? 'Submitting...' : 'Add to shop' }}</button>
                                 </v-form>
-                            </v-col>
-                        </v-row>
-    
-                        <v-alert v-if="resultado" type="info">{{ resultado }}</v-alert>
-                        
-                        <v-container>
-                            <v-row v-if="showInfoPlayer" align="center" justify="center">
-                                <v-col cols="12" sm="6">
-                                    <v-card class="pa-2" outlined>
-                                        <v-list-item-group v-for="user in userInfo" :key="user.name">
-                                            <v-list-item>
-                                                <v-list-item-content>
-                                                    <v-list-item-title class="headline">{{ user.name }}</v-list-item-title>
-                                                    <v-list-item-subtitle>Can Buy?: {{ user.canBuy }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>Is Admin?: {{ user.isAdmin }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>Banned?: {{ user.banned }}</v-list-item-subtitle>
-                                                    <v-list-item-subtitle>IP: {{ user.ip }}</v-list-item-subtitle>
-                                                    <div v-html="user.websiteBanForm"></div>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-list-item-group>
-                                    </v-card>
-                                </v-col>
-                            </v-row>
-                        </v-container>
+                            </div>
 
-                        <!-- List Admin Shop -->
-                        <v-data-table v-if="showListAdmShop" :headers="tableHeaders" :items="tableItems" class="elevation-1">
+                            <div class="admin-panel-card" v-if="showInfoPlayer">
+                                <div class="admin-section-label">Player lookup</div>
+                                <div class="admin-profile-copy">Search a player and inspect website moderation information or account permissions.</div>
+                                <v-form @submit.prevent="adm" class="admin-single-form">
+                                    <v-text-field v-model="nick" :label="translate('lang1Name')" placeholder="Insert Name Here"></v-text-field>
+                                    <v-select v-model="information" :items="infoOptions" :label="translate('langInfo')"></v-select>
+                                    <button class="wp-btn" type="submit" :disabled="isSubmittingPlayerInfo">{{ isSubmittingPlayerInfo ? 'Searching...' : 'Search player' }}</button>
+                                </v-form>
+                            </div>
+
+                            <div class="admin-panel-card" v-if="showListAdmShop">
+                                <div class="admin-section-label">Admin shop</div>
+                                <div class="admin-profile-copy">Review current admin-shop listings and remove entries that should no longer be available.</div>
+                                <div class="admin-stat-grid mt-4">
+                                    <div class="admin-stat-card">
+                                        <div class="admin-section-label">Loaded rows</div>
+                                        <div class="admin-stat-value">{{ tableItems.length }}</div>
+                                    </div>
+                                    <div class="admin-stat-card">
+                                        <div class="admin-section-label">Load state</div>
+                                        <div class="admin-stat-value">{{ isLoadingPanel ? 'Syncing' : 'Ready' }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="admin-panel mb-6" v-if="showInfoPlayer && userInfo.length">
+                        <div class="admin-section-label">Player results</div>
+                        <div class="admin-monitor-grid mt-4">
+                            <div class="admin-user-card" v-for="user in userInfo" :key="user.name">
+                                <h3 class="mt-0 mb-2">{{ user.name }}</h3>
+                                <div class="admin-user-meta">
+                                    <div>Can Buy?: {{ user.canBuy }}</div>
+                                    <div>Can Sell?: {{ user.canSell }}</div>
+                                    <div>Is Admin?: {{ user.isAdmin }}</div>
+                                    <div>Banned?: {{ user.banned }}</div>
+                                    <div>IP: {{ user.ip }}</div>
+                                </div>
+                                <div class="mt-4" v-html="user.websiteBanForm"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="admin-table-card" v-if="showListAdmShop">
+                        <div class="admin-table-head">
+                            <div>
+                                <div class="admin-section-label">Shop listing table</div>
+                                <h3 class="mt-2 mb-0">Managed items</h3>
+                            </div>
+                            <div class="admin-table-count">{{ isLoadingPanel ? 'Loading listings...' : tableItems.length + ' items loaded' }}</div>
+                        </div>
+                        <v-data-table :headers="tableHeaders" :items="tableItems">
                             <template v-slot:item.item_name="{ item }">
                                 <div v-html="item.item_name"></div>
                             </template>
                             <template v-slot:item.delete="{ item }">
-                                <v-btn icon @click="deleteItem(item.delete)">
-                                    <v-icon>mdi-delete</v-icon>
-                                </v-btn>
+                                <button class="wp-btn is-outlined" type="button" @click="deleteItem(item.delete)">
+                                    Delete
+                                </button>
                             </template>
                         </v-data-table>
-                    </v-container>
-                </v-main>
-            </v-app>
-        </div>
+                    </section>
+
+                    <v-footer class="admin-footer mt-6">
+                        &copy; Made by Stutiguias.
+                    </v-footer>
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
     
-        <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.prod.js"></script>
         <script src="js/vue3-portal.js"></script>
         <script src="js/translate.js"></script>
         <script src="js/main.js"></script>

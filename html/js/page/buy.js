@@ -1,25 +1,51 @@
 WebPortalVue3.mountApp({
     el: '#app',
-    data: () => ({
-        from:0,
-        qtd:10,
-        user: '',
-        money: '',
-        mail: '',
-        avatarUrl: '',
-        isAdmin: false,
-        addItemForm: {
-            itemId: '',
-            quantity: '',
-            price: ''
+    data() {
+        return {
+            from: 0,
+            qtd: 10,
+            user: '',
+            money: '',
+            mail: '',
+            avatarUrl: 'https://minotar.net/avatar/',
+            isAdmin: false,
+            addItemForm: {
+                itemId: '',
+                quantity: '',
+                price: ''
+            },
+            removeItemId: '',
+            formResult: '',
+            resultado: '',
+            headers: [],
+            items: [],
+            isLoading: false,
+            isSubmittingAdd: false,
+            isSubmittingRemove: false,
+            sessionid: this.getCookie("sessionid"),
+        };
+    },
+    computed: {
+        requestCount() {
+            return this.items.length;
         },
-        removeItemId: '',
-        formResult: '',
-        resultado: '',
-        sessionid: this.getCookie("sessionid"),
-    }),
+        hasItems() {
+            return this.requestCount > 0;
+        },
+        formResultType() {
+            return this.isErrorMessage(this.formResult) ? 'error' : 'success';
+        },
+        loadResultType() {
+            return this.isErrorMessage(this.resultado) ? 'error' : 'info';
+        },
+    },
     methods: {
         addItem() {
+            if (!this.addItemForm.itemId || !this.addItemForm.quantity || !this.addItemForm.price) {
+                this.formResult = 'Fill item, quantity and price before creating a buy request.';
+                return;
+            }
+
             const params = new URLSearchParams({
                 itemId: this.addItemForm.itemId,
                 quantity: this.addItemForm.quantity,
@@ -28,35 +54,56 @@ WebPortalVue3.mountApp({
             }).toString();
 
             const url = window.qualifyURL(`/buy/additem?${params}`);
+            this.formResult = '';
+            this.isSubmittingAdd = true;
 
-            fetch(url, {
+            return fetch(url, {
                 method: 'GET',
             })
             .then(response => response.text())
             .then(data => {
                 this.formResult = data;
+                this.addItemForm.itemId = '';
+                this.addItemForm.quantity = '';
+                this.addItemForm.price = '';
+                return this.getMyItens(this.from, this.qtd);
             })
             .catch(error => {
                 this.formResult = "Invalid id " + error;
+            })
+            .finally(() => {
+                this.isSubmittingAdd = false;
             });
         },
         removeItem() {
+            if (!this.removeItemId) {
+                this.formResult = 'Enter the buy request ID you want to remove.';
+                return;
+            }
+
             const params = new URLSearchParams({
                 id: this.removeItemId,
                 sessionid: this.getCookie("sessionid")
             }).toString();
 
             const url = window.qualifyURL(`/buy/remitem?${params}`);
+            this.formResult = '';
+            this.isSubmittingRemove = true;
 
-            fetch(url, {
+            return fetch(url, {
                 method: 'GET',
             })
             .then(response => response.text())
             .then(data => {
                 this.formResult = data;
+                this.removeItemId = '';
+                return this.getMyItens(this.from, this.qtd);
             })
             .catch(error => {
                 this.formResult = "Invalid id " + error;
+            })
+            .finally(() => {
+                this.isSubmittingRemove = false;
             });
         },
         getCookie(szName) {
@@ -87,8 +134,19 @@ WebPortalVue3.mountApp({
         translate(key) {
             return window.langIndex[key] || key;
         },
-        getMyItens(from, qtd) {
-            fetch(window.qualifyURL(`/buy/getitem?from=${this.from}&qtd=${this.qtd}&sessionid=${this.sessionid}`))
+        isErrorMessage(message) {
+            return /(error|invalid|erro|falha|failed)/i.test(message || '');
+        },
+        refreshRequests() {
+            return this.getMyItens(this.from, this.qtd);
+        },
+        getMyItens(from = this.from, qtd = this.qtd) {
+            this.from = from;
+            this.qtd = qtd;
+            this.resultado = '';
+            this.isLoading = true;
+
+            return fetch(window.qualifyURL(`/buy/getitem?from=${this.from}&qtd=${this.qtd}&sessionid=${this.sessionid}`))
                 .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro na rede ou resposta não OK');
@@ -100,12 +158,23 @@ WebPortalVue3.mountApp({
                     this.loadTable(data, from, qtd);
                 })
                 .catch(error => {
+                    this.headers = [];
+                    this.items = [];
                     this.resultado = error.message || 'Erro desconhecido';
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         },
         loadTable(data, from, qtd) {
-            if(data[0] != null) return;
+            this.headers = [];
+            this.items = [];
+
+            if (!data || data[0] != null) return;
+
             const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
+            if (!firstKey) return;
+
             const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
             
             this.headers = Object.values(data[firstKey][0]).map(field => ({
@@ -123,7 +192,7 @@ WebPortalVue3.mountApp({
         },
     },
     mounted() {
-        this.getMyItens();
+        this.refreshRequests();
         this.getUserInfo();
     }
 });

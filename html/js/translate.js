@@ -75,7 +75,7 @@ var langIndex = {
     ///////////////////
     'langWant':'What Item do you want ?',
     'langBuy': 'Buy list',
-    'langItemId': 'Item Material',
+    'langItemId': 'Material / Item ID',
     'langHelp': 'Help',
     
      ///////////////////

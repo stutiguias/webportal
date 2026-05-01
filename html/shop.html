@@ -6,7 +6,7 @@
     <title>Shop</title>
     <meta name="viewport" content="width=device-width">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.prod.js"></script>
     <script src="js/vue3-portal.js"></script>
     <style>
         html,
@@ -101,6 +101,58 @@
             gap: 14px;
         }
 
+        .shop-quick-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .shop-quick-copy {
+            max-width: 620px;
+            color: rgba(23, 50, 77, 0.72);
+            line-height: 1.6;
+        }
+
+        .shop-selection-card {
+            display: grid;
+            gap: 12px;
+            margin: 18px 0;
+            padding: 16px;
+            border-radius: 8px;
+            background: rgba(31, 77, 122, 0.06);
+            border: 1px solid rgba(31, 77, 122, 0.12);
+        }
+
+        .shop-selection-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .shop-selection-title {
+            color: #17324d;
+            font-weight: 800;
+        }
+
+        .shop-selection-id {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .shop-selection-hint {
+            color: rgba(23, 50, 77, 0.72);
+            line-height: 1.6;
+        }
+
+        .shop-inline-help {
+            margin-top: 12px;
+            color: rgba(23, 50, 77, 0.68);
+            line-height: 1.6;
+        }
+
         .shop-category-bar {
             position: sticky;
             top: 76px;
@@ -140,6 +192,10 @@
 
         .shop-result {
             margin-top: 16px;
+        }
+
+        .shop-table-action {
+            min-width: 108px;
         }
 
         .shop-table-card {
@@ -184,6 +240,12 @@
 
             .shop-buy-form {
                 grid-template-columns: 1fr;
+            }
+
+            .shop-quick-header,
+            .shop-selection-top {
+                flex-direction: column;
+                align-items: stretch;
             }
 
             .shop-category-bar,
@@ -265,13 +327,40 @@
                 </v-card>
 
                 <v-card class="shop-panel pa-5 pa-md-6 mb-6" flat>
-                    <div class="shop-section-label mb-4">Quick purchase</div>
+                    <div class="shop-quick-header mb-4">
+                        <div>
+                            <div class="shop-section-label">Quick purchase</div>
+                            <div class="shop-quick-copy">
+                                Pick a listing directly from the market table or type the auction ID manually if you already know it.
+                            </div>
+                        </div>
+                        <button class="wp-btn is-outlined" type="button" @click="clearSelectedListing" :disabled="isSubmittingPurchase || isLoadingListings">
+                            Clear selection
+                        </button>
+                    </div>
+                    <div v-if="selectedListing" class="shop-selection-card">
+                        <div class="shop-selection-top">
+                            <div>
+                                <div class="shop-selection-title" v-html="selectedListing.item_name"></div>
+                                <div class="shop-selection-id">Auction ID: {{ selectedListing.id }}</div>
+                            </div>
+                            <span class="shop-meta-pill">{{ selectedListing.price_total || selectedListing.price_each || activeCategoryLabel }}</span>
+                        </div>
+                        <div class="shop-selection-hint">
+                            The purchase form has been filled from the selected row. Adjust the quantity if needed, then confirm the buy action.
+                        </div>
+                    </div>
                     <v-form @submit.prevent="shop" class="shop-buy-form">
-                        <v-text-field v-model.trim="formData.ID" label="Item ID" outlined required></v-text-field>
-                        <v-text-field v-model.trim="formData.quantity" label="Quantity" type="number" outlined required></v-text-field>
-                        <v-btn type="submit" color="primary" large>Buy</v-btn>
+                        <v-text-field v-model.trim="formData.ID" label="Auction ID" placeholder="Select a row below or type the ID" outlined required></v-text-field>
+                        <v-text-field v-model.trim="formData.quantity" label="Quantity" type="number" min="1" outlined required></v-text-field>
+                        <v-btn type="submit" color="primary" large :disabled="isSubmittingPurchase || isLoadingListings">
+                            {{ isSubmittingPurchase ? 'Processing...' : 'Buy now' }}
+                        </v-btn>
                     </v-form>
-                    <v-alert type="info" v-if="formResult" class="shop-result">
+                    <div class="shop-inline-help">
+                        Tip: use the <strong>Use</strong> action in the table to avoid copying IDs manually.
+                    </div>
+                    <v-alert :type="formResultType" v-if="formResult" class="shop-result">
                         {{ formResult }}
                     </v-alert>
                 </v-card>
@@ -305,6 +394,11 @@
                         </template>
                         <template v-slot:item.owner="{ item }">
                             <div v-html="item.owner"></div>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                            <button class="wp-btn shop-table-action" type="button" @click="selectListing(item)">
+                                {{ String(selectedListingId) === String(item.id) ? 'Selected' : 'Use' }}
+                            </button>
                         </template>
                     </v-data-table>
                 </v-card>
