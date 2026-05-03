@@ -1154,4 +1154,64 @@ public class Queries implements IDataQueries {
         }
         return true;
     }
+
+    @Override
+    public List<Shop> getExpiredItems(int expiryHours) {
+        List<Shop> expiredItems = new ArrayList<>();
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try {
+            long currentTime = System.currentTimeMillis() / 1000;
+            long expiryTime = currentTime - (expiryHours * 3600L);
+            
+            st = conn.prepareStatement("SELECT id,name,damage,player,quantity,price,created,ench,tableid FROM WA_Auctions WHERE (tableid = ? OR tableid = ?) AND created > 0 AND created < ?");
+            st.setInt(1, plugin.Sell);
+            st.setInt(2, plugin.Buy);
+            st.setLong(3, expiryTime);
+            rs = st.executeQuery();
+            
+            while (rs.next()) {
+                Shop item = new Shop();
+                item.setId(rs.getInt("id"));
+                item.setPlayerName(rs.getString("player"));
+                Material material = Material.getMaterial(rs.getString("name"));
+                WebItemStack stack = new WebItemStack(material, rs.getInt("quantity"), rs.getInt("damage"));
+                stack = Enchant.EnchantItem(rs.getString("ench"), stack);
+                item.setItemStack(stack);
+                item.setPrice(rs.getDouble("price"));
+                item.setCreated(rs.getInt("created"));
+                item.setTableId(rs.getInt("tableid"));
+                expiredItems.add(item);
+            }
+        } catch (SQLException e) {
+            WebPortal.logger.log(Level.WARNING, "{0} Error fetching expired items", plugin.logPrefix);
+            WebPortal.logger.warning(e.getMessage());
+        } finally {
+            closeResources(conn, st, rs);
+        }
+        return expiredItems;
+    }
+
+    @Override
+    public boolean renewItemListing(int itemId, int newTimestamp) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try {
+            st = conn.prepareStatement("UPDATE WA_Auctions SET created = ? WHERE id = ?");
+            st.setInt(1, newTimestamp);
+            st.setInt(2, itemId);
+            int updated = st.executeUpdate();
+            return updated > 0;
+        } catch (SQLException e) {
+            WebPortal.logger.log(Level.WARNING, "{0} Error renewing item {1}", new Object[]{plugin.logPrefix, itemId});
+            WebPortal.logger.warning(e.getMessage());
+            return false;
+        } finally {
+            closeResources(conn, st, rs);
+        }
+    }
 }

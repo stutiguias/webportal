@@ -59,6 +59,10 @@ Misc:
   # if you use 
   # RPG ITEM 2 turn on
   AllowMetaItem: false
+  # Time in hours for item expiration (0 to disable)
+  # Expired items are automatically returned to player's mailbox
+  # Default: 168 hours (7 days)
+  ItemExpiryHours: 168
   # Setup your language file xxx.yml on plugins/Webportal folder
   Language: 'eng'
   

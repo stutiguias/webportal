@@ -12,7 +12,7 @@ var langIndex = {
     'lang1Name': 'Name',
     'lang1Money': 'Money $',
     'lang1Admin': 'Admin',
-    'lang1Mail': 'Mail',
+    'lang1Mail': 'Item Mail',
     'lang1TitleInfoPlayer': 'Info about player',
 
     ///////////////////
@@ -27,7 +27,6 @@ var langIndex = {
     'lang1Info': 'Info',
     'lang1Sell': 'Sell',
     'lang1Buy': 'Buy',
-    'lang1Signs': 'Signs',
     'lang1ItemInfo': 'Item Info',
     'lang1Logout': 'Log out',
 
@@ -54,7 +53,7 @@ var langIndex = {
     //	My Itens
     ///////////////////
     'langMyItensTitle': 'My Items',
-    'langMailMe': 'Mail it',
+    'langMailMe': 'Item Mail',
     'langMymarket_price_each': 'Market Price (Each)',
     'langMymarket_price_total': 'Market Price (Total)',
     'langCreateSale': 'Create Sale',
@@ -109,7 +108,7 @@ var langIndex = {
 	///////////////////
 	//	Mail
 	///////////////////
-	 'langMyMail': 'My Mail',
+	 'langMyMail': 'My Item Mail',
 	 
     ///////////////////
     //	Table

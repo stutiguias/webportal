@@ -33,6 +33,7 @@ WebPortalVue3.mountApp({
             ],
             headers: [],
             items: [],
+            itemExpiryHours: 168, // Deve corresponder ao config.yml
         };
     },
     computed: {
@@ -139,10 +140,12 @@ WebPortalVue3.mountApp({
 
             const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
 
-            this.headers = Object.values(data[firstKey][0]).map(field => ({
-                text: field.Title,
-                value: field.Title.toLowerCase().replace(/\s+/g, '_')
-            }));
+            this.headers = Object.values(data[firstKey][0])
+                .filter(field => field.Title.toLowerCase() !== 'created')
+                .map(field => ({
+                    text: field.Title,
+                    value: field.Title.toLowerCase().replace(/\s+/g, '_')
+                }));
             this.headers.push({ text: 'Quick buy', value: 'actions' });
             this.items = data[firstKey].map(item => {
                 const newItem = {};
@@ -150,6 +153,10 @@ WebPortalVue3.mountApp({
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
                     newItem[key] = upgradeHtml(field.Val);
                 });
+                // Extract created timestamp if exists
+                if (item.created && item.created.Val) {
+                    newItem.created = parseInt(item.created.Val) || 0;
+                }
                 return newItem;
             });
 
@@ -173,7 +180,7 @@ WebPortalVue3.mountApp({
             .then(response => response.json())
             .then(data => {
                 this.user = data["Name"];
-                this.money = data["Money"];
+                this.money = parseFloat(data["Money"]).toFixed(2);
                 this.mail = data["Mail"];
                 this.isAdmin = data["Admin"].toString() === "1";
                 this.avatarUrl = data["Avatarurl"];
@@ -181,6 +188,28 @@ WebPortalVue3.mountApp({
             .catch(error => {
                 this.user = "Error loading data";
             });
+        },
+        getTimeRemaining(created) {
+            if (!created || created === 0) return this.translate('langNever') || 'Never';
+            
+            const createdTime = created * 1000;
+            const expiryTime = createdTime + (this.itemExpiryHours * 3600 * 1000);
+            const remaining = expiryTime - Date.now();
+            
+            if (remaining <= 0) return this.translate('langExpired') || 'Expired';
+            
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (days > 0) return `${days}d ${hours}h`;
+            if (hours > 0) return `${hours}h ${minutes}m`;
+            return `${minutes}m`;
+        },
+        formatCreatedDate(created) {
+            if (!created || created === 0) return 'N/A';
+            const date = new Date(created * 1000);
+            return date.toLocaleString();
         },
     },
     mounted() {

@@ -69,6 +69,10 @@ public interface IDataQueries {
 	    int CreateItem(String materialName, int itemDamage, String player, int quantity,Double price,String ench,int tableId,String type,String searchtype);
         int GetMarketPriceofItem(String materialName, int itemDamage);
         
+        //Item Expiry
+        List<Shop> getExpiredItems(int expiryHours);
+        boolean renewItemListing(int itemId, int newTimestamp);
+        
         //Item Extra info
         int InsertItemInfo(int auctionId,String type,String value);
         String GetItemInfo(int auctionId,String type);

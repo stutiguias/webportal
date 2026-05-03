@@ -70,8 +70,8 @@
         }
 
         .hero-title {
-            font-size: clamp(2rem, 3.4vw, 3.1rem);
-            line-height: 1.05;
+            font-size: clamp(1.3rem, 2.2vw, 2rem);
+            line-height: 1.1;
             font-weight: 800;
         }
 
@@ -90,9 +90,9 @@
         .dashboard-stat {
             display: flex;
             align-items: center;
-            gap: 14px;
-            min-height: 104px;
-            padding: 18px;
+            gap: 12px;
+            min-height: 80px;
+            padding: 14px;
             border-radius: 8px;
             background: #fff;
             border: 1px solid rgba(23, 50, 77, 0.1);
@@ -103,13 +103,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex: 0 0 44px;
-            width: 44px;
-            height: 44px;
+            flex: 0 0 40px;
+            width: 40px;
+            height: 40px;
             border-radius: 8px;
             background: rgba(31, 77, 122, 0.1);
             color: #1f4d7a;
-            font-size: 1.35rem;
+            font-size: 1.2rem;
         }
 
         .dashboard-stat-label {
@@ -121,9 +121,9 @@
         }
 
         .dashboard-stat-value {
-            margin-top: 5px;
+            margin-top: 3px;
             color: #17324d;
-            font-size: 1.45rem;
+            font-size: 1.25rem;
             font-weight: 800;
             line-height: 1.1;
         }
@@ -138,7 +138,7 @@
 
         .summary-value {
             color: #17324d;
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             font-weight: 800;
             line-height: 1;
         }
@@ -153,9 +153,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 18px;
+            gap: 12px;
             min-height: 100%;
-            padding: 24px;
+            padding: 16px;
             border-left: 1px solid rgba(23, 50, 77, 0.08);
             background: rgba(31, 77, 122, 0.04);
         }
@@ -229,9 +229,6 @@
                         <v-list-item>
                             <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
                         </v-list-item>
-                        <v-list-item>
-                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
-                        </v-list-item>
                     </v-list>
                 </v-menu>
 
@@ -248,7 +245,7 @@
                                         <v-col cols="12" md="8" class="pa-6 pa-md-8">
                                             <div class="hero-kicker">Player dashboard</div>
                                             <div class="hero-title mb-4">{{ user ? user + ', here is your market pulse.' : 'Your market pulse, ready.' }}</div>
-                                            <div class="hero-text mb-6">
+                                            <div class="hero-text mb-4">
                                                 Track your balance, mailbox and trading access from one place without digging through menus.
                                             </div>
                                             <div class="dashboard-grid">
@@ -266,8 +263,8 @@
                                                         <v-icon>mdi-email-fast</v-icon>
                                                     </div>
                                                     <div>
-                                                        <div class="dashboard-stat-label">Mail</div>
-                                                        <div class="dashboard-stat-value">{{ mail || '--' }}</div>
+                                                        <div class="dashboard-stat-label">{{ translate('lang1Mail') }}</div>
+                                                        <div class="dashboard-stat-value">{{ mail !== '' ? mail : '--' }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="dashboard-stat">
@@ -283,7 +280,7 @@
                                         </v-col>
                                         <v-col cols="12" md="4" class="pa-0">
                                             <div class="hero-aside">
-                                                <v-avatar size="148" class="avatar-frame">
+                                                <v-avatar size="88" class="avatar-frame">
                                                     <img v-bind:src="avatarUrl || 'images/default_avatar.png'" alt="avatar" class="avatar-img" />
                                                 </v-avatar>
                                                 <div class="quick-actions">
@@ -301,7 +298,7 @@
                             <v-col cols="12" md="4">
                                 <v-card class="info-card pa-5 pa-md-6 fill-height" flat>
                                     <div class="section-label mb-3">Player overview</div>
-                                    <h2 class="text-h4 mb-4">{{ translate('lang1TitleInfoPlayer') }}</h2>
+                                    <h2 class="text-h6 mb-3">{{ translate('lang1TitleInfoPlayer') }}</h2>
                                     <v-list color="transparent" dense>
                                         <v-list-item class="px-0">
                                             <v-list-item-icon>
@@ -327,7 +324,7 @@
                                             </v-list-item-icon>
                                             <v-list-item-content>
                                                 <div class="section-label">{{ translate('lang1Mail') }}</div>
-                                                <div class="summary-value">{{ mail || '--' }}</div>
+                                                <div class="summary-value">{{ mail !== '' ? mail : '--' }}</div>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item v-if="isAdmin" class="px-0">

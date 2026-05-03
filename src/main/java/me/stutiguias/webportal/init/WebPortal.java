@@ -24,6 +24,7 @@ import me.stutiguias.webportal.webserver.authentication.LoggedPlayer;
 import me.stutiguias.webportal.signs.Mailbox;
 import me.stutiguias.webportal.signs.vBox;
 import me.stutiguias.webportal.signs.wSell;
+import me.stutiguias.webportal.tasks.ExpiryCheckTask;
 import me.stutiguias.webportal.tasks.SaleAlertTask;
 import me.stutiguias.webportal.tasks.WebPortalHttpServer;
 import me.stutiguias.webportal.trade.Transaction;
@@ -80,6 +81,7 @@ public class WebPortal extends JavaPlugin {
     public Boolean UpdaterNotify;
     public int mailboxDelay;
     public int webServerQueueLimit;
+    public int itemExpiryHours;
 
     public String allowexternal;
     public Boolean DisableCmd;
@@ -284,6 +286,7 @@ public class WebPortal extends JavaPlugin {
             allowexternal=          c.getString("Misc.Allow");
             EnableExternalSource=   c.getBoolean("Misc.EnableExternalSource");
             UpdaterNotify=          c.getBoolean("Misc.UpdaterNotify");
+            itemExpiryHours=        c.getInt("Misc.ItemExpiryHours", 168);
             try {
                 Messages = new Messages(this,c.getString("Misc.Language"));
             }catch(IOException ex){
@@ -337,6 +340,14 @@ public class WebPortal extends JavaPlugin {
 
         if (getMessages)
             getServer().getScheduler().runTaskTimerAsynchronously(this, new SaleAlertTask(this), saleAlertFrequency, saleAlertFrequency);
+        
+        // Item Expiry Check
+        int expiryHours = c.getInt("Misc.ItemExpiryHours", 168);
+        if (expiryHours > 0) {
+            long expiryCheckFrequency = 72000L; // Check every hour (20 ticks/sec * 60 * 60)
+            getServer().getScheduler().runTaskTimerAsynchronously(this, new ExpiryCheckTask(this), expiryCheckFrequency, expiryCheckFrequency);
+            logger.log(Level.INFO, "{0} Item expiry system enabled: {1} hours", new Object[]{logPrefix, expiryHours});
+        }
     }
 
     private FileConfiguration updateConfigFileVersionIfNeedIt() {

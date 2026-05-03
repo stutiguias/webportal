@@ -80,7 +80,7 @@ WebPortalVue3.mountApp({
               );
 
               this.user = data["Name"];
-              this.money = data["Money"];
+              this.money = parseFloat(data["Money"]).toFixed(2);
               this.mail = data["Mail"];
               this.isAdmin = data["Admin"].toString() === "1";
               this.avatarUrl = data["Avatarurl"];

@@ -10,6 +10,7 @@ WebPortalVue3.mountApp({
             avatarUrl: '',
             isAdmin: false,
             resultado: '',
+            isLoading: false,
             headers: [],
             items: [],
             sessionid: this.getCookie('sessionid')
@@ -17,6 +18,7 @@ WebPortalVue3.mountApp({
     },
     methods: {
         getMail(from, qtd) {
+            this.isLoading = true;
             fetch(window.qualifyURL(`/mail/get?from=${this.from}&qtd=${this.qtd}&sessionid=${this.sessionid}`))
                 .then(response => {
                     if (!response.ok) {
@@ -30,6 +32,9 @@ WebPortalVue3.mountApp({
                 })
                 .catch(error => {
                     this.resultado = error.message || 'Erro desconhecido';
+                })
+                .finally(() => {
+                    this.isLoading = false;
                 });
         },
         loadTable(data, from, qtd) {
@@ -66,7 +71,7 @@ WebPortalVue3.mountApp({
                 .then(response => response.json())
                 .then(data => {
                     this.user = data["Name"];
-                    this.money = data["Money"];
+                    this.money = parseFloat(data["Money"]).toFixed(2);
                     this.mail = data["Mail"];
                     this.isAdmin = data["Admin"].toString() === "1";
                     this.avatarUrl = data["Avatarurl"];

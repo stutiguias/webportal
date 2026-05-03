@@ -22,6 +22,7 @@ public class WebPortalCommands extends Util implements CommandExecutor {
         avaibleCommands.put("password"  , new PasswordCommand(plugin));
         avaibleCommands.put("view"      , new ViewCommand(plugin));
         avaibleCommands.put("set"       , new SetCommand(plugin));
+        avaibleCommands.put("renew"     , new RenewCommand(plugin));
     }
 
     @Override

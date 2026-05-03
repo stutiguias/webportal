@@ -9,196 +9,144 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@3.4.27/dist/vue.global.prod.js"></script>
     <script src="js/vue3-portal.js"></script>
     <style>
-        html,
-        body {
+        html, body {
             min-height: 100%;
             background:
                 radial-gradient(circle at top left, rgba(255, 213, 79, 0.14), transparent 26%),
                 linear-gradient(135deg, #f4efe2 0%, #e8f0fb 48%, #dce8d7 100%);
         }
 
-        body {
-            padding-bottom: 40px;
-        }
+        body { padding-bottom: 40px; }
 
         .shop-shell {
             max-width: 1320px;
             margin: 0 auto;
         }
 
-        .shop-hero,
-        .shop-panel,
-        .shop-table-card {
+        /* ── top bar ── */
+        .shop-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 16px;
             border-radius: 8px;
-            border: 1px solid rgba(23, 50, 77, 0.08);
-            background: rgba(255, 255, 255, 0.92);
-            box-shadow: 0 20px 44px rgba(27, 39, 51, 0.11);
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(23,50,77,0.08);
+            box-shadow: 0 4px 16px rgba(27,39,51,0.08);
+            flex-wrap: wrap;
         }
 
-        .shop-hero {
-            overflow: hidden;
+        .shop-topbar-player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 auto;
         }
 
-        .shop-title-kicker,
+        .shop-topbar-name {
+            font-weight: 700;
+            color: #17324d;
+            font-size: 0.95rem;
+        }
+
+        .shop-meta-pill {
+            padding: 3px 9px;
+            border-radius: 6px;
+            background: rgba(31,77,122,0.08);
+            color: #17324d;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        /* ── buy form bar ── */
+        .shop-form-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(23,50,77,0.08);
+            box-shadow: 0 4px 16px rgba(27,39,51,0.08);
+            flex-wrap: wrap;
+        }
+
+        .shop-form-bar .v-text-field {
+            margin: 0 !important;
+            padding: 0 !important;
+            flex: 1 1 140px;
+            max-width: 220px;
+        }
+
+        .shop-selected-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(31,77,122,0.07);
+            border: 1px solid rgba(31,77,122,0.14);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #17324d;
+            white-space: nowrap;
+        }
+
         .shop-section-label {
-            color: rgba(23, 50, 77, 0.62);
-            font-size: 0.76rem;
+            color: rgba(23,50,77,0.62);
+            font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
-        .shop-title {
-            color: #17324d;
-            font-size: clamp(2rem, 3vw, 3rem);
-            font-weight: 800;
-            line-height: 1.05;
-        }
-
-        .shop-subtitle {
-            max-width: 620px;
-            color: rgba(23, 50, 77, 0.72);
-            line-height: 1.7;
-        }
-
-        .shop-profile {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            align-items: center;
-            gap: 16px;
-            min-height: 100%;
-            padding: 24px;
-            border-left: 1px solid rgba(23, 50, 77, 0.08);
-            background: rgba(31, 77, 122, 0.04);
-        }
-
-        .shop-profile-name {
-            color: #17324d;
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
-
-        .shop-profile-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .shop-meta-pill {
-            padding: 7px 10px;
-            border-radius: 8px;
-            background: rgba(31, 77, 122, 0.08);
-            color: #17324d;
-            font-size: 0.86rem;
-            font-weight: 700;
-        }
-
-        .shop-buy-form {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
-            align-items: end;
-            gap: 14px;
-        }
-
-        .shop-quick-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .shop-quick-copy {
-            max-width: 620px;
-            color: rgba(23, 50, 77, 0.72);
-            line-height: 1.6;
-        }
-
-        .shop-selection-card {
-            display: grid;
-            gap: 12px;
-            margin: 18px 0;
-            padding: 16px;
-            border-radius: 8px;
-            background: rgba(31, 77, 122, 0.06);
-            border: 1px solid rgba(31, 77, 122, 0.12);
-        }
-
-        .shop-selection-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .shop-selection-title {
-            color: #17324d;
-            font-weight: 800;
-        }
-
-        .shop-selection-id {
-            color: rgba(23, 50, 77, 0.62);
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        .shop-selection-hint {
-            color: rgba(23, 50, 77, 0.72);
-            line-height: 1.6;
-        }
-
-        .shop-inline-help {
-            margin-top: 12px;
-            color: rgba(23, 50, 77, 0.68);
-            line-height: 1.6;
-        }
-
+        /* ── category bar ── */
         .shop-category-bar {
             position: sticky;
-            top: 76px;
+            top: 56px;
             z-index: 10;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
+            gap: 8px;
+            padding: 8px 14px;
             border-radius: 8px;
-            background: rgba(31, 77, 122, 0.96);
+            background: rgba(31,77,122,0.96);
             color: #fff;
-            box-shadow: 0 14px 30px rgba(14, 23, 37, 0.14);
+            box-shadow: 0 8px 20px rgba(14,23,37,0.14);
+            flex-wrap: wrap;
         }
 
         .shop-category-title {
-            font-size: 1rem;
+            font-size: 0.88rem;
             font-weight: 700;
+            white-space: nowrap;
         }
 
         .shop-category-actions {
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 8px;
+            gap: 6px;
             flex: 1 1 auto;
+            justify-content: flex-end;
         }
 
         .shop-category-actions .wp-btn {
-            min-height: 34px;
-            border-radius: 8px;
+            min-height: 30px;
+            font-size: 0.82rem;
+            border-radius: 6px;
         }
 
         .shop-category-actions .is-active {
-            background: rgba(255, 255, 255, 0.18) !important;
-            border-color: rgba(255, 255, 255, 0.28) !important;
+            background: rgba(255,255,255,0.18) !important;
+            border-color: rgba(255,255,255,0.28) !important;
         }
 
-        .shop-result {
-            margin-top: 16px;
-        }
-
-        .shop-table-action {
-            min-width: 108px;
-        }
-
+        /* ── table card ── */
         .shop-table-card {
+            border-radius: 8px;
+            border: 1px solid rgba(23,50,77,0.08);
+            background: rgba(255,255,255,0.92);
+            box-shadow: 0 20px 44px rgba(27,39,51,0.11);
             overflow: hidden;
         }
 
@@ -206,57 +154,41 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            padding: 20px 22px;
-            border-bottom: 1px solid rgba(23, 50, 77, 0.08);
+            gap: 12px;
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(23,50,77,0.08);
         }
 
         .shop-table-count {
-            color: rgba(23, 50, 77, 0.64);
+            color: rgba(23,50,77,0.58);
+            font-size: 0.85rem;
             font-weight: 700;
         }
 
         .shop-table-card .wp-data-table-wrap {
-            border: 0;
-            border-radius: 0;
-            box-shadow: none;
-            background: transparent;
+            border: 0; border-radius: 0; box-shadow: none; background: transparent;
         }
 
         .shop-table-card .wp-data-table th {
-            background: rgba(31, 77, 122, 0.05);
+            background: rgba(31,77,122,0.05);
         }
 
-        .menu-link {
-            color: inherit;
-            text-decoration: none;
+        .shop-table-action { min-width: 80px; }
+
+        .shop-table-action:disabled {
+            opacity: 0.45;
+            cursor: default;
+            pointer-events: none;
         }
+
+        .shop-result { margin-top: 0; }
+
+        .menu-link { color: inherit; text-decoration: none; }
 
         @media (max-width: 959px) {
-            .shop-profile {
-                border-left: 0;
-                border-top: 1px solid rgba(23, 50, 77, 0.08);
-            }
-
-            .shop-buy-form {
-                grid-template-columns: 1fr;
-            }
-
-            .shop-quick-header,
-            .shop-selection-top {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .shop-category-bar,
-            .shop-table-head {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .shop-category-actions {
-                justify-content: flex-start;
-            }
+            .shop-form-bar .v-text-field { max-width: 100%; }
+            .shop-category-bar, .shop-table-head { flex-direction: column; align-items: flex-start; }
+            .shop-category-actions { justify-content: flex-start; }
         }
     </style>
 </head>
@@ -289,81 +221,39 @@
                         <v-list-item>
                             <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
                         </v-list-item>
-                        <v-list-item>
-                            <v-list-item-title><a class="menu-link" href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
-                        </v-list-item>
                     </v-list>
                 </v-menu>
         
                 <v-btn text href="logout">{{ translate('lang1Logout') }}</v-btn>
             </v-app-bar>
     
-            <v-container class="shop-shell py-6 py-md-10" fluid>
-                <v-card class="shop-hero mb-6" flat>
-                    <v-row align="stretch">
-                        <v-col cols="12" md="8" class="pa-6 pa-md-8">
-                            <div class="shop-title-kicker mb-3">{{ translate('lang1Title') }}</div>
-                            <div class="shop-title mb-4">Find market items faster.</div>
-                            <div class="shop-subtitle">
-                                Browse active auctions, filter by category and buy directly by item ID without leaving the market page.
-                            </div>
-                        </v-col>
-                        <v-col cols="12" md="4" class="pa-0">
-                            <div class="shop-profile">
-                                <v-avatar size="76">
-                                    <img :src="avatarUrl" alt="avatar">
-                                </v-avatar>
-                                <div>
-                                    <div class="shop-section-label">{{ translate('lang1Name') }}</div>
-                                    <div class="shop-profile-name">{{ user || '--' }}</div>
-                                    <div class="shop-profile-meta">
-                                        <span class="shop-meta-pill">{{ translate('lang1Money') }}: {{ money || '--' }}</span>
-                                        <span class="shop-meta-pill">{{ translate('lang1Mail') }}: {{ mail || '--' }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </v-col>
-                    </v-row>
-                </v-card>
+            <v-container class="shop-shell py-4 py-md-6" fluid>
 
-                <v-card class="shop-panel pa-5 pa-md-6 mb-6" flat>
-                    <div class="shop-quick-header mb-4">
-                        <div>
-                            <div class="shop-section-label">Quick purchase</div>
-                            <div class="shop-quick-copy">
-                                Pick a listing directly from the market table or type the auction ID manually if you already know it.
-                            </div>
-                        </div>
-                        <button class="wp-btn is-outlined" type="button" @click="clearSelectedListing" :disabled="isSubmittingPurchase || isLoadingListings">
-                            Clear selection
-                        </button>
+                <!-- Player + balance topbar -->
+                <div class="shop-topbar mb-3">
+                    <div class="shop-topbar-player">
+                        <v-avatar size="32"><img :src="avatarUrl" alt="avatar"></v-avatar>
+                        <span class="shop-topbar-name">{{ user || '--' }}</span>
+                        <span class="shop-meta-pill">{{ translate('lang1Money') }}: {{ money || '--' }}</span>
+                        <span class="shop-meta-pill">{{ translate('lang1Mail') }}: {{ mail || '--' }}</span>
                     </div>
-                    <div v-if="selectedListing" class="shop-selection-card">
-                        <div class="shop-selection-top">
-                            <div>
-                                <div class="shop-selection-title" v-html="selectedListing.item_name"></div>
-                                <div class="shop-selection-id">Auction ID: {{ selectedListing.id }}</div>
-                            </div>
-                            <span class="shop-meta-pill">{{ selectedListing.price_total || selectedListing.price_each || activeCategoryLabel }}</span>
-                        </div>
-                        <div class="shop-selection-hint">
-                            The purchase form has been filled from the selected row. Adjust the quantity if needed, then confirm the buy action.
-                        </div>
+                </div>
+
+                <!-- Quick buy form bar -->
+                <v-form @submit.prevent="shop" class="shop-form-bar mb-4">
+                    <span class="shop-section-label" style="white-space:nowrap">Quick buy</span>
+                    <div v-if="selectedListing" class="shop-selected-badge">
+                        <span v-html="selectedListing.item_name"></span>
+                        <span style="opacity:.6">#{{ selectedListing.id }}</span>
                     </div>
-                    <v-form @submit.prevent="shop" class="shop-buy-form">
-                        <v-text-field v-model.trim="formData.ID" label="Auction ID" placeholder="Select a row below or type the ID" outlined required></v-text-field>
-                        <v-text-field v-model.trim="formData.quantity" label="Quantity" type="number" min="1" outlined required></v-text-field>
-                        <v-btn type="submit" color="primary" large :disabled="isSubmittingPurchase || isLoadingListings">
-                            {{ isSubmittingPurchase ? 'Processing...' : 'Buy now' }}
-                        </v-btn>
-                    </v-form>
-                    <div class="shop-inline-help">
-                        Tip: use the <strong>Use</strong> action in the table to avoid copying IDs manually.
-                    </div>
-                    <v-alert :type="formResultType" v-if="formResult" class="shop-result">
-                        {{ formResult }}
-                    </v-alert>
-                </v-card>
+                    <v-text-field v-model.trim="formData.ID" label="Auction ID" placeholder="ID" outlined dense hide-details required style="max-width:160px"></v-text-field>
+                    <v-text-field v-model.trim="formData.quantity" label="Qty" type="number" min="1" outlined dense hide-details required style="max-width:100px"></v-text-field>
+                    <v-btn type="submit" color="primary" small :disabled="isSubmittingPurchase || isLoadingListings">
+                        {{ isSubmittingPurchase ? '...' : 'Buy' }}
+                    </v-btn>
+                    <v-btn small text :disabled="isSubmittingPurchase || isLoadingListings" @click="clearSelectedListing">Clear</v-btn>
+                    <v-alert dense :type="formResultType" v-if="formResult" class="shop-result mb-0 pa-2" style="font-size:0.82rem;flex:1 1 100%">{{ formResult }}</v-alert>
+                </v-form>
 
                 <v-sheet class="shop-category-bar mb-5">
                     <div class="shop-category-title">Categories</div>
@@ -395,9 +285,31 @@
                         <template v-slot:item.owner="{ item }">
                             <div v-html="item.owner"></div>
                         </template>
+                        <template v-slot:item.expire="{ item }">
+                            <div>
+                                <span :style="{ color: getTimeRemaining(item.created) === (translate('langExpired') || 'Expired') ? '#d32f2f' : '#666', fontWeight: '600' }">
+                                    {{ getTimeRemaining(item.created) }}
+                                </span>
+                                <div style="font-size: 0.75rem; color: #999; margin-top: 2px;">
+                                    Created {{ formatCreatedDate(item.created) }}
+                                </div>
+                            </div>
+                        </template>
+                        <template v-slot:item.type="{ item }">
+                            <span v-if="item.type && item.type.toLowerCase() === 'buy'" style="color:#1976d2;font-weight:600">Buying from</span>
+                            <span v-else-if="item.type && item.type.toLowerCase() === 'sell'" style="color:#388e3c;font-weight:600">Selling to</span>
+                            <span v-else>{{ item.type }}</span>
+                        </template>
                         <template v-slot:item.actions="{ item }">
-                            <button class="wp-btn shop-table-action" type="button" @click="selectListing(item)">
-                                {{ String(selectedListingId) === String(item.id) ? 'Selected' : 'Use' }}
+                            <button
+                                class="wp-btn shop-table-action"
+                                type="button"
+                                @click="selectListing(item)"
+                                :disabled="item.owner && item.owner.replace(/<[^>]*>/g,'').trim() === user"
+                                :title="item.owner && item.owner.replace(/<[^>]*>/g,'').trim() === user ? 'Your own listing' : ''"
+                            >
+                                <span v-if="item.owner && item.owner.replace(/<[^>]*>/g,'').trim() === user">Your shop</span>
+                                <span v-else>{{ String(selectedListingId) === String(item.id) ? 'Selected' : 'Use' }}</span>
                             </button>
                         </template>
                     </v-data-table>

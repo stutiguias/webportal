@@ -106,6 +106,7 @@ public class ShopRequest extends HttpResponse {
             json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop.getItemStack())));
             json.put("4",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
             json.put("5",JSON(message.WebExpire, message.WebNever));
+            json.put("created",JSON("created",shop.getCreated()));
             json.put("6",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
             json.put("7",JSON(message.WebPriceEach,shop.getPrice()));
             json.put("8",JSON(message.WebEnchant,GetEnchant(shop)));
@@ -143,6 +144,7 @@ public class ShopRequest extends HttpResponse {
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
             json.put("3",JSON(message.WebOwner,getName(item)));
             json.put("4",JSON(message.WebExpire, message.WebNever));
+            json.put("created",JSON("created",item.getCreated()));
             if(item.getItemStack().getAmount() == 9999) {
                 json.put("5",JSON(message.WebQuantity,message.WebInfinit));
             }else{
@@ -167,6 +169,7 @@ public class ShopRequest extends HttpResponse {
         json.put("3",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
         json.put("4",JSON(message.WebOwner,item.getPlayerName()));
         json.put("5",JSON(message.WebExpire, message.WebNever));
+        json.put("created",JSON("created",item.getCreated()));
         
         if(item.getItemStack().getAmount() == 9999) {
             json.put("6",JSON(message.WebQuantity,message.WebInfinit));

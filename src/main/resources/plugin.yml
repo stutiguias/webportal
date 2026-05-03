@@ -29,6 +29,7 @@ permissions:
             wa.vbox : true
             wa.view : true
             wa.set: true
+            wa.renew: true
     wa.use.*:
         description: Gives access to all WebAuction commands
         children:
@@ -92,3 +93,6 @@ permissions:
     wa.set:
        description: Set Player Permission
        default: op
+    wa.renew:
+       description: Renew item listing expiry time
+       default: true

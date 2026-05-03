@@ -3,28 +3,256 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Request Mail</title>
+    <title>Item Mail</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.14/dist/vuetify.min.css" rel="stylesheet">
     <style>
+        :root {
+            --mail-ink: #17324d;
+            --mail-panel: rgba(255, 255, 255, 0.92);
+            --mail-border: rgba(23, 50, 77, 0.08);
+            --mail-shadow: 0 22px 48px rgba(22, 33, 45, 0.12);
+            --mail-accent: #345977;
+            --mail-accent-bg: rgba(52, 89, 119, 0.08);
+            --mail-success: #256245;
+            --mail-success-bg: rgba(37, 98, 69, 0.1);
+            --mail-error: #9c3e2e;
+            --mail-error-bg: rgba(156, 62, 46, 0.1);
+            --mail-info: #345977;
+            --mail-info-bg: rgba(52, 89, 119, 0.1);
+        }
+
+        html, body {
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(77, 121, 168, 0.18), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(123, 178, 141, 0.14), transparent 24%),
+                linear-gradient(135deg, #eef4fb 0%, #f1f4e8 45%, #f8efe3 100%);
+        }
+
         body {
-            padding-top: 60px;
             padding-bottom: 40px;
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--mail-ink);
+        }
+
+        h1, h2, h3, h4, h5, .v-toolbar__title {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .mail-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .mail-hero,
+        .mail-panel,
+        .mail-table-card {
+            border-radius: 8px;
+            border: 1px solid var(--mail-border);
+            background: var(--mail-panel);
+            box-shadow: var(--mail-shadow);
+        }
+
+        .mail-hero { overflow: hidden; }
+
+        .mail-kicker,
+        .mail-section-label {
+            color: rgba(23, 50, 77, 0.62);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .mail-title {
+            margin-top: 12px;
+            color: var(--mail-ink);
+            font-size: clamp(2.2rem, 3vw, 3.35rem);
+            line-height: 1.02;
+            font-weight: 700;
+        }
+
+        .mail-subtitle {
+            max-width: 640px;
+            margin-top: 16px;
+            color: rgba(23, 50, 77, 0.74);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .mail-profile {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 18px;
+            min-height: 100%;
+            padding: 28px;
+            border-left: 1px solid var(--mail-border);
+            background: linear-gradient(180deg, rgba(52, 89, 119, 0.04) 0%, rgba(77, 121, 168, 0.1) 100%);
+        }
+
+        .mail-profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .mail-profile-caption {
+            margin-top: 4px;
+            color: rgba(23, 50, 77, 0.62);
+            line-height: 1.5;
+        }
+
+        .mail-profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .mail-meta-pill {
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(23, 50, 77, 0.08);
+            color: var(--mail-ink);
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .mail-panel {
+            padding: 24px;
+        }
+
+        .mail-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .mail-stat-card {
+            padding: 16px;
+            border-radius: 8px;
+            background: rgba(23, 50, 77, 0.04);
+            border: 1px solid rgba(23, 50, 77, 0.06);
+        }
+
+        .mail-stat-value {
+            margin-top: 6px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .mail-help-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+            padding-left: 18px;
+            color: rgba(23, 50, 77, 0.72);
+        }
+
+        .mail-feedback {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .mail-feedback.is-success {
+            color: var(--mail-success);
+            background: var(--mail-success-bg);
+        }
+
+        .mail-feedback.is-error {
+            color: var(--mail-error);
+            background: var(--mail-error-bg);
+        }
+
+        .mail-feedback.is-info {
+            color: var(--mail-info);
+            background: var(--mail-info-bg);
+        }
+
+        .mail-table-card { overflow: hidden; }
+
+        .mail-table-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--mail-border);
+        }
+
+        .mail-table-count {
+            color: rgba(23, 50, 77, 0.66);
+            font-weight: 700;
+        }
+
+        .mail-table-card .wp-data-table-wrap {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .mail-table-card .wp-data-table th {
+            background: rgba(23, 50, 77, 0.04);
+        }
+
+        .mail-empty-state {
+            padding: 24px;
+            color: rgba(23, 50, 77, 0.74);
+            text-align: center;
+        }
+
+        .menu-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .mail-footer {
+            color: rgba(23, 50, 77, 0.64);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        @media (max-width: 959px) {
+            .mail-profile {
+                border-left: 0;
+                border-top: 1px solid var(--mail-border);
+            }
+
+            .mail-stat-grid,
+            .mail-table-head {
+                grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .mail-panel,
+            .mail-profile {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div id="app">
         <v-app>
-            <!-- Navbar -->
             <v-app-bar app dense dark color="primary">
                 <v-toolbar-title>{{ translate('lang1SvName') }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn text href="index.html">{{ translate('lang1Home') }}</v-btn>
                 <v-btn text href="shop.html">{{ translate('lang1Shop') }}</v-btn>
 
-                <!-- Dropdown Menu -->
                 <v-menu offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn text v-bind="attrs" v-on="on">
@@ -33,21 +261,17 @@
                     </template>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title><a href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="myitems.html">{{ translate('lang1MyItems') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="sell.html">{{ translate('lang1Sell') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="buy.html">{{ translate('lang1Buy') }}</a></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><a href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
+                            <v-list-item-title><a class="menu-link" href="mail.html">{{ translate('lang1Mail') }}</a></v-list-item-title>
                         </v-list-item>
-                        <v-list-item>
-                            <v-list-item-title><a href="signs.html">{{ translate('lang1Signs') }}</a></v-list-item-title>
-                        </v-list-item>
-                        <!-- Outras opções do dropdown -->
                     </v-list>
                 </v-menu>
 
@@ -55,33 +279,91 @@
             </v-app-bar>
 
             <v-main>
-                <v-container>
-                    <h2>{{ translate('langMyMail') }}</h2>
-                    <v-row>
-                        <v-col cols="12" sm="2">
-                            <v-avatar size="64">
-                                <img :src="avatarUrl" alt="avatar">
-                            </v-avatar>
-                        </v-col>
-                        <v-col cols="12" sm="10">
-                            {{ translate('lang1Name') }}: <span>{{ user }}</span> | {{ translate('lang1Money') }}: <span>{{ money }}</span> | {{ translate('lang1Mail') }}: <span>{{ mail }}</span>
+                <v-container class="mail-shell py-6">
+
+                    <!-- Hero -->
+                    <section class="mail-hero mb-6">
+                        <v-row no-gutters>
+                            <v-col cols="12" md="7">
+                                <div class="mail-panel">
+                                    <div class="mail-kicker">Mailbox</div>
+                                    <h1 class="mail-title">{{ translate('langMyMail') }}</h1>
+                                    <p class="mail-subtitle">
+                                        Browse all items currently held in your mailbox. Items sent through the marketplace or directly from other players appear here until collected.
+                                    </p>
+                                </div>
+                            </v-col>
+                            <v-col cols="12" md="5">
+                                <div class="mail-profile">
+                                    <v-avatar size="84">
+                                        <img :src="avatarUrl" alt="avatar">
+                                    </v-avatar>
+                                    <div>
+                                        <div class="mail-profile-name">{{ user || translate('lang1Name') }}</div>
+                                        <div class="mail-profile-caption">
+                                            Your mailed items are waiting here. Collect them or review details before taking action in-game.
+                                        </div>
+                                        <div class="mail-profile-meta">
+                                            <span class="mail-meta-pill">{{ translate('lang1Money') }}: {{ money || '0' }}</span>
+                                            <span class="mail-meta-pill">{{ translate('lang1Mail') }}: {{ mail || '0' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </section>
+
+                    <!-- Overview panel -->
+                    <v-row class="mb-6" dense>
+                        <v-col cols="12" md="4">
+                            <section class="mail-panel">
+                                <div class="mail-section-label">Overview</div>
+                                <div class="mail-stat-grid">
+                                    <div class="mail-stat-card">
+                                        <div class="mail-section-label">Items in mail</div>
+                                        <div class="mail-stat-value">{{ items.length }}</div>
+                                    </div>
+                                    <div class="mail-stat-card">
+                                        <div class="mail-section-label">Status</div>
+                                        <div class="mail-stat-value" style="font-size:1.2rem">{{ isLoading ? 'Loading…' : 'Ready' }}</div>
+                                    </div>
+                                </div>
+                                <ul class="mail-help-list">
+                                    <li>Items are delivered here after a successful auction or manual send.</li>
+                                    <li>Log into the game to collect them from your in-game mailbox sign ( withdraw ).</li>
+                                </ul>
+                                <div v-if="resultado" class="mail-feedback is-info">{{ resultado }}</div>
+                            </section>
                         </v-col>
                     </v-row>
-                    <br />
-                    <div id="resultado">{{ resultado }}</div>
-                    <br />
-                    <!-- Tabela de Resultados -->
-                    <v-data-table :headers="headers" :items="items" class="mt-5">
-                        <template v-slot:item.item_name="{ item }">
-                            <div v-html="item.item_name"></div>
-                        </template>
-                        <template v-slot:item.owner="{ item }">
-                            <div v-html="item.owner"></div>
-                        </template>
-                    </v-data-table>
-                    <v-footer fixed>
-                        &copy; Made by Stutiguias. Default theme for more usage info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
+
+                    <!-- Mail table -->
+                    <section class="mail-table-card">
+                        <div class="mail-table-head">
+                            <div>
+                                <div class="mail-section-label">Inbox</div>
+                                <h3 class="mt-2 mb-0">{{ translate('langMyMail') }}</h3>
+                            </div>
+                            <div class="mail-table-count">{{ items.length }} item(s)</div>
+                        </div>
+
+                        <v-data-table :headers="headers" :items="items" class="mt-0">
+                            <template v-slot:item.item_name="{ item }">
+                                <div v-html="item.item_name"></div>
+                            </template>
+                            <template v-slot:item.owner="{ item }">
+                                <div v-html="item.owner"></div>
+                            </template>
+                            <template v-slot:no-data>
+                                <div class="mail-empty-state">No items in your mailbox.</div>
+                            </template>
+                        </v-data-table>
+                    </section>
+
+                    <v-footer class="mail-footer mt-6">
+                        &copy; Made by Stutiguias. Default theme — for more info visit the <a href="http://dev.bukkit.org/server-mods/webauctionlite">BukkitDev site</a>.
                     </v-footer>
+
                 </v-container>
             </v-main>
         </v-app>
@@ -92,5 +374,5 @@
     <script src="js/translate.js"></script>
     <script src="js/main.js"></script>
     <script src="js/page/mail.js"></script>
-  </body>
+</body>
 </html>

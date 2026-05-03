@@ -62,6 +62,12 @@ Web:
   StackStored: Item stack stored.
   YouPurchase: You purchased %qtd% %item_name% from %playerName% for %price%
   YouSell: You sell %qtd% %item_name% to %playerName% for %price%
+  ExpiresIn: Expires in
+  Days: days
+  Hours: hours
+  Minutes: minutes
+  Expired: Expired
+  RenewListing: Renew listing
 # In Game - You can use minecraft color here  
 Sign:
   HoldHelp: Please hold a stack of item in your hand and right click to deposit them.

@@ -9,7 +9,8 @@ WebPortalVue3.mountApp({
         errorMessage: '',
         sessionid: '',
         qtd: 10,
-        isLoading: false
+        isLoading: false,
+        itemExpiryHours: 168
     }),
     mounted() {
         this.checkAndSetSessionId();
@@ -47,10 +48,12 @@ WebPortalVue3.mountApp({
                 return;
             }
 
-            this.headers = Object.values(data[firstKey][0]).map(field => ({
-                text: field.Title,
-                value: field.Title.toLowerCase().replace(/\s+/g, '_')
-            }));
+            this.headers = Object.values(data[firstKey][0])
+                .filter(field => field.Title.toLowerCase() !== 'created')
+                .map(field => ({
+                    text: field.Title,
+                    value: field.Title.toLowerCase().replace(/\s+/g, '_')
+                }));
 
             this.items = data[firstKey].map(item => {
                 const newItem = {};
@@ -58,8 +61,34 @@ WebPortalVue3.mountApp({
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
                     newItem[key] = upgradeHtml(field.Val);
                 });
+                // Extract created timestamp if exists
+                if (item.created && item.created.Val) {
+                    newItem.created = parseInt(item.created.Val) || 0;
+                }
                 return newItem;
             });
+        },
+        getTimeRemaining(created) {
+            if (!created || created === 0) return 'Never';
+            
+            const createdTime = created * 1000;
+            const expiryTime = createdTime + (this.itemExpiryHours * 3600 * 1000);
+            const remaining = expiryTime - Date.now();
+            
+            if (remaining <= 0) return 'Expired';
+            
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (days > 0) return `${days}d ${hours}h`;
+            if (hours > 0) return `${hours}h ${minutes}m`;
+            return `${minutes}m`;
+        },
+        formatCreatedDate(created) {
+            if (!created || created === 0) return 'N/A';
+            const date = new Date(created * 1000);
+            return date.toLocaleString();
         },
         areCookiesEnabled() {
             document.cookie = "cookietest=1";

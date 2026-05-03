@@ -175,6 +175,16 @@
                                         <template v-slot:item.owner="{ item }">
                                             <div v-html="item.owner"></div>
                                         </template>
+                                        <template v-slot:item.expire="{ item }">
+                                            <div>
+                                                <span :style="{ color: getTimeRemaining(item.created) === 'Expired' ? '#d32f2f' : '#666', fontWeight: '600' }">
+                                                    {{ getTimeRemaining(item.created) }}
+                                                </span>
+                                                <div style="font-size: 0.75rem; color: #999; margin-top: 2px;">
+                                                    Created {{ formatCreatedDate(item.created) }}
+                                                </div>
+                                            </div>
+                                        </template>
                                     </v-data-table>
                                 </v-card>
                             </v-col>

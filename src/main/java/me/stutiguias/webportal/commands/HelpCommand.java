@@ -42,6 +42,9 @@ public class HelpCommand extends CommandHandler {
         if (sender.hasPermission("wa.set")) {
             sender.sendMessage(ChatColor.RED + "set <player> <option(buy,sell,admin)> <yes/no>: Set Player Perm");
         }
+        if (sender.hasPermission("wa.renew")) {
+            sender.sendMessage(ChatColor.YELLOW + "renew <ID>: Renew item listing expiration time");
+        }
         sender.sendMessage(ChatColor.YELLOW + "password <password>: Change/Create Your Password");
         sender.sendMessage("-----------------------------------------------------");
         sender.sendMessage(ChatColor.YELLOW + "YELLOW: Normal Commands");
