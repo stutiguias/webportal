@@ -72,6 +72,7 @@ public class SellRequest extends HttpResponse {
 
         if(!WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName().equals(player)) {
             Print(message.WebIdNotFound,"text/plain");
+            return;
         }
 
         List<Shop> auctions = plugin.db.getItem(player,cancelItemName,cancelItemDamage, true, plugin.Myitems);

@@ -66,7 +66,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         boolean isAuthenticated = sessionId != null && plugin.AuthPlayers.containsKey(sessionId);
 
         if (url.contains("..") || url.contains("./")) {
-            serveStaticFile("/login.html", "text/html", exchange);
+            serveStaticFile(htmlDir+"/login.html", "text/html", exchange);
             return;
         }
         if(url.equalsIgnoreCase("/")){
@@ -94,7 +94,10 @@ public class WebPortalHttpHandler implements HttpHandler {
                     sendErrorResponse(exchange);
                 }
             } else {
-                if(plugin.EnableExternalSource) serveStaticFile(htmlDir+"/external.html","text/html",exchange);
+                if(plugin.EnableExternalSource) {
+                    serveStaticFile(htmlDir+"/external.html","text/html",exchange);
+                    return;
+                }
                 sendUnauthorizedResponse(exchange);
             }
         } else {
@@ -162,7 +165,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         if(plugin.EnableExternalSource) {
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
         }
-        exchange.sendResponseHeaders(400,"404 Not Found".getBytes().length);
+        exchange.sendResponseHeaders(404,"404 Not Found".getBytes().length);
         exchange.getResponseBody().write("404 Not Found".getBytes());
         exchange.getResponseBody().flush();
         exchange.getResponseBody().close();
@@ -172,7 +175,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         if(url.contains(".js"))
             return "text/javascript";
         if(url.contains(".png"))
-            return "image/jpg";
+            return "image/png";
         if(url.contains(".css"))
             return "text/css";
         if(url.contains(".html"))

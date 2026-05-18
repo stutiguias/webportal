@@ -53,14 +53,12 @@ public class LoginRequest extends HttpResponse {
             _AuthPlayer.setDate(cal.getTime());
 
             Date d = new Date();
-            
-            for (Map.Entry<String,LoggedPlayer> pairs : WebPortal.AuthPlayers.entrySet()) {
-                LoggedPlayer authplayer = pairs.getValue();
-                if(authplayer.GetLogin().equalsIgnoreCase(username) || authplayer.getDate().before(d)) {
-                    WebPortal.AuthPlayers.remove(pairs.getKey(), authplayer);
-                }
-            }
-            
+
+            WebPortal.AuthPlayers.entrySet().removeIf(entry -> {
+                LoggedPlayer authplayer = entry.getValue();
+                return authplayer.GetLogin().equalsIgnoreCase(username) || authplayer.getDate().before(d);
+            });
+
             WebPortal.AuthPlayers.put(sessionid,_AuthPlayer);
             Print("ok","text/plain");
         }else{

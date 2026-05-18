@@ -713,11 +713,9 @@ public class Queries implements IDataQueries {
                         auctionMails.add(auctionMail);
                 }
                 
-                st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions WHERE player = ? and tableid = ? LIMIT ? , ?");
+                st = conn.prepareStatement("SELECT COUNT(*) FROM WA_Auctions WHERE player = ? and tableid = ?");
                 st.setString(1, player);
                 st.setInt(2, plugin.Mail);
-                st.setInt(3, to);
-                st.setInt(4, from);
                 rs = st.executeQuery();
                 while (rs.next()) {
                       found = rs.getInt(1);
@@ -880,7 +878,7 @@ public class Queries implements IDataQueries {
                 }
                 st = conn.prepareStatement(sql);
                 st.setString(1, player);
-                st.setInt(3, tableid);
+                st.setInt(2, tableid);
                 rs = st.executeQuery();
                 while (rs.next()) {
                         Shop auction = new Shop();
@@ -1079,7 +1077,7 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Players SET webban = ? WHERE id = ?");
+                st = conn.prepareStatement("UPDATE WA_Players SET webban = ? WHERE name = ?");
                 st.setString(1, option);
                 st.setString(2, player);
                 st.executeUpdate();

@@ -189,7 +189,12 @@ public class ShopRequest extends HttpResponse {
         int qtd =  Integer.parseInt((String)param.get("quantity"));
 
         Shop shop = plugin.db.getAuction(id);
-        
+
+        if (shop == null) {
+            Print(message.WebIdNotFound, "text/plain");
+            return;
+        }
+
         if(shop.getTableId() == plugin.Sell) {
             boolean buy = LoggedPlayerBuyer(ip, qtd, shop);
         } else
@@ -221,7 +226,7 @@ public class ShopRequest extends HttpResponse {
            WebSitePlayer ap = plugin.db.getPlayer(shop.getPlayerName());
            OfflinePlayer ownerItemPlayer = plugin.getServer().getOfflinePlayer(UUID.fromString(ap.getUUID()));
 
-           if(ap.getCanBuy() != 1) {
+           if(ap.getCanSell() != 1) {
                Print(message.WebCantSell,"text/plain");
            }
            

@@ -31,33 +31,46 @@ public class Transaction extends TradeHandle {
         super(plugin);
     }
 
-    public String Buy(String BuyPlayerName,Shop itemSold,int qtd) {
+    public String Buy(String BuyPlayerName, Shop itemSold, int qtd) {
+        me.stutiguias.webportal.model.WebSitePlayer buyerData = plugin.db.getPlayer(BuyPlayerName);
+        if (buyerData == null) return WebPortal.Messages.WebFailDontHave;
 
-        UUID uuidBuyer = UUID.fromString(plugin.db.getPlayer(BuyPlayerName).getUUID());
+        UUID uuidBuyer = UUID.fromString(buyerData.getUUID());
         OfflinePlayer offlinePlayerBuyer = plugin.getServer().getOfflinePlayer(uuidBuyer);
-        plugin.economy.withdrawPlayer(offlinePlayerBuyer, itemSold.getPrice() * qtd);
 
-        if(!itemSold.getPlayerName().equals("Server")) {
-            UUID uuidSeller = UUID.fromString(plugin.db.getPlayer(itemSold.getPlayerName()).getUUID());
-            OfflinePlayer offlinePlayerSeller = plugin.getServer().getOfflinePlayer(uuidSeller);
-            plugin.economy.depositPlayer(offlinePlayerSeller, itemSold.getPrice() * qtd);
-            plugin.db.setAlert(itemSold.getPlayerName(), qtd, itemSold.getPrice(), BuyPlayerName, itemSold.getItemStack().getName() );
+        boolean serverInfinity = isServerInfinity(itemSold);
+        if (!serverInfinity) {
+            UpdateItemOnShop(itemSold, qtd);
         }
 
-        GivePlayerItem(BuyPlayerName,itemSold,qtd);
-        if(isServerInfinity(itemSold)) return BuyMsg(itemSold, qtd);
-        UpdateItemOnShop(itemSold, qtd);
+        plugin.economy.withdrawPlayer(offlinePlayerBuyer, itemSold.getPrice() * qtd);
 
-        int time = (int) ((System.currentTimeMillis() / 1000));
-        plugin.db.LogSellPrice(itemSold.getItemStack().getType().name(),getDmg(itemSold.getItemStack()),time, BuyPlayerName, itemSold.getPlayerName(), qtd, itemSold.getPrice(), itemSold.getEnchantments());
-        
+        if (!itemSold.getPlayerName().equals("Server")) {
+            me.stutiguias.webportal.model.WebSitePlayer sellerData = plugin.db.getPlayer(itemSold.getPlayerName());
+            if (sellerData != null) {
+                UUID uuidSeller = UUID.fromString(sellerData.getUUID());
+                OfflinePlayer offlinePlayerSeller = plugin.getServer().getOfflinePlayer(uuidSeller);
+                plugin.economy.depositPlayer(offlinePlayerSeller, itemSold.getPrice() * qtd);
+            }
+            plugin.db.setAlert(itemSold.getPlayerName(), qtd, itemSold.getPrice(), BuyPlayerName, itemSold.getItemStack().getName());
+        }
+
+        GivePlayerItem(BuyPlayerName, itemSold, qtd);
+
+        int time = (int) (System.currentTimeMillis() / 1000);
+        plugin.db.LogSellPrice(itemSold.getItemStack().getType().name(), getDmg(itemSold.getItemStack()), time, BuyPlayerName, itemSold.getPlayerName(), qtd, itemSold.getPrice(), itemSold.getEnchantments());
+
         return BuyMsg(itemSold, qtd);
     }
 
-    public String Sell(String sellerPlayerName,Shop itemBuy,int qtd) {
+    public String Sell(String sellerPlayerName, Shop itemBuy, int qtd) {
+        me.stutiguias.webportal.model.WebSitePlayer buyerData = plugin.db.getPlayer(itemBuy.getPlayerName());
+        if (buyerData == null) return WebPortal.Messages.WebFailDontHave;
+        me.stutiguias.webportal.model.WebSitePlayer sellerData = plugin.db.getPlayer(sellerPlayerName);
+        if (sellerData == null) return WebPortal.Messages.WebFailDontHave;
 
-        UUID uuidBuyer = UUID.fromString(plugin.db.getPlayer(itemBuy.getPlayerName()).getUUID());
-        UUID uuidSeller = UUID.fromString(plugin.db.getPlayer(sellerPlayerName).getUUID());
+        UUID uuidBuyer = UUID.fromString(buyerData.getUUID());
+        UUID uuidSeller = UUID.fromString(sellerData.getUUID());
         OfflinePlayer offlinePlayerBuyer = plugin.getServer().getOfflinePlayer(uuidBuyer);
         OfflinePlayer offlinePlayerSeller = plugin.getServer().getOfflinePlayer(uuidSeller);
 

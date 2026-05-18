@@ -18,19 +18,26 @@ import me.stutiguias.webportal.init.WebPortal;
  */
 public class SqliteDataQueries extends Queries {
 
+    private WALDriver registeredDriver;
+
     public SqliteDataQueries(WebPortal plugin) {
         super(plugin);
+        try {
+            Driver driver = (Driver) Class.forName("org.sqlite.JDBC").newInstance();
+            registeredDriver = new WALDriver(driver);
+            DriverManager.registerDriver(registeredDriver);
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+            WebPortal.logger.log(Level.SEVERE, "{0} Exception registering SQLite driver", plugin.logPrefix);
+            WebPortal.logger.warning(e.getMessage());
+        }
     }
 
     @Override
     public WALConnection getConnection() {
             try {
-                    Driver driver = (Driver) Class.forName("org.sqlite.JDBC").newInstance();
-                    WALDriver jDriver = new WALDriver(driver);
-                    DriverManager.registerDriver(jDriver);
                     connection = new WALConnection(DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + File.separator + "data.db"));
                     return connection;
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
+            } catch (SQLException e) {
                     WebPortal.logger.log(Level.SEVERE, "{0} Exception getting SQLite WALConnection", plugin.logPrefix);
                     WebPortal.logger.warning(e.getMessage());
             }

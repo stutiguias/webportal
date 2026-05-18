@@ -68,6 +68,7 @@ public class BuyRequest extends HttpResponse {
 
             if(!WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getName().equals(player)) {
                 Print(message.WebIdNotFound,"text/plain");
+                return;
             }
 
             int result = plugin.db.DeleteAuction(id);
