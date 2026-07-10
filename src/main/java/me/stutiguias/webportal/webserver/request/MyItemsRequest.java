@@ -25,6 +25,9 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 @SuppressWarnings("unchecked")
 public class MyItemsRequest extends HttpResponse {
+
+    private static final int MAX_LISTING_DESCRIPTION_LENGTH = 500;
+    private static final String LISTING_DESCRIPTION_TYPE = "listing_description";
     
     private WebPortal plugin;
     
@@ -38,6 +41,7 @@ public class MyItemsRequest extends HttpResponse {
         int qtd;
         Double price;
         int id;
+        String description = normalizeListingDescription(param.get("Description"));
         try {
             price = Double.parseDouble((String)param.get("Price"));
             id = Integer.parseInt((String)param.get("ID"));
@@ -51,8 +55,13 @@ public class MyItemsRequest extends HttpResponse {
             return;
         }
         Shop auction = plugin.db.getItemById(id,plugin.Myitems);
+        if (auction == null || !auction.getPlayerName().equalsIgnoreCase(WebPortal.AuthPlayers.get(ip).WebSitePlayer.getName())) {
+            Print(message.WebIdNotFound, "text/plain");
+            return;
+        }
         if(auction.getQuantity() == qtd) {
             plugin.db.setPriceAndTable(id,price);
+            plugin.db.setItemInfo(id, LISTING_DESCRIPTION_TYPE, description);
             Print(message.WebSucessCreateSale,"text/plain");
         }else{
             if(auction.getQuantity() > qtd)
@@ -63,12 +72,38 @@ public class MyItemsRequest extends HttpResponse {
               WebItemStack stack = new WebItemStack(material,auction.getQuantity(),dmg);  
               String type =  stack.getType().toString();
               String searchtype = stack.GetSearchType();
-              plugin.db.CreateItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Sell,type,searchtype);
+              String itemMeta = plugin.db.GetItemInfo(id, "meta");
+              int createdId = plugin.db.CreateItem(auction.getName(),auction.getDamage(),auction.getPlayerName(),qtd,price,auction.getEnchantments(),plugin.Sell,type,searchtype);
+              if (createdId > 0) {
+                  plugin.db.setItemInfo(createdId, LISTING_DESCRIPTION_TYPE, description);
+                  if (!itemMeta.isEmpty()) {
+                      plugin.db.InsertItemInfo(createdId, "meta", itemMeta);
+                  }
+              }
               Print(message.WebSucessCreateSale,"text/plain");
             }else{
               Print(message.WebFailSellMore,"text/plain");
             }
         }
+    }
+
+    private String normalizeListingDescription(Object rawValue) {
+        if (rawValue == null) {
+            return "";
+        }
+
+        String value = String.valueOf(rawValue)
+                .replace("\r\n", "\n")
+                .replace('\r', '\n')
+                .replaceAll("[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F]", "")
+                .trim();
+
+        if (value.codePointCount(0, value.length()) <= MAX_LISTING_DESCRIPTION_LENGTH) {
+            return value;
+        }
+
+        int end = value.offsetByCodePoints(0, MAX_LISTING_DESCRIPTION_LENGTH);
+        return value.substring(0, end).trim();
     }
         
     public void GetMyItems(String ip,String url,Map param) {
@@ -90,12 +125,15 @@ public class MyItemsRequest extends HttpResponse {
             int dmg = meta != null ? ((Damageable) meta).getDamage() : 0;
             String MaterialName = item.getItemStack().getType().name();
             double mprice = plugin.db.GetMarketPriceofItem(MaterialName,dmg);
-            
-//            String metaCSV = plugin.db.GetItemInfo(item.getId(),"meta");
-//            item.getItemStack().SetMetaItemNameForDisplay(metaCSV,true);
+            String metaCSV = plugin.db.GetItemInfo(item.getId(), "meta");
+            if (WebPortal.AllowMetaItem && !metaCSV.isEmpty()) {
+                item.getItemStack().SetMeta(metaCSV);
+                item.getItemStack().SetMetaItemNameForDisplay(metaCSV, true);
+            }
             try {
                 json.put("1",JSON("Id",item.getId()));
                 json.put("2",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
+                json.put("item_meta", JSON("Item metadata", metaCSV));
                 json.put("3",JSON(message.WebQuantity,item.getItemStack().getAmount()));
                 json.put("4",JSON(message.WebMarketPriceE,mprice));
                 json.put("5",JSON(message.WebMarketPriceT,mprice * item.getItemStack().getAmount()));

@@ -22,6 +22,19 @@
             margin: 0 auto;
         }
 
+        .listing-description {
+            max-width: 260px;
+            white-space: pre-line;
+            color: #40566b;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .listing-description-empty {
+            color: #9aa6b2;
+            font-size: 0.8rem;
+        }
+
         .hero-copy {
             color: #17324d;
         }
@@ -184,6 +197,10 @@
                                                     Created {{ formatCreatedDate(item.created) }}
                                                 </div>
                                             </div>
+                                        </template>
+                                        <template v-slot:item.listing_description="{ item }">
+                                            <div class="listing-description" v-if="item.listing_description" v-text="item.listing_description"></div>
+                                            <span v-else class="listing-description-empty">No extra details</span>
                                         </template>
                                     </v-data-table>
                                 </v-card>

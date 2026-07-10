@@ -13,9 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyStore;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -120,7 +123,17 @@ public class WebPortalHttpServer extends Thread {
         };
         WebPortal.logger.log(Level.INFO, "{0} Web worker threads set {1}", new Object[]{plugin.logPrefix, sanitizedWorkerThreads});
         WebPortal.logger.log(Level.INFO, "{0} Web queue limit set {1}", new Object[]{plugin.logPrefix, sanitizedQueueLimit});
-        return Executors.newCachedThreadPool(threadFactory);
+        BlockingQueue<Runnable> workQueue = sanitizedQueueLimit > 0
+                ? new ArrayBlockingQueue<>(sanitizedQueueLimit)
+                : new SynchronousQueue<>();
+        return new ThreadPoolExecutor(
+                sanitizedWorkerThreads,
+                sanitizedWorkerThreads,
+                0L,
+                TimeUnit.MILLISECONDS,
+                workQueue,
+                threadFactory,
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     private void shutdownExecutor(ExecutorService executorService) {

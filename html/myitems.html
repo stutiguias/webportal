@@ -226,6 +226,75 @@
             line-height: 1.6;
         }
 
+        .items-description-label {
+            color: #17324d;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .items-description-input {
+            display: block;
+            width: 100%;
+            min-height: 96px;
+            padding: 10px 12px;
+            border: 1px solid rgba(23, 50, 77, 0.22);
+            border-radius: 6px;
+            color: #17324d;
+            background: #fff;
+            font: inherit;
+            resize: vertical;
+        }
+
+        .items-description-input:focus {
+            outline: 2px solid rgba(31, 77, 122, 0.2);
+            border-color: #1f4d7a;
+        }
+
+        .items-description-counter {
+            text-align: right;
+        }
+
+        .item-details-trigger {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 4px;
+            border: 0;
+            padding: 0;
+            color: inherit;
+            background: transparent;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1f4d7a;
+        }
+
+        .item-details-trigger:hover {
+            text-decoration: underline;
+        }
+
+        .item-details-modal {
+            color: #17324d;
+        }
+
+        .item-details-preview {
+            margin-bottom: 14px;
+        }
+
+        .item-details-name {
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .item-details-lore {
+            padding: 10px 12px;
+            border-left: 3px solid #1f4d7a;
+            background: rgba(31, 77, 122, 0.06);
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
         .items-table-card {
             overflow: hidden;
         }
@@ -451,6 +520,16 @@
                                 <div v-if="selectedItemLabel" class="items-dialog-hint">Selected item: {{ selectedItemLabel }}</div>
                                 <v-text-field v-model="formData.quantity" :label="translate('langQuantity')" type="number"></v-text-field>
                                 <v-text-field v-model="formData.price" :label="translate('langPrice')" type="number"></v-text-field>
+                                <label class="items-description-label" for="listing-description">Listing description</label>
+                                <textarea
+                                    id="listing-description"
+                                    v-model="formData.description"
+                                    class="items-description-input"
+                                    maxlength="500"
+                                    rows="4"
+                                    placeholder="Add useful details for buyers (optional)"
+                                ></textarea>
+                                <div class="items-dialog-hint items-description-counter">{{ formData.description.length }}/500</div>
                             </div>
                         </v-card-text>
                         <v-card-actions>
@@ -480,6 +559,24 @@
                     </v-card>
                 </v-dialog>
 
+                <v-dialog v-model="dialogItemDetails" max-width="620px">
+                    <v-card v-if="selectedItemDetails">
+                        <v-card-title>Item details</v-card-title>
+                        <v-card-text class="item-details-modal">
+                            <div class="item-details-preview" v-html="selectedItemDetails.item_name"></div>
+                            <div v-if="selectedItemDetails.meta.name" class="item-details-name">{{ selectedItemDetails.meta.name }}</div>
+                            <div v-if="selectedItemDetails.meta.lore.length" class="item-details-lore">
+                                <div v-for="(line, index) in selectedItemDetails.meta.lore" :key="index">{{ line }}</div>
+                            </div>
+                            <div v-if="!selectedItemDetails.meta.name && !selectedItemDetails.meta.lore.length" class="items-dialog-hint">No extra metadata stored for this item.</div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn text @click="closeItemDetails">Close</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
                     <section class="items-table-card">
                         <div class="items-table-head">
                             <div>
@@ -491,6 +588,7 @@
                         <v-data-table :headers="headers" :items="items" class="mt-0">
                             <template v-slot:item.item_name="{ item }">
                                 <div v-html="item.item_name"></div>
+                                <button v-if="hasMeta(item.item_metadata)" type="button" class="item-details-trigger" @click="openItemDetails(item)">Lore</button>
                             </template>
                             <template v-slot:item.owner="{ item }">
                                 <div v-html="item.owner"></div>

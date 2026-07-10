@@ -23,6 +23,9 @@ public final class AuthSystem {
     }
         
     public boolean Auth(String name,String pass) {
+        if (isBlank(name) || isBlank(pass)) {
+            return false;
+        }
         if(plugin.allowlogifonline) {
             Player _player = plugin.getServer().getPlayer(name);
             if(_player == null) return false;
@@ -35,7 +38,11 @@ public final class AuthSystem {
     public boolean WebPortalisLogged(String player,String pass) {
         pass = Algorithm.stringHexa(Algorithm.gerarHash(pass,plugin.algorithm));
         String pass_db = plugin.db.getPassword(player);
-        return pass.equals(pass_db);
+        return pass_db != null && pass.equals(pass_db);
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
     
 }

@@ -25,6 +25,8 @@ import org.bukkit.OfflinePlayer;
  */
 @SuppressWarnings("unchecked")
 public class ShopRequest extends HttpResponse {
+
+    private static final String LISTING_DESCRIPTION_TYPE = "listing_description";
     
     TradeHandle tr;
 
@@ -101,10 +103,13 @@ public class ShopRequest extends HttpResponse {
             }
             
             double MakertPercent = MarketPrice(shop, shop.getPrice());
+            applyMetaForDisplay(shop);
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebType,GetType(shop)));
             json.put("3",JSON(message.WebItemName,ConvertItemToResult(shop.getItemStack())));
             json.put("4",JSON(message.WebOwner,"<img width='32' style='max-width:32px' src='" + plugin.Avatarurl + shop.getPlayerName() +"' /><br />"+ shop.getPlayerName()));
+            json.put("listing_description", JSON("Listing description", plugin.db.GetItemInfo(shop.getId(), LISTING_DESCRIPTION_TYPE)));
+            json.put("item_meta", JSON("Item metadata", plugin.db.GetItemInfo(shop.getId(), "meta")));
             json.put("5",JSON(message.WebExpire, message.WebNever));
             json.put("created",JSON("created",shop.getCreated()));
             json.put("6",JSON(message.WebQuantity,shop.getItemStack().getAmount()));
@@ -116,6 +121,7 @@ public class ShopRequest extends HttpResponse {
         }
         JSONObject jsonresult = new JSONObject();
         jsonresult.put(plugin.db.getFound(),jsonArray);
+        jsonresult.put("expiryHours", plugin.itemExpiryHours);
         
         Print(jsonresult.toJSONString(),"application/json");
     }
@@ -138,12 +144,15 @@ public class ShopRequest extends HttpResponse {
         
         for(Shop item:auctions){
             String searchtype = item.getItemStack().GetSearchType();
+            applyMetaForDisplay(item);
             
             json = new JSONObject();
             json.put("1",JSON(message.WebType,GetType(item)));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
             json.put("3",JSON(message.WebOwner,getName(item)));
             json.put("4",JSON(message.WebExpire, message.WebNever));
+            json.put("listing_description", JSON("Listing description", item.getPlayerName().equalsIgnoreCase("Server") ? "" : plugin.db.GetItemInfo(item.getId(), LISTING_DESCRIPTION_TYPE)));
+            json.put("item_meta", JSON("Item metadata", item.getPlayerName().equalsIgnoreCase("Server") ? "" : plugin.db.GetItemInfo(item.getId(), "meta")));
             json.put("created",JSON("created",item.getCreated()));
             if(item.getItemStack().getAmount() == 9999) {
                 json.put("5",JSON(message.WebQuantity,message.WebInfinit));
@@ -157,6 +166,7 @@ public class ShopRequest extends HttpResponse {
         }
         JSONObject jsonresult = new JSONObject();
         jsonresult.put(plugin.db.getFound(),jsonArray);
+        jsonresult.put("expiryHours", plugin.itemExpiryHours);
 
         Print(jsonresult.toJSONString(),"application/json");
     }
@@ -168,6 +178,8 @@ public class ShopRequest extends HttpResponse {
         json.put("2",JSON(message.WebType,GetType(item) ));
         json.put("3",JSON(message.WebItemName,ConvertItemToResult(item.getItemStack())));
         json.put("4",JSON(message.WebOwner,item.getPlayerName()));
+        json.put("listing_description", JSON("Listing description", ""));
+        json.put("item_meta", JSON("Item metadata", ""));
         json.put("5",JSON(message.WebExpire, message.WebNever));
         json.put("created",JSON("created",item.getCreated()));
         
@@ -182,6 +194,18 @@ public class ShopRequest extends HttpResponse {
         json.put("9",JSON(message.WebDurability,GetDurability(item)));
         json.put("10",JSON(message.WebMarketPrice,""));
         return json;
+    }
+
+    private void applyMetaForDisplay(Shop item) {
+        if (!WebPortal.AllowMetaItem) {
+            return;
+        }
+
+        String meta = plugin.db.GetItemInfo(item.getId(), "meta");
+        if (!meta.isEmpty()) {
+            item.getItemStack().SetMeta(meta);
+            item.getItemStack().SetMetaItemNameForDisplay(meta, true);
+        }
     }
     
     public void BuySellShop(String ip,Map param) {

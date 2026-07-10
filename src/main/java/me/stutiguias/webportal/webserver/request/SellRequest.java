@@ -41,9 +41,15 @@ public class SellRequest extends HttpResponse {
         for (int i = 0; i < shops.size(); i++) {
             Shop shop = shops.get(i);          
             json = new JSONObject();
+            String metaCSV = plugin.db.GetItemInfo(shop.getId(), "meta");
+            if (WebPortal.AllowMetaItem && !metaCSV.isEmpty()) {
+                shop.getItemStack().SetMeta(metaCSV);
+                shop.getItemStack().SetMetaItemNameForDisplay(metaCSV, true);
+            }
             
             json.put("1",JSON("Id",shop.getId()));
             json.put("2",JSON(message.WebItemName,ConvertItemToResult(shop.getItemStack())));
+            json.put("item_meta", JSON("Item metadata", metaCSV));
             json.put("3",JSON(message.WebPrice,shop.getPrice()));
             json.put("4",JSON(message.WebPriceEach,shop.getPrice() * shop.getItemStack().getAmount()));
             json.put("5",JSON(message.WebMarketPrice,Format(MarketPrice(shop, shop.getPrice())) + "%"));

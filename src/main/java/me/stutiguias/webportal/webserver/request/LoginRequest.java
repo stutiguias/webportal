@@ -4,8 +4,11 @@
  */
 package me.stutiguias.webportal.webserver.request;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -21,6 +24,7 @@ import me.stutiguias.webportal.webserver.HttpResponse;
  */
 public class LoginRequest extends HttpResponse {
 
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     public AuthSystem AS;
     
     public LoginRequest(WebPortal plugin, HttpExchange exchange){
@@ -29,10 +33,14 @@ public class LoginRequest extends HttpResponse {
         AS = new AuthSystem(plugin);
     }
     
-    public void TryToLogin(String sessionId,Map param) {
-        String sessionid = (String)param.get("sessionid");
-        String username = (String)param.get("Username");
-        String pass = (String)param.get("Password");
+    public void TryToLogin(Map param) {
+        String username = firstString(param.get("Username"));
+        String pass = firstString(param.get("Password"));
+
+        if (isBlank(username) || isBlank(pass)) {
+            Print("no", "text/plain");
+            return;
+        }
 
         if(AS.Auth(username, pass))
         {
@@ -43,8 +51,9 @@ public class LoginRequest extends HttpResponse {
                 Print("no", "text/plain");
                 return;
             }
+            String sessionid = createSessionId();
             _AuthPlayer.WebSitePlayer = _AuctionPlayer;
-            _AuthPlayer.WebSitePlayer.setIp(sessionId);
+            _AuthPlayer.WebSitePlayer.setIp(sessionid);
 
             Calendar cal = Calendar.getInstance(); 
             cal.setTime(new Date()); 
@@ -60,9 +69,35 @@ public class LoginRequest extends HttpResponse {
             });
 
             WebPortal.AuthPlayers.put(sessionid,_AuthPlayer);
+            setSessionCookie(sessionid, plugin.SessionTime);
             Print("ok","text/plain");
         }else{
             Print("no","text/plain");
         }
+    }
+
+    private String createSessionId() {
+        byte[] token = new byte[32];
+        SECURE_RANDOM.nextBytes(token);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
+    }
+
+    private void setSessionCookie(String sessionId, int sessionMinutes) {
+        int maxAge = Math.max(60, sessionMinutes * 60);
+        getHttpExchange().getResponseHeaders().add(
+                "Set-Cookie",
+                "sessionid=" + sessionId + "; Max-Age=" + maxAge + "; Path=/; HttpOnly; Secure; SameSite=Strict");
+    }
+
+    private String firstString(Object value) {
+        if (value instanceof List<?>) {
+            List<?> values = (List<?>) value;
+            return values.isEmpty() ? null : String.valueOf(values.get(0));
+        }
+        return value != null ? String.valueOf(value) : null;
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 }

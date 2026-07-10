@@ -17,6 +17,8 @@ WebPortalVue3.mountApp({
                 quantity: '',
             },
             selectedListingId: '',
+            dialogItemDetails: false,
+            selectedItemDetails: null,
             formResult: '',
             resultado: '',
             isSubmittingPurchase: false,
@@ -33,7 +35,7 @@ WebPortalVue3.mountApp({
             ],
             headers: [],
             items: [],
-            itemExpiryHours: 168, // Deve corresponder ao config.yml
+            itemExpiryHours: 0,
         };
     },
     computed: {
@@ -87,6 +89,31 @@ WebPortalVue3.mountApp({
         isErrorMessage(message) {
             return /(error|invalid|erro|falha|failed)/i.test(message || '');
         },
+        parseMeta(value) {
+            const result = { name: '', lore: [] };
+            String(value || '').split(/,(?=[NL]\[#\$\])/).forEach(entry => {
+                if (entry.startsWith('N[#$]')) {
+                    result.name = entry.substring(5);
+                } else if (entry.startsWith('L[#$]')) {
+                    result.lore.push(entry.substring(5));
+                }
+            });
+            return result;
+        },
+        hasMeta(value) {
+            return String(value || '').trim().length > 0;
+        },
+        openItemDetails(item) {
+            this.selectedItemDetails = {
+                ...item,
+                meta: this.parseMeta(item.item_meta)
+            };
+            this.dialogItemDetails = true;
+        },
+        closeItemDetails() {
+            this.dialogItemDetails = false;
+            this.selectedItemDetails = null;
+        },
         selectListing(item) {
             this.selectedListingId = item.id;
             this.formData.ID = item.id;
@@ -135,6 +162,10 @@ WebPortalVue3.mountApp({
 
             if (!data || data[0] != null) return;
 
+            if (Number.isFinite(Number(data.expiryHours))) {
+                this.itemExpiryHours = Number(data.expiryHours);
+            }
+
             const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
             if (!firstKey) return;
 
@@ -142,17 +173,26 @@ WebPortalVue3.mountApp({
 
             this.headers = Object.values(data[firstKey][0])
                 .filter(field => field.Title.toLowerCase() !== 'created')
+                .filter(field => field.Title.toLowerCase() !== 'item metadata')
                 .map(field => ({
                     text: field.Title,
                     value: field.Title.toLowerCase().replace(/\s+/g, '_')
                 }));
+            if (!this.headers.some(header => header.value === 'listing_description')) {
+                this.headers.splice(3, 0, { text: 'Listing description', value: 'listing_description' });
+            }
             this.headers.push({ text: 'Quick buy', value: 'actions' });
             this.items = data[firstKey].map(item => {
                 const newItem = {};
                 Object.values(item).forEach(field => {
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
-                    newItem[key] = upgradeHtml(field.Val);
+                    newItem[key] = (key === 'listing_description' || key === 'item_metadata')
+                        ? String(field.Val || '')
+                        : upgradeHtml(field.Val);
                 });
+                if (newItem.listing_description === undefined) {
+                    newItem.listing_description = '';
+                }
                 // Extract created timestamp if exists
                 if (item.created && item.created.Val) {
                     newItem.created = parseInt(item.created.Val) || 0;
@@ -190,7 +230,9 @@ WebPortalVue3.mountApp({
             });
         },
         getTimeRemaining(created) {
-            if (!created || created === 0) return this.translate('langNever') || 'Never';
+            if (this.itemExpiryHours <= 0 || !created || created === 0) {
+                return this.translate('langNever') || 'Never';
+            }
             
             const createdTime = created * 1000;
             const expiryTime = createdTime + (this.itemExpiryHours * 3600 * 1000);

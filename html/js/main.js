@@ -12,6 +12,3 @@ function getCookie(szName) {
 }
 
 var sessionid = getCookie("sessionid");
-if (sessionid == null) {
-    window.location = 'login.html';
-}

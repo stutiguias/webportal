@@ -181,6 +181,78 @@
             pointer-events: none;
         }
 
+        .listing-description {
+            max-width: 260px;
+            white-space: pre-line;
+            color: #40566b;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .listing-description-empty {
+            color: #9aa6b2;
+            font-size: 0.8rem;
+        }
+
+        .shop-selected-description {
+            display: block;
+            max-width: 420px;
+            margin-top: 4px;
+            color: #40566b;
+            white-space: pre-line;
+        }
+
+        .item-details-trigger {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 4px;
+            border: 0;
+            padding: 0;
+            color: inherit;
+            background: transparent;
+            cursor: pointer;
+            text-align: left;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1f4d7a;
+        }
+
+        .item-details-trigger:hover {
+            text-decoration: underline;
+        }
+
+        .item-details-modal {
+            color: #17324d;
+        }
+
+        .item-details-preview {
+            margin-bottom: 14px;
+        }
+
+        .item-details-name {
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .item-details-lore {
+            margin-bottom: 14px;
+            padding: 10px 12px;
+            border-left: 3px solid #1f4d7a;
+            background: rgba(31, 77, 122, 0.06);
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
+        .item-details-description {
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid rgba(23, 50, 77, 0.1);
+            border-radius: 6px;
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
         .shop-result { margin-top: 0; }
 
         .menu-link { color: inherit; text-decoration: none; }
@@ -245,6 +317,7 @@
                     <div v-if="selectedListing" class="shop-selected-badge">
                         <span v-html="selectedListing.item_name"></span>
                         <span style="opacity:.6">#{{ selectedListing.id }}</span>
+                        <span v-if="selectedListing.listing_description" class="shop-selected-description" v-text="selectedListing.listing_description"></span>
                     </div>
                     <v-text-field v-model.trim="formData.ID" label="Auction ID" placeholder="ID" outlined dense hide-details required style="max-width:160px"></v-text-field>
                     <v-text-field v-model.trim="formData.quantity" label="Qty" type="number" min="1" outlined dense hide-details required style="max-width:100px"></v-text-field>
@@ -281,9 +354,14 @@
                     <v-data-table :headers="headers" :items="items">
                         <template v-slot:item.item_name="{ item }">
                             <div v-html="item.item_name"></div>
+                            <button v-if="hasMeta(item.item_metadata)" type="button" class="item-details-trigger" @click="openItemDetails(item)">Lore</button>
                         </template>
                         <template v-slot:item.owner="{ item }">
                             <div v-html="item.owner"></div>
+                        </template>
+                        <template v-slot:item.listing_description="{ item }">
+                            <div class="listing-description" v-if="item.listing_description" v-text="item.listing_description"></div>
+                            <span v-else class="listing-description-empty">No extra details</span>
                         </template>
                         <template v-slot:item.expire="{ item }">
                             <div>
@@ -314,6 +392,25 @@
                         </template>
                     </v-data-table>
                 </v-card>
+
+                <v-dialog v-model="dialogItemDetails" max-width="680px">
+                    <v-card v-if="selectedItemDetails">
+                        <v-card-title>Item details</v-card-title>
+                        <v-card-text class="item-details-modal">
+                            <div class="item-details-preview" v-html="selectedItemDetails.item_name"></div>
+                            <div v-if="selectedItemDetails.meta.name" class="item-details-name">{{ selectedItemDetails.meta.name }}</div>
+                            <div v-if="selectedItemDetails.meta.lore.length" class="item-details-lore">
+                                <div v-for="(line, index) in selectedItemDetails.meta.lore" :key="index">{{ line }}</div>
+                            </div>
+                            <div v-if="selectedItemDetails.listing_description" class="item-details-description" v-text="selectedItemDetails.listing_description"></div>
+                            <div v-if="!selectedItemDetails.meta.name && !selectedItemDetails.meta.lore.length && !selectedItemDetails.listing_description" class="listing-description-empty">No extra details.</div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn text @click="closeItemDetails">Close</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </v-container>
     
             <v-footer>

@@ -19,7 +19,7 @@
         }
 
         .page-shell {
-            max-width: 1320px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
@@ -39,7 +39,7 @@
         .feature-card {
             border-radius: 8px;
             border: 1px solid rgba(23, 50, 77, 0.08);
-            box-shadow: 0 24px 60px rgba(27, 39, 51, 0.12);
+            box-shadow: 0 12px 28px rgba(27, 39, 51, 0.1);
         }
 
         .hero-card {
@@ -85,6 +85,19 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 14px;
+        }
+
+        .dashboard-main-grid {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.8fr);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
         }
 
         .dashboard-stat {
@@ -138,9 +151,10 @@
 
         .summary-value {
             color: #17324d;
-            font-size: 1.2rem;
+            font-size: 1.08rem;
             font-weight: 800;
             line-height: 1;
+            overflow-wrap: anywhere;
         }
 
         .avatar-frame {
@@ -190,7 +204,9 @@
                 padding: 8px 14px !important;
             }
 
-            .dashboard-grid {
+            .dashboard-grid,
+            .dashboard-main-grid,
+            .feature-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -255,7 +271,7 @@
                                                     </div>
                                                     <div>
                                                         <div class="dashboard-stat-label">Balance</div>
-                                                        <div class="dashboard-stat-value">{{ money || '--' }}</div>
+                                                        <div class="dashboard-stat-value">{{ formatMoney(money) }}</div>
                                                     </div>
                                                 </div>
                                                 <div class="dashboard-stat">
@@ -294,9 +310,8 @@
                             </v-col>
                         </v-row>
 
-                        <v-row>
-                            <v-col cols="12" md="4">
-                                <v-card class="info-card pa-5 pa-md-6 fill-height" flat>
+                        <div class="dashboard-main-grid">
+                            <v-card class="info-card pa-5 pa-md-6 fill-height" flat>
                                     <div class="section-label mb-3">Player overview</div>
                                     <h2 class="text-h6 mb-3">{{ translate('lang1TitleInfoPlayer') }}</h2>
                                     <v-list color="transparent" dense>
@@ -315,7 +330,7 @@
                                             </v-list-item-icon>
                                             <v-list-item-content>
                                                 <div class="section-label">{{ translate('lang1Money') }}</div>
-                                                <div class="summary-value">{{ money || '--' }}</div>
+                                                <div class="summary-value">{{ formatMoney(money) }}</div>
                                             </v-list-item-content>
                                         </v-list-item>
                                         <v-list-item class="px-0">
@@ -339,20 +354,15 @@
                                             </v-list-item-content>
                                         </v-list-item>
                                     </v-list>
-                                </v-card>
-                            </v-col>
+                            </v-card>
 
-                            <v-col cols="12" md="8">
-                                <v-row>
-                                    <v-col v-for="card in dashboardCards" :key="card.id" cols="12" sm="6">
-                                        <v-card class="feature-card pa-5 pa-md-6 fill-height" flat>
-                                            <div class="section-label mb-3">Panel {{ card.id }}</div>
-                                            <div class="feature-body" v-html="card.content"></div>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                        </v-row>
+                            <div class="feature-grid">
+                                <v-card v-for="card in dashboardCards" :key="card.id" class="feature-card pa-5 pa-md-6 fill-height" flat>
+                                    <div class="section-label mb-3">Panel {{ card.id }}</div>
+                                    <div class="feature-body" v-html="card.content"></div>
+                                </v-card>
+                            </div>
+                        </div>
                     </v-col>
                 </v-row>
             </v-container>

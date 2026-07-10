@@ -323,14 +323,16 @@ public class WebPortal extends JavaPlugin {
             String dbPort = c.getString("MySQL.Port");
             String dbDatabase = c.getString("MySQL.Database");
 
-            db = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
-            db.initTables();
+             db = new MySQLDataQueries(this, dbHost, dbPort, dbUser, dbPass, dbDatabase);
+             db.initTables();
+             db.repairPlayerAuctionTimestamps(Sell, Buy);
        }else{
             logger.log(Level.INFO, "{0} Choose SQLite db type.", logPrefix);
             logger.log(Level.INFO, "{0} SQLite Initializing.", logPrefix);
 
-            db = new SqliteDataQueries(this);
-            db.initTables();
+             db = new SqliteDataQueries(this);
+             db.initTables();
+             db.repairPlayerAuctionTimestamps(Sell, Buy);
         }
     }
 

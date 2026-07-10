@@ -67,7 +67,7 @@ public class WebItemStack extends ItemStack {
 
         ItemMeta meta = getItemMeta();
 
-        String[] metas = MetaCSV.split(",");
+        String[] metas = MetaCSV.split(",(?=[NL]\\[#\\$\\])");
         List<String> lores = new ArrayList<>();
         for (String meta1 : metas) {
             if (meta1.startsWith("N[#$]")) {

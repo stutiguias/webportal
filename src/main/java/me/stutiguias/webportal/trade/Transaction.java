@@ -190,7 +190,15 @@ public class Transaction extends TradeHandle {
     protected boolean isItemEquals(Shop from,Shop to) {
         return  from.getItemStack().getName().equals(to.getItemStack().getName())
                 && getDmg(from) == getDmg(to)
-                && from.getEnchantments().equals(to.getEnchantments());
+                && from.getEnchantments().equals(to.getEnchantments())
+                && getStoredMeta(from).equals(getStoredMeta(to));
+    }
+
+    private String getStoredMeta(Shop item) {
+        if (!WebPortal.AllowMetaItem || item == null || item.getId() <= 0) {
+            return "";
+        }
+        return plugin.db.GetItemInfo(item.getId(), "meta");
     }
 
     private int getDmg(Shop shop) {

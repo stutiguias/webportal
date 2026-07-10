@@ -7,7 +7,6 @@ import me.stutiguias.webportal.webserver.request.ShopRequest;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class LoginHandler implements IRequestHandler {
 
@@ -20,14 +19,9 @@ public class LoginHandler implements IRequestHandler {
     @Override
     public void handle(HttpExchange exchange, Map<String, Object> params) throws IOException {
         String url = exchange.getRequestURI().getPath();
-        String sessionId = (String) params.get("sessionid");
         if(url.startsWith("/web/login")){
             LoginRequest loginRequest = new LoginRequest(plugin, exchange);
-            if(sessionId.isEmpty()) {
-                loginRequest.Print("Cookie Disable, please enable cookie","text/plain");
-                return;
-            }
-            loginRequest.TryToLogin(sessionId,params);
+            loginRequest.TryToLogin(params);
         }
 
         if(url.startsWith("/web/auction")) new ShopRequest(plugin,exchange).GetShopWithoutLogin(params);

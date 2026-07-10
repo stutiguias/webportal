@@ -204,7 +204,8 @@ const vue = WebPortalVue3.mountApp({
         },
         secureApiHtml(htmlString) {
             const template = document.createElement('template');
-            template.innerHTML = htmlString || '';
+            const sanitizeHtml = window.WebPortalItemImageHelper?.sanitizeHtml || (value => value);
+            template.innerHTML = sanitizeHtml(htmlString || '');
 
             template.content.querySelectorAll('form[action], a[href]').forEach(element => {
                 const attr = element.hasAttribute('action') ? 'action' : 'href';
@@ -214,7 +215,7 @@ const vue = WebPortalVue3.mountApp({
                 }
             });
 
-            return template.innerHTML;
+            return sanitizeHtml(template.innerHTML);
         },
         getCookie(szName) {
             var szValue = null;

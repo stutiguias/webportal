@@ -47,11 +47,11 @@
 
         function upgradeHtml(html) {
             if (typeof html !== 'string' || html.indexOf('<img') === -1 || html.indexOf('images/') === -1) {
-                return html;
+                return sanitizeHtml(html);
             }
 
             const template = document.createElement('template');
-            template.innerHTML = html;
+            template.innerHTML = sanitizeHtml(html);
             const images = template.content.querySelectorAll('img[src]');
 
             images.forEach(img => {
@@ -66,7 +66,80 @@
                 img.setAttribute('data-wp-original-src', sources.original);
             });
 
+            return sanitizeHtml(template.innerHTML);
+        }
+
+        function sanitizeHtml(html) {
+            if (typeof html !== 'string') {
+                return html;
+            }
+
+            const allowedTags = new Set(['DIV', 'SPAN', 'IMG', 'BR', 'FORM', 'INPUT', 'BUTTON']);
+            const allowedAttributes = new Set([
+                'class', 'id', 'style', 'src', 'alt', 'title', 'type', 'name', 'value',
+                'data-wp-item-src', 'data-wp-block-src', 'data-wp-original-src'
+            ]);
+            const allowedSubmitHandlers = new Set([
+                'return websiteban(this)',
+                'return websiteunban(this)'
+            ]);
+            const template = document.createElement('template');
+            template.innerHTML = html;
+
+            template.content.querySelectorAll('*').forEach(element => {
+                if (!allowedTags.has(element.tagName)) {
+                    element.replaceWith(document.createTextNode(element.textContent || ''));
+                    return;
+                }
+
+                Array.from(element.attributes).forEach(attribute => {
+                    const name = attribute.name.toLowerCase();
+                    const value = attribute.value || '';
+
+                    if (name === 'onsubmit' && element.tagName === 'FORM' && allowedSubmitHandlers.has(value.trim())) {
+                        return;
+                    }
+
+                    if (!allowedAttributes.has(name)) {
+                        element.removeAttribute(attribute.name);
+                        return;
+                    }
+
+                    if ((name === 'src' || name.startsWith('data-wp-')) && /^(javascript|data):/i.test(value.trim())) {
+                        element.removeAttribute(attribute.name);
+                        return;
+                    }
+
+                    if (name === 'style') {
+                        const safeStyle = sanitizeStyle(value);
+                        if (safeStyle) {
+                            element.setAttribute('style', safeStyle);
+                        } else {
+                            element.removeAttribute(attribute.name);
+                        }
+                    }
+                });
+            });
+
             return template.innerHTML;
+        }
+
+        function sanitizeStyle(style) {
+            const allowedProperties = new Set(['max-height', 'max-width', 'height', 'width']);
+            return (style || '')
+                .split(';')
+                .map(rule => rule.trim())
+                .filter(rule => {
+                    const separatorIndex = rule.indexOf(':');
+                    if (separatorIndex < 1) {
+                        return false;
+                    }
+                    const property = rule.substring(0, separatorIndex).trim().toLowerCase();
+                    const value = rule.substring(separatorIndex + 1).trim().toLowerCase();
+                    return allowedProperties.has(property)
+                        && /^(\d+(\.\d+)?)(px|rem|em|%)$/.test(value);
+                })
+                .join(';');
         }
 
         document.addEventListener('error', event => {
@@ -96,7 +169,8 @@
         }, true);
 
         window.WebPortalItemImageHelper = {
-            upgradeHtml
+            upgradeHtml,
+            sanitizeHtml
         };
     }
 
@@ -304,7 +378,8 @@
 
     function stripHtml(value) {
         const container = document.createElement('div');
-        container.innerHTML = value || '';
+        const sanitizer = window.WebPortalItemImageHelper?.sanitizeHtml || (html => html);
+        container.innerHTML = sanitizer(value || '');
         return container.textContent || container.innerText || '';
     }
 

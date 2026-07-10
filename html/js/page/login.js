@@ -10,7 +10,7 @@ WebPortalVue3.mountApp({
         sessionid: '',
         qtd: 10,
         isLoading: false,
-        itemExpiryHours: 168
+        itemExpiryHours: 0
     }),
     mounted() {
         this.checkAndSetSessionId();
@@ -42,6 +42,10 @@ WebPortalVue3.mountApp({
             const firstKey = Object.keys(data).find(key => data[key] instanceof Array && data[key].length > 0);
             const upgradeHtml = window.WebPortalItemImageHelper?.upgradeHtml || (value => value);
 
+            if (Number.isFinite(Number(data.expiryHours))) {
+                this.itemExpiryHours = Number(data.expiryHours);
+            }
+
             if (!firstKey) {
                 this.headers = [];
                 this.items = [];
@@ -49,18 +53,26 @@ WebPortalVue3.mountApp({
             }
 
             this.headers = Object.values(data[firstKey][0])
-                .filter(field => field.Title.toLowerCase() !== 'created')
+                .filter(field => field.Title.toLowerCase() !== 'created' && field.Title.toLowerCase() !== 'item metadata')
                 .map(field => ({
                     text: field.Title,
                     value: field.Title.toLowerCase().replace(/\s+/g, '_')
                 }));
+            if (!this.headers.some(header => header.value === 'listing_description')) {
+                this.headers.splice(3, 0, { text: 'Listing description', value: 'listing_description' });
+            }
 
             this.items = data[firstKey].map(item => {
                 const newItem = {};
                 Object.values(item).forEach(field => {
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
-                    newItem[key] = upgradeHtml(field.Val);
+                    newItem[key] = (key === 'listing_description' || key === 'item_metadata')
+                        ? String(field.Val || '')
+                        : upgradeHtml(field.Val);
                 });
+                if (newItem.listing_description === undefined) {
+                    newItem.listing_description = '';
+                }
                 // Extract created timestamp if exists
                 if (item.created && item.created.Val) {
                     newItem.created = parseInt(item.created.Val) || 0;
@@ -69,7 +81,7 @@ WebPortalVue3.mountApp({
             });
         },
         getTimeRemaining(created) {
-            if (!created || created === 0) return 'Never';
+            if (this.itemExpiryHours <= 0 || !created || created === 0) return 'Never';
             
             const createdTime = created * 1000;
             const expiryTime = createdTime + (this.itemExpiryHours * 3600 * 1000);
@@ -112,23 +124,12 @@ WebPortalVue3.mountApp({
             }
             return null;
         },
-        makeid(length = 10) {
-            let result = '';
-            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let charactersLength = characters.length;
-            for (let i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * charactersLength));
-            }
-            return result;
-        },
         checkAndSetSessionId() {
             if (!this.areCookiesEnabled()) {
                 this.errorMessage = 'Cookies must be enabled to sign in.';
                 return;
             }
-            const existingSessionId = this.getCookie('sessionid');
-            this.sessionid = existingSessionId || this.makeid();
-            this.setCookie("sessionid", this.sessionid); 
+            this.sessionid = this.getCookie('sessionid') || '';
         },
         async login() {
             this.errorMessage = '';
@@ -138,25 +139,31 @@ WebPortalVue3.mountApp({
                 return;
             }
 
-            if (!this.sessionid) {
-                this.checkAndSetSessionId();
-                if (!this.sessionid) {
-                    return;
-                }
+            if (!this.areCookiesEnabled()) {
+                this.errorMessage = 'Cookies must be enabled to sign in.';
+                return;
             }
 
-            const queryParams = new URLSearchParams({ Username: this.username, Password: this.password, sessionid: this.sessionid }).toString();
-            const url = window.qualifyURL(`/web/login?${queryParams}`);
+            const body = new URLSearchParams({ Username: this.username, Password: this.password }).toString();
+            const url = window.qualifyURL('/web/login');
 
             try {
                 this.isLoading = true;
-                const response = await fetch(url);
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body
+                });
                 if (!response.ok) {
                     throw new Error('Unable to reach the login service.');
                 }
 
                 const data = await response.text();
                 if (data.trim() === "ok") {
+                    this.sessionid = this.getCookie('sessionid') || '';
                     window.location = 'index.html';
                 } else if (data.trim() === "no") {
                     this.errorMessage = 'The username is case-sensitive. Check your password and try again.';

@@ -394,10 +394,11 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("UPDATE WA_Auctions SET price = ? , tableid = ? WHERE id = ?");
+                st = conn.prepareStatement("UPDATE WA_Auctions SET price = ?, tableid = ?, created = ? WHERE id = ?");
                 st.setDouble(1, price);
                 st.setInt(2, plugin.Sell);
-                st.setInt(3, id);
+                st.setInt(3, (int) (System.currentTimeMillis() / 1000));
+                st.setInt(4, id);
                 st.executeUpdate();
         } catch (SQLException e) {
                 WebPortal.logger.log(Level.WARNING, "{0} Unable to update item quantity in DB", plugin.logPrefix);
@@ -950,16 +951,20 @@ public class Queries implements IDataQueries {
         ResultSet rs = null;
 
         try {
-                st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, ench, tableid, type, searchtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                st = conn.prepareStatement("INSERT INTO WA_Auctions (name, damage, player, quantity, price, created, ench, tableid, type, searchtype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 st.setString(1, materialName);
                 st.setInt(2, itemDamage);
                 st.setString(3, player);
                 st.setInt(4, quantity);
                 st.setDouble(5, price);
-                st.setString(6, ench);
-                st.setInt(7, tableId);
-                st.setString(8, type);
-                st.setString(9, searchtype);
+                boolean expiringListing = tableId == plugin.Sell || tableId == plugin.Buy;
+                st.setInt(6, expiringListing && !"Server".equalsIgnoreCase(player)
+                        ? (int) (System.currentTimeMillis() / 1000)
+                        : 0);
+                st.setString(7, ench);
+                st.setInt(8, tableId);
+                st.setString(9, type);
+                st.setString(10, searchtype);
                 st.executeUpdate();
                 rs = st.getGeneratedKeys();
                 if (rs.next()){
@@ -972,6 +977,35 @@ public class Queries implements IDataQueries {
                 closeResources(conn, st, rs);
         }
         return id;
+    }
+
+    @Override
+    public void repairPlayerAuctionTimestamps(int sellTableId, int buyTableId) {
+        if (plugin.itemExpiryHours <= 0) {
+            return;
+        }
+
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "UPDATE WA_Auctions SET created = ? "
+                            + "WHERE (tableid = ? OR tableid = ?) "
+                            + "AND (created IS NULL OR created <= 0) "
+                            + "AND player <> ?");
+            st.setInt(1, (int) (System.currentTimeMillis() / 1000));
+            st.setInt(2, sellTableId);
+            st.setInt(3, buyTableId);
+            st.setString(4, "Server");
+            st.executeUpdate();
+        } catch (SQLException e) {
+            WebPortal.logger.log(Level.WARNING, "{0} Unable to repair player auction timestamps", plugin.logPrefix);
+            WebPortal.logger.warning(e.getMessage());
+        } finally {
+            closeResources(conn, st, rs);
+        }
     }
 
     @Override
@@ -1027,6 +1061,32 @@ public class Queries implements IDataQueries {
                 closeResources(conn, st, rs);
         }
         return id;
+    }
+
+    @Override
+    public void setItemInfo(int auctionId, String type, String value) {
+        WALConnection conn = getConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("DELETE FROM WA_ItemExtraInfo WHERE auctionId = ? AND type = ?");
+            st.setInt(1, auctionId);
+            st.setString(2, type);
+            st.executeUpdate();
+            st.close();
+
+            st = conn.prepareStatement("INSERT INTO WA_ItemExtraInfo (auctionId,type,value) VALUES (?, ?, ?)");
+            st.setInt(1, auctionId);
+            st.setString(2, type);
+            st.setString(3, value);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            WebPortal.logger.log(Level.WARNING, "{0} Unable to set item info", plugin.logPrefix);
+            WebPortal.logger.warning(e.getMessage());
+        } finally {
+            closeResources(conn, st, rs);
+        }
     }
 
     @Override

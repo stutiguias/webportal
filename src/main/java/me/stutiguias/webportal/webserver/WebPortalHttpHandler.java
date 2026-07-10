@@ -7,12 +7,15 @@ package me.stutiguias.webportal.webserver;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -37,11 +40,12 @@ public class WebPortalHttpHandler implements HttpHandler {
 
     private final WebPortal plugin;
     private final Map<String, IRequestHandler> requestHandlers = new HashMap<>();
-    private final String htmlDir = "./plugins/WebPortal/html";
+    private final Path htmlDir;
 
     public WebPortalHttpHandler(WebPortal plugin)
     {
         this.plugin = plugin;
+        this.htmlDir = plugin.getDataFolder().toPath().resolve("html").toAbsolutePath().normalize();
         initializeRequestHandlers();
     }
 
@@ -62,24 +66,34 @@ public class WebPortalHttpHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String url = exchange.getRequestURI().getPath();
         Map<String, Object> params = (Map<String, Object>) exchange.getAttribute("parameters");
-        String sessionId = (String) params.get("sessionid");
-        boolean isAuthenticated = sessionId != null && plugin.AuthPlayers.containsKey(sessionId);
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        String sessionId = firstString(params.get("sessionid"));
+        if (isBlankSession(sessionId)) {
+            sessionId = getCookie(exchange, "sessionid");
+            if (!isBlankSession(sessionId)) {
+                params.put("sessionid", sessionId);
+            }
+        }
+        boolean isAuthenticated = sessionId != null && WebPortal.AuthPlayers.containsKey(sessionId);
 
         if (url.contains("..") || url.contains("./")) {
-            serveStaticFile(htmlDir+"/login.html", "text/html", exchange);
+            serveStaticFile("/login.html", exchange);
             return;
         }
         if(url.equalsIgnoreCase("/")){
-            serveStaticFile(htmlDir+"/login.html","text/html", exchange);
+            serveStaticFile("/login.html", exchange);
             return;
         }
         if(isAllowed(url)) {
-            serveStaticFile(htmlDir+url,GetMimeType(url), exchange);
+            serveStaticFile(url, exchange);
             return;
         }
         if(url.startsWith("/logout")) {
             WebPortal.AuthPlayers.remove(sessionId);
-            serveStaticFile(htmlDir+"/login.html","text/html", exchange);
+            exchange.getResponseHeaders().add("Set-Cookie", "sessionid=deleted; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Strict");
+            serveStaticFile("/login.html", exchange);
             return;
         }
 
@@ -92,10 +106,13 @@ public class WebPortalHttpHandler implements HttpHandler {
                     WebPortal.logger.log(Level.INFO, "Error handling request: {0}", e.getMessage());
                     e.printStackTrace();
                     sendErrorResponse(exchange);
+                } catch (IllegalArgumentException | NullPointerException e) {
+                    WebPortal.logger.log(Level.INFO, "Invalid web request: {0}", e.getMessage());
+                    sendBadRequestResponse(exchange);
                 }
             } else {
                 if(plugin.EnableExternalSource) {
-                    serveStaticFile(htmlDir+"/external.html","text/html",exchange);
+                    serveStaticFile("/external.html", exchange);
                     return;
                 }
                 sendUnauthorizedResponse(exchange);
@@ -123,34 +140,94 @@ public class WebPortalHttpHandler implements HttpHandler {
         }
     }
 
-    private void serveStaticFile(String path, String mimeType, HttpExchange exchange) throws IOException {
-        try
-        {
-            File file = new File(path);
-            if(file.exists()) {
-                serveFile(file, mimeType, exchange);
-            } else {
-                sendErrorResponse(exchange);
-            }
-        }
-        catch(IOException e)
-        {
-            WebPortal.logger.info("ERROR in readFileAsBinary(): " + e.getMessage());
+    private void sendBadRequestResponse(HttpExchange exchange) throws IOException {
+        String response = "Invalid request.";
+        byte[] body = response.getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=utf-8");
+        exchange.getResponseHeaders().set("Connection", "Close");
+        exchange.sendResponseHeaders(400, body.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(body);
         }
     }
 
-    private void serveFile(File file, String mimeType, HttpExchange exchange) throws IOException {
+    private String firstString(Object value) {
+        if (value instanceof List<?>) {
+            List<?> values = (List<?>) value;
+            return values.isEmpty() ? null : String.valueOf(values.get(0));
+        }
+        return value != null ? String.valueOf(value) : null;
+    }
+
+    private String getCookie(HttpExchange exchange, String name) {
+        List<String> cookies = exchange.getRequestHeaders().get("Cookie");
+        if (cookies == null) {
+            return null;
+        }
+
+        String prefix = name + "=";
+        for (String cookieHeader : cookies) {
+            String[] parts = cookieHeader.split(";");
+            for (String part : parts) {
+                String cookie = part.trim();
+                if (cookie.startsWith(prefix)) {
+                    return cookie.substring(prefix.length());
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean isBlankSession(String sessionId) {
+        return sessionId == null
+                || sessionId.isEmpty()
+                || "null".equalsIgnoreCase(sessionId)
+                || "undefined".equalsIgnoreCase(sessionId);
+    }
+
+    private void serveStaticFile(String url, HttpExchange exchange) throws IOException {
+        Path file = resolveStaticFile(url);
+        if (file == null) {
+            sendErrorResponse(exchange);
+            return;
+        }
+
+        serveFile(file, getMimeType(file), exchange);
+    }
+
+    private Path resolveStaticFile(String url) {
+        if (url == null || !url.startsWith("/") || url.indexOf('\0') >= 0 || url.indexOf('\\') >= 0) {
+            return null;
+        }
+
+        try {
+            Path requested = Paths.get(url.substring(1));
+            Path normalized = htmlDir.resolve(requested).normalize();
+            if (!normalized.startsWith(htmlDir) || !Files.isRegularFile(normalized)) {
+                return null;
+            }
+
+            Path realBase = htmlDir.toRealPath();
+            Path realFile = normalized.toRealPath();
+            return realFile.startsWith(realBase) ? realFile : null;
+        } catch (InvalidPathException | IOException e) {
+            return null;
+        }
+    }
+
+    private void serveFile(Path file, String mimeType, HttpExchange exchange) throws IOException {
         byte[] buffer = new byte[0x10000];
-        long length = file.length();
+        long length = Files.size(file);
 
         if(plugin.EnableExternalSource) {
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+            exchange.getResponseHeaders().set("Access-Control-Allow-Credentials", "true");
         }
 
         exchange.getResponseHeaders().set("Content-Type", mimeType);
         exchange.sendResponseHeaders(200, length);
 
-        try (FileInputStream fis = new FileInputStream(file); OutputStream out = exchange.getResponseBody()) {
+        try (java.io.InputStream fis = Files.newInputStream(file); OutputStream out = exchange.getResponseBody()) {
             int bytesRead;
             while ((bytesRead = fis.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
@@ -164,6 +241,7 @@ public class WebPortalHttpHandler implements HttpHandler {
         exchange.getResponseHeaders().set("Connection","Close");
         if(plugin.EnableExternalSource) {
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+            exchange.getResponseHeaders().set("Access-Control-Allow-Credentials", "true");
         }
         exchange.sendResponseHeaders(404,"404 Not Found".getBytes().length);
         exchange.getResponseBody().write("404 Not Found".getBytes());
@@ -171,16 +249,26 @@ public class WebPortalHttpHandler implements HttpHandler {
         exchange.getResponseBody().close();
     }
     
-    public String GetMimeType(String url) {
-        if(url.contains(".js"))
-            return "text/javascript";
-        if(url.contains(".png"))
-            return "image/png";
-        if(url.contains(".css"))
-            return "text/css";
-        if(url.contains(".html"))
-            return "text/html";
-        return "text/plain";
+    private String getMimeType(Path file) {
+        try {
+            String mimeType = Files.probeContentType(file);
+            if (mimeType != null && !mimeType.isBlank()) {
+                return mimeType;
+            }
+        } catch (IOException ignored) {
+            // Use the extension fallback below when the platform cannot identify the file.
+        }
+
+        String fileName = file.getFileName().toString().toLowerCase();
+        if (fileName.endsWith(".js")) return "text/javascript";
+        if (fileName.endsWith(".css")) return "text/css";
+        if (fileName.endsWith(".html")) return "text/html";
+        if (fileName.endsWith(".json")) return "application/json";
+        if (fileName.endsWith(".svg")) return "image/svg+xml";
+        if (fileName.endsWith(".png")) return "image/png";
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) return "image/jpeg";
+        if (fileName.endsWith(".gif")) return "image/gif";
+        return "application/octet-stream";
     }
     
     public Boolean isAllowed(String url) {

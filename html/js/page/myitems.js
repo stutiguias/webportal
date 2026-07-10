@@ -6,6 +6,8 @@ WebPortalVue3.mountApp({
             qtd: 10,
             dialogCreateSale: false,
             dialogSendMail: false,
+            dialogItemDetails: false,
+            selectedItemDetails: null,
             items: [],
             headers: [],
             sessionid: this.getCookie("sessionid"),
@@ -18,7 +20,8 @@ WebPortalVue3.mountApp({
             formData: {
                 ID: '',
                 quantity: '',
-                price: ''
+                price: '',
+                description: ''
             },
             formResult: '',
             resultado: '',
@@ -48,6 +51,31 @@ WebPortalVue3.mountApp({
     methods: {
         stripHtml(value) {
             return String(value || '').replace(/<[^>]*>/g, '').trim();
+        },
+        parseMeta(value) {
+            const result = { name: '', lore: [] };
+            String(value || '').split(/,(?=[NL]\[#\$\])/).forEach(entry => {
+                if (entry.startsWith('N[#$]')) {
+                    result.name = entry.substring(5);
+                } else if (entry.startsWith('L[#$]')) {
+                    result.lore.push(entry.substring(5));
+                }
+            });
+            return result;
+        },
+        hasMeta(value) {
+            return String(value || '').trim().length > 0;
+        },
+        openItemDetails(item) {
+            this.selectedItemDetails = {
+                ...item,
+                meta: this.parseMeta(item.item_meta)
+            };
+            this.dialogItemDetails = true;
+        },
+        closeItemDetails() {
+            this.dialogItemDetails = false;
+            this.selectedItemDetails = null;
         },
         processData() {
             this.itemNames = this.items.map(item => ({
@@ -90,6 +118,7 @@ WebPortalVue3.mountApp({
             this.formData.ID = '';
             this.formData.quantity = '';
             this.formData.price = '';
+            this.formData.description = '';
         },
         openCreateSale() {
             this.formResult = '';
@@ -119,6 +148,7 @@ WebPortalVue3.mountApp({
                 ID: this.formData.ID,
                 Quantity: this.formData.quantity,
                 Price: this.formData.price,
+                Description: this.formData.description,
                 sessionid: this.getCookie("sessionid")
             }).toString();
 
@@ -220,12 +250,12 @@ WebPortalVue3.mountApp({
             this.headers = Object.values(data[firstKey][0]).map(field => ({
                 text: field.Title,
                 value: field.Title.toLowerCase().replace(/\s+/g, '_')
-            }));
+            })).filter(header => header.value !== 'item_metadata');
             this.items = data[firstKey].map(item => {
                 const newItem = {};
                 Object.values(item).forEach(field => {
                     const key = field.Title.toLowerCase().replace(/\s+/g, '_');
-                    newItem[key] = upgradeHtml(field.Val);
+                    newItem[key] = key === 'item_metadata' ? String(field.Val || '') : upgradeHtml(field.Val);
                 });
                 return newItem;
             });

@@ -30,8 +30,23 @@ WebPortalVue3.mountApp({
       translate(key) {
           return window.langIndex[key] || key;
       },
+      formatMoney(value) {
+          if (value === null || value === undefined || value === '') {
+              return '--';
+          }
+
+          const amount = Number(value);
+          if (!Number.isFinite(amount)) {
+              return '--';
+          }
+
+          return new Intl.NumberFormat('pt-BR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+          }).format(amount);
+      },
       async fetchText(url, errorMessage) {
-          const response = await fetch(window.qualifyURL(url));
+          const response = await fetch(window.qualifyURL(url), { credentials: 'include' });
           if (!response.ok) {
               throw new Error(errorMessage);
           }
@@ -39,7 +54,7 @@ WebPortalVue3.mountApp({
           return response.text();
       },
       async fetchJson(url, errorMessage) {
-          const response = await fetch(window.qualifyURL(url));
+          const response = await fetch(window.qualifyURL(url), { credentials: 'include' });
           if (!response.ok) {
               throw new Error(errorMessage);
           }
@@ -80,7 +95,7 @@ WebPortalVue3.mountApp({
               );
 
               this.user = data["Name"];
-              this.money = parseFloat(data["Money"]).toFixed(2);
+              this.money = data["Money"];
               this.mail = data["Mail"];
               this.isAdmin = data["Admin"].toString() === "1";
               this.avatarUrl = data["Avatarurl"];
@@ -101,12 +116,7 @@ WebPortalVue3.mountApp({
       }
     },
     mounted() {
-        this.sessionid = this.getCookie("sessionid");
-
-        if (!this.sessionid) {
-            window.location = "login.html";
-            return;
-        }
+        this.sessionid = this.getCookie("sessionid") || "";
 
         this.getUserInfo();
 

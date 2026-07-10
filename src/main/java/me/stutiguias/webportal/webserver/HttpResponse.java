@@ -6,6 +6,7 @@ package me.stutiguias.webportal.webserver;
 
 import com.sun.net.httpserver.HttpExchange;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,16 +45,18 @@ public class HttpResponse {
     public void Print(String data, String MimeType)
     {
         try
-        {       
-            getHttpExchange().getResponseHeaders().set("Content-Type", MimeType);
+        {
+            byte[] response = data.getBytes(StandardCharsets.UTF_8);
+            getHttpExchange().getResponseHeaders().set("Content-Type", contentTypeWithCharset(MimeType));
             getHttpExchange().getResponseHeaders().set("Server","WebPortal Server");
             getHttpExchange().getResponseHeaders().set("Connection","Close");
             getHttpExchange().getResponseHeaders().set("Cache-Control","no-cache, must-revalidate");
             if(plugin.EnableExternalSource) {
                 getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
+                getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Credentials", "true");
             }
-            getHttpExchange().sendResponseHeaders(200,data.getBytes().length);
-            getHttpExchange().getResponseBody().write(data.getBytes());
+            getHttpExchange().sendResponseHeaders(200,response.length);
+            getHttpExchange().getResponseBody().write(response);
             getHttpExchange().getResponseBody().flush();
             getHttpExchange().getResponseBody().close();
         }
@@ -67,17 +70,19 @@ public class HttpResponse {
     public void sendJsonResponse(String jsonResponse) {
         try {
             HttpExchange exchange = getHttpExchange();
-            exchange.getResponseHeaders().set("Content-Type", "application/json");
+            byte[] response = jsonResponse.getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
             exchange.getResponseHeaders().set("Server", "WebPortal Server");
             exchange.getResponseHeaders().set("Connection", "Close");
             exchange.getResponseHeaders().set("Cache-Control", "no-cache, must-revalidate");
             if (plugin.EnableExternalSource) {
                 exchange.getResponseHeaders().set("Access-Control-Allow-Origin", plugin.allowexternal);
+                exchange.getResponseHeaders().set("Access-Control-Allow-Credentials", "true");
             }
-            exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+            exchange.sendResponseHeaders(200, response.length);
 
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write(jsonResponse.getBytes());
+                os.write(response);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,14 +120,15 @@ public class HttpResponse {
     {
         try
         {
-            getHttpExchange().getResponseHeaders().set("Content-Type", "text/html");
+            byte[] response = error.getBytes(StandardCharsets.UTF_8);
+            getHttpExchange().getResponseHeaders().set("Content-Type", "text/html; charset=utf-8");
             getHttpExchange().getResponseHeaders().set("Server","WebPortal Server");
             getHttpExchange().getResponseHeaders().set("Connection","Close");
             if(plugin.EnableExternalSource) {
                getHttpExchange().getResponseHeaders().set("Access-Control-Allow-Origin",plugin.allowexternal);
             }
-            getHttpExchange().sendResponseHeaders(400, error.getBytes().length);
-            getHttpExchange().getResponseBody().write(error.getBytes());
+            getHttpExchange().sendResponseHeaders(400, response.length);
+            getHttpExchange().getResponseBody().write(response);
             getHttpExchange().getResponseBody().flush();
             getHttpExchange().getResponseBody().close();
         }
@@ -222,6 +228,9 @@ public class HttpResponse {
     }
          
     public Boolean isAdmin(String sessionId) {
+        if (sessionId == null || !WebPortal.AuthPlayers.containsKey(sessionId)) {
+            return false;
+        }
         return WebPortal.AuthPlayers.get(sessionId).WebSitePlayer.getIsAdmin() == 1;
     }
     
@@ -235,13 +244,20 @@ public class HttpResponse {
         //String metaCSV = plugin.db.GetItemInfo(itemId,"meta");
         //item.SetMetaItemNameForDisplay(metaCSV,true);
         
-        String itemName = item.getName().substring(0, 1).toUpperCase() + item.getName().toLowerCase().substring(1);
-        String itemImage = item.getImage();
- 
-        if(!itemImage.contains("http") || !itemImage.contains("www"))
-            itemImage = String.format("images/%s.png",itemName);
+        String rawItemName = item.getName() != null ? item.getName() : "";
+        String itemName = rawItemName.isEmpty()
+                ? "Unknown"
+                : rawItemName.substring(0, 1).toUpperCase() + rawItemName.toLowerCase().substring(1);
+        String itemImage = item.getImage() != null ? item.getImage() : "";
+
+        if (!itemImage.matches("(?i)^https?://.*") && !itemImage.startsWith("images/")) {
+            String imageName = itemImage.isEmpty() ? rawItemName : itemImage;
+            itemImage = String.format("images/%s.png", imageName);
+        }
         
-        return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /> %s</div>",itemImage,itemName);
+        return String.format("<div class='itemTableName'><img src='%s' style='max-height:32px;max-width:32px;' /> %s</div>",
+                escapeHtmlAttribute(itemImage),
+                escapeHtml(itemName));
         
     }
 
@@ -253,6 +269,32 @@ public class HttpResponse {
     }
     
       public WebItemStack ConvertInputToWebItemStack(String itemName) {
+        if (itemName == null || itemName.trim().isEmpty()) {
+            return null;
+        }
         return new WebItemStack(Material.getMaterial(itemName.toUpperCase()) ,1,0);
+    }
+
+    private String contentTypeWithCharset(String mimeType) {
+        if (mimeType == null || mimeType.toLowerCase().contains("charset")) {
+            return mimeType;
+        }
+        if (mimeType.startsWith("text/") || mimeType.equals("application/json")) {
+            return mimeType + "; charset=utf-8";
+        }
+        return mimeType;
+    }
+
+    private String escapeHtml(String value) {
+        return value
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#x27;");
+    }
+
+    private String escapeHtmlAttribute(String value) {
+        return escapeHtml(value).replace("`", "&#x60;");
     }
 }

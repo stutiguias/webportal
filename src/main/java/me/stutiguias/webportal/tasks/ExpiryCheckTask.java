@@ -32,6 +32,7 @@ public class ExpiryCheckTask implements Runnable {
                 
                 // Deleta o item da listagem
                 plugin.db.DeleteAuction(item.getId());
+                plugin.db.DeleteInfo(item.getId());
                 
                 // Notifica o jogador se estiver online
                 Player onlinePlayer = Bukkit.getPlayerExact(item.getPlayerName());

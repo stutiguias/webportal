@@ -205,6 +205,45 @@
             overflow: hidden;
         }
 
+        .item-details-trigger {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 4px;
+            border: 0;
+            padding: 0;
+            color: #1f4d7a;
+            background: transparent;
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .item-details-trigger:hover {
+            text-decoration: underline;
+        }
+
+        .item-details-modal {
+            color: #17324d;
+        }
+
+        .item-details-preview {
+            margin-bottom: 14px;
+        }
+
+        .item-details-name {
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .item-details-lore {
+            padding: 10px 12px;
+            border-left: 3px solid #1f4d7a;
+            background: rgba(31, 77, 122, 0.06);
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
         .sell-table-head {
             display: flex;
             align-items: center;
@@ -420,6 +459,7 @@
                         <v-data-table :headers="headers" :items="items" class="mt-0">
                         <template v-slot:item.item_name="{ item }">
                             <div v-html="item.item_name"></div>
+                            <button v-if="hasMeta(item.item_metadata)" type="button" class="item-details-trigger" @click="openItemDetails(item)">Lore</button>
                         </template>
                         <template v-slot:item.owner="{ item }">
                             <div v-html="item.owner"></div>
@@ -429,6 +469,24 @@
                             No active auctions were found for this account.
                         </div>
                     </section>
+                    <v-dialog v-model="dialogItemDetails" max-width="620px">
+                        <v-card v-if="selectedItemDetails">
+                            <v-card-title>Item details</v-card-title>
+                            <v-card-text class="item-details-modal">
+                                <div class="item-details-preview" v-html="selectedItemDetails.item_name"></div>
+                                <div v-if="selectedItemDetails.meta.name" class="item-details-name">{{ selectedItemDetails.meta.name }}</div>
+                                <div v-if="selectedItemDetails.meta.lore.length" class="item-details-lore">
+                                    <div v-for="(line, index) in selectedItemDetails.meta.lore" :key="index">{{ line }}</div>
+                                </div>
+                                <div v-if="!selectedItemDetails.meta.name && !selectedItemDetails.meta.lore.length" class="sell-subtitle">No extra metadata stored for this item.</div>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn text @click="closeItemDetails">Close</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+
                     <v-footer class="sell-footer mt-6">
                         &copy; Made by Stutiguias.
                     </v-footer>
